@@ -1,7 +1,9 @@
 # Potato
-#Mobile-side code repository for agricultural breeding projects
+# Mobile-side code repository for agricultural breeding projects
 
-##Branchs:
+## Current Branch: `xie`
+
+## All Branchs:
 
     master
     xie
