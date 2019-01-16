@@ -191,50 +191,77 @@
                     android:layout_marginLeft="5dp"
                     android:entries="@array/corolla_colors"
                     android:gravity="center_horizontal"></Spinner>
+
+                <ImageButton
+                    android:id="@+id/imb_corolla_colors"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/ic_menu_camera" />
+
+                <ImageView
+                    android:id="@+id/imv_corolla_colors"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <LinearLayout
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:text="9-花繁茂性" />
+
+                <Spinner
+                    android:id="@+id/plant_flourish"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:entries="@array/plant_flourish"
+                    android:gravity="center_horizontal"></Spinner>
+
+                <ImageButton
+                    android:id="@+id/imb_plant_flourish"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:src="@android:drawable/ic_menu_camera" />
 
-                    <TextView
-                        android:layout_width="70dp"
-                        android:layout_height="wrap_content"
-                        android:text="9-花繁茂性" />
+                <ImageView
+                    android:id="@+id/imv_plant_flourish"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
+            </LinearLayout>
 
-                    <Spinner
-                        android:id="@+id/plant_flourish"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:entries="@array/plant_flourish"
-                        android:gravity="center_horizontal"></Spinner>
-                </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-                <LinearLayout
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:text="10-茎色" />
+
+                <Spinner
+                    android:id="@+id/stem_color"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:entries="@array/stem_colors"
+                    android:gravity="center_horizontal"></Spinner>
+
+                <ImageButton
+                    android:id="@+id/imb_stem_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:src="@android:drawable/ic_menu_camera" />
 
-                    <TextView
-                        android:layout_width="70dp"
-                        android:layout_height="wrap_content"
-                        android:text="10-茎色" />
-
-                    <Spinner
-                        android:id="@+id/stem_color"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:entries="@array/stem_colors"
-                        android:gravity="center_horizontal"></Spinner>
-                </LinearLayout>
+                <ImageView
+                    android:id="@+id/imv_stem_color"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -254,6 +281,16 @@
                     android:layout_marginLeft="5dp"
                     android:entries="@array/natural_fecundity_arr"
                     android:gravity="center_horizontal"></Spinner>
+                <ImageButton
+                    android:id="@+id/imb_natural_fecundity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/ic_menu_camera" />
+
+                <ImageView
+                    android:id="@+id/imv_natural_fecundity"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -312,6 +349,17 @@
                     android:layout_marginLeft="5dp"
                     android:entries="@array/tuber_uniformity_arr"
                     android:gravity="center_horizontal"></Spinner>
+
+                <ImageButton
+                    android:id="@+id/imb_tuber_uniformity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/ic_menu_camera" />
+
+                <ImageView
+                    android:id="@+id/imv_tuber_uniformity"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -331,6 +379,17 @@
                     android:layout_marginLeft="5dp"
                     android:entries="@array/potato_types"
                     android:gravity="center_horizontal"></Spinner>
+
+                <ImageButton
+                    android:id="@+id/imb_tuber_shape"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/ic_menu_camera" />
+
+                <ImageView
+                    android:id="@+id/imv_tuber_shape"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -350,6 +409,17 @@
                     android:layout_marginLeft="5dp"
                     android:entries="@array/potato_skin_smoothness_arr"
                     android:gravity="center_horizontal"></Spinner>
+
+                <ImageButton
+                    android:id="@+id/imb_potato_skin_smoothness"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/ic_menu_camera" />
+
+                <ImageView
+                    android:id="@+id/imv_potato_skin_smoothness"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -369,6 +439,17 @@
                     android:layout_marginLeft="5dp"
                     android:entries="@array/eye_arr"
                     android:gravity="center_horizontal"></Spinner>
+
+                <ImageButton
+                    android:id="@+id/imb_eye"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/ic_menu_camera" />
+
+                <ImageView
+                    android:id="@+id/imv_eye"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -388,6 +469,17 @@
                     android:layout_marginLeft="5dp"
                     android:entries="@array/skin_colors"
                     android:gravity="center_horizontal"></Spinner>
+
+                <ImageButton
+                    android:id="@+id/imb_skin_color"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/ic_menu_camera" />
+
+                <ImageView
+                    android:id="@+id/imv_skin_color"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -407,6 +499,17 @@
                     android:layout_marginLeft="5dp"
                     android:entries="@array/flesh_colors"
                     android:gravity="center_horizontal"></Spinner>
+
+                <ImageButton
+                    android:id="@+id/imb_flesh_color"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/ic_menu_camera" />
+
+                <ImageView
+                    android:id="@+id/imv_flesh_color"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -689,6 +792,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:gravity="center_horizontal" />
+
+                <Button
+                    android:id="@+id/btn_compute_average_plant_height"
+                    android:text="计算"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
             </LinearLayout>
 
             <LinearLayout
@@ -725,6 +834,12 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:gravity="center_horizontal" />
+
+                <Button
+                    android:id="@+id/btn_compute_average_branch_num"
+                    android:text="计算"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
             </LinearLayout>
 
             <LinearLayout
@@ -758,28 +873,6 @@
                     android:layout_gravity="center_horizontal"
                     android:text="暂存"
                     android:textAllCaps="false" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="vertical">
-
-                <Button
-                    android:id="@+id/take_photo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="拍照" />
-
-                <ImageView
-                    android:id="@+id/iv_show_picture"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp" />
 
             </LinearLayout>
         </LinearLayout>
