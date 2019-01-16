@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<!--    <Button
+        android:id="@+id/commit_data"
+        android:textAllCaps="false"
+        android:text="Commit Data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />-->
+
+    <!--<WebView-->
+        <!--android:id="@+id/web_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"></WebView>-->
+
+
+    <Button
+        android:id="@+id/btn_general"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="总揽" />
+
+    <Button
+        android:id="@+id/btn_farmland"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="farmland详情界面" />
+
+    <Button
+        android:id="@+id/btn_shot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="shot详情界面" />
+
+    <Button
+        android:id="@+id/btn_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="field详情界面" />
+</LinearLayout>

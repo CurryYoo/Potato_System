@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="colors">
+        <item>浅绿</item>
+        <item>绿</item>
+        <item>深绿</item>
+    </string-array>
+
+    <string-array name="corolla_colors">
+        <item>白</item>
+        <item>浅红</item>
+        <item>红</item>
+        <item>红紫</item>
+        <item>紫</item>
+        <item>蓝紫</item>
+        <item>蓝</item>
+        <item>黄</item>
+    </string-array>
+
+    <string-array name="plant_flourish">
+        <item>无</item>
+        <item>少</item>
+        <item>中</item>
+        <item>多</item>
+    </string-array>
+
+    <string-array name="stem_colors">
+        <item>绿</item>
+        <item>褐</item>
+        <item>紫</item>
+        <item>深紫</item>
+        <item>局部有紫色</item>
+    </string-array>
+
+    <string-array name="natural_fecundity_arr">
+        <item>无</item>
+        <item>弱</item>
+        <item>中</item>
+        <item>强</item>
+        <item>极强</item>
+    </string-array>
+
+    <string-array name="tuber_uniformity_arr">
+        <item>整齐</item>
+        <item>中</item>
+        <item>不整齐</item>
+    </string-array>
+
+    <string-array name="potato_types">
+        <item>扁圆</item>
+        <item>圆形</item>
+        <item>卵形</item>
+        <item>倒卵</item>
+        <item>扁椭圆</item>
+        <item>椭圆</item>
+        <item>长方</item>
+        <item>长筒</item>
+        <item>棍棒</item>
+        <item>楔形</item>
+        <item>肾形</item>
+        <item>纺锤</item>
+        <item>镰刀</item>
+        <item>卷曲</item>
+        <item>掌状</item>
+        <item>手风琴</item>
+        <item>结节</item>
+    </string-array>
+
+    <string-array name="potato_skin_smoothness_arr">
+        <item>光滑</item>
+        <item>中</item>
+        <item>粗糙</item>
+    </string-array>
+
+    <string-array name="eye_arr">
+        <item>浅</item>
+        <item>中</item>
+        <item>深</item>
+    </string-array>
+
+    <string-array name="skin_colors">
+        <item>乳白</item>
+        <item>浅黄</item>
+        <item>黄</item>
+        <item>褐</item>
+        <item>浅红</item>
+        <item>红</item>
+        <item>深红</item>
+        <item>紫</item>
+        <item>深紫</item>
+        <item>锈色</item>
+        <item>红杂色</item>
+        <item>蓝紫杂色</item>
+    </string-array>
+
+    <string-array name="flesh_colors">
+        <item>白</item>
+        <item>乳白</item>
+        <item>浅黄</item>
+        <item>黄</item>
+        <item>深黄</item>
+        <item>橙</item>
+        <item>红</item>
+        <item>浅紫</item>
+        <item>紫</item>
+        <item>蓝紫</item>
+        <item>红纹或紫纹</item>
+    </string-array>
+</resources>
