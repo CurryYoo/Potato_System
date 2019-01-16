@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:layout_margin="8dp"
+    android:background="@android:color/darker_gray"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_shotId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        tools:text="shotId" />
+
+    <TextView
+        android:id="@+id/tv_farmlandId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        tools:text="内容" />
+
+    <TextView
+        android:id="@+id/tv_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        tools:text="内容" />
+
+    <TextView
+        android:id="@+id/tv_imgUrl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        tools:text="内容" />
+
+</LinearLayout>
