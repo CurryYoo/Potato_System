@@ -24,20 +24,8 @@
         android:text="总揽" />
 
     <Button
-        android:id="@+id/btn_farmland"
+        android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="farmland详情界面" />
-
-    <Button
-        android:id="@+id/btn_shot"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="shot详情界面" />
-
-    <Button
-        android:id="@+id/btn_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="field详情界面" />
+        android:text="查看种植图" />
 </LinearLayout>

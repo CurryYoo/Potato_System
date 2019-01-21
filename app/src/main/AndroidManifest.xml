@@ -26,6 +26,7 @@
         <activity android:name=".ShotClickActivity" />
         <activity android:name=".FieldClickActivity" />
         <activity android:name=".temporarystorage.SaveDataActivity" />
+        <activity android:name=".SpeciesClickActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

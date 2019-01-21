@@ -28,9 +28,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //    private static final String URL = "file:///android_asset/vue/index.html";
     WebView webView = null;
     Button btn_general;
-    Button btn_farmland;
-    Button btn_shot;
-    Button btn_field;
+//    Button btn_farmland;
+//    Button btn_shot;
+//    Button btn_field;
+
+    Button button;
 
     String picPath;
 
@@ -48,12 +50,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         btn_general = (Button)findViewById(R.id.btn_general);
         btn_general.setOnClickListener(this);
-        btn_farmland = (Button)findViewById(R.id.btn_farmland);
-        btn_farmland.setOnClickListener(this);
-        btn_shot = (Button)findViewById(R.id.btn_shot);
-        btn_shot.setOnClickListener(this);
-        btn_field = (Button)findViewById(R.id.btn_field);
-        btn_field.setOnClickListener(this);
+//        btn_farmland = (Button)findViewById(R.id.btn_farmland);
+//        btn_farmland.setOnClickListener(this);
+//        btn_shot = (Button)findViewById(R.id.btn_shot);
+//        btn_shot.setOnClickListener(this);
+//        btn_field = (Button)findViewById(R.id.btn_field);
+//        btn_field.setOnClickListener(this);
+
+        button = (Button)findViewById(R.id.button);
+        button.setOnClickListener(this);
 
 ///*       if (getSupportActionBar() != null) {
 //            getSupportActionBar().hide();
@@ -270,17 +275,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent_general = new Intent(MainActivity.this, GeneralClickActivity.class);
                 startActivity(intent_general);
                 break;
-            case R.id.btn_farmland:
-                Intent intent_farmland = new Intent(MainActivity.this, FarmlandClickActivity.class);
-                startActivity(intent_farmland);
-                break;
-            case R.id.btn_shot:
-                Intent intent_shot = new Intent(MainActivity.this, ShotClickActivity.class);
-                startActivity(intent_shot);
-                break;
-            case R.id.btn_field:
-                Intent intent_field = new Intent(MainActivity.this, FieldClickActivity.class);
-                startActivity(intent_field);
+//            case R.id.btn_farmland:
+//                Intent intent_farmland = new Intent(MainActivity.this, FarmlandClickActivity.class);
+//                startActivity(intent_farmland);
+//                break;
+//            case R.id.btn_shot:
+//                Intent intent_shot = new Intent(MainActivity.this, ShotClickActivity.class);
+//                startActivity(intent_shot);
+//                break;
+//            case R.id.btn_field:
+//                Intent intent_field = new Intent(MainActivity.this, FieldClickActivity.class);
+//                startActivity(intent_field);
+//                break;
+            case R.id.button:
+                Intent intent = new Intent(MainActivity.this, GeneralActivity.class);
+                startActivity(intent);
                 break;
 
 /*            case R.id.commit_data:
