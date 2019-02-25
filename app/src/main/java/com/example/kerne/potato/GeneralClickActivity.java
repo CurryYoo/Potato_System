@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.hb.dialog.myDialog.MyAlertInputDialog;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -93,30 +94,45 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
 
     private void initData() {
         //获取服务器中数据
-        new Thread(){
-            @Override
-            public void run(){
-                HttpRequest.HttpRequest_general(name, GeneralClickActivity.this, new HttpRequest.HttpCallback() {
-                    @Override
-                    public void onSuccess(JSONObject result) {
-                        try {
-                            JSONArray rows = new JSONArray();
-                            rows = result.getJSONArray("rows");
-                            int total = result.getInt("total");
-                            for(int i = 0; i < total; i++){
-                                JSONObject jsonObject0 = rows.getJSONObject(i);
-                                mList.add(jsonObject0);
-                            }
-                            Log.d("GeneralJsonList", mList.toString());
-                            initView();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            }
-        }.start();
+//        new Thread(){
+//            @Override
+//            public void run(){
+//                HttpRequest.HttpRequest_general(name, GeneralClickActivity.this, new HttpRequest.HttpCallback() {
+//                    @Override
+//                    public void onSuccess(JSONObject result) {
+//                        try {
+//                            JSONArray rows = new JSONArray();
+//                            rows = result.getJSONArray("rows");
+//                            int total = result.getInt("total");
+//                            for(int i = 0; i < total; i++){
+//                                JSONObject jsonObject0 = rows.getJSONObject(i);
+//                                mList.add(jsonObject0);
+//                            }
+//                            Log.d("GeneralJsonList", mList.toString());
+//                            initView();
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
+//            }
+//        }.start();
 
+        JSONObject jsonObject0 = new JSONObject();
+        JSONObject jsonObject1 = new JSONObject();
+        try {
+            jsonObject0.put("farmlandId", "1000");
+            jsonObject0.put("name", "大田1号");
+            jsonObject1.put("farmlandId", "2000");
+            jsonObject1.put("name", "大田2号");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mList.add(jsonObject0);
+        mList.add(jsonObject1);
+
+        //!!!
+        initView();
     }
 
     private void initView() {

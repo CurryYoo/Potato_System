@@ -62,9 +62,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        btn_field = (Button)findViewById(R.id.btn_field);
 //        btn_field.setOnClickListener(this);
 
-        button = (Button)findViewById(R.id.button);
-        button.setOnClickListener(this);
-
 ///*       if (getSupportActionBar() != null) {
 //            getSupportActionBar().hide();
 //        }*/
@@ -307,11 +304,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                Intent intent_field = new Intent(MainActivity.this, FieldClickActivity.class);
 //                startActivity(intent_field);
 //                break;
+<<<<<<< HEAD
             case R.id.button:
                 Intent intent = new Intent(MainActivity.this, GeneralActivity.class);
                 intent.putExtra("userRole", userRole);
                 startActivity(intent);
                 break;
+=======
+>>>>>>> master
 
 /*            case R.id.commit_data:
                 Intent intent = new Intent(MainActivity.this, SaveDataActivity.class);
