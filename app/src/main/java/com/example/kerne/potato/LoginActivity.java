@@ -56,7 +56,8 @@ public class LoginActivity extends AppCompatActivity {
                 String password_remote = "admin";
                 boolean isAuthorizedUser = account_input.equals(account_remote) && password_input.equals(password_remote);
                 String userRole = "farmer";
-                Log.d("LoginActivity", userRole);
+//                String userRole = "admin";
+//                String userRole = "experimenter";
                 Log.d("LoginActivity", String.valueOf(isAuthorizedUser));
                 //记住密码
                 if (isAuthorizedUser) {
@@ -69,12 +70,10 @@ public class LoginActivity extends AppCompatActivity {
                         editor.clear();
                     }
                     editor.apply();
-                    Log.d("LoginActivity", "before intent");
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.putExtra("userRole", userRole);
                     startActivity(intent);
 //                    finish();
-                    Log.d("LoginActivity", "after intent");
                 } else {
                     Toast.makeText(LoginActivity.this, "账号或密码无效",
                             Toast.LENGTH_SHORT).show();
