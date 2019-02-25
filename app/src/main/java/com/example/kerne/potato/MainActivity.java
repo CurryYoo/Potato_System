@@ -24,7 +24,7 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String URL = "http://10.0.2.2:9529";
-//    private static final String URL = "file:///android_asset/www/index.html";
+    //    private static final String URL = "file:///android_asset/www/index.html";
 //    private static final String URL = "file:///android_asset/vue/index.html";
     WebView webView = null;
     Button btn_general;
@@ -37,22 +37,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SpeciesDBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
 
+    //用户角色
+    String userRole = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("MainActivity", "hello main");
         super.onCreate(savedInstanceState);
 
+        userRole = getIntent().getStringExtra("userRole");
         Stetho.initializeWithDefaults(this);
 
 //        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
-        btn_general = (Button)findViewById(R.id.btn_general);
+        btn_general = (Button) findViewById(R.id.btn_general);
         btn_general.setOnClickListener(this);
-        btn_farmland = (Button)findViewById(R.id.btn_farmland);
+        btn_farmland = (Button) findViewById(R.id.btn_farmland);
         btn_farmland.setOnClickListener(this);
-        btn_shot = (Button)findViewById(R.id.btn_shot);
+        btn_shot = (Button) findViewById(R.id.btn_shot);
         btn_shot.setOnClickListener(this);
-        btn_field = (Button)findViewById(R.id.btn_field);
+        btn_field = (Button) findViewById(R.id.btn_field);
         btn_field.setOnClickListener(this);
 
 ///*       if (getSupportActionBar() != null) {
@@ -115,10 +119,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }*/
+
+    //获取用户角色
+//    Intent intentFromLoginActivity = getIntent();
+//    Log.d
+//    String userRole = intentFromLoginActivity.getStringExtra("userRole");
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d("MainActivity", userRole);
+        if (userRole.equals("farmer")) {
+            return super.onCreateOptionsMenu(menu);
+        } else {
+            getMenuInflater().inflate(R.menu.main, menu);
+            return true;
+        }
     }
 
     @Override
@@ -134,8 +154,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         "SpeciesTable.db", null, 1);
                 sqLiteDatabase = dbHelper.getWritableDatabase();
                 Cursor cursor = sqLiteDatabase.query("SpeciesTable", null, null, null, null, null, null);
-                if(cursor.moveToFirst()){
-                    do{
+                if (cursor.moveToFirst()) {
+                    do {
                         int id = cursor.getInt(cursor.getColumnIndex("id"));
                         String plotId = cursor.getString(cursor.getColumnIndex("plotId")); //++++++++++++++
                         String sowing_period = cursor.getString(cursor.getColumnIndex("sowing_period"));
@@ -198,10 +218,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             jsonObject.put("eye_depth", eye);
                             jsonObject.put("skin_colour", skin_color);
                             jsonObject.put("flesh_colour", flesh_color);
-                            if(whether_to_be_included.equals("yes")){
+                            if (whether_to_be_included.equals("yes")) {
                                 jsonObject.put("is_choozen", 1);
-                            }
-                            else{
+                            } else {
                                 jsonObject.put("is_choozen", 0);
                             }
                             jsonObject.put("remark", remark);
@@ -228,9 +247,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             e.printStackTrace();
                         }
 
-                        new Thread(){
+                        new Thread() {
                             @Override
-                            public void run(){
+                            public void run() {
                                 HttpRequest.HttpRequest_PlotData(jsonObject0, MainActivity.this, new HttpRequest.HttpCallback() {
                                     @Override
                                     public void onSuccess(JSONObject result) {
@@ -245,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                                });
                             }
                         }.start();
-                    }while (cursor.moveToNext());
+                    } while (cursor.moveToNext());
                 }
                 cursor.close();
                 break;

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -27,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("LoginActivity", "hello");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -46,22 +48,33 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String account = accountEdit.getText().toString();
-                String password = passwordEdit.getText().toString();
-                // 如果账号是admin且密码是123456，就认为登录成功
-                if (account.equals("admin") && password.equals("admin")) {
+                //获取输入的账号密码
+                String account_input = accountEdit.getText().toString().trim();
+                String password_input = passwordEdit.getText().toString().trim();
+                //登录到后台进行验证，若验证通过则获取用户角色
+                String account_remote = "admin";
+                String password_remote = "admin";
+                boolean isAuthorizedUser = account_input.equals(account_remote) && password_input.equals(password_remote);
+                String userRole = "farmer";
+                Log.d("LoginActivity", userRole);
+                Log.d("LoginActivity", String.valueOf(isAuthorizedUser));
+                //记住密码
+                if (isAuthorizedUser) {
                     editor = pref.edit();
                     if (rememberPass.isChecked()) { // 检查复选框是否被选中
                         editor.putBoolean("remember_password", true);
-                        editor.putString("account", account);
-                        editor.putString("password", password);
+                        editor.putString("account_input", account_input);
+                        editor.putString("password_input", password_input);
                     } else {
                         editor.clear();
                     }
                     editor.apply();
+                    Log.d("LoginActivity", "before intent");
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.putExtra("userRole", userRole);
                     startActivity(intent);
-                    finish();
+//                    finish();
+                    Log.d("LoginActivity", "after intent");
                 } else {
                     Toast.makeText(LoginActivity.this, "账号或密码无效",
                             Toast.LENGTH_SHORT).show();
