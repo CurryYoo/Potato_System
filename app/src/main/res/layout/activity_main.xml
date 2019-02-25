@@ -21,11 +21,6 @@
         android:id="@+id/btn_general"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="总揽" />
+        android:text="实验田列表" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="查看种植图" />
 </LinearLayout>

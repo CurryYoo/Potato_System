@@ -66,8 +66,8 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
         try {
             farmlandId = jsonObject.getString("farmlandId");
             name = jsonObject.getString("name");
-            holder.tvNum.setText("大田序号：" + farmlandId);
-            holder.tvName.setText("大田名称：" + name);
+            holder.tvNum.setText("实验田序号：" + farmlandId);
+            holder.tvName.setText("实验田名称：" + name);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -91,7 +91,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(which == 0){ //点击"进入"操作时
-                            Intent intent = new Intent(mContext, FarmlandClickActivity.class);
+                            Intent intent = new Intent(mContext, GeneralActivity.class);
                             intent.putExtra("farmlandId", farmlandId);
                             mContext.startActivity(intent);
                         }
