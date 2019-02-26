@@ -112,6 +112,7 @@ public class GeneralActivity extends AppCompatActivity {
                         Toast.makeText(GeneralActivity.this, "点击了第二个模块", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(GeneralActivity.this, SpeciesClickActivity.class);
                         intent.putExtra("fieldId", "2222");
+                        intent.putExtra("userRole", userRole);
                         startActivity(intent);
                     }
 

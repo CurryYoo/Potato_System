@@ -55,9 +55,9 @@ public class LoginActivity extends AppCompatActivity {
                 String account_remote = "admin";
                 String password_remote = "admin";
                 boolean isAuthorizedUser = account_input.equals(account_remote) && password_input.equals(password_remote);
-                String userRole = "farmer";
+//                String userRole = "farmer";
 //                String userRole = "admin";
-//                String userRole = "experimenter";
+                String userRole = "experimenter";
                 Log.d("LoginActivity", String.valueOf(isAuthorizedUser));
                 //记住密码
                 if (isAuthorizedUser) {

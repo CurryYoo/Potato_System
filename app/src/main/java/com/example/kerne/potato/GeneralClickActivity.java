@@ -38,11 +38,14 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
     private List<JSONObject> mList = new ArrayList<>();
 
     private String name = null;
+    private String userRole = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.general_click_activity);
+
+        userRole = getIntent().getStringExtra("userRole");
 
         initData();
 
@@ -123,8 +126,10 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
         try {
             jsonObject0.put("farmlandId", "1000");
             jsonObject0.put("name", "大田1号");
+            jsonObject0.put("userRole", userRole);
             jsonObject1.put("farmlandId", "2000");
             jsonObject1.put("name", "大田2号");
+            jsonObject1.put("userRole", userRole);
         } catch (JSONException e) {
             e.printStackTrace();
         }

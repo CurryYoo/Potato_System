@@ -38,6 +38,8 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
     private String farmlandId;
     private String name;
 
+    private String userRole;
+
     public GeneralClickAdapter(Context context, OnItemClickListener listener) {
         mContext = context;
 
@@ -66,6 +68,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
         try {
             farmlandId = jsonObject.getString("farmlandId");
             name = jsonObject.getString("name");
+            userRole = jsonObject.getString("userRole");
             holder.tvNum.setText("实验田序号：" + farmlandId);
             holder.tvName.setText("实验田名称：" + name);
         } catch (JSONException e) {
@@ -93,6 +96,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                         if(which == 0){ //点击"进入"操作时
                             Intent intent = new Intent(mContext, GeneralActivity.class);
                             intent.putExtra("farmlandId", farmlandId);
+                            intent.putExtra("userRole", userRole);
                             mContext.startActivity(intent);
                         }
                         else{ //点击"删除"操作时

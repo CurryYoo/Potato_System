@@ -304,14 +304,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                Intent intent_field = new Intent(MainActivity.this, FieldClickActivity.class);
 //                startActivity(intent_field);
 //                break;
-<<<<<<< HEAD
-            case R.id.button:
-                Intent intent = new Intent(MainActivity.this, GeneralActivity.class);
-                intent.putExtra("userRole", userRole);
-                startActivity(intent);
-                break;
-=======
->>>>>>> master
 
 /*            case R.id.commit_data:
                 Intent intent = new Intent(MainActivity.this, SaveDataActivity.class);
@@ -319,7 +311,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;*/
 
             default:
-                break;
+                 break;
         }
     }
 }
