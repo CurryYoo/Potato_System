@@ -27,10 +27,10 @@ import java.util.Map;
  */
 
 public class HttpRequest {
-    private static String url = "http://10.103.241.48:9527/";
+        private static String url = "http://10.103.241.48:9527/";
     private static RequestQueue requestQueue;
 
-    public static void HttpRequest_general(final String name, Context context, final HttpCallback callback){
+    public static void HttpRequest_general(final String name, Context context, final HttpCallback callback) {
         requestQueue = Volley.newRequestQueue(context);
         JSONObject jsonObject = new JSONObject();
         try {
@@ -69,13 +69,13 @@ public class HttpRequest {
             public void onErrorResponse(VolleyError error) {
                 Log.e("general_error", error.getMessage(), error);
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 // 请求参数
                 Map<String, String> map = new HashMap<String, String>();
                 //new 一个Map  参数放到Map中
-                if(name != null){
+                if (name != null) {
                     map.put("name", name);
                 }
                 return map;
@@ -87,7 +87,7 @@ public class HttpRequest {
 
     }
 
-    public static void HttpRequest_farmland(final String farmlandId, Context context, final HttpCallback callback){
+    public static void HttpRequest_farmland(final String farmlandId, Context context, final HttpCallback callback) {
         requestQueue = Volley.newRequestQueue(context);
         JSONObject jsonObject = new JSONObject();
         try {
@@ -127,7 +127,7 @@ public class HttpRequest {
             public void onErrorResponse(VolleyError error) {
                 Log.e("farmland_error", error.getMessage(), error);
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 // 请求参数
@@ -142,7 +142,7 @@ public class HttpRequest {
         requestQueue.add(stringRequest);
     }
 
-    public static void HttpRequest_shot(final String shotId, Context context, final HttpCallback callback){
+    public static void HttpRequest_shot(final String shotId, Context context, final HttpCallback callback) {
         requestQueue = Volley.newRequestQueue(context);
         JSONObject jsonObject = new JSONObject();
         try {
@@ -183,7 +183,7 @@ public class HttpRequest {
             public void onErrorResponse(VolleyError error) {
                 Log.e("shot_error", error.getMessage(), error);
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 // 请求参数
@@ -198,7 +198,7 @@ public class HttpRequest {
         requestQueue.add(stringRequest);
     }
 
-    public static void HttpRequest_field(final String fieldId, Context context, final HttpCallback callback){
+    public static void HttpRequest_field(final String fieldId, Context context, final HttpCallback callback) {
         requestQueue = Volley.newRequestQueue(context);
         JSONObject jsonObject = new JSONObject();
 
@@ -242,7 +242,7 @@ public class HttpRequest {
             public void onErrorResponse(VolleyError error) {
                 Log.e("farmland_error", error.getMessage(), error);
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 // 请求参数
@@ -257,7 +257,7 @@ public class HttpRequest {
         requestQueue.add(stringRequest);
     }
 
-    public static void HttpRequest_PlotData(final JSONObject jsonObject, Context context, final HttpCallback callback){
+    public static void HttpRequest_PlotData(final JSONObject jsonObject, Context context, final HttpCallback callback) {
         requestQueue = Volley.newRequestQueue(context);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "updatePlotData", jsonObject, new Response.Listener<JSONObject>() {
@@ -271,9 +271,9 @@ public class HttpRequest {
             public void onErrorResponse(VolleyError error) {
                 Log.e("TAG_error", error.getMessage(), error);
             }
-        }){
+        }) {
             @Override
-            public Map<String, String> getHeaders(){
+            public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Accept", "application/json");
                 headers.put("Content-Type", "application/json; charset=UTF-8");
@@ -297,7 +297,7 @@ public class HttpRequest {
             public void onErrorResponse(VolleyError error) {
                 Log.e("farmland_error", error.getMessage(), error);
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 // 请求参数
@@ -316,21 +316,21 @@ public class HttpRequest {
         //requestQueue.add(stringRequest);
     }
 
-    public static void doUploadTest(String picPath, Context context, final HttpCallback_Str callback){
+    public static void doUploadTest(String picPath, Context context, final HttpCallback_Str callback) {
         requestQueue = Volley.newRequestQueue(context);
 
         String path = picPath;
-        Log.e("zb","picPath="+picPath);
+        Log.e("zb", "picPath=" + picPath);
         //String url = "http://app.sod90.com/xxx/upload/app_upload"; //换成自己的测试url地址
         Map<String, String> params = new HashMap<String, String>();
         params.put("speciesId", "1110");
-        Log.e("zb","params="+params);
+        Log.e("zb", "params=" + params);
         File f1 = new File(path);
-        Log.e("zb","f1="+f1.toString());
+        Log.e("zb", "f1=" + f1.toString());
 //    File f2 = new File(path);
 //    Log.e("zb","f2="+f2.toString());
 
-        if(!f1.exists()){
+        if (!f1.exists()) {
             //Toast.makeText(getApplicationContext(), "图片不存在，测试无效", Toast.LENGTH_SHORT).show();
             return;
         }

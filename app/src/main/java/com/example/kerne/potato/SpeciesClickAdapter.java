@@ -83,7 +83,8 @@ public class SpeciesClickAdapter extends RecyclerView.Adapter<SpeciesClickAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (userRole.equals("experimenter") || userRole.equals("admin")) {
+//                if (userRole.equals("experimenter") || userRole.equals("admin")) {
+                if (!userRole.equals("farmer")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     //builder.setIcon(R.drawable.ic_launcher_background);
                     builder.setTitle("选择一个操作");
