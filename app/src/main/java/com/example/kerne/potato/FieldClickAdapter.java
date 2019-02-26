@@ -40,6 +40,7 @@ public class FieldClickAdapter extends RecyclerView.Adapter<FieldClickAdapter.Rc
     private String plotId;
     private String speciesId;
     private String fieldId;
+    private String userRole;
 
     public FieldClickAdapter(Context context, OnItemClickListener listener) {
         mContext = context;
@@ -70,6 +71,7 @@ public class FieldClickAdapter extends RecyclerView.Adapter<FieldClickAdapter.Rc
             plotId = jsonObject.getString("plotId");
             speciesId = jsonObject.getString("speciesId");
             fieldId = jsonObject.getString("fieldId");
+            userRole = jsonObject.getString("userRole");
             holder.tvPlotId.setText("plot编号：" + plotId);
             holder.tvSpeciesId.setText("品种：" + speciesId);
             holder.tvFieldId.setText("所属试验田：" + fieldId);
@@ -81,33 +83,38 @@ public class FieldClickAdapter extends RecyclerView.Adapter<FieldClickAdapter.Rc
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                //builder.setIcon(R.drawable.ic_launcher_background);
-                builder.setTitle("选择一个操作");
-                //    指定下拉列表的显示数据
-                final String[] options = {"编辑", "进入", "删除"};
-                //    设置一个下拉的列表选择项
-                builder.setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(which == 0){
+                if (!userRole.equals("farmer")) {
 
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    //builder.setIcon(R.drawable.ic_launcher_background);
+                    builder.setTitle("选择一个操作");
+                    //    指定下拉列表的显示数据
+                    final String[] options = {"编辑", "进入", "删除"};
+                    //    设置一个下拉的列表选择项
+
+                    builder.setItems(options, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (which == 0) {
+
+                            } else if (which == 1) {
+                                Intent intent = new Intent(mContext, SaveDataActivity.class);
+                                intent.putExtra("plotId", plotId);
+//                                intent.putExtra("userRole", userRole);
+                                mContext.startActivity(intent);
+                            } else {
+                                mList.remove(position);
+                                notifyItemRemoved(position);
+                                Toast.makeText(mContext, "删除plotId " + plotId, Toast.LENGTH_SHORT).show();
+                            }
+                            //Toast.makeText(GeneralClickActivity.this, "选择的城市为：" + options[which], Toast.LENGTH_SHORT).show();
                         }
-                        else if(which == 1){
-                            Intent intent = new Intent(mContext, SaveDataActivity.class);
-                            intent.putExtra("plotId", plotId);
-                            mContext.startActivity(intent);
-                        }
-                        else{
-                            mList.remove(position);
-                            notifyItemRemoved(position);
-                            Toast.makeText(mContext, "删除plotId " + plotId, Toast.LENGTH_SHORT).show();
-                        }
-                        //Toast.makeText(GeneralClickActivity.this, "选择的城市为：" + options[which], Toast.LENGTH_SHORT).show();
-                    }
-                });
-                builder.show();
-                Toast.makeText(mContext, "你点击的plotId是：" + plotId, Toast.LENGTH_SHORT).show();
+                    });
+                    builder.show();
+                    Toast.makeText(mContext, "你点击的plotId是：" + plotId, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(mContext, "您没有该权限", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
