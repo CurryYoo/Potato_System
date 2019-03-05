@@ -134,8 +134,8 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     private SpeciesDBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
 
-    //小区id
-    private String plotId;
+    //品种id
+    private String speciesId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -379,12 +379,12 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
                 //从上一层获取小区id
                 Intent intent_plotId = getIntent();
-                plotId = intent_plotId.getStringExtra("plotId");
+                speciesId = intent_plotId.getStringExtra("speciesId");
 
                 ContentValues contentValues = new ContentValues();
                 //开始组装数据
-                //小区id
-                contentValues.put("plotId", plotId);
+                //品种id
+                contentValues.put("speciesId", speciesId);
                 //播种期
                 contentValues.put("sowing_period", edtSowingPeriodInput.getText().toString());
                 //出苗期

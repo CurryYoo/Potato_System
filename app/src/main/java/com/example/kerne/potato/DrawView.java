@@ -5,13 +5,22 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DrawView extends View {
     public static final int left = 10; //边框左上角横坐标
@@ -19,23 +28,50 @@ public class DrawView extends View {
     public static final int right = 1450; //边框右下角横坐标
     public static final int bottom = 1500; //边框右下角纵坐标
 
-    public DrawView(Context context) {
+    private int width;
+    private int height;
+
+    private static final int mapWidth = 2099; //原种植图的宽度
+    private static final int mapHeight = 2414; //原种植图的高度
+    private static final float multiple_X = 0.005f; //边框适应屏幕的左上角坐标需要乘以的倍数
+    private static final float multiple_X1 = 0.95f; //边框适应屏幕的右上角坐标需要乘以的倍数
+    private static final float multiple_Y = 0.004f; //边框适应屏幕的右上角坐标需要乘以的倍数
+    private static final float multiple_Y1 = 0.86f; //边框适应屏幕的右上角坐标需要乘以的倍数
+
+    public static float coord[][] = new float[1000][4];  //种植块的坐标集
+
+
+    private List<JSONObject> mList = new ArrayList<>();
+
+    public DrawView(Context context, List<JSONObject> mList) {
         super(context);
+        this.mList = mList;
+
+        WindowManager wm = (WindowManager) getContext()
+                .getSystemService(Context.WINDOW_SERVICE);
+        width = wm.getDefaultDisplay().getWidth();
+        height = wm.getDefaultDisplay().getHeight();
+        Log.d("window_width", width + "");
+        Log.d("window_height", height + "");
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        int Rleft, Rtop, Rright, Rbottom;
-        Rleft = Rtop = 0;
-        Rright = Rbottom = 200;
-        Rect rect1 = new Rect(left + Rleft, top + Rtop, left + Rright, top + Rbottom);
-        Rect rect2 = new Rect(left + 1000, top + 0, left + 1440, top + 500);
+        float frameX = width * multiple_X;
+        float frameX1 = width * multiple_X1;
+        float frameY = height * multiple_Y;
+        float frameY1 = height * multiple_Y1;
+        float frameWidth = frameX1 - frameX;
+        float frameHeight = frameY1 - frameY;
+        float adaptRateWidth = frameWidth / mapWidth;
+        float adaptRateHeight = frameHeight / mapHeight;
+
 
         /*
          * 方法 说明 drawRect 绘制矩形 drawCircle 绘制圆形 drawOval 绘制椭圆 drawPath 绘制任意多边形
-         * drawLine 绘制直线 drawPoin 绘制点
+         * drawLine 绘制直线 drawPoint 绘制点
          */
         // 创建画笔
         Paint p = new Paint();
@@ -45,17 +81,31 @@ public class DrawView extends View {
 
         p.setColor(Color.BLACK);// 设置黑色边框
         p.setStyle(Paint.Style.STROKE);
-        canvas.drawRect(left, top, right, bottom, p);
+        //canvas.drawRect(left, top, right, bottom, p);
+        Log.d("----width", width + "");
+        canvas.drawRect(frameX, frameY, frameX1, frameY1, p);
 
         //画种植图
-        p.setColor(Color.RED);
-        p.setStyle(Paint.Style.FILL);
-        canvas.drawRect(rect1, p);
-        canvas.drawText("类型1", rect1.left, rect1.top + 50, pText);
+        try {
+            for(int i = 0; i < mList.size(); i++){
+                p.setColor(Color.parseColor(mList.get(i).getString("color")));
+                p.setStyle(Paint.Style.FILL);
+                coord[i][0] = mList.get(i).getInt("moveX") * adaptRateWidth + frameX;  //种植块的左上角X坐标
+                coord[i][1] = mList.get(i).getInt("moveY") * adaptRateHeight + frameY;  //种植块的左上角Y坐标
+                coord[i][2] = mList.get(i).getInt("moveX1") * adaptRateWidth + frameX;  //种植块的右下角X1坐标
+                coord[i][3] = mList.get(i).getInt("moveY1") * adaptRateHeight + frameY;  //种植块的右下角Y1坐标
 
-        p.setColor(Color.GREEN);
-        canvas.drawRect(rect2, p);
-        canvas.drawText("类型2", rect2.left, rect2.top + 50, pText);
+                canvas.drawRect(coord[i][0], coord[i][1], coord[i][2], coord[i][3], p);
+
+            }
+
+//            p.setColor(Color.BLACK);
+//            p.setStyle(Paint.Style.FILL);
+//            canvas.drawRect(400, 400, 600, 600, p);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 //        canvas.drawText("画圆：", 10, 20, p);// 画文本
 //        canvas.drawCircle(60, 20, 10, p);// 小圆
@@ -150,5 +200,28 @@ public class DrawView extends View {
 //        //画图片，就是贴图
 ////        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background);
 ////        canvas.drawBitmap(bitmap, 250,360, p);
+    }
+
+    protected void Draw(Canvas canvas, List<JSONObject> mList){
+        Paint p = new Paint();
+        Paint pText = new Paint();
+//        try {
+//            Log.d("color-----", mList.get(0).getString("color"));
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+        try {
+//            p.setColor(Color.parseColor(mList.get(0).getString("color")));
+//            p.setStyle(Paint.Style.FILL);
+//            canvas.drawRect(mList.get(0).getInt("moveX") - 900, mList.get(0).getInt("moveY") + 100, mList.get(0).getInt("moveX1") - 900, mList.get(0).getInt("moveY1") + 100, p);
+
+//            p.setColor(Color.BLACK);
+//            p.setStyle(Paint.Style.FILL);
+//            canvas.drawRect(400, 400, 600, 600, p);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

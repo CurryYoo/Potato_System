@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Item 点击对应的 Activity
  *
- * Created by Tnno Wu on 2018/03/05.
+ * Created by Xie.
  */
 
 public class GeneralClickActivity extends AppCompatActivity implements GeneralClickAdapter.OnItemClickListener {
@@ -97,47 +97,32 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
 
     private void initData() {
         //获取服务器中数据
-//        new Thread(){
-//            @Override
-//            public void run(){
-//                HttpRequest.HttpRequest_general(name, GeneralClickActivity.this, new HttpRequest.HttpCallback() {
-//                    @Override
-//                    public void onSuccess(JSONObject result) {
-//                        try {
-//                            JSONArray rows = new JSONArray();
-//                            rows = result.getJSONArray("rows");
-//                            int total = result.getInt("total");
-//                            for(int i = 0; i < total; i++){
-//                                JSONObject jsonObject0 = rows.getJSONObject(i);
-//                                mList.add(jsonObject0);
-//                            }
-//                            Log.d("GeneralJsonList", mList.toString());
-//                            initView();
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                });
-//            }
-//        }.start();
+        new Thread(){
+            @Override
+            public void run(){
+                HttpRequest.HttpRequest_general(name, GeneralClickActivity.this, new HttpRequest.HttpCallback() {
+                    @Override
+                    public void onSuccess(JSONObject result) {
+                        try {
+                            JSONArray rows = new JSONArray();
+                            rows = result.getJSONArray("rows");
+                            int total = result.getInt("total");
+                            for(int i = 0; i < total; i++){
+                                JSONObject jsonObject0 = rows.getJSONObject(i);
+                                jsonObject0.put("userRole", userRole);
+                                mList.add(jsonObject0);
+                            }
+                            Log.d("GeneralJsonList", mList.toString());
 
-        JSONObject jsonObject0 = new JSONObject();
-        JSONObject jsonObject1 = new JSONObject();
-        try {
-            jsonObject0.put("farmlandId", "1000");
-            jsonObject0.put("name", "大田1号");
-            jsonObject0.put("userRole", userRole);
-            jsonObject1.put("farmlandId", "2000");
-            jsonObject1.put("name", "大田2号");
-            jsonObject1.put("userRole", userRole);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        mList.add(jsonObject0);
-        mList.add(jsonObject1);
+                            initView();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }.start();
 
-        //!!!
-        initView();
     }
 
     private void initView() {

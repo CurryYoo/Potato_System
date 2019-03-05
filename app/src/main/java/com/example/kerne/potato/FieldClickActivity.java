@@ -46,24 +46,24 @@ public class FieldClickActivity extends AppCompatActivity implements FieldClickA
         new Thread(){
             @Override
             public void run(){
-                HttpRequest.HttpRequest_field(fieldId, FieldClickActivity.this, new HttpRequest.HttpCallback() {
-                    @Override
-                    public void onSuccess(JSONObject result) {
-                        try {
-                            JSONArray rows = new JSONArray();
-                            rows = result.getJSONArray("rows");
-                            int total = result.getInt("total");
-                            for(int i = 0; i < total; i++){
-                                JSONObject jsonObject0 = rows.getJSONObject(i);
-                                mList.add(jsonObject0);
-                            }
-                            Log.d("ShotJsonList", mList.toString());
-                            initView();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+//                HttpRequest.HttpRequest_field(fieldId, FieldClickActivity.this, new HttpRequest.HttpCallback() {
+//                    @Override
+//                    public void onSuccess(JSONObject result) {
+//                        try {
+//                            JSONArray rows = new JSONArray();
+//                            rows = result.getJSONArray("rows");
+//                            int total = result.getInt("total");
+//                            for(int i = 0; i < total; i++){
+//                                JSONObject jsonObject0 = rows.getJSONObject(i);
+//                                mList.add(jsonObject0);
+//                            }
+//                            Log.d("ShotJsonList", mList.toString());
+//                            initView();
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
             }
         }.start();
     }

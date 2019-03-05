@@ -47,51 +47,54 @@ public class SpeciesClickActivity extends AppCompatActivity implements SpeciesCl
     }
 
     private void initData() {
-//        new Thread(){
-//            @Override
-//            public void run(){
-//                HttpRequest.HttpRequest_field(fieldId, SpeciesClickActivity.this, new HttpRequest.HttpCallback() {
-//                    @Override
-//                    public void onSuccess(JSONObject result) {
-//                        try {
-//                            JSONArray rows = new JSONArray();
-//                            rows = result.getJSONArray("rows");
-//                            int total = result.getInt("total");
-//                            for(int i = 0; i < total; i++){
-//                                JSONObject jsonObject0 = rows.getJSONObject(i);
-//                                mList.add(jsonObject0);
-//                            }
-//                            Log.d("ShotJsonList", mList.toString());
+        new Thread(){
+            @Override
+            public void run(){
+                HttpRequest.HttpRequest_species(fieldId, SpeciesClickActivity.this, new HttpRequest.HttpCallback() {
+                    @Override
+                    public void onSuccess(JSONObject result) {
+                        try {
+                            JSONObject data = new JSONObject();
+                            data = result.getJSONObject("data");
+                            int num = Integer.parseInt(data.getString("num"));
+                            for(int i = 0; i < num; i++){
+                                JSONArray jsonArray0 = data.getJSONArray("speciesId");
+                                JSONObject jsonObject = new JSONObject();
+                                jsonObject.put("speciesId", jsonArray0.getString(i));
+                                jsonObject.put("userRole", userRole);
+                                mList.add(jsonObject);
+                            }
+                            Log.d("ShotJsonList", mList.toString());
 
-//                            initView(); //!!!
+                            initView(); //!!!
 
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                });
-//            }
-//        }.start();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }.start();
 
-        JSONObject jsonObject0 = new JSONObject();
-        JSONObject jsonObject1 = new JSONObject();
-        try {
-            jsonObject0.put("plotId", "AA");
-            jsonObject0.put("speciesId", "品种1号");
-            jsonObject0.put("fieldId", fieldId);
-            jsonObject0.put("userRole", userRole);
-            jsonObject1.put("plotId", "BB");
-            jsonObject1.put("speciesId", "品种2号");
-            jsonObject1.put("fieldId", fieldId);
-            jsonObject1.put("userRole", userRole);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        mList.add(jsonObject0);
-        mList.add(jsonObject1);
-
-        //!!!
-        initView();
+//        JSONObject jsonObject0 = new JSONObject();
+//        JSONObject jsonObject1 = new JSONObject();
+//        try {
+//            jsonObject0.put("plotId", "AA");
+//            jsonObject0.put("speciesId", "品种1号");
+//            jsonObject0.put("fieldId", fieldId);
+//            jsonObject0.put("userRole", userRole);
+//            jsonObject1.put("plotId", "BB");
+//            jsonObject1.put("speciesId", "品种2号");
+//            jsonObject1.put("fieldId", fieldId);
+//            jsonObject1.put("userRole", userRole);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        mList.add(jsonObject0);
+//        mList.add(jsonObject1);
+//
+//        //!!!
+//        initView();
     }
 
     private void initView() {

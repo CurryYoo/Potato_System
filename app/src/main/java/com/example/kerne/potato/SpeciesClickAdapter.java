@@ -68,13 +68,12 @@ public class SpeciesClickAdapter extends RecyclerView.Adapter<SpeciesClickAdapte
         final JSONObject jsonObject = mList.get(position);
 
         try {
-            plotId = jsonObject.getString("plotId");
             speciesId = jsonObject.getString("speciesId");
-            fieldId = jsonObject.getString("fieldId");
+            //fieldId = jsonObject.getString("fieldId");
             userRole = jsonObject.getString("userRole");
-            holder.tvPlotId.setText("plot编号：" + plotId);
-            holder.tvSpeciesId.setText("品种：" + speciesId);
-            holder.tvFieldId.setText("所属试验田：" + fieldId);
+            //holder.tvPlotId.setText("plot编号：" + plotId);
+            holder.tvSpeciesId.setText("品种编号：" + speciesId);
+            //holder.tvFieldId.setText("所属试验田：" + fieldId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -100,18 +99,18 @@ public class SpeciesClickAdapter extends RecyclerView.Adapter<SpeciesClickAdapte
                             } else if (which == 1) {
                                 Intent intent = new Intent(mContext, SaveDataActivity.class);
                                 intent.putExtra("userRole", userRole);
-                                intent.putExtra("plotId", plotId);
+                                intent.putExtra("speciesId", speciesId);
                                 mContext.startActivity(intent);
                             } else {
                                 mList.remove(position);
                                 notifyItemRemoved(position);
-                                Toast.makeText(mContext, "删除plotId " + plotId, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mContext, "删除speciesId " + speciesId, Toast.LENGTH_SHORT).show();
                             }
                             //Toast.makeText(GeneralClickActivity.this, "选择的城市为：" + options[which], Toast.LENGTH_SHORT).show();
                         }
                     });
                     builder.show();
-                    Toast.makeText(mContext, "你点击的plotId是：" + plotId, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "你点击的speciesId是：" + speciesId, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(mContext, "对不起，您没有该权限！", Toast.LENGTH_SHORT).show();
 

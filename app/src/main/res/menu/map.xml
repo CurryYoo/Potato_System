@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/map_color"
+        android:title="颜色对应" />
+
+    <!--<item-->
+        <!--android:id="@+id/commit"-->
+        <!--android:title="提交"/>-->
+</menu>
