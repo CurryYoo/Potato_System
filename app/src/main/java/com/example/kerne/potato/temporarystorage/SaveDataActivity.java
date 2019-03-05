@@ -386,102 +386,105 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 //品种id
                 contentValues.put("speciesId", speciesId);
                 //播种期
-                contentValues.put("sowing_period", edtSowingPeriodInput.getText().toString());
+                contentValues.put("plantingDate", edtSowingPeriodInput.getText().toString());
                 //出苗期
-                contentValues.put("emergence_period", edtEmergencePeriod.getText().toString());
+                contentValues.put("emergenceDate", edtEmergencePeriod.getText().toString());
                 //出苗率
                 String edtRateOfEmergenceContent = edtRateOfEmergence.getText().toString();
-                contentValues.put("rate_of_emergence", Integer.parseInt(edtRateOfEmergenceContent.isEmpty() ? "0" : edtRateOfEmergenceContent));
+                contentValues.put("sproutRate", Integer.parseInt(edtRateOfEmergenceContent.isEmpty() ? "0" : edtRateOfEmergenceContent));
                 //现蕾期
-                contentValues.put("squaring_period", edtSquaringPeriod.getText().toString());
+                contentValues.put("squaringStage", edtSquaringPeriod.getText().toString());
                 //开花期
-                contentValues.put("flowering_period", edtFloweringPeriod.getText().toString());
+                contentValues.put("blooming", edtFloweringPeriod.getText().toString());
                 //叶颜色
-                contentValues.put("leaf_color", spnLeafColor.getSelectedItem().toString());
+                contentValues.put("leafColour", spnLeafColor.getSelectedItem().toString());
                 //花冠色
-                contentValues.put("corolla_colors", spnCorollaColors.getSelectedItem().toString());
+                contentValues.put("corollaColour", spnCorollaColors.getSelectedItem().toString());
                 //花繁茂性
-                contentValues.put("plant_flourish", spnPlantFlourish.getSelectedItem().toString());
+                contentValues.put("flowering", spnPlantFlourish.getSelectedItem().toString());
                 //茎色
-                contentValues.put("stem_color", spnStemColor.getSelectedItem().toString());
+                contentValues.put("stemColour", spnStemColor.getSelectedItem().toString());
                 //天然结实性
-                contentValues.put("natural_fecundity", spnNaturalFecundity.getSelectedItem().toString());
+                contentValues.put("openpollinated", spnNaturalFecundity.getSelectedItem().toString());
                 //成熟期
-                contentValues.put("mature_period", edtMaturePeriod.getText().toString());
+                contentValues.put("maturingStage", edtMaturePeriod.getText().toString());
                 //生育日数
                 String edtGrowingDaysContent = edtGrowingDays.getText().toString();
-                contentValues.put("growing_days", Integer.parseInt(edtGrowingDaysContent.isEmpty() ? "0" : edtGrowingDaysContent));
+                contentValues.put("growingPeriod", Integer.parseInt(edtGrowingDaysContent.isEmpty() ? "0" : edtGrowingDaysContent));
                 //块茎整齐度
-                contentValues.put("tuber_uniformity", spnTuberUniformity.getSelectedItem().toString());
+                contentValues.put("uniformityOfTuberSize", spnTuberUniformity.getSelectedItem().toString());
                 //薯型
-                contentValues.put("tuber_shape", spnTuberShape.getSelectedItem().toString());
+                contentValues.put("tuberShape", spnTuberShape.getSelectedItem().toString());
                 //薯皮光滑度
-                contentValues.put("potato_skin_smoothness", spnPotatoSkinSmoothness.getSelectedItem().toString());
+                contentValues.put("skinSmoothness", spnPotatoSkinSmoothness.getSelectedItem().toString());
                 //芽眼深浅
-                contentValues.put("eye", spnEye.getSelectedItem().toString());
+                contentValues.put("eyeDepth", spnEye.getSelectedItem().toString());
                 //皮色
-                contentValues.put("skin_color", spnSkinColor.getSelectedItem().toString());
+                contentValues.put("skinColour", spnSkinColor.getSelectedItem().toString());
                 //肉色
-                contentValues.put("flesh_color", spnFleshColor.getSelectedItem().toString());
-                //是否入选
+                contentValues.put("fleshColour", spnFleshColor.getSelectedItem().toString());
+                //是否入选 对应deleted字段
                 int checkedRadioButtonId = rgWhetherToBeIncluded.getCheckedRadioButtonId();
-                String checkedRadioButtonContent = null;
+                Boolean checkedRadioButtonContent;
                 switch (checkedRadioButtonId) {
                     case R.id.no:
-                        checkedRadioButtonContent = "no";
+                        checkedRadioButtonContent = false;
                         break;
                     case R.id.yes:
                     default:
-                        checkedRadioButtonContent = "yes";
+                        checkedRadioButtonContent = true;
                 }
-                contentValues.put("whether_to_be_included", checkedRadioButtonContent);
+                contentValues.put("isChoozen",  checkedRadioButtonContent);
                 //备注
                 contentValues.put("remark", edtRemark.getText().toString());
                 //收获株数
                 String edtNumOfHarvestedPlantsContent = edtNumOfHarvestedPlants.getText().toString();
-                contentValues.put("num_of_harvested_plants", Integer.parseInt(edtNumOfHarvestedPlantsContent.isEmpty() ? "0" : edtNumOfHarvestedPlantsContent));
+                contentValues.put("harvestNum", Integer.parseInt(edtNumOfHarvestedPlantsContent.isEmpty() ? "0" : edtNumOfHarvestedPlantsContent));
                 //大中薯数
                 String edtNumOfLargeAndMediumPotatoesContent = edtNumOfLargeAndMediumPotatoes.getText().toString();
-                contentValues.put("num_of_large_and_medium_potatoes", Integer.parseInt(edtNumOfLargeAndMediumPotatoesContent.isEmpty() ? "0" : edtNumOfLargeAndMediumPotatoesContent));
+                contentValues.put("lmNum", Integer.parseInt(edtNumOfLargeAndMediumPotatoesContent.isEmpty() ? "0" : edtNumOfLargeAndMediumPotatoesContent));
                 //大中薯重
                 String edtWeightOfLargeAndMediumPotatoesContent = edtWeightOfLargeAndMediumPotatoes.getText().toString();
-                contentValues.put("weight_of_large_and_medium_potatoes", Integer.parseInt(edtWeightOfLargeAndMediumPotatoesContent.isEmpty() ? "0" : edtWeightOfLargeAndMediumPotatoesContent));
+                contentValues.put("lmWeight", Integer.parseInt(edtWeightOfLargeAndMediumPotatoesContent.isEmpty() ? "0" : edtWeightOfLargeAndMediumPotatoesContent));
                 //小薯数
                 String edtNumOfSmallPotatoesContent = edtNumOfSmallPotatoes.getText().toString();
-                contentValues.put("num_of_small_potatoes", Integer.parseInt(edtNumOfSmallPotatoesContent.isEmpty() ? "0" : edtNumOfSmallPotatoesContent));
+                contentValues.put("sNum", Integer.parseInt(edtNumOfSmallPotatoesContent.isEmpty() ? "0" : edtNumOfSmallPotatoesContent));
                 //小薯重
                 String edtWeightOfSmallPotatoesContent = edtWeightOfSmallPotatoes.getText().toString();
-                contentValues.put("weight_of_small_potatoes", Integer.parseInt(edtWeightOfSmallPotatoesContent.isEmpty() ? "0" : edtWeightOfSmallPotatoesContent));
+                contentValues.put("sWeight", Integer.parseInt(edtWeightOfSmallPotatoesContent.isEmpty() ? "0" : edtWeightOfSmallPotatoesContent));
                 //商品薯率
                 String edtRateOfEconomicPotatoContent = edtRateOfEconomicPotato.getText().toString();
-                contentValues.put("rate_of_economic_potato", Integer.parseInt(edtRateOfEconomicPotatoContent.isEmpty() ? "0" : edtRateOfEconomicPotatoContent));
+                contentValues.put("commercialRate", Integer.parseInt(edtRateOfEconomicPotatoContent.isEmpty() ? "0" : edtRateOfEconomicPotatoContent));
                 //小区产量1
                 String edtSmallSectionYield1Content = edtSmallSectionYield1.getText().toString();
-                contentValues.put("small_section_yield1", Integer.parseInt(edtSmallSectionYield1Content.isEmpty() ? "0" : edtSmallSectionYield1Content));
+                contentValues.put("plotYield1", Integer.parseInt(edtSmallSectionYield1Content.isEmpty() ? "0" : edtSmallSectionYield1Content));
                 //小区产量2
                 String edtSmallSectionYield2Content = edtSmallSectionYield2.getText().toString();
-                contentValues.put("small_section_yield2", Integer.parseInt(edtSmallSectionYield2Content.isEmpty() ? "0" : edtSmallSectionYield2Content));
+                contentValues.put("plotYield2", Integer.parseInt(edtSmallSectionYield2Content.isEmpty() ? "0" : edtSmallSectionYield2Content));
                 //小区产量3
                 String edtSmallSectionYield3Content = edtSmallSectionYield3.getText().toString();
-                contentValues.put("small_section_yield3", Integer.parseInt(edtSmallSectionYield3Content.isEmpty() ? "0" : edtSmallSectionYield3Content));
+                contentValues.put("plotYield3", Integer.parseInt(edtSmallSectionYield3Content.isEmpty() ? "0" : edtSmallSectionYield3Content));
                 //亩产量
                 String edtPerMuYieldContent = edtPerMuYield.getText().toString();
-                contentValues.put("per_mu_yield", Integer.parseInt(edtPerMuYieldContent.isEmpty() ? "0" : edtPerMuYieldContent));
+                contentValues.put("acreYield", Integer.parseInt(edtPerMuYieldContent.isEmpty() ? "0" : edtPerMuYieldContent));
                 //十株株高
+                //十株株高一起暂存到本地，上传时可以拆分成 bigPlantHeight1,bigPlantHeight2,bigPlantHeight3....
                 String edtTenPlantHeightContent = edtTenPlantHeight.getText().toString();
-                contentValues.put("ten_plant_height", Integer.parseInt(edtTenPlantHeightContent.isEmpty() ? "0" : edtTenPlantHeightContent));
+                contentValues.put("bigPlantHeight", Integer.parseInt(edtTenPlantHeightContent.isEmpty() ? "0" : edtTenPlantHeightContent));
                 //平均株高
                 String edtAveragePlantHeightContent = edtAveragePlantHeight.getText().toString();
-                contentValues.put("average_plant_height", Integer.parseInt(edtAveragePlantHeightContent.isEmpty() ? "0" : edtAveragePlantHeightContent));
+                contentValues.put("plantHeightAvg", Integer.parseInt(edtAveragePlantHeightContent.isEmpty() ? "0" : edtAveragePlantHeightContent));
                 //十株的分支数
+                //十株的分支数一起暂存到本地，上传时可以拆分成 bigBranchNumber1,bigBranchNumber2,bigBranchNumber3....
                 String edtBranchNumOfTenPlantsContent = edtBranchNumOfTenPlants.getText().toString();
-                contentValues.put("branch_num_of_ten_plants", Integer.parseInt(edtBranchNumOfTenPlantsContent.isEmpty() ? "0" : edtBranchNumOfTenPlantsContent));
+                contentValues.put("bigBranchNumber", Integer.parseInt(edtBranchNumOfTenPlantsContent.isEmpty() ? "0" : edtBranchNumOfTenPlantsContent));
                 //平均分支数
                 String edtAverageBranchNumContent = edtAverageBranchNum.getText().toString();
-                contentValues.put("average_branch_num", Integer.parseInt(edtAverageBranchNumContent.isEmpty() ? "0" : edtAverageBranchNumContent));
+                contentValues.put("branchNumberAvg", Integer.parseInt(edtAverageBranchNumContent.isEmpty() ? "0" : edtAverageBranchNumContent));
                 //十株测产
+                //十株株高一起暂存到本地，上传时可以拆分成 bigYield1,bigYield2,bigYield3....
                 String edtYieldMonitoringOfTenPlantsContent = edtYieldMonitoringOfTenPlants.getText().toString();
-                contentValues.put("yield_monitoring_of_ten_plants", Integer.parseInt(edtYieldMonitoringOfTenPlantsContent.isEmpty() ? "0" : edtYieldMonitoringOfTenPlantsContent));
+                contentValues.put("bigYield", Integer.parseInt(edtYieldMonitoringOfTenPlantsContent.isEmpty() ? "0" : edtYieldMonitoringOfTenPlantsContent));
 
                 sqLiteDatabase.insert("SpeciesTable", null, contentValues);
                 contentValues.clear();
