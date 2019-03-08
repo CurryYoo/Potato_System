@@ -96,7 +96,7 @@ public class HttpRequest {
         JSONObject jsonObject = new JSONObject();
         if(farmlandId != null){
             try {
-                jsonObject.put("name", farmlandId); //POST数据
+                jsonObject.put("farmlandId", farmlandId); //POST数据
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -210,10 +210,10 @@ public class HttpRequest {
         requestQueue.add(stringRequest);
     }
 
-    public static void HttpRequest_PlotData(final JSONObject jsonObject, Context context, final HttpCallback callback) {
+    public static void HttpRequest_SpeciesData(final JSONObject jsonObject, Context context, final HttpCallback callback) {
         requestQueue = Volley.newRequestQueue(context);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "updatePlotData", jsonObject, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "SpeciesCommontest/addCommontest", jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("TAG_response", response.toString());

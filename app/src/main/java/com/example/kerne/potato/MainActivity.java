@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             new Thread() {
                                 @Override
                                 public void run() {
-                                    HttpRequest.HttpRequest_PlotData(jsonObject0, MainActivity.this, new HttpRequest.HttpCallback() {
+                                    HttpRequest.HttpRequest_SpeciesData(jsonObject0, MainActivity.this, new HttpRequest.HttpCallback() {
                                         @Override
                                         public void onSuccess(JSONObject result) {
                                             Log.d("response_update", result.toString());

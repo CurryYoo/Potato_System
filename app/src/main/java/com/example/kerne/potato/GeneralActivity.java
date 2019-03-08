@@ -35,7 +35,7 @@ public class GeneralActivity extends AppCompatActivity {
     private Bitmap baseBitmap;
     private Canvas canvas;
     private Paint paint;
-    private String farmlandId;
+    private String farmlandId = null;
     private String userRole;
     private int flag = 0;
 
@@ -68,6 +68,9 @@ public class GeneralActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_general);
+
+        //获取farmlandId
+        farmlandId = getIntent().getStringExtra("farmlandId");
 
         //获取权限角色
         userRole = getIntent().getStringExtra("userRole");

@@ -34,9 +34,9 @@ public class DrawView extends View {
     private static final int mapWidth = 2099; //原种植图的宽度
     private static final int mapHeight = 2414; //原种植图的高度
     private static final float multiple_X = 0.005f; //边框适应屏幕的左上角坐标需要乘以的倍数
-    private static final float multiple_X1 = 0.95f; //边框适应屏幕的右上角坐标需要乘以的倍数
+    private static final float multiple_X1 = 0.92f; //边框适应屏幕的右上角坐标需要乘以的倍数
     private static final float multiple_Y = 0.004f; //边框适应屏幕的右上角坐标需要乘以的倍数
-    private static final float multiple_Y1 = 0.86f; //边框适应屏幕的右上角坐标需要乘以的倍数
+    private static final float multiple_Y1 = 0.84f; //边框适应屏幕的右上角坐标需要乘以的倍数
 
     public static float coord[][] = new float[1000][4];  //种植块的坐标集
 
@@ -97,6 +97,8 @@ public class DrawView extends View {
 
                 canvas.drawRect(coord[i][0], coord[i][1], coord[i][2], coord[i][3], p);
 
+                p.setColor(Color.BLACK);
+                canvas.drawText(mList.get(i).getString("expType"), coord[i][0], coord[i][3], p);
             }
 
 //            p.setColor(Color.BLACK);
