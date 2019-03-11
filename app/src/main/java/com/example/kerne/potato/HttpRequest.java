@@ -216,13 +216,13 @@ public class HttpRequest {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "SpeciesCommontest/addCommontest", jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.d("TAG_response", response.toString());
+                Log.d("SpeciesData_response", response.toString());
                 callback.onSuccess(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("TAG_error", error.getMessage(), error);
+                Log.e("SpeciesData_error", error.getMessage(), error);
             }
         }) {
             @Override
@@ -235,38 +235,7 @@ public class HttpRequest {
         };
         Log.d("TAG_request", jsonObjectRequest.toString());
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "updatePlotData", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d("updatePlotData_response", response);
-                try {
-                    callback.onSuccess(new JSONObject(response));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("farmland_error", error.getMessage(), error);
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                // 请求参数
-                Map<String, String> map = new HashMap<String, String>();
-                //new 一个Map  参数放到Map中
-                try {
-                    map.put("plotId", jsonObject.getString("plotId"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                return map;
-            }
-        };
-
         requestQueue.add(jsonObjectRequest);
-        //requestQueue.add(stringRequest);
     }
 
     //==========================================

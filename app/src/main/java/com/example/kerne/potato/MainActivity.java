@@ -156,91 +156,90 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (cursor.moveToFirst()) {
                         do {
                             int id = cursor.getInt(cursor.getColumnIndex("id"));
-                            String plotId = cursor.getString(cursor.getColumnIndex("plotId")); //++++++++++++++
-                            String sowing_period = cursor.getString(cursor.getColumnIndex("sowing_period"));
-                            String emergence_period = cursor.getString(cursor.getColumnIndex("emergence_period"));
-                            int rate_of_emergence = cursor.getInt(cursor.getColumnIndex("rate_of_emergence"));
-                            String squaring_period = cursor.getString(cursor.getColumnIndex("squaring_period"));
-                            String flowering_period = cursor.getString(cursor.getColumnIndex("flowering_period"));
-                            String leaf_color = cursor.getString(cursor.getColumnIndex("leaf_color"));
-                            String corolla_colors = cursor.getString(cursor.getColumnIndex("corolla_colors"));
-                            String plant_flourish = cursor.getString(cursor.getColumnIndex("plant_flourish"));
-                            String stem_color = cursor.getString(cursor.getColumnIndex("stem_color"));
-                            String natural_fecundity = cursor.getString(cursor.getColumnIndex("natural_fecundity"));
-                            String mature_period = cursor.getString(cursor.getColumnIndex("mature_period"));
-                            int growing_days = cursor.getInt(cursor.getColumnIndex("growing_days"));
-                            String tuber_uniformity = cursor.getString(cursor.getColumnIndex("tuber_uniformity"));
-                            String tuber_shape = cursor.getString(cursor.getColumnIndex("tuber_shape"));
-                            String potato_skin_smoothness = cursor.getString(cursor.getColumnIndex("potato_skin_smoothness"));
-                            String eye = cursor.getString(cursor.getColumnIndex("eye"));
-                            String skin_color = cursor.getString(cursor.getColumnIndex("skin_color"));
-                            String flesh_color = cursor.getString(cursor.getColumnIndex("flesh_color"));
-                            String whether_to_be_included = cursor.getString(cursor.getColumnIndex("whether_to_be_included"));
+                            String speciesId = cursor.getString(cursor.getColumnIndex("speciesId")); //++++++++++++++
+                            String plantingDate = cursor.getString(cursor.getColumnIndex("plantingDate"));
+                            String emergenceDate = cursor.getString(cursor.getColumnIndex("emergenceDate"));
+                            int sproutRate = cursor.getInt(cursor.getColumnIndex("sproutRate"));
+                            String squaringStage = cursor.getString(cursor.getColumnIndex("squaringStage"));
+                            String blooming = cursor.getString(cursor.getColumnIndex("blooming"));
+                            String leafColour = cursor.getString(cursor.getColumnIndex("leafColour"));
+                            String corollaColour = cursor.getString(cursor.getColumnIndex("corollaColour"));
+                            String flowering = cursor.getString(cursor.getColumnIndex("flowering"));
+                            String stemColour = cursor.getString(cursor.getColumnIndex("stemColour"));
+                            String openpollinated = cursor.getString(cursor.getColumnIndex("openpollinated"));
+                            String maturingStage = cursor.getString(cursor.getColumnIndex("maturingStage"));
+                            int growingPeriod = cursor.getInt(cursor.getColumnIndex("growingPeriod"));
+                            String uniformityOfTuberSize = cursor.getString(cursor.getColumnIndex("uniformityOfTuberSize"));
+                            String tuberShape = cursor.getString(cursor.getColumnIndex("tuberShape"));
+                            String skinSmoothness = cursor.getString(cursor.getColumnIndex("skinSmoothness"));
+                            String eyeDepth = cursor.getString(cursor.getColumnIndex("eyeDepth"));
+                            String skinColour = cursor.getString(cursor.getColumnIndex("skinColour"));
+                            String fleshColour = cursor.getString(cursor.getColumnIndex("fleshColour"));
+                            String isChoozen = cursor.getString(cursor.getColumnIndex("isChoozen"));
                             final String remark = cursor.getString(cursor.getColumnIndex("remark"));
-                            int num_of_harvested_plants = cursor.getInt(cursor.getColumnIndex("num_of_harvested_plants"));
-                            int num_of_large_and_medium_potatoes = cursor.getInt(cursor.getColumnIndex("num_of_large_and_medium_potatoes"));
-                            int weight_of_large_and_medium_potatoes = cursor.getInt(cursor.getColumnIndex("weight_of_large_and_medium_potatoes"));
-                            int num_of_small_potatoes = cursor.getInt(cursor.getColumnIndex("num_of_small_potatoes"));
-                            int weight_of_small_potatoes = cursor.getInt(cursor.getColumnIndex("weight_of_small_potatoes"));
-                            int rate_of_economic_potato = cursor.getInt(cursor.getColumnIndex("rate_of_economic_potato"));
-                            int small_section_yield1 = cursor.getInt(cursor.getColumnIndex("small_section_yield1"));
-                            int small_section_yield2 = cursor.getInt(cursor.getColumnIndex("small_section_yield2"));
-                            int small_section_yield3 = cursor.getInt(cursor.getColumnIndex("small_section_yield3"));
-                            int per_mu_yield = cursor.getInt(cursor.getColumnIndex("per_mu_yield"));
-                            int ten_plant_height = cursor.getInt(cursor.getColumnIndex("ten_plant_height"));
-                            int average_plant_height = cursor.getInt(cursor.getColumnIndex("average_plant_height"));
-                            int branch_num_of_ten_plants = cursor.getInt(cursor.getColumnIndex("branch_num_of_ten_plants"));
-                            int average_branch_num = cursor.getInt(cursor.getColumnIndex("average_branch_num"));
-                            int yield_monitoring_of_ten_plants = cursor.getInt(cursor.getColumnIndex("yield_monitoring_of_ten_plants"));
+                            int harvestNum = cursor.getInt(cursor.getColumnIndex("harvestNum"));
+                            int lmNum = cursor.getInt(cursor.getColumnIndex("lmNum"));
+                            int lmWeight = cursor.getInt(cursor.getColumnIndex("lmWeight"));
+                            int sNum = cursor.getInt(cursor.getColumnIndex("sNum"));
+                            int sWeight = cursor.getInt(cursor.getColumnIndex("sWeight"));
+                            int commercialRate = cursor.getInt(cursor.getColumnIndex("commercialRate"));
+                            int plotYield1 = cursor.getInt(cursor.getColumnIndex("plotYield1"));
+                            int plotYield2 = cursor.getInt(cursor.getColumnIndex("plotYield2"));
+                            int plotYield3 = cursor.getInt(cursor.getColumnIndex("plotYield3"));
+                            int acreYield = cursor.getInt(cursor.getColumnIndex("acreYield"));
+                            int bigPlantHeight = cursor.getInt(cursor.getColumnIndex("bigPlantHeight"));
+                            int plantHeightAvg = cursor.getInt(cursor.getColumnIndex("plantHeightAvg"));
+                            int bigBranchNumber = cursor.getInt(cursor.getColumnIndex("bigBranchNumber"));
+                            int branchNumberAvg = cursor.getInt(cursor.getColumnIndex("branchNumberAvg"));
+                            int bigYield = cursor.getInt(cursor.getColumnIndex("bigYield"));
                             picPath = cursor.getString(cursor.getColumnIndex("pic_path"));
 
                             Gson gson = new Gson();
 
-                            final JSONObject jsonObject0 = new JSONObject();
                             final JSONObject jsonObject = new JSONObject();
                             try {
-                                jsonObject.put("planting_date", sowing_period);
-                                jsonObject.put("emergence_date", emergence_period);
-                                jsonObject.put("sprout_rate", rate_of_emergence);
-                                jsonObject.put("squaring_stage", squaring_period);
-                                jsonObject.put("blooming", flowering_period);
-                                jsonObject.put("leaf_colour", leaf_color);
-                                jsonObject.put("corolla_colour", corolla_colors);
-                                jsonObject.put("flowering", plant_flourish);
-                                jsonObject.put("stem_colour", stem_color);
-                                jsonObject.put("openpollinated", natural_fecundity);
-                                jsonObject.put("maturing_stage", mature_period);
-                                jsonObject.put("growing_period", growing_days);
-                                jsonObject.put("uniformity_of_tuber_size", tuber_uniformity);
-                                jsonObject.put("tuber_shape", tuber_shape);
-                                jsonObject.put("skin_smoothness", potato_skin_smoothness);
-                                jsonObject.put("eye_depth", eye);
-                                jsonObject.put("skin_colour", skin_color);
-                                jsonObject.put("flesh_colour", flesh_color);
-                                if (whether_to_be_included.equals("yes")) {
-                                    jsonObject.put("is_choozen", 1);
+                                jsonObject.put("plantingDate", plantingDate);
+                                jsonObject.put("emergenceDate", emergenceDate);
+                                jsonObject.put("sproutRate", sproutRate);
+                                jsonObject.put("squaringStage", squaringStage);
+                                jsonObject.put("blooming", blooming);
+                                jsonObject.put("leafColour", leafColour);
+                                jsonObject.put("corollaColour", corollaColour);
+                                jsonObject.put("flowering", flowering);
+                                jsonObject.put("stemColour", stemColour);
+                                jsonObject.put("openpollinated", openpollinated);
+                                jsonObject.put("maturingStage", maturingStage);
+                                jsonObject.put("growingPeriod", growingPeriod);
+                                jsonObject.put("uniformityOfTuberSize", uniformityOfTuberSize);
+                                jsonObject.put("tuberShape", tuberShape);
+                                jsonObject.put("skinSmoothness", skinSmoothness);
+                                jsonObject.put("eyeDepth", eyeDepth);
+                                jsonObject.put("skinColour", skinColour);
+                                jsonObject.put("fleshColour", fleshColour);
+                                if (isChoozen.equals("yes")) {
+                                    jsonObject.put("isChoozen", 1);
                                 } else {
-                                    jsonObject.put("is_choozen", 0);
+                                    jsonObject.put("isChoozen", 0);
                                 }
                                 jsonObject.put("remark", remark);
-                                jsonObject.put("harvest_num", num_of_harvested_plants);
-                                jsonObject.put("lm_num", num_of_large_and_medium_potatoes);
-                                jsonObject.put("lm_weight", weight_of_large_and_medium_potatoes);
-                                jsonObject.put("s_num", num_of_small_potatoes);
-                                jsonObject.put("s_weight", weight_of_small_potatoes);
-                                jsonObject.put("commercial_rate", rate_of_economic_potato);
-                                jsonObject.put("plot_yield1", small_section_yield1);
-                                jsonObject.put("plot_yield2", small_section_yield2);
-                                jsonObject.put("plot_yield3", small_section_yield3);
-                                jsonObject.put("acre_yield", per_mu_yield);
-                                jsonObject.put("plant_height10", ten_plant_height);
-                                jsonObject.put("plant_height_avg", average_plant_height);
-                                jsonObject.put("branch_number10", branch_num_of_ten_plants);
-                                jsonObject.put("branch_number_avg", average_branch_num);
-                                jsonObject.put("yield10", yield_monitoring_of_ten_plants);
-                                jsonObject0.put("plotId", plotId);
-                                jsonObject0.put("data", jsonObject);
-                                Log.d("testJson", jsonObject0.toString());
+                                jsonObject.put("harvestNum", harvestNum);
+                                jsonObject.put("lmNum", lmNum);
+                                jsonObject.put("lmWeight", lmWeight);
+                                jsonObject.put("sNum", sNum);
+                                jsonObject.put("sWeight", sWeight);
+                                jsonObject.put("commercialRate", commercialRate);
+                                jsonObject.put("plotYield1", plotYield1);
+                                jsonObject.put("plotYield2", plotYield2);
+                                jsonObject.put("plotYield3", plotYield3);
+                                jsonObject.put("acreYield", acreYield);
+                                jsonObject.put("bigPlantHeight", bigPlantHeight);
+                                jsonObject.put("plantHeightAvg", plantHeightAvg);
+                                jsonObject.put("bigBranchNumber", bigBranchNumber);
+                                jsonObject.put("branchNumberAvg", branchNumberAvg);
+                                jsonObject.put("bigYield", bigYield);
+                                jsonObject.put("speciesId", speciesId);
+
+                                Log.d("testJson", jsonObject.toString());
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -249,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             new Thread() {
                                 @Override
                                 public void run() {
-                                    HttpRequest.HttpRequest_SpeciesData(jsonObject0, MainActivity.this, new HttpRequest.HttpCallback() {
+                                    HttpRequest.HttpRequest_SpeciesData(jsonObject, MainActivity.this, new HttpRequest.HttpCallback() {
                                         @Override
                                         public void onSuccess(JSONObject result) {
                                             Log.d("response_update", result.toString());

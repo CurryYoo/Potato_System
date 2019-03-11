@@ -378,8 +378,8 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 }
 
                 //从上一层获取小区id
-                Intent intent_plotId = getIntent();
-                speciesId = intent_plotId.getStringExtra("speciesId");
+                Intent intent_speciesId = getIntent();
+                speciesId = intent_speciesId.getStringExtra("speciesId");
 
                 ContentValues contentValues = new ContentValues();
                 //开始组装数据

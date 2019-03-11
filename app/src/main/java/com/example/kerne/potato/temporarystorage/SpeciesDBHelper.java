@@ -9,42 +9,42 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
 
     public static final String CREATE_SPECIES_TABLE = "create table SpeciesTable ("  //创建存储品种信息的表
             + "id integer primary key autoincrement, "  //id字段
-            + "plotId text,"  //小区id字段 (+++++++++++)
-            + "sowing_period text,"  //播种期字段
-            + "emergence_period text,"  //出苗期字段
-            + "rate_of_emergence integer,"  //出苗率字段
-            + "squaring_period text,"  //现蕾期字段
-            + "flowering_period text,"  //开花期字段
-            + "leaf_color text,"  //叶颜色字段
-            + "corolla_colors text,"  //花冠色字段
-            + "plant_flourish text,"  //花繁茂性字段
-            + "stem_color text,"  //茎色字段
-            + "natural_fecundity text,"  //天然结实性字段
-            + "mature_period text,"  //成熟期字段
-            + "growing_days integer,"  //生育日数字段
-            + "tuber_uniformity text,"  //块茎整齐度字段
-            + "tuber_shape text,"  //薯型字段
-            + "potato_skin_smoothness text,"  //薯皮光滑度字段
-            + "eye text,"  //芽眼深浅字段
-            + "skin_color text,"  //皮色字段
-            + "flesh_color text,"  //肉色字段
-            + "whether_to_be_included text,"  //是否入选字段
+            + "speciesId text,"  //小区id字段 (+++++++++++)
+            + "plantingDate text,"  //播种期字段
+            + "emergenceDate text,"  //出苗期字段
+            + "sproutRate integer,"  //出苗率字段
+            + "squaringStage text,"  //现蕾期字段
+            + "blooming text,"  //开花期字段
+            + "leafColour text,"  //叶颜色字段
+            + "corollaColour text,"  //花冠色字段
+            + "flowering text,"  //花繁茂性字段
+            + "stemColour text,"  //茎色字段
+            + "openpollinated text,"  //天然结实性字段
+            + "maturingStage text,"  //成熟期字段
+            + "growingPeriod integer,"  //生育日数字段
+            + "uniformityOfTuberSize text,"  //块茎整齐度字段
+            + "tuberShape text,"  //薯型字段
+            + "skinSmoothness text,"  //薯皮光滑度字段
+            + "eyeDepth text,"  //芽眼深浅字段
+            + "skinColour text,"  //皮色字段
+            + "fleshColour text,"  //肉色字段
+            + "isChoozen text,"  //是否入选字段
             + "remark text,"  //备注字段
-            + "num_of_harvested_plants integer,"  //收获株数字段
-            + "num_of_large_and_medium_potatoes integer,"  //大中薯数字段
-            + "weight_of_large_and_medium_potatoes integer,"  //大中薯重字段
-            + "num_of_small_potatoes integer,"  //小薯数字段
-            + "weight_of_small_potatoes integer,"  //小薯重字段
-            + "rate_of_economic_potato integer,"  //商品薯率字段
-            + "small_section_yield1 integer,"  //小区产量1字段
-            + "small_section_yield2 integer,"  //小区产量2字段
-            + "small_section_yield3 integer,"  //小区产量3字段
-            + "per_mu_yield integer,"  //亩产量字段
-            + "ten_plant_height integer,"  //十株株高字段
-            + "average_plant_height integer,"  //平均株高字段
-            + "branch_num_of_ten_plants integer,"  //十株的分支数字段
-            + "average_branch_num integer,"  //平均分支数字段
-            + "yield_monitoring_of_ten_plants integer," //十株测产字段
+            + "harvestNum integer,"  //收获株数字段
+            + "lmNum integer,"  //大中薯数字段
+            + "lmWeight integer,"  //大中薯重字段
+            + "sNum integer,"  //小薯数字段
+            + "sWeight integer,"  //小薯重字段
+            + "commercialRate integer,"  //商品薯率字段
+            + "plotYield1 integer,"  //小区产量1字段
+            + "plotYield2 integer,"  //小区产量2字段
+            + "plotYield3 integer,"  //小区产量3字段
+            + "acreYield integer,"  //亩产量字段
+            + "bigPlantHeight integer,"  //十株株高字段
+            + "plantHeightAvg integer,"  //平均株高字段
+            + "bigBranchNumber integer,"  //十株的分支数字段
+            + "branchNumberAvg integer,"  //平均分支数字段
+            + "bigYield integer," //十株测产字段
             + "pic_path text)"; //图片路径字段
 
     public SpeciesDBHelper(Context context, String name,
