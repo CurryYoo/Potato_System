@@ -428,7 +428,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
 
         //小薯十株株高
-        edtSmallPotatoHeight1 = (EditText) findViewById(R.id.small_height1);
+      /*  edtSmallPotatoHeight1 = (EditText) findViewById(R.id.small_height1);
         edtSmallPotatoHeight2 = (EditText) findViewById(R.id.small_height2);
         edtSmallPotatoHeight3 = (EditText) findViewById(R.id.small_height2);
         edtSmallPotatoHeight4 = (EditText) findViewById(R.id.small_height3);
@@ -471,7 +471,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         edtYieldMonitoringOfSmallPotato7 = (EditText) findViewById(R.id.yield_monitoring_of_small_plant7);
         edtYieldMonitoringOfSmallPotato8 = (EditText) findViewById(R.id.yield_monitoring_of_small_plant8);
         edtYieldMonitoringOfSmallPotato9 = (EditText) findViewById(R.id.yield_monitoring_of_small_plant9);
-        edtYieldMonitoringOfSmallPotato10 = (EditText) findViewById(R.id.yield_monitoring_of_small_plant10);
+        edtYieldMonitoringOfSmallPotato10 = (EditText) findViewById(R.id.yield_monitoring_of_small_plant10);*/
         //暂存监听
         Button btnSaveOffline = (Button) findViewById(R.id.save_offline);
         btnSaveOffline.setOnClickListener(this);

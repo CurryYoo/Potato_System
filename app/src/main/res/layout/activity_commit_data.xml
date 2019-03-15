@@ -795,7 +795,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="32-大薯十株株高" />
+                        android:text="32-十株株高" />
 
                     <EditText
                         android:id="@+id/ten_plant_height1"
@@ -876,7 +876,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="32-大薯十株分支数" />
+                        android:text="32-十株分支数" />
 
                     <EditText
                         android:id="@+id/branch_num_of_ten_plant1"
@@ -966,7 +966,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="36-大薯十株测产" />
+                        android:text="36-十株测产" />
 
                     <EditText
                         android:id="@+id/yield_monitoring_of_ten_plant1"
@@ -1032,6 +1032,7 @@
             </LinearLayout>
 
             //小薯数据
+<!--
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -1110,7 +1111,7 @@
                         android:gravity="center_horizontal" />
                 </LinearLayout>
 
-                <!--分割线-->
+                &lt;!&ndash;分割线&ndash;&gt;
                 <View
                     android:layout_width="2dp"
                     android:layout_height="match_parent"
@@ -1200,7 +1201,7 @@
                 </LinearLayout>
 
 
-                <!--分割线-->
+                &lt;!&ndash;分割线&ndash;&gt;
                 <View
                     android:layout_width="2dp"
                     android:layout_height="match_parent"
@@ -1280,6 +1281,7 @@
                         android:gravity="center_horizontal" />
                 </LinearLayout>
             </LinearLayout>
+-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -1289,7 +1291,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="33-大薯平均株高" />
+                    android:text="33-平均株高" />
 
                 <EditText
                     android:id="@+id/average_plant_height"
@@ -1313,7 +1315,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="35-大薯平均分支数" />
+                    android:text="35-平均分支数" />
 
                 <EditText
                     android:id="@+id/average_branch_num"
