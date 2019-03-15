@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     Button button;
 
-    String picPath;
+    String img1;
 
     private SpeciesDBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
@@ -192,7 +192,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             int bigBranchNumber = cursor.getInt(cursor.getColumnIndex("bigBranchNumber"));
                             int branchNumberAvg = cursor.getInt(cursor.getColumnIndex("branchNumberAvg"));
                             int bigYield = cursor.getInt(cursor.getColumnIndex("bigYield"));
-                            picPath = cursor.getString(cursor.getColumnIndex("pic_path"));
+                            img1 = cursor.getString(cursor.getColumnIndex("img1"));
+
+                            Log.d("testImg1", img1);
 
                             Gson gson = new Gson();
 
@@ -254,14 +256,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                             Log.d("response_update", result.toString());
                                         }
                                     });
-//                                HttpRequest.doUploadTest(picPath, MainActivity.this, new HttpRequest.HttpCallback_Str() {
-//                                    @Override
-//                                    public void onSuccess(String result) {
-//                                        Log.d("response_pic", result);
-//                                    }
-//                                });
+                                HttpRequest.doUploadTest(img1, MainActivity.this, new HttpRequest.HttpCallback_Str() {
+                                    @Override
+                                    public void onSuccess(String result) {
+                                        Log.d("response_pic", result);
+                                    }
+                                });
                                 }
                             }.start();
+
                         } while (cursor.moveToNext());
                     }
                     cursor.close();
@@ -291,18 +294,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent_general.putExtra("userRole", userRole);
                 startActivity(intent_general);
                 break;
-//            case R.id.btn_farmland:
-//                Intent intent_farmland = new Intent(MainActivity.this, FarmlandClickActivity.class);
-//                startActivity(intent_farmland);
-//                break;
-//            case R.id.btn_shot:
-//                Intent intent_shot = new Intent(MainActivity.this, ShotClickActivity.class);
-//                startActivity(intent_shot);
-//                break;
-//            case R.id.btn_field:
-//                Intent intent_field = new Intent(MainActivity.this, FieldClickActivity.class);
-//                startActivity(intent_field);
-//                break;
 
 /*            case R.id.commit_data:
                 Intent intent = new Intent(MainActivity.this, SaveDataActivity.class);

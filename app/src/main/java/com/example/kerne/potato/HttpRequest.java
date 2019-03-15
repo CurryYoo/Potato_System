@@ -28,6 +28,7 @@ import java.util.Map;
 
 public class HttpRequest {
     private static String url = "http://120.78.130.251:9527/";
+    private static String picUrl = "http://10.103.241.85:9527/";
     private static RequestQueue requestQueue;
 
     public static void HttpRequest_general(final String name, Context context, final HttpCallback callback) {
@@ -356,10 +357,11 @@ public class HttpRequest {
         requestQueue = Volley.newRequestQueue(context);
 
         String path = picPath;
-        Log.e("zb", "picPath=" + picPath);
+        Log.e("zb", "img1=" + picPath);
         //String url = "http://app.sod90.com/xxx/upload/app_upload"; //换成自己的测试url地址
         Map<String, String> params = new HashMap<String, String>();
-        params.put("speciesId", "1110");
+        params.put("speciesId", "110");
+        params.put("picNo", "1");
         Log.e("zb", "params=" + params);
         File f1 = new File(path);
         Log.e("zb", "f1=" + f1.toString());
@@ -368,12 +370,13 @@ public class HttpRequest {
 
         if (!f1.exists()) {
             //Toast.makeText(getApplicationContext(), "图片不存在，测试无效", Toast.LENGTH_SHORT).show();
+            Log.d("file","not found");
             return;
         }
         List<File> f = new ArrayList<File>();
         f.add(f1);
 //    f.add(f2);
-        MultipartRequest request = new MultipartRequest(url + "species/updateSpeciesPic1", new Response.Listener<String>() {
+        MultipartRequest request = new MultipartRequest(picUrl + "localspecies/updateSpeciesPic", new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -388,7 +391,8 @@ public class HttpRequest {
                 //Toast.makeText(getApplicationContext(), "uploadError,response = " + error.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e("zb", "error,response = " + error.getMessage());
             }
-        }, "f_file[]", f, params); //注意这个key必须是f_file[],后面的[]不能少
+        }, "file", f1, params); //注意这个key必须是f_file[],后面的[]不能少
+
         //mSingleQueue.add(request);
         requestQueue.add(request);
     }

@@ -45,7 +45,7 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "bigBranchNumber integer,"  //十株的分支数字段
             + "branchNumberAvg integer,"  //平均分支数字段
             + "bigYield integer," //十株测产字段
-            + "pic_path text)"; //图片路径字段
+            + "img1 text)"; //图片路径字段
 
     public SpeciesDBHelper(Context context, String name,
                            SQLiteDatabase.CursorFactory factory, int version) {
@@ -55,7 +55,7 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-//        String sql_prepare = "if exists(select * from sys.object where name='SpeciesTable') drop table SpeciesTable";
+//        String sql_prepare = "drop table SpeciesTable if exists(select * from sys.databases where name='SpeciesTable')";
 //        db.execSQL(sql_prepare);
 //        String string = "drop table SpeciesTable;";
 //        db.execSQL(string);

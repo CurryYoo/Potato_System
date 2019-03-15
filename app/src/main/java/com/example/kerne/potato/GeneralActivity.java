@@ -47,17 +47,22 @@ public class GeneralActivity extends AppCompatActivity {
         public void handleMessage(Message msg){
             switch (msg.what){
                 case 1:
-                    Log.d("Data-----", mList.get(0).toString());
-                    flag = 1;
+                    if(mList.size() != 0){
+                        Log.d("Data-----", mList.get(0).toString());
+                        flag = 1;
 
-                    final DrawView view=new DrawView(GeneralActivity.this, mList);
+                        final DrawView view=new DrawView(GeneralActivity.this, mList);
 
-                    view.setMinimumHeight(500);
-                    view.setMinimumWidth(300);
-                    //通知view组件重绘
-                    view.invalidate();
-                    layout.addView(view);
-                    view.setOnTouchListener(touch);
+                        view.setMinimumHeight(500);
+                        view.setMinimumWidth(300);
+                        //通知view组件重绘
+                        view.invalidate();
+                        layout.addView(view);
+                        view.setOnTouchListener(touch);
+                    }
+                    else {
+                        Toast.makeText(GeneralActivity.this, "选择的实验田尚未规划种植图", Toast.LENGTH_SHORT).show();
+                    }
 
                     break;
             }
@@ -209,21 +214,6 @@ public class GeneralActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
                     }
-
-//                    if(X > DrawView.left + 0 && X < DrawView.left + 200 && Y > DrawView.top + 0 && Y < DrawView.top + 200){
-//                        Toast.makeText(GeneralActivity.this, "点击了第一个模块", Toast.LENGTH_SHORT).show();
-//                        Intent intent = new Intent(GeneralActivity.this, SpeciesClickActivity.class);
-//                        intent.putExtra("fieldId", "1111");
-//                        intent.putExtra("userRole", userRole);
-//                        startActivity(intent);
-//                    }
-//                    if(X > DrawView.left + 1000 && X < DrawView.left + 1440 && Y > DrawView.top + 0 && Y < DrawView.top + 500){
-//                        Toast.makeText(GeneralActivity.this, "点击了第二个模块", Toast.LENGTH_SHORT).show();
-//                        Intent intent = new Intent(GeneralActivity.this, SpeciesClickActivity.class);
-//                        intent.putExtra("fieldId", "2222");
-//                        intent.putExtra("userRole", userRole);
-//                        startActivity(intent);
-//                    }
 
                     break;
                 default:
