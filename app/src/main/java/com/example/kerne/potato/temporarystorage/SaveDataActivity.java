@@ -162,6 +162,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     public static final int TAKE_PHOTO_COLOR = 1;
     private ImageView ivShowColor = null;
     private Uri imageUriColor = null;
+    private String pathColor = null; //图片文件路径
     //花冠色拍照
     public static final int TAKE_PHOTO_COROLLA_COLOR = 2;
     private ImageView ivShowCorollaColor = null;
@@ -692,6 +693,8 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 //                String edtYieldMonitoringOfTenPlantsContent = edtYieldMonitoringOfTenPlants.getText().toString();
 //                contentValues.put("bigYield", Integer.parseInt(edtYieldMonitoringOfTenPlantsContent.isEmpty() ? "0" : edtYieldMonitoringOfTenPlantsContent));
 
+                contentValues.put("img1", pathColor);
+
                 sqLiteDatabase.insert("SpeciesTable", null, contentValues);
                 contentValues.clear();
                 Toast.makeText(this,
@@ -703,6 +706,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 File outputImage = null;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
                     outputImage = new File(getExternalCacheDir(), fileNameString);
+                    pathColor = outputImage.getAbsolutePath();
                 }
                 try {
                     if (outputImage.exists()) {
@@ -1068,7 +1072,11 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         new DatePickerDialog(SaveDataActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                editText.setText(year + "-" + month + "-" + dayOfMonth);
+                String zeroMonth = "";
+                String zeroDay = "";
+                if (month < 10) zeroMonth = "0"; //当月份小于10时，需要在月份前加入0，需要符合yyyy-mm-dd当格式
+                if (dayOfMonth < 10) zeroDay = "0"; //同上
+                editText.setText(year + "-" + zeroMonth + month + "-" + zeroDay + dayOfMonth); //yyyy-mm-dd
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
     }

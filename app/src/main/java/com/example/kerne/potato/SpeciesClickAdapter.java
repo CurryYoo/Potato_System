@@ -59,7 +59,7 @@ public class SpeciesClickAdapter extends RecyclerView.Adapter<SpeciesClickAdapte
     @NonNull
     @Override
     public RcvClickViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.field_click_recycle_item, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.species_click_recycle_item, parent, false);
         return new RcvClickViewHolder(view);
     }
 
