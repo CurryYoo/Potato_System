@@ -41,6 +41,9 @@ import java.util.Calendar;
 
 public class SaveDataActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
+    //解析两位小数
+    DecimalFormat decimalFormat = new DecimalFormat("0.00");
+
     //需要暂存的各字段
     //品种id
     private String speciesId;
@@ -81,7 +84,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     private EditText edtSmallSectionYield2 = null;
     private EditText edtSmallSectionYield3 = null;
     private EditText edtPerMuYield = null;
-    //大薯十株株高
+    //大薯十株株高，也就是十株株高
     private EditText edtBigPotatoHeight1 = null;
     private EditText edtBigPotatoHeight2 = null;
     private EditText edtBigPotatoHeight3 = null;
@@ -92,9 +95,11 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     private EditText edtBigPotatoHeight8 = null;
     private EditText edtBigPotatoHeight9 = null;
     private EditText edtBigPotatoHeight10 = null;
-    //大薯平均株高
+    //大薯平均株高，也就是平均株高
     private EditText edtAveragePlantHeightOfBigPotato = null;
-    //大薯十株分支数
+    //计算大薯平均株高
+//    private Button btnComputeAveragePlantHeightOfBigPotato = null;
+    //大薯十株分支数，也就是十株分支数
     private EditText edtBranchNumOfBigPotato1 = null;
     private EditText edtBranchNumOfBigPotato2 = null;
     private EditText edtBranchNumOfBigPotato3 = null;
@@ -105,7 +110,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     private EditText edtBranchNumOfBigPotato8 = null;
     private EditText edtBranchNumOfBigPotato9 = null;
     private EditText edtBranchNumOfBigPotato10 = null;
-//    大薯平均分支数
+//    大薯平均分支数，也就是平均分支数
     private EditText edtAverageBranchNumOfBigPotato = null;
 //    大薯十株测产
     private EditText edtYieldMonitoringOfBigPotato1 = null;
@@ -121,31 +126,31 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
 
     //小薯十株株高
-    private EditText edtSmallPotatoHeight1 = null;
-    private EditText edtSmallPotatoHeight2 = null;
-    private EditText edtSmallPotatoHeight3 = null;
-    private EditText edtSmallPotatoHeight4 = null;
-    private EditText edtSmallPotatoHeight5 = null;
-    private EditText edtSmallPotatoHeight6 = null;
-    private EditText edtSmallPotatoHeight7 = null;
-    private EditText edtSmallPotatoHeight8 = null;
-    private EditText edtSmallPotatoHeight9 = null;
-    private EditText edtSmallPotatoHeight10 = null;
+//    private EditText edtSmallPotatoHeight1 = null;
+//    private EditText edtSmallPotatoHeight2 = null;
+//    private EditText edtSmallPotatoHeight3 = null;
+//    private EditText edtSmallPotatoHeight4 = null;
+//    private EditText edtSmallPotatoHeight5 = null;
+//    private EditText edtSmallPotatoHeight6 = null;
+//    private EditText edtSmallPotatoHeight7 = null;
+//    private EditText edtSmallPotatoHeight8 = null;
+//    private EditText edtSmallPotatoHeight9 = null;
+//    private EditText edtSmallPotatoHeight10 = null;
     //小薯平均株高
-    private EditText edtAveragePlantHeightOfSmallPotato = null;
+//    private EditText edtAveragePlantHeightOfSmallPotato = null;
     //小薯十株分支数
-    private EditText edtBranchNumOfSmallPotato1 = null;
-    private EditText edtBranchNumOfSmallPotato2 = null;
-    private EditText edtBranchNumOfSmallPotato3 = null;
-    private EditText edtBranchNumOfSmallPotato4 = null;
-    private EditText edtBranchNumOfSmallPotato5 = null;
-    private EditText edtBranchNumOfSmallPotato6 = null;
-    private EditText edtBranchNumOfSmallPotato7 = null;
-    private EditText edtBranchNumOfSmallPotato8 = null;
-    private EditText edtBranchNumOfSmallPotato9 = null;
-    private EditText edtBranchNumOfSmallPotato10 = null;
+//    private EditText edtBranchNumOfSmallPotato1 = null;
+//    private EditText edtBranchNumOfSmallPotato2 = null;
+//    private EditText edtBranchNumOfSmallPotato3 = null;
+//    private EditText edtBranchNumOfSmallPotato4 = null;
+//    private EditText edtBranchNumOfSmallPotato5 = null;
+//    private EditText edtBranchNumOfSmallPotato6 = null;
+//    private EditText edtBranchNumOfSmallPotato7 = null;
+//    private EditText edtBranchNumOfSmallPotato8 = null;
+//    private EditText edtBranchNumOfSmallPotato9 = null;
+//    private EditText edtBranchNumOfSmallPotato10 = null;
     //    小薯平均分支数
-    private EditText edtAverageBranchNumOfSmallPotato = null;
+//    private EditText edtAverageBranchNumOfSmallPotato = null;
     //    小薯十株测产
     private EditText edtYieldMonitoringOfSmallPotato1 = null;
     private EditText edtYieldMonitoringOfSmallPotato2 = null;
@@ -366,6 +371,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
         //商品薯率
         edtRateOfEconomicPotato = (EditText) findViewById(R.id.rate_of_economic_potato);
+        //计算商品薯率
+        Button btnComputeRateOfEconomicPotato = (Button) findViewById(R.id.btn_compute_rate_of_economic_potato);
+        btnComputeRateOfEconomicPotato.setOnClickListener(this);
 
         //小区产量1
         edtSmallSectionYield1 = (EditText) findViewById(R.id.small_section_yield1);
@@ -378,7 +386,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
         //亩产量
         edtPerMuYield = (EditText) findViewById(R.id.per_mu_yield);
-
+        //计算亩产量
+        Button btnComputePerMuYield = (Button) findViewById(R.id.btn_compute_average_per_mu_yield);
+        btnComputePerMuYield.setOnClickListener(this);
         //大薯十株株高
         edtBigPotatoHeight1 = (EditText) findViewById(R.id.ten_plant_height1);
         edtBigPotatoHeight2 = (EditText) findViewById(R.id.ten_plant_height2);
@@ -428,16 +438,16 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
 
         //小薯十株株高
-      /*  edtSmallPotatoHeight1 = (EditText) findViewById(R.id.small_height1);
-        edtSmallPotatoHeight2 = (EditText) findViewById(R.id.small_height2);
-        edtSmallPotatoHeight3 = (EditText) findViewById(R.id.small_height2);
-        edtSmallPotatoHeight4 = (EditText) findViewById(R.id.small_height3);
-        edtSmallPotatoHeight5 = (EditText) findViewById(R.id.small_height5);
-        edtSmallPotatoHeight6 = (EditText) findViewById(R.id.small_height6);
-        edtSmallPotatoHeight7 = (EditText) findViewById(R.id.small_height7);
-        edtSmallPotatoHeight8 = (EditText) findViewById(R.id.small_height8);
-        edtSmallPotatoHeight9 = (EditText) findViewById(R.id.small_height9);
-        edtSmallPotatoHeight10 = (EditText) findViewById(R.id.small_height10);
+//        edtSmallPotatoHeight1 = (EditText) findViewById(R.id.small_height1);
+//        edtSmallPotatoHeight2 = (EditText) findViewById(R.id.small_height2);
+//        edtSmallPotatoHeight3 = (EditText) findViewById(R.id.small_height2);
+//        edtSmallPotatoHeight4 = (EditText) findViewById(R.id.small_height3);
+//        edtSmallPotatoHeight5 = (EditText) findViewById(R.id.small_height5);
+//        edtSmallPotatoHeight6 = (EditText) findViewById(R.id.small_height6);
+//        edtSmallPotatoHeight7 = (EditText) findViewById(R.id.small_height7);
+//        edtSmallPotatoHeight8 = (EditText) findViewById(R.id.small_height8);
+//        edtSmallPotatoHeight9 = (EditText) findViewById(R.id.small_height9);
+//        edtSmallPotatoHeight10 = (EditText) findViewById(R.id.small_height10);
 
         //小薯平均株高
 //        edtAveragePlantHeightOfSmallPotato = (EditText) findViewById(R.id.average_small_plant_height);
@@ -446,16 +456,16 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 //        btnComputeAverageHeightOfSmallPotato.setOnClickListener(this);
 
         //小薯十株分支数
-        edtBranchNumOfSmallPotato1 = (EditText) findViewById(R.id.branch_num_of_small_plant1);
-        edtBranchNumOfSmallPotato2 = (EditText) findViewById(R.id.branch_num_of_small_plant2);
-        edtBranchNumOfSmallPotato3 = (EditText) findViewById(R.id.branch_num_of_small_plant3);
-        edtBranchNumOfSmallPotato4 = (EditText) findViewById(R.id.branch_num_of_small_plant4);
-        edtBranchNumOfSmallPotato5 = (EditText) findViewById(R.id.branch_num_of_small_plant5);
-        edtBranchNumOfSmallPotato6 = (EditText) findViewById(R.id.branch_num_of_small_plant6);
-        edtBranchNumOfSmallPotato7 = (EditText) findViewById(R.id.branch_num_of_small_plant7);
-        edtBranchNumOfSmallPotato8 = (EditText) findViewById(R.id.branch_num_of_small_plant8);
-        edtBranchNumOfSmallPotato9 = (EditText) findViewById(R.id.branch_num_of_small_plant9);
-        edtBranchNumOfSmallPotato10 = (EditText) findViewById(R.id.branch_num_of_small_plant10);
+//        edtBranchNumOfSmallPotato1 = (EditText) findViewById(R.id.branch_num_of_small_plant1);
+//        edtBranchNumOfSmallPotato2 = (EditText) findViewById(R.id.branch_num_of_small_plant2);
+//        edtBranchNumOfSmallPotato3 = (EditText) findViewById(R.id.branch_num_of_small_plant3);
+//        edtBranchNumOfSmallPotato4 = (EditText) findViewById(R.id.branch_num_of_small_plant4);
+//        edtBranchNumOfSmallPotato5 = (EditText) findViewById(R.id.branch_num_of_small_plant5);
+//        edtBranchNumOfSmallPotato6 = (EditText) findViewById(R.id.branch_num_of_small_plant6);
+//        edtBranchNumOfSmallPotato7 = (EditText) findViewById(R.id.branch_num_of_small_plant7);
+//        edtBranchNumOfSmallPotato8 = (EditText) findViewById(R.id.branch_num_of_small_plant8);
+//        edtBranchNumOfSmallPotato9 = (EditText) findViewById(R.id.branch_num_of_small_plant9);
+//        edtBranchNumOfSmallPotato10 = (EditText) findViewById(R.id.branch_num_of_small_plant10);
 
         //小薯平均分支数
 //        edtAverageBranchNumOfSmallPotato = (EditText) findViewById(R.id.average_small_branch_num);
@@ -471,7 +481,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         edtYieldMonitoringOfSmallPotato7 = (EditText) findViewById(R.id.yield_monitoring_of_small_plant7);
         edtYieldMonitoringOfSmallPotato8 = (EditText) findViewById(R.id.yield_monitoring_of_small_plant8);
         edtYieldMonitoringOfSmallPotato9 = (EditText) findViewById(R.id.yield_monitoring_of_small_plant9);
-        edtYieldMonitoringOfSmallPotato10 = (EditText) findViewById(R.id.yield_monitoring_of_small_plant10);*/
+        edtYieldMonitoringOfSmallPotato10 = (EditText) findViewById(R.id.yield_monitoring_of_small_plant10);
         //暂存监听
         Button btnSaveOffline = (Button) findViewById(R.id.save_offline);
         btnSaveOffline.setOnClickListener(this);
@@ -574,7 +584,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 contentValues.put("skinColour", spnSkinColor.getSelectedItem().toString());
                 //肉色
                 contentValues.put("fleshColour", spnFleshColor.getSelectedItem().toString());
-                //是否入选 对应deleted字段
+                //是否入选 对应isChoozen字段
                 int checkedRadioButtonId = rgWhetherToBeIncluded.getCheckedRadioButtonId();
                 Boolean checkedRadioButtonContent;
                 switch (checkedRadioButtonId) {
@@ -605,56 +615,55 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 contentValues.put("sWeight", Integer.parseInt(edtWeightOfSmallPotatoesContent.isEmpty() ? "0" : edtWeightOfSmallPotatoesContent));
                 //商品薯率
                 String edtRateOfEconomicPotatoContent = edtRateOfEconomicPotato.getText().toString();
-                contentValues.put("commercialRate", Integer.parseInt(edtRateOfEconomicPotatoContent.isEmpty() ? "0" : edtRateOfEconomicPotatoContent));
+                contentValues.put("commercialRate", Float.parseFloat(edtRateOfEconomicPotatoContent.isEmpty() ? "0" : edtRateOfEconomicPotatoContent));
                 //小区产量1
                 String edtSmallSectionYield1Content = edtSmallSectionYield1.getText().toString();
-                contentValues.put("plotYield1", Integer.parseInt(edtSmallSectionYield1Content.isEmpty() ? "0" : edtSmallSectionYield1Content));
+                contentValues.put("plotYield1", Float.parseFloat(edtSmallSectionYield1Content.isEmpty() ? "0" : edtSmallSectionYield1Content));
                 //小区产量2
                 String edtSmallSectionYield2Content = edtSmallSectionYield2.getText().toString();
-                contentValues.put("plotYield2", Integer.parseInt(edtSmallSectionYield2Content.isEmpty() ? "0" : edtSmallSectionYield2Content));
+                contentValues.put("plotYield2", Float.parseFloat(edtSmallSectionYield2Content.isEmpty() ? "0" : edtSmallSectionYield2Content));
                 //小区产量3
                 String edtSmallSectionYield3Content = edtSmallSectionYield3.getText().toString();
-                contentValues.put("plotYield3", Integer.parseInt(edtSmallSectionYield3Content.isEmpty() ? "0" : edtSmallSectionYield3Content));
+                contentValues.put("plotYield3", Float.parseFloat(edtSmallSectionYield3Content.isEmpty() ? "0" : edtSmallSectionYield3Content));
                 //亩产量
                 String edtPerMuYieldContent = edtPerMuYield.getText().toString();
-                contentValues.put("acreYield", Integer.parseInt(edtPerMuYieldContent.isEmpty() ? "0" : edtPerMuYieldContent));
+                contentValues.put("acreYield", Float.parseFloat(edtPerMuYieldContent.isEmpty() ? "0" : edtPerMuYieldContent));
                 //大薯十株株高
                 //bigPlantHeight1
                 String edtPlantHeightOfBigPotatoContent1 = edtBigPotatoHeight1.getText().toString();
-                contentValues.put("bigPlantHeight1", Integer.parseInt(edtPlantHeightOfBigPotatoContent1.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent1));
+                contentValues.put("bigPlantHeight1", Float.parseFloat(edtPlantHeightOfBigPotatoContent1.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent1));
                 //bigPlantHeight2
                 String edtPlantHeightOfBigPotatoContent2 = edtBigPotatoHeight2.getText().toString();
-                contentValues.put("bigPlantHeight2", Integer.parseInt(edtPlantHeightOfBigPotatoContent2.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent2));
+                contentValues.put("bigPlantHeight2", Float.parseFloat(edtPlantHeightOfBigPotatoContent2.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent2));
                 //bigPlantHeight3
                 String edtPlantHeightOfBigPotatoContent3 = edtBigPotatoHeight3.getText().toString();
-                contentValues.put("bigPlantHeight3", Integer.parseInt(edtPlantHeightOfBigPotatoContent3.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent3));
+                contentValues.put("bigPlantHeight3", Float.parseFloat(edtPlantHeightOfBigPotatoContent3.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent3));
                 //bigPlantHeight4
                 String edtPlantHeightOfBigPotatoContent4 = edtBigPotatoHeight4.getText().toString();
-                contentValues.put("bigPlantHeight4", Integer.parseInt(edtPlantHeightOfBigPotatoContent4.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent4));
+                contentValues.put("bigPlantHeight4", Float.parseFloat(edtPlantHeightOfBigPotatoContent4.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent4));
                 //bigPlantHeight5
                 String edtPlantHeightOfBigPotatoContent5 = edtBigPotatoHeight5.getText().toString();
-                contentValues.put("bigPlantHeight5", Integer.parseInt(edtPlantHeightOfBigPotatoContent5.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent5));
+                contentValues.put("bigPlantHeight5", Float.parseFloat(edtPlantHeightOfBigPotatoContent5.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent5));
                 //bigPlantHeight6
                 String edtPlantHeightOfBigPotatoContent6 = edtBigPotatoHeight6.getText().toString();
-                contentValues.put("bigPlantHeight6", Integer.parseInt(edtPlantHeightOfBigPotatoContent6.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent6));
+                contentValues.put("bigPlantHeight6", Float.parseFloat(edtPlantHeightOfBigPotatoContent6.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent6));
                 //bigPlantHeight7
                 String edtPlantHeightOfBigPotatoContent7 = edtBigPotatoHeight7.getText().toString();
-                contentValues.put("bigPlantHeight7", Integer.parseInt(edtPlantHeightOfBigPotatoContent7.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent7));
+                contentValues.put("bigPlantHeight7", Float.parseFloat(edtPlantHeightOfBigPotatoContent7.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent7));
                 //bigPlantHeight8
                 String edtPlantHeightOfBigPotatoContent8 = edtBigPotatoHeight8.getText().toString();
-                contentValues.put("bigPlantHeight8", Integer.parseInt(edtPlantHeightOfBigPotatoContent8.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent8));
+                contentValues.put("bigPlantHeight8", Float.parseFloat(edtPlantHeightOfBigPotatoContent8.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent8));
                 //bigPlantHeight9
                 String edtPlantHeightOfBigPotatoContent9 = edtBigPotatoHeight9.getText().toString();
-                contentValues.put("bigPlantHeight9", Integer.parseInt(edtPlantHeightOfBigPotatoContent9.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent9));
+                contentValues.put("bigPlantHeight9", Float.parseFloat(edtPlantHeightOfBigPotatoContent9.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent9));
                 //bigPlantHeight10
                 String edtPlantHeightOfBigPotatoContent10 = edtBigPotatoHeight10.getText().toString();
-                contentValues.put("bigPlantHeight10", Integer.parseInt(edtPlantHeightOfBigPotatoContent10.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent10));
+                contentValues.put("bigPlantHeight10", Float.parseFloat(edtPlantHeightOfBigPotatoContent10.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent10));
 
-                //大薯平均株高
+                //平均株高
                 String edtAveragePlantHeightContentOfBigPotato = edtAveragePlantHeightOfBigPotato.getText().toString();
-                contentValues.put("plantHeightAvg", Integer.parseInt(edtAveragePlantHeightContentOfBigPotato.isEmpty() ? "0" : edtAveragePlantHeightContentOfBigPotato));
+                contentValues.put("plantHeightAvg", Float.parseFloat(edtAveragePlantHeightContentOfBigPotato.isEmpty() ? "0" : edtAveragePlantHeightContentOfBigPotato));
                 //大薯十株分支数
-                //十株的分支数一起暂存到本地，上传时可以拆分成 bigBranchNumber1,bigBranchNumber2,bigBranchNumber3....
                 //bigBranchNumber1
                 String edtBranchNumOfTBigPotatoContent1 = edtBranchNumOfBigPotato1.getText().toString();
                 contentValues.put("bigBranchNumber1", Integer.parseInt(edtBranchNumOfTBigPotatoContent1.isEmpty() ? "0" : edtBranchNumOfTBigPotatoContent1));
@@ -687,11 +696,50 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 contentValues.put("bigBranchNumber10", Integer.parseInt(edtBranchNumOfTBigPotatoContent10.isEmpty() ? "0" : edtBranchNumOfTBigPotatoContent10));
                 //平均分支数
                 String edtAverageBranchNumOfBigPotatoContent = edtAverageBranchNumOfBigPotato.getText().toString();
-                contentValues.put("branchNumberAvg", Integer.parseInt(edtAverageBranchNumOfBigPotatoContent.isEmpty() ? "0" : edtAverageBranchNumOfBigPotatoContent));
+                contentValues.put("branchNumberAvg", Float.parseFloat(edtAverageBranchNumOfBigPotatoContent.isEmpty() ? "0" : edtAverageBranchNumOfBigPotatoContent));
                 //十株测产
-                //十株株高一起暂存到本地，上传时可以拆分成 bigYield1,bigYield2,bigYield3....
-//                String edtYieldMonitoringOfTenPlantsContent = edtYieldMonitoringOfTenPlants.getText().toString();
-//                contentValues.put("bigYield", Integer.parseInt(edtYieldMonitoringOfTenPlantsContent.isEmpty() ? "0" : edtYieldMonitoringOfTenPlantsContent));
+                //大薯十株测产
+                String edtYieldMonitoringOfBigPotatoContent1 = edtYieldMonitoringOfBigPotato1.getText().toString();
+                contentValues.put("bigYield1", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent1.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent1));
+                String edtYieldMonitoringOfBigPotatoContent2 = edtYieldMonitoringOfBigPotato2.getText().toString();
+                contentValues.put("bigYield2", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent2.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent2));
+                String edtYieldMonitoringOfBigPotatoContent3 = edtYieldMonitoringOfBigPotato3.getText().toString();
+                contentValues.put("bigYield3", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent3.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent3));
+                String edtYieldMonitoringOfBigPotatoContent4 = edtYieldMonitoringOfBigPotato4.getText().toString();
+                contentValues.put("bigYield4", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent4.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent4));
+                String edtYieldMonitoringOfBigPotatoContent5 = edtYieldMonitoringOfBigPotato5.getText().toString();
+                contentValues.put("bigYield5", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent5.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent5));
+                String edtYieldMonitoringOfBigPotatoContent6 = edtYieldMonitoringOfBigPotato6.getText().toString();
+                contentValues.put("bigYield6", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent6.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent6));
+                String edtYieldMonitoringOfBigPotatoContent7 = edtYieldMonitoringOfBigPotato7.getText().toString();
+                contentValues.put("bigYield7", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent7.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent7));
+                String edtYieldMonitoringOfBigPotatoContent8 = edtYieldMonitoringOfBigPotato8.getText().toString();
+                contentValues.put("bigYield8", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent8.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent8));
+                String edtYieldMonitoringOfBigPotatoContent9 = edtYieldMonitoringOfBigPotato9.getText().toString();
+                contentValues.put("bigYield9", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent9.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent9));
+                String edtYieldMonitoringOfBigPotatoContent10 = edtYieldMonitoringOfBigPotato10.getText().toString();
+                contentValues.put("bigYield10", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent10.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent10));
+                //小薯十株测产
+                String edtYieldMonitoringOfSmallPotatoContent1 = edtYieldMonitoringOfSmallPotato1.getText().toString();
+                contentValues.put("smalYield1", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent1.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent1));
+                String edtYieldMonitoringOfSmallPotatoContent2 = edtYieldMonitoringOfSmallPotato2.getText().toString();
+                contentValues.put("smalYield2", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent2.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent2));
+                String edtYieldMonitoringOfSmallPotatoContent3 = edtYieldMonitoringOfSmallPotato3.getText().toString();
+                contentValues.put("smalYield3", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent3.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent3));
+                String edtYieldMonitoringOfSmallPotatoContent4 = edtYieldMonitoringOfSmallPotato4.getText().toString();
+                contentValues.put("smalYield4", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent4.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent4));
+                String edtYieldMonitoringOfSmallPotatoContent5 = edtYieldMonitoringOfSmallPotato5.getText().toString();
+                contentValues.put("smalYield5", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent5.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent5));
+                String edtYieldMonitoringOfSmallPotatoContent6 = edtYieldMonitoringOfSmallPotato6.getText().toString();
+                contentValues.put("smalYield6", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent6.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent6));
+                String edtYieldMonitoringOfSmallPotatoContent7 = edtYieldMonitoringOfSmallPotato7.getText().toString();
+                contentValues.put("smalYield7", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent7.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent7));
+                String edtYieldMonitoringOfSmallPotatoContent8 = edtYieldMonitoringOfSmallPotato8.getText().toString();
+                contentValues.put("smalYield8", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent8.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent8));
+                String edtYieldMonitoringOfSmallPotatoContent9 = edtYieldMonitoringOfSmallPotato9.getText().toString();
+                contentValues.put("smalYield9", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent9.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent9));
+                String edtYieldMonitoringOfSmallPotatoContent10 = edtYieldMonitoringOfSmallPotato10.getText().toString();
+                contentValues.put("smalYield10", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent10.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent10));
 
                 contentValues.put("img1", pathColor);
 
@@ -926,16 +974,80 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
             case R.id.mature_period:
                 showDatePickerDialog(edtMaturePeriod);
                 break;
-            //计算十株平均株高
-//            case R.id.btn_compute_average_plant_height:
-//                edtAveragePlantHeight.setText(
-//                        getAverage(edtTenPlantHeight.getText().toString(),"株高"));
-//                break;
+            //计算商品薯率
+            case R.id.btn_compute_rate_of_economic_potato:
+                float edtFloatNumOfLargeAndMediumPotatoesContent = Float.parseFloat(edtNumOfLargeAndMediumPotatoes.getText().toString().isEmpty()?"0":
+                        edtNumOfLargeAndMediumPotatoes.getText().toString());
+                float edtFloatNumOfSmallPotatoesContent = Float.parseFloat(edtNumOfSmallPotatoes.getText().toString().isEmpty()?"0":
+                        edtNumOfSmallPotatoes.getText().toString());
+                float rateOfEconomicPotato = edtFloatNumOfLargeAndMediumPotatoesContent / (edtFloatNumOfLargeAndMediumPotatoesContent + edtFloatNumOfSmallPotatoesContent);
+                edtRateOfEconomicPotato.setText(decimalFormat.format(rateOfEconomicPotato));
+                break;
+            //计算亩产量
+            case R.id.btn_compute_average_per_mu_yield:
+                float smallSectionYield1 = Float.parseFloat(edtSmallSectionYield1.getText().toString().isEmpty()?"0":
+                        edtSmallSectionYield1.getText().toString());
+                float smallSectionYield2 = Float.parseFloat(edtSmallSectionYield2.getText().toString().isEmpty()?"0":
+                        edtSmallSectionYield2.getText().toString());
+                float smallSectionYield3 = Float.parseFloat(edtSmallSectionYield3.getText().toString().isEmpty()?"0":
+                        edtSmallSectionYield3.getText().toString());
+                //利用DecimalFormat进行解析
+                float perMuYield = (smallSectionYield1 + smallSectionYield2 + smallSectionYield3) / 3;
+                edtPerMuYield.setText(decimalFormat.format(perMuYield));
+                break;
+//            计算十株平均株高
+            case R.id.btn_compute_average_plant_height:
+                float edtBigPotatoHeightContent1 = Float.parseFloat(edtBigPotatoHeight1.getText().toString().isEmpty()?"0":
+                        edtBigPotatoHeight1.getText().toString());
+                float edtBigPotatoHeightContent2 = Float.parseFloat(edtBigPotatoHeight2.getText().toString().isEmpty()?"0":
+                        edtBigPotatoHeight2.getText().toString());
+                float edtBigPotatoHeightContent3 = Float.parseFloat(edtBigPotatoHeight3.getText().toString().isEmpty()?"0":
+                        edtBigPotatoHeight3.getText().toString());
+                float edtBigPotatoHeightContent4 = Float.parseFloat(edtBigPotatoHeight4.getText().toString().isEmpty()?"0":
+                        edtBigPotatoHeight4.getText().toString());
+                float edtBigPotatoHeightContent5 = Float.parseFloat(edtBigPotatoHeight5.getText().toString().isEmpty()?"0":
+                        edtBigPotatoHeight5.getText().toString());
+                float edtBigPotatoHeightContent6 = Float.parseFloat(edtBigPotatoHeight6.getText().toString().isEmpty()?"0":
+                        edtBigPotatoHeight6.getText().toString());
+                float edtBigPotatoHeightContent7 = Float.parseFloat(edtBigPotatoHeight7.getText().toString().isEmpty()?"0":
+                        edtBigPotatoHeight7.getText().toString());
+                float edtBigPotatoHeightContent8 = Float.parseFloat(edtBigPotatoHeight8.getText().toString().isEmpty()?"0":
+                        edtBigPotatoHeight8.getText().toString());
+                float edtBigPotatoHeightContent9 = Float.parseFloat(edtBigPotatoHeight9.getText().toString().isEmpty()?"0":
+                        edtBigPotatoHeight9.getText().toString());
+                float edtBigPotatoHeightContent10 = Float.parseFloat(edtBigPotatoHeight10.getText().toString().isEmpty()?"0":
+                        edtBigPotatoHeight10.getText().toString());
+                float avergePlantHeight = (edtBigPotatoHeightContent1 + edtBigPotatoHeightContent2 + edtBigPotatoHeightContent3
+                        + edtBigPotatoHeightContent4 + edtBigPotatoHeightContent5 + edtBigPotatoHeightContent6 + edtBigPotatoHeightContent7
+                        + edtBigPotatoHeightContent8 + edtBigPotatoHeightContent9 + edtBigPotatoHeightContent10) / 10;
+                edtAveragePlantHeightOfBigPotato.setText(decimalFormat.format(avergePlantHeight));
+                break;
             //计算十株平均分支数
             case R.id.btn_compute_average_branch_num:
-//                edtAverageBranchNum.setText(
-//                        getAverage(edtBranchNumOfTenPlants.getText().toString(), "分支数")
-//                );
+                int edtBranchNumOfBigPotatoContent1 = Integer.parseInt(edtBranchNumOfBigPotato1.getText().toString().isEmpty()?"0":
+                        edtBranchNumOfBigPotato1.getText().toString());
+                int edtBranchNumOfBigPotatoContent2 = Integer.parseInt(edtBranchNumOfBigPotato2.getText().toString().isEmpty()?"0":
+                        edtBranchNumOfBigPotato2.getText().toString());
+                int edtBranchNumOfBigPotatoContent3 = Integer.parseInt(edtBranchNumOfBigPotato3.getText().toString().isEmpty()?"0":
+                        edtBranchNumOfBigPotato3.getText().toString());
+                int edtBranchNumOfBigPotatoContent4 = Integer.parseInt(edtBranchNumOfBigPotato4.getText().toString().isEmpty()?"0":
+                        edtBranchNumOfBigPotato4.getText().toString());
+                int edtBranchNumOfBigPotatoContent5 = Integer.parseInt(edtBranchNumOfBigPotato5.getText().toString().isEmpty()?"0":
+                        edtBranchNumOfBigPotato5.getText().toString());
+                int edtBranchNumOfBigPotatoContent6 = Integer.parseInt(edtBranchNumOfBigPotato6.getText().toString().isEmpty()?"0":
+                        edtBranchNumOfBigPotato6.getText().toString());
+                int edtBranchNumOfBigPotatoContent7 = Integer.parseInt(edtBranchNumOfBigPotato7.getText().toString().isEmpty()?"0":
+                        edtBranchNumOfBigPotato7.getText().toString());
+                int edtBranchNumOfBigPotatoContent8 = Integer.parseInt(edtBranchNumOfBigPotato8.getText().toString().isEmpty()?"0":
+                        edtBranchNumOfBigPotato8.getText().toString());
+                int edtBranchNumOfBigPotatoContent9 = Integer.parseInt(edtBranchNumOfBigPotato9.getText().toString().isEmpty()?"0":
+                        edtBranchNumOfBigPotato9.getText().toString());
+                int edtBranchNumOfBigPotatoContent10 = Integer.parseInt(edtBranchNumOfBigPotato10.getText().toString().isEmpty()?"0":
+                        edtBranchNumOfBigPotato10.getText().toString());
+                float averageBranchNum = (float) ((edtBranchNumOfBigPotatoContent1 + edtBranchNumOfBigPotatoContent2 + edtBranchNumOfBigPotatoContent3
+                                        + edtBranchNumOfBigPotatoContent4 + edtBranchNumOfBigPotatoContent5 + edtBranchNumOfBigPotatoContent6 + edtBranchNumOfBigPotatoContent7
+                                        + edtBranchNumOfBigPotatoContent8 + edtBranchNumOfBigPotatoContent9 + edtBranchNumOfBigPotatoContent10) / 10.0);
+                edtAverageBranchNumOfBigPotato.setText(decimalFormat.format(averageBranchNum));
                 break;
             default:
         }
