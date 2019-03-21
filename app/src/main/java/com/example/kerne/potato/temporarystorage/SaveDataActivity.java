@@ -540,208 +540,214 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 Intent intent_speciesId = getIntent();
                 speciesId = intent_speciesId.getStringExtra("speciesId");
 
-                ContentValues contentValues = new ContentValues();
-                //开始组装数据
-                //品种id
-                contentValues.put("speciesId", speciesId);
-                //实验类型
-                contentValues.put("experimentType", edtExperimentType.getText().toString());
-                //播种期
-                contentValues.put("plantingDate", edtSowingPeriodInput.getText().toString());
-                //出苗期
-                contentValues.put("emergenceDate", edtEmergencePeriod.getText().toString());
-                //出苗率
-                String edtRateOfEmergenceContent = edtRateOfEmergence.getText().toString();
-                contentValues.put("sproutRate", Integer.parseInt(edtRateOfEmergenceContent.isEmpty() ? "0" : edtRateOfEmergenceContent));
-                //现蕾期
-                contentValues.put("squaringStage", edtSquaringPeriod.getText().toString());
-                //开花期
-                contentValues.put("blooming", edtFloweringPeriod.getText().toString());
-                //叶颜色
-                contentValues.put("leafColour", spnLeafColor.getSelectedItem().toString());
-                //花冠色
-                contentValues.put("corollaColour", spnCorollaColors.getSelectedItem().toString());
-                //花繁茂性
-                contentValues.put("flowering", spnPlantFlourish.getSelectedItem().toString());
-                //茎色
-                contentValues.put("stemColour", spnStemColor.getSelectedItem().toString());
-                //天然结实性
-                contentValues.put("openpollinated", spnNaturalFecundity.getSelectedItem().toString());
-                //成熟期
-                contentValues.put("maturingStage", edtMaturePeriod.getText().toString());
-                //生育日数
-                String edtGrowingDaysContent = edtGrowingDays.getText().toString();
-                contentValues.put("growingPeriod", Integer.parseInt(edtGrowingDaysContent.isEmpty() ? "0" : edtGrowingDaysContent));
-                //块茎整齐度
-                contentValues.put("uniformityOfTuberSize", spnTuberUniformity.getSelectedItem().toString());
-                //薯型
-                contentValues.put("tuberShape", spnTuberShape.getSelectedItem().toString());
-                //薯皮光滑度
-                contentValues.put("skinSmoothness", spnPotatoSkinSmoothness.getSelectedItem().toString());
-                //芽眼深浅
-                contentValues.put("eyeDepth", spnEye.getSelectedItem().toString());
-                //皮色
-                contentValues.put("skinColour", spnSkinColor.getSelectedItem().toString());
-                //肉色
-                contentValues.put("fleshColour", spnFleshColor.getSelectedItem().toString());
-                //是否入选 对应isChoozen字段
-                int checkedRadioButtonId = rgWhetherToBeIncluded.getCheckedRadioButtonId();
-                Boolean checkedRadioButtonContent;
-                switch (checkedRadioButtonId) {
-                    case R.id.no:
-                        checkedRadioButtonContent = false;
-                        break;
-                    case R.id.yes:
-                    default:
-                        checkedRadioButtonContent = true;
+                ContentValues contentValues = null;
+                try {
+                    contentValues = new ContentValues();
+                    //开始组装数据
+                    //品种id
+                    contentValues.put("speciesId", speciesId);
+                    //实验类型
+                    contentValues.put("experimentType", edtExperimentType.getText().toString());
+                    //播种期
+                    contentValues.put("plantingDate", edtSowingPeriodInput.getText().toString());
+                    //出苗期
+                    contentValues.put("emergenceDate", edtEmergencePeriod.getText().toString());
+                    //出苗率
+                    String edtRateOfEmergenceContent = edtRateOfEmergence.getText().toString();
+                    contentValues.put("sproutRate", Integer.parseInt(edtRateOfEmergenceContent.isEmpty() ? "0" : edtRateOfEmergenceContent));
+                    //现蕾期
+                    contentValues.put("squaringStage", edtSquaringPeriod.getText().toString());
+                    //开花期
+                    contentValues.put("blooming", edtFloweringPeriod.getText().toString());
+                    //叶颜色
+                    contentValues.put("leafColour", spnLeafColor.getSelectedItem().toString());
+                    //花冠色
+                    contentValues.put("corollaColour", spnCorollaColors.getSelectedItem().toString());
+                    //花繁茂性
+                    contentValues.put("flowering", spnPlantFlourish.getSelectedItem().toString());
+                    //茎色
+                    contentValues.put("stemColour", spnStemColor.getSelectedItem().toString());
+                    //天然结实性
+                    contentValues.put("openpollinated", spnNaturalFecundity.getSelectedItem().toString());
+                    //成熟期
+                    contentValues.put("maturingStage", edtMaturePeriod.getText().toString());
+                    //生育日数
+                    String edtGrowingDaysContent = edtGrowingDays.getText().toString();
+                    contentValues.put("growingPeriod", Integer.parseInt(edtGrowingDaysContent.isEmpty() ? "0" : edtGrowingDaysContent));
+                    //块茎整齐度
+                    contentValues.put("uniformityOfTuberSize", spnTuberUniformity.getSelectedItem().toString());
+                    //薯型
+                    contentValues.put("tuberShape", spnTuberShape.getSelectedItem().toString());
+                    //薯皮光滑度
+                    contentValues.put("skinSmoothness", spnPotatoSkinSmoothness.getSelectedItem().toString());
+                    //芽眼深浅
+                    contentValues.put("eyeDepth", spnEye.getSelectedItem().toString());
+                    //皮色
+                    contentValues.put("skinColour", spnSkinColor.getSelectedItem().toString());
+                    //肉色
+                    contentValues.put("fleshColour", spnFleshColor.getSelectedItem().toString());
+                    //是否入选 对应isChoozen字段
+                    int checkedRadioButtonId = rgWhetherToBeIncluded.getCheckedRadioButtonId();
+                    Boolean checkedRadioButtonContent;
+                    switch (checkedRadioButtonId) {
+                        case R.id.no:
+                            checkedRadioButtonContent = false;
+                            break;
+                        case R.id.yes:
+                        default:
+                            checkedRadioButtonContent = true;
+                    }
+                    contentValues.put("isChoozen",  checkedRadioButtonContent);
+                    //备注
+                    contentValues.put("remark", edtRemark.getText().toString());
+                    //收获株数
+                    String edtNumOfHarvestedPlantsContent = edtNumOfHarvestedPlants.getText().toString();
+                    contentValues.put("harvestNum", Integer.parseInt(edtNumOfHarvestedPlantsContent.isEmpty() ? "0" : edtNumOfHarvestedPlantsContent));
+                    //大中薯数
+                    String edtNumOfLargeAndMediumPotatoesContent = edtNumOfLargeAndMediumPotatoes.getText().toString();
+                    contentValues.put("lmNum", Integer.parseInt(edtNumOfLargeAndMediumPotatoesContent.isEmpty() ? "0" : edtNumOfLargeAndMediumPotatoesContent));
+                    //大中薯重
+                    String edtWeightOfLargeAndMediumPotatoesContent = edtWeightOfLargeAndMediumPotatoes.getText().toString();
+                    contentValues.put("lmWeight", Integer.parseInt(edtWeightOfLargeAndMediumPotatoesContent.isEmpty() ? "0" : edtWeightOfLargeAndMediumPotatoesContent));
+                    //小薯数
+                    String edtNumOfSmallPotatoesContent = edtNumOfSmallPotatoes.getText().toString();
+                    contentValues.put("sNum", Integer.parseInt(edtNumOfSmallPotatoesContent.isEmpty() ? "0" : edtNumOfSmallPotatoesContent));
+                    //小薯重
+                    String edtWeightOfSmallPotatoesContent = edtWeightOfSmallPotatoes.getText().toString();
+                    contentValues.put("sWeight", Integer.parseInt(edtWeightOfSmallPotatoesContent.isEmpty() ? "0" : edtWeightOfSmallPotatoesContent));
+                    //商品薯率
+                    String edtRateOfEconomicPotatoContent = edtRateOfEconomicPotato.getText().toString();
+                    contentValues.put("commercialRate", Float.parseFloat(edtRateOfEconomicPotatoContent.isEmpty() ? "0" : edtRateOfEconomicPotatoContent));
+                    //小区产量1
+                    String edtSmallSectionYield1Content = edtSmallSectionYield1.getText().toString();
+                    contentValues.put("plotYield1", Float.parseFloat(edtSmallSectionYield1Content.isEmpty() ? "0" : edtSmallSectionYield1Content));
+                    //小区产量2
+                    String edtSmallSectionYield2Content = edtSmallSectionYield2.getText().toString();
+                    contentValues.put("plotYield2", Float.parseFloat(edtSmallSectionYield2Content.isEmpty() ? "0" : edtSmallSectionYield2Content));
+                    //小区产量3
+                    String edtSmallSectionYield3Content = edtSmallSectionYield3.getText().toString();
+                    contentValues.put("plotYield3", Float.parseFloat(edtSmallSectionYield3Content.isEmpty() ? "0" : edtSmallSectionYield3Content));
+                    //亩产量
+                    String edtPerMuYieldContent = edtPerMuYield.getText().toString();
+                    contentValues.put("acreYield", Float.parseFloat(edtPerMuYieldContent.isEmpty() ? "0" : edtPerMuYieldContent));
+                    //大薯十株株高
+                    //bigPlantHeight1
+                    String edtPlantHeightOfBigPotatoContent1 = edtBigPotatoHeight1.getText().toString();
+                    contentValues.put("bigPlantHeight1", Float.parseFloat(edtPlantHeightOfBigPotatoContent1.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent1));
+                    //bigPlantHeight2
+                    String edtPlantHeightOfBigPotatoContent2 = edtBigPotatoHeight2.getText().toString();
+                    contentValues.put("bigPlantHeight2", Float.parseFloat(edtPlantHeightOfBigPotatoContent2.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent2));
+                    //bigPlantHeight3
+                    String edtPlantHeightOfBigPotatoContent3 = edtBigPotatoHeight3.getText().toString();
+                    contentValues.put("bigPlantHeight3", Float.parseFloat(edtPlantHeightOfBigPotatoContent3.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent3));
+                    //bigPlantHeight4
+                    String edtPlantHeightOfBigPotatoContent4 = edtBigPotatoHeight4.getText().toString();
+                    contentValues.put("bigPlantHeight4", Float.parseFloat(edtPlantHeightOfBigPotatoContent4.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent4));
+                    //bigPlantHeight5
+                    String edtPlantHeightOfBigPotatoContent5 = edtBigPotatoHeight5.getText().toString();
+                    contentValues.put("bigPlantHeight5", Float.parseFloat(edtPlantHeightOfBigPotatoContent5.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent5));
+                    //bigPlantHeight6
+                    String edtPlantHeightOfBigPotatoContent6 = edtBigPotatoHeight6.getText().toString();
+                    contentValues.put("bigPlantHeight6", Float.parseFloat(edtPlantHeightOfBigPotatoContent6.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent6));
+                    //bigPlantHeight7
+                    String edtPlantHeightOfBigPotatoContent7 = edtBigPotatoHeight7.getText().toString();
+                    contentValues.put("bigPlantHeight7", Float.parseFloat(edtPlantHeightOfBigPotatoContent7.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent7));
+                    //bigPlantHeight8
+                    String edtPlantHeightOfBigPotatoContent8 = edtBigPotatoHeight8.getText().toString();
+                    contentValues.put("bigPlantHeight8", Float.parseFloat(edtPlantHeightOfBigPotatoContent8.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent8));
+                    //bigPlantHeight9
+                    String edtPlantHeightOfBigPotatoContent9 = edtBigPotatoHeight9.getText().toString();
+                    contentValues.put("bigPlantHeight9", Float.parseFloat(edtPlantHeightOfBigPotatoContent9.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent9));
+                    //bigPlantHeight10
+                    String edtPlantHeightOfBigPotatoContent10 = edtBigPotatoHeight10.getText().toString();
+                    contentValues.put("bigPlantHeight10", Float.parseFloat(edtPlantHeightOfBigPotatoContent10.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent10));
+
+                    //平均株高
+                    String edtAveragePlantHeightContentOfBigPotato = edtAveragePlantHeightOfBigPotato.getText().toString();
+                    contentValues.put("plantHeightAvg", Float.parseFloat(edtAveragePlantHeightContentOfBigPotato.isEmpty() ? "0" : edtAveragePlantHeightContentOfBigPotato));
+                    //大薯十株分支数
+                    //bigBranchNumber1
+                    String edtBranchNumOfTBigPotatoContent1 = edtBranchNumOfBigPotato1.getText().toString();
+                    contentValues.put("bigBranchNumber1", Integer.parseInt(edtBranchNumOfTBigPotatoContent1.isEmpty() ? "0" : edtBranchNumOfTBigPotatoContent1));
+                    //bigBranchNumber2
+                    String edtBranchNumOfTBigPotatoContent2 = edtBranchNumOfBigPotato2.getText().toString();
+                    contentValues.put("bigBranchNumber2", Integer.parseInt(edtBranchNumOfTBigPotatoContent2.isEmpty() ? "0" : edtBranchNumOfTBigPotatoContent2));
+                    //bigBranchNumber3
+                    String edtBranchNumOfTBigPotatoContent3 = edtBranchNumOfBigPotato3.getText().toString();
+                    contentValues.put("bigBranchNumber3", Integer.parseInt(edtBranchNumOfTBigPotatoContent3.isEmpty() ? "0" : edtBranchNumOfTBigPotatoContent3));
+                    //bigBranchNumber4
+                    String edtBranchNumOfTBigPotatoContent4 = edtBranchNumOfBigPotato4.getText().toString();
+                    contentValues.put("bigBranchNumber4", Integer.parseInt(edtBranchNumOfTBigPotatoContent4.isEmpty() ? "0" : edtBranchNumOfTBigPotatoContent4));
+                    //bigBranchNumber5
+                    String edtBranchNumOfTBigPotatoContent5 = edtBranchNumOfBigPotato5.getText().toString();
+                    contentValues.put("bigBranchNumber5", Integer.parseInt(edtBranchNumOfTBigPotatoContent5.isEmpty() ? "0" : edtBranchNumOfTBigPotatoContent5));
+                    //bigBranchNumber6
+                    String edtBranchNumOfTBigPotatoContent6 = edtBranchNumOfBigPotato6.getText().toString();
+                    contentValues.put("bigBranchNumber5", Integer.parseInt(edtBranchNumOfTBigPotatoContent5.isEmpty() ? "0" : edtBranchNumOfTBigPotatoContent5));
+                    //bigBranchNumber7
+                    String edtBranchNumOfTBigPotatoContent7 = edtBranchNumOfBigPotato7.getText().toString();
+                    contentValues.put("bigBranchNumber7", Integer.parseInt(edtBranchNumOfTBigPotatoContent7.isEmpty() ? "0" : edtBranchNumOfTBigPotatoContent7));
+                    //bigBranchNumber8
+                    String edtBranchNumOfTBigPotatoContent8 = edtBranchNumOfBigPotato8.getText().toString();
+                    contentValues.put("bigBranchNumber8", Integer.parseInt(edtBranchNumOfTBigPotatoContent8.isEmpty() ? "0" : edtBranchNumOfTBigPotatoContent8));
+                    //bigBranchNumber9
+                    String edtBranchNumOfTBigPotatoContent9 = edtBranchNumOfBigPotato9.getText().toString();
+                    contentValues.put("bigBranchNumber9", Integer.parseInt(edtBranchNumOfTBigPotatoContent9.isEmpty() ? "0" : edtBranchNumOfTBigPotatoContent9));
+                    //bigBranchNumber10
+                    String edtBranchNumOfTBigPotatoContent10 = edtBranchNumOfBigPotato10.getText().toString();
+                    contentValues.put("bigBranchNumber10", Integer.parseInt(edtBranchNumOfTBigPotatoContent10.isEmpty() ? "0" : edtBranchNumOfTBigPotatoContent10));
+                    //平均分支数
+                    String edtAverageBranchNumOfBigPotatoContent = edtAverageBranchNumOfBigPotato.getText().toString();
+                    contentValues.put("branchNumberAvg", Float.parseFloat(edtAverageBranchNumOfBigPotatoContent.isEmpty() ? "0" : edtAverageBranchNumOfBigPotatoContent));
+                    //十株测产
+                    //大薯十株测产
+                    String edtYieldMonitoringOfBigPotatoContent1 = edtYieldMonitoringOfBigPotato1.getText().toString();
+                    contentValues.put("bigYield1", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent1.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent1));
+                    String edtYieldMonitoringOfBigPotatoContent2 = edtYieldMonitoringOfBigPotato2.getText().toString();
+                    contentValues.put("bigYield2", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent2.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent2));
+                    String edtYieldMonitoringOfBigPotatoContent3 = edtYieldMonitoringOfBigPotato3.getText().toString();
+                    contentValues.put("bigYield3", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent3.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent3));
+                    String edtYieldMonitoringOfBigPotatoContent4 = edtYieldMonitoringOfBigPotato4.getText().toString();
+                    contentValues.put("bigYield4", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent4.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent4));
+                    String edtYieldMonitoringOfBigPotatoContent5 = edtYieldMonitoringOfBigPotato5.getText().toString();
+                    contentValues.put("bigYield5", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent5.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent5));
+                    String edtYieldMonitoringOfBigPotatoContent6 = edtYieldMonitoringOfBigPotato6.getText().toString();
+                    contentValues.put("bigYield6", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent6.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent6));
+                    String edtYieldMonitoringOfBigPotatoContent7 = edtYieldMonitoringOfBigPotato7.getText().toString();
+                    contentValues.put("bigYield7", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent7.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent7));
+                    String edtYieldMonitoringOfBigPotatoContent8 = edtYieldMonitoringOfBigPotato8.getText().toString();
+                    contentValues.put("bigYield8", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent8.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent8));
+                    String edtYieldMonitoringOfBigPotatoContent9 = edtYieldMonitoringOfBigPotato9.getText().toString();
+                    contentValues.put("bigYield9", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent9.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent9));
+                    String edtYieldMonitoringOfBigPotatoContent10 = edtYieldMonitoringOfBigPotato10.getText().toString();
+                    contentValues.put("bigYield10", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent10.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent10));
+                    //小薯十株测产
+                    String edtYieldMonitoringOfSmallPotatoContent1 = edtYieldMonitoringOfSmallPotato1.getText().toString();
+                    contentValues.put("smalYield1", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent1.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent1));
+                    String edtYieldMonitoringOfSmallPotatoContent2 = edtYieldMonitoringOfSmallPotato2.getText().toString();
+                    contentValues.put("smalYield2", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent2.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent2));
+                    String edtYieldMonitoringOfSmallPotatoContent3 = edtYieldMonitoringOfSmallPotato3.getText().toString();
+                    contentValues.put("smalYield3", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent3.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent3));
+                    String edtYieldMonitoringOfSmallPotatoContent4 = edtYieldMonitoringOfSmallPotato4.getText().toString();
+                    contentValues.put("smalYield4", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent4.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent4));
+                    String edtYieldMonitoringOfSmallPotatoContent5 = edtYieldMonitoringOfSmallPotato5.getText().toString();
+                    contentValues.put("smalYield5", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent5.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent5));
+                    String edtYieldMonitoringOfSmallPotatoContent6 = edtYieldMonitoringOfSmallPotato6.getText().toString();
+                    contentValues.put("smalYield6", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent6.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent6));
+                    String edtYieldMonitoringOfSmallPotatoContent7 = edtYieldMonitoringOfSmallPotato7.getText().toString();
+                    contentValues.put("smalYield7", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent7.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent7));
+                    String edtYieldMonitoringOfSmallPotatoContent8 = edtYieldMonitoringOfSmallPotato8.getText().toString();
+                    contentValues.put("smalYield8", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent8.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent8));
+                    String edtYieldMonitoringOfSmallPotatoContent9 = edtYieldMonitoringOfSmallPotato9.getText().toString();
+                    contentValues.put("smalYield9", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent9.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent9));
+                    String edtYieldMonitoringOfSmallPotatoContent10 = edtYieldMonitoringOfSmallPotato10.getText().toString();
+                    contentValues.put("smalYield10", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent10.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent10));
+
+                    contentValues.put("img1", pathColor);
+                } catch (NumberFormatException e) {
+                    Toast.makeText(this,"请检查输入数据的格式是否正确！",Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
                 }
-                contentValues.put("isChoozen",  checkedRadioButtonContent);
-                //备注
-                contentValues.put("remark", edtRemark.getText().toString());
-                //收获株数
-                String edtNumOfHarvestedPlantsContent = edtNumOfHarvestedPlants.getText().toString();
-                contentValues.put("harvestNum", Integer.parseInt(edtNumOfHarvestedPlantsContent.isEmpty() ? "0" : edtNumOfHarvestedPlantsContent));
-                //大中薯数
-                String edtNumOfLargeAndMediumPotatoesContent = edtNumOfLargeAndMediumPotatoes.getText().toString();
-                contentValues.put("lmNum", Integer.parseInt(edtNumOfLargeAndMediumPotatoesContent.isEmpty() ? "0" : edtNumOfLargeAndMediumPotatoesContent));
-                //大中薯重
-                String edtWeightOfLargeAndMediumPotatoesContent = edtWeightOfLargeAndMediumPotatoes.getText().toString();
-                contentValues.put("lmWeight", Integer.parseInt(edtWeightOfLargeAndMediumPotatoesContent.isEmpty() ? "0" : edtWeightOfLargeAndMediumPotatoesContent));
-                //小薯数
-                String edtNumOfSmallPotatoesContent = edtNumOfSmallPotatoes.getText().toString();
-                contentValues.put("sNum", Integer.parseInt(edtNumOfSmallPotatoesContent.isEmpty() ? "0" : edtNumOfSmallPotatoesContent));
-                //小薯重
-                String edtWeightOfSmallPotatoesContent = edtWeightOfSmallPotatoes.getText().toString();
-                contentValues.put("sWeight", Integer.parseInt(edtWeightOfSmallPotatoesContent.isEmpty() ? "0" : edtWeightOfSmallPotatoesContent));
-                //商品薯率
-                String edtRateOfEconomicPotatoContent = edtRateOfEconomicPotato.getText().toString();
-                contentValues.put("commercialRate", Float.parseFloat(edtRateOfEconomicPotatoContent.isEmpty() ? "0" : edtRateOfEconomicPotatoContent));
-                //小区产量1
-                String edtSmallSectionYield1Content = edtSmallSectionYield1.getText().toString();
-                contentValues.put("plotYield1", Float.parseFloat(edtSmallSectionYield1Content.isEmpty() ? "0" : edtSmallSectionYield1Content));
-                //小区产量2
-                String edtSmallSectionYield2Content = edtSmallSectionYield2.getText().toString();
-                contentValues.put("plotYield2", Float.parseFloat(edtSmallSectionYield2Content.isEmpty() ? "0" : edtSmallSectionYield2Content));
-                //小区产量3
-                String edtSmallSectionYield3Content = edtSmallSectionYield3.getText().toString();
-                contentValues.put("plotYield3", Float.parseFloat(edtSmallSectionYield3Content.isEmpty() ? "0" : edtSmallSectionYield3Content));
-                //亩产量
-                String edtPerMuYieldContent = edtPerMuYield.getText().toString();
-                contentValues.put("acreYield", Float.parseFloat(edtPerMuYieldContent.isEmpty() ? "0" : edtPerMuYieldContent));
-                //大薯十株株高
-                //bigPlantHeight1
-                String edtPlantHeightOfBigPotatoContent1 = edtBigPotatoHeight1.getText().toString();
-                contentValues.put("bigPlantHeight1", Float.parseFloat(edtPlantHeightOfBigPotatoContent1.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent1));
-                //bigPlantHeight2
-                String edtPlantHeightOfBigPotatoContent2 = edtBigPotatoHeight2.getText().toString();
-                contentValues.put("bigPlantHeight2", Float.parseFloat(edtPlantHeightOfBigPotatoContent2.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent2));
-                //bigPlantHeight3
-                String edtPlantHeightOfBigPotatoContent3 = edtBigPotatoHeight3.getText().toString();
-                contentValues.put("bigPlantHeight3", Float.parseFloat(edtPlantHeightOfBigPotatoContent3.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent3));
-                //bigPlantHeight4
-                String edtPlantHeightOfBigPotatoContent4 = edtBigPotatoHeight4.getText().toString();
-                contentValues.put("bigPlantHeight4", Float.parseFloat(edtPlantHeightOfBigPotatoContent4.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent4));
-                //bigPlantHeight5
-                String edtPlantHeightOfBigPotatoContent5 = edtBigPotatoHeight5.getText().toString();
-                contentValues.put("bigPlantHeight5", Float.parseFloat(edtPlantHeightOfBigPotatoContent5.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent5));
-                //bigPlantHeight6
-                String edtPlantHeightOfBigPotatoContent6 = edtBigPotatoHeight6.getText().toString();
-                contentValues.put("bigPlantHeight6", Float.parseFloat(edtPlantHeightOfBigPotatoContent6.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent6));
-                //bigPlantHeight7
-                String edtPlantHeightOfBigPotatoContent7 = edtBigPotatoHeight7.getText().toString();
-                contentValues.put("bigPlantHeight7", Float.parseFloat(edtPlantHeightOfBigPotatoContent7.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent7));
-                //bigPlantHeight8
-                String edtPlantHeightOfBigPotatoContent8 = edtBigPotatoHeight8.getText().toString();
-                contentValues.put("bigPlantHeight8", Float.parseFloat(edtPlantHeightOfBigPotatoContent8.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent8));
-                //bigPlantHeight9
-                String edtPlantHeightOfBigPotatoContent9 = edtBigPotatoHeight9.getText().toString();
-                contentValues.put("bigPlantHeight9", Float.parseFloat(edtPlantHeightOfBigPotatoContent9.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent9));
-                //bigPlantHeight10
-                String edtPlantHeightOfBigPotatoContent10 = edtBigPotatoHeight10.getText().toString();
-                contentValues.put("bigPlantHeight10", Float.parseFloat(edtPlantHeightOfBigPotatoContent10.isEmpty() ? "0" : edtPlantHeightOfBigPotatoContent10));
-
-                //平均株高
-                String edtAveragePlantHeightContentOfBigPotato = edtAveragePlantHeightOfBigPotato.getText().toString();
-                contentValues.put("plantHeightAvg", Float.parseFloat(edtAveragePlantHeightContentOfBigPotato.isEmpty() ? "0" : edtAveragePlantHeightContentOfBigPotato));
-                //大薯十株分支数
-                //bigBranchNumber1
-                String edtBranchNumOfTBigPotatoContent1 = edtBranchNumOfBigPotato1.getText().toString();
-                contentValues.put("bigBranchNumber1", Integer.parseInt(edtBranchNumOfTBigPotatoContent1.isEmpty() ? "0" : edtBranchNumOfTBigPotatoContent1));
-                //bigBranchNumber2
-                String edtBranchNumOfTBigPotatoContent2 = edtBranchNumOfBigPotato2.getText().toString();
-                contentValues.put("bigBranchNumber2", Integer.parseInt(edtBranchNumOfTBigPotatoContent2.isEmpty() ? "0" : edtBranchNumOfTBigPotatoContent2));
-                //bigBranchNumber3
-                String edtBranchNumOfTBigPotatoContent3 = edtBranchNumOfBigPotato3.getText().toString();
-                contentValues.put("bigBranchNumber3", Integer.parseInt(edtBranchNumOfTBigPotatoContent3.isEmpty() ? "0" : edtBranchNumOfTBigPotatoContent3));
-                //bigBranchNumber4
-                String edtBranchNumOfTBigPotatoContent4 = edtBranchNumOfBigPotato4.getText().toString();
-                contentValues.put("bigBranchNumber4", Integer.parseInt(edtBranchNumOfTBigPotatoContent4.isEmpty() ? "0" : edtBranchNumOfTBigPotatoContent4));
-                //bigBranchNumber5
-                String edtBranchNumOfTBigPotatoContent5 = edtBranchNumOfBigPotato5.getText().toString();
-                contentValues.put("bigBranchNumber5", Integer.parseInt(edtBranchNumOfTBigPotatoContent5.isEmpty() ? "0" : edtBranchNumOfTBigPotatoContent5));
-                //bigBranchNumber6
-                String edtBranchNumOfTBigPotatoContent6 = edtBranchNumOfBigPotato6.getText().toString();
-                contentValues.put("bigBranchNumber5", Integer.parseInt(edtBranchNumOfTBigPotatoContent5.isEmpty() ? "0" : edtBranchNumOfTBigPotatoContent5));
-                //bigBranchNumber7
-                String edtBranchNumOfTBigPotatoContent7 = edtBranchNumOfBigPotato7.getText().toString();
-                contentValues.put("bigBranchNumber7", Integer.parseInt(edtBranchNumOfTBigPotatoContent7.isEmpty() ? "0" : edtBranchNumOfTBigPotatoContent7));
-                //bigBranchNumber8
-                String edtBranchNumOfTBigPotatoContent8 = edtBranchNumOfBigPotato8.getText().toString();
-                contentValues.put("bigBranchNumber8", Integer.parseInt(edtBranchNumOfTBigPotatoContent8.isEmpty() ? "0" : edtBranchNumOfTBigPotatoContent8));
-                //bigBranchNumber9
-                String edtBranchNumOfTBigPotatoContent9 = edtBranchNumOfBigPotato9.getText().toString();
-                contentValues.put("bigBranchNumber9", Integer.parseInt(edtBranchNumOfTBigPotatoContent9.isEmpty() ? "0" : edtBranchNumOfTBigPotatoContent9));
-                //bigBranchNumber10
-                String edtBranchNumOfTBigPotatoContent10 = edtBranchNumOfBigPotato10.getText().toString();
-                contentValues.put("bigBranchNumber10", Integer.parseInt(edtBranchNumOfTBigPotatoContent10.isEmpty() ? "0" : edtBranchNumOfTBigPotatoContent10));
-                //平均分支数
-                String edtAverageBranchNumOfBigPotatoContent = edtAverageBranchNumOfBigPotato.getText().toString();
-                contentValues.put("branchNumberAvg", Float.parseFloat(edtAverageBranchNumOfBigPotatoContent.isEmpty() ? "0" : edtAverageBranchNumOfBigPotatoContent));
-                //十株测产
-                //大薯十株测产
-                String edtYieldMonitoringOfBigPotatoContent1 = edtYieldMonitoringOfBigPotato1.getText().toString();
-                contentValues.put("bigYield1", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent1.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent1));
-                String edtYieldMonitoringOfBigPotatoContent2 = edtYieldMonitoringOfBigPotato2.getText().toString();
-                contentValues.put("bigYield2", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent2.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent2));
-                String edtYieldMonitoringOfBigPotatoContent3 = edtYieldMonitoringOfBigPotato3.getText().toString();
-                contentValues.put("bigYield3", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent3.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent3));
-                String edtYieldMonitoringOfBigPotatoContent4 = edtYieldMonitoringOfBigPotato4.getText().toString();
-                contentValues.put("bigYield4", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent4.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent4));
-                String edtYieldMonitoringOfBigPotatoContent5 = edtYieldMonitoringOfBigPotato5.getText().toString();
-                contentValues.put("bigYield5", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent5.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent5));
-                String edtYieldMonitoringOfBigPotatoContent6 = edtYieldMonitoringOfBigPotato6.getText().toString();
-                contentValues.put("bigYield6", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent6.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent6));
-                String edtYieldMonitoringOfBigPotatoContent7 = edtYieldMonitoringOfBigPotato7.getText().toString();
-                contentValues.put("bigYield7", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent7.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent7));
-                String edtYieldMonitoringOfBigPotatoContent8 = edtYieldMonitoringOfBigPotato8.getText().toString();
-                contentValues.put("bigYield8", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent8.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent8));
-                String edtYieldMonitoringOfBigPotatoContent9 = edtYieldMonitoringOfBigPotato9.getText().toString();
-                contentValues.put("bigYield9", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent9.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent9));
-                String edtYieldMonitoringOfBigPotatoContent10 = edtYieldMonitoringOfBigPotato10.getText().toString();
-                contentValues.put("bigYield10", Float.parseFloat(edtYieldMonitoringOfBigPotatoContent10.isEmpty() ? "0" : edtYieldMonitoringOfBigPotatoContent10));
-                //小薯十株测产
-                String edtYieldMonitoringOfSmallPotatoContent1 = edtYieldMonitoringOfSmallPotato1.getText().toString();
-                contentValues.put("smalYield1", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent1.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent1));
-                String edtYieldMonitoringOfSmallPotatoContent2 = edtYieldMonitoringOfSmallPotato2.getText().toString();
-                contentValues.put("smalYield2", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent2.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent2));
-                String edtYieldMonitoringOfSmallPotatoContent3 = edtYieldMonitoringOfSmallPotato3.getText().toString();
-                contentValues.put("smalYield3", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent3.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent3));
-                String edtYieldMonitoringOfSmallPotatoContent4 = edtYieldMonitoringOfSmallPotato4.getText().toString();
-                contentValues.put("smalYield4", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent4.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent4));
-                String edtYieldMonitoringOfSmallPotatoContent5 = edtYieldMonitoringOfSmallPotato5.getText().toString();
-                contentValues.put("smalYield5", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent5.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent5));
-                String edtYieldMonitoringOfSmallPotatoContent6 = edtYieldMonitoringOfSmallPotato6.getText().toString();
-                contentValues.put("smalYield6", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent6.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent6));
-                String edtYieldMonitoringOfSmallPotatoContent7 = edtYieldMonitoringOfSmallPotato7.getText().toString();
-                contentValues.put("smalYield7", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent7.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent7));
-                String edtYieldMonitoringOfSmallPotatoContent8 = edtYieldMonitoringOfSmallPotato8.getText().toString();
-                contentValues.put("smalYield8", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent8.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent8));
-                String edtYieldMonitoringOfSmallPotatoContent9 = edtYieldMonitoringOfSmallPotato9.getText().toString();
-                contentValues.put("smalYield9", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent9.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent9));
-                String edtYieldMonitoringOfSmallPotatoContent10 = edtYieldMonitoringOfSmallPotato10.getText().toString();
-                contentValues.put("smalYield10", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent10.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent10));
-
-                contentValues.put("img1", pathColor);
 
                 sqLiteDatabase.insert("SpeciesTable", null, contentValues);
                 contentValues.clear();

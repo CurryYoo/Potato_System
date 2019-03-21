@@ -2,6 +2,7 @@ package com.example.kerne.potato;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -158,8 +159,11 @@ public class LoginActivity extends AppCompatActivity {
 
             }else{
                 Log.d("Login4", body.toString());
+                //Looper解决闪退bug
+                Looper.prepare();
                 Toast.makeText(LoginActivity.this, "账号或密码无效",
                         Toast.LENGTH_SHORT).show();
+                Looper.loop();
 //                is = jsonObject.getString("description");
             }
 //            Message message = new Message();
