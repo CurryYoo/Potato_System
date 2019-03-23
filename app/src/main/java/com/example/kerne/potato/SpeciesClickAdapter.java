@@ -88,18 +88,17 @@ public class SpeciesClickAdapter extends RecyclerView.Adapter<SpeciesClickAdapte
                     //builder.setIcon(R.drawable.ic_launcher_background);
                     builder.setTitle("选择一个操作");
                     //    指定下拉列表的显示数据
-                    final String[] options = {"编辑", "进入", "删除"};
+                    final String[] options = {"进入"};
                     //    设置一个下拉的列表选择项
 
                     builder.setItems(options, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             if (which == 0) {
-
-                            } else if (which == 1) {
                                 Intent intent = new Intent(mContext, SaveDataActivity.class);
                                 intent.putExtra("userRole", userRole);
                                 intent.putExtra("speciesId", speciesId);
+                                intent.putExtra("expType", SpeciesClickActivity.expType);
                                 mContext.startActivity(intent);
                             } else {
                                 mList.remove(position);

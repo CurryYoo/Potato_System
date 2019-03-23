@@ -88,7 +88,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                 }
                 builder.setTitle("选择一个操作");
                 //    指定下拉列表的显示数据
-                final String[] options = {"进入", "删除"};
+                final String[] options = {"进入"};
                 //    设置一个下拉的列表选择项
                 builder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override

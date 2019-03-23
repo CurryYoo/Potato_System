@@ -154,13 +154,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //将暂存的数据从数据库取出并提交到远程服务器
                 if (userRole.equals("admin")) {
                     dbHelper = new SpeciesDBHelper(this,
-                            "SpeciesTable.db", null, 2);
+                            "SpeciesTable.db", null, 3);
                     sqLiteDatabase = dbHelper.getReadableDatabase();
                     Cursor cursor = sqLiteDatabase.query("SpeciesTable", null, null, null, null, null, null);
                     if (cursor.moveToFirst()) {
                         do {
                             int id = cursor.getInt(cursor.getColumnIndex("id"));
                             final String speciesId = cursor.getString(cursor.getColumnIndex("speciesId")); //++++++++++++++
+                            String experimentType = cursor.getString(cursor.getColumnIndex("experimentType"));
                             String plantingDate = cursor.getString(cursor.getColumnIndex("plantingDate"));
                             String emergenceDate = cursor.getString(cursor.getColumnIndex("emergenceDate"));
                             int sproutRate = cursor.getInt(cursor.getColumnIndex("sproutRate"));
@@ -322,6 +323,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 jsonObject.put("smalYield9", smalYield9);
                                 jsonObject.put("smalYield10", smalYield10);
                                 jsonObject.put("speciesId", speciesId);
+                                jsonObject.put("experimentType", experimentType);
 
                                 Log.d("testJson", jsonObject.toString());
 
@@ -332,47 +334,54 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             new Thread() {
                                 @Override
                                 public void run() {
+                                    final int[] signal = {1};
                                     HttpRequest.HttpRequest_SpeciesData(jsonObject, MainActivity.this, new HttpRequest.HttpCallback() {
                                         @Override
                                         public void onSuccess(JSONObject result) {
                                             Log.d("response_update", result.toString());
+                                            try {
+                                                if(result.getBoolean("success"))
+                                                    signal[0]--;
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
                                         }
                                     });
                                     if(img1 != null)
-                                    HttpRequest.doUploadTest(img1, speciesId, "1", MainActivity.this, new HttpRequest.HttpCallback_Str() {
-                                        @Override
-                                        public void onSuccess(String result) {
-                                            Log.d("response_pic", result);
-                                        }
-                                    });
+                                        HttpRequest.doUploadTest(img1, speciesId, "1", MainActivity.this, new HttpRequest.HttpCallback_Str() {
+                                            @Override
+                                            public void onSuccess(String result) {
+                                                Log.d("response_pic", result);
+                                            }
+                                        });
                                     if(img2 != null)
-                                    HttpRequest.doUploadTest(img2, speciesId, "2", MainActivity.this, new HttpRequest.HttpCallback_Str() {
-                                        @Override
-                                        public void onSuccess(String result) {
-                                            Log.d("response_pic", result);
-                                        }
-                                    });
+                                        HttpRequest.doUploadTest(img2, speciesId, "2", MainActivity.this, new HttpRequest.HttpCallback_Str() {
+                                            @Override
+                                            public void onSuccess(String result) {
+                                                Log.d("response_pic", result);
+                                            }
+                                        });
                                     if(img3 != null)
-                                    HttpRequest.doUploadTest(img3, speciesId, "3", MainActivity.this, new HttpRequest.HttpCallback_Str() {
-                                        @Override
-                                        public void onSuccess(String result) {
-                                            Log.d("response_pic", result);
-                                        }
-                                    });
+                                        HttpRequest.doUploadTest(img3, speciesId, "3", MainActivity.this, new HttpRequest.HttpCallback_Str() {
+                                            @Override
+                                            public void onSuccess(String result) {
+                                                Log.d("response_pic", result);
+                                            }
+                                        });
                                     if(img4 != null)
-                                    HttpRequest.doUploadTest(img4, speciesId, "4", MainActivity.this, new HttpRequest.HttpCallback_Str() {
-                                        @Override
-                                        public void onSuccess(String result) {
-                                            Log.d("response_pic", result);
-                                        }
-                                    });
+                                        HttpRequest.doUploadTest(img4, speciesId, "4", MainActivity.this, new HttpRequest.HttpCallback_Str() {
+                                            @Override
+                                            public void onSuccess(String result) {
+                                                Log.d("response_pic", result);
+                                            }
+                                        });
                                     if(img5 != null)
-                                    HttpRequest.doUploadTest(img5, speciesId, "5", MainActivity.this, new HttpRequest.HttpCallback_Str() {
-                                        @Override
-                                        public void onSuccess(String result) {
-                                            Log.d("response_pic", result);
-                                        }
-                                    });
+                                        HttpRequest.doUploadTest(img5, speciesId, "5", MainActivity.this, new HttpRequest.HttpCallback_Str() {
+                                            @Override
+                                            public void onSuccess(String result) {
+                                                Log.d("response_pic", result);
+                                            }
+                                        });
                                 }
                             }.start();
 

@@ -207,6 +207,7 @@ public class GeneralActivity extends AppCompatActivity {
                             Intent intent = new Intent(GeneralActivity.this, SpeciesClickActivity.class);
                             try {
                                 intent.putExtra("fieldId", mList.get(i).getString("id"));
+                                intent.putExtra("expType", mList.get(i).getString("expType"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

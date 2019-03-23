@@ -29,6 +29,7 @@ public class SpeciesClickActivity extends AppCompatActivity implements SpeciesCl
     private List<JSONObject> mList = new ArrayList<>();
 
     private String fieldId;
+    public static String expType;
 
     private String userRole;
 
@@ -39,6 +40,7 @@ public class SpeciesClickActivity extends AppCompatActivity implements SpeciesCl
 
         Intent intent = getIntent();
         fieldId = intent.getStringExtra("fieldId");
+        expType = intent.getStringExtra("expType");
         userRole = intent.getStringExtra("userRole");
 
         initData();

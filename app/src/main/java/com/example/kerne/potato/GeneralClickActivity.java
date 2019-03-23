@@ -60,40 +60,40 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.search:
-                final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(this).builder()
-                        .setTitle("请输入名称：")
-                        .setEditText("");
-                myAlertInputDialog.setPositiveButton("确认", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //showMsg(myAlertInputDialog.getResult());
-                        name = myAlertInputDialog.getResult();
-                        mList.clear();
-                        initData();
-                        myAlertInputDialog.dismiss();
-                    }
-                }).setNegativeButton("取消", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //showMsg("取消");
-                        myAlertInputDialog.dismiss();
-                    }
-                });
-                myAlertInputDialog.show();
-                Toast.makeText(this,"Search item " + name, Toast.LENGTH_SHORT).show();
-                break;
-            case android.R.id.home:
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            default:
-        }
-        return true;
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.search:
+//                final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(this).builder()
+//                        .setTitle("请输入名称：")
+//                        .setEditText("");
+//                myAlertInputDialog.setPositiveButton("确认", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        //showMsg(myAlertInputDialog.getResult());
+//                        name = myAlertInputDialog.getResult();
+//                        mList.clear();
+//                        initData();
+//                        myAlertInputDialog.dismiss();
+//                    }
+//                }).setNegativeButton("取消", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        //showMsg("取消");
+//                        myAlertInputDialog.dismiss();
+//                    }
+//                });
+//                myAlertInputDialog.show();
+//                Toast.makeText(this,"Search item " + name, Toast.LENGTH_SHORT).show();
+//                break;
+//            case android.R.id.home:
+//                Intent intent = new Intent(this, MainActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+//            default:
+//        }
+//        return true;
+//    }
 
     private void initData() {
         //获取服务器中数据

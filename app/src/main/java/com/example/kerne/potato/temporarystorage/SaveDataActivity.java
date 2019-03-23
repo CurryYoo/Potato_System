@@ -47,6 +47,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     //需要暂存的各字段
     //品种id
     private String speciesId;
+    private String expType;
     EditText edtSpeciesID = null;
     private String commitId = "initial id";
     //实验类型
@@ -224,11 +225,18 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_commit_data);
 
+        //从上一层获取小区id
+        Intent intent_speciesId = getIntent();
+        speciesId = intent_speciesId.getStringExtra("speciesId");
+        expType = intent_speciesId.getStringExtra("expType");
+
         //品种Id，判断是否重复存储
         edtSpeciesID = (EditText) findViewById(R.id.edt_species_id);
+        edtSpeciesID.setText(speciesId);
 
         //实验类型
         edtExperimentType = (EditText) findViewById(R.id.edt_experiment_type);
+        edtExperimentType.setText(expType);
 
         //播种期
         edtSowingPeriodInput = (EditText) findViewById(R.id.sowing_period_input);
@@ -492,7 +500,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
         //数据存储
         dbHelper = new SpeciesDBHelper(this,
-                "SpeciesTable.db", null, 2);
+                "SpeciesTable.db", null, 3);
         sqLiteDatabase = dbHelper.getWritableDatabase();
     }
 
@@ -540,16 +548,12 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                     commitId = edtSpeciesIDContent;
                 }
 
-                //从上一层获取小区id
-                Intent intent_speciesId = getIntent();
-                speciesId = intent_speciesId.getStringExtra("speciesId");
-
                 ContentValues contentValues = null;
                 try {
                     contentValues = new ContentValues();
                     //开始组装数据
                     //品种id
-                    contentValues.put("speciesId", speciesId);
+                    contentValues.put("speciesId", edtSpeciesID.getText().toString());
                     //实验类型
                     contentValues.put("experimentType", edtExperimentType.getText().toString());
                     //播种期
