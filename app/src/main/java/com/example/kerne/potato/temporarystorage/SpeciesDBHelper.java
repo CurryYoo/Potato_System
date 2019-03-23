@@ -3,6 +3,7 @@ package com.example.kerne.potato.temporarystorage;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 public class SpeciesDBHelper extends SQLiteOpenHelper {
     private Context mContext = null;
@@ -35,17 +36,58 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "lmWeight integer,"  //大中薯重字段
             + "sNum integer,"  //小薯数字段
             + "sWeight integer,"  //小薯重字段
-            + "commercialRate integer,"  //商品薯率字段
-            + "plotYield1 integer,"  //小区产量1字段
-            + "plotYield2 integer,"  //小区产量2字段
-            + "plotYield3 integer,"  //小区产量3字段
-            + "acreYield integer,"  //亩产量字段
-            + "bigPlantHeight integer,"  //十株株高字段
-            + "plantHeightAvg integer,"  //平均株高字段
-            + "bigBranchNumber integer,"  //十株的分支数字段
-            + "branchNumberAvg integer,"  //平均分支数字段
-            + "bigYield integer," //十株测产字段
-            + "img1 text)"; //图片路径字段
+            + "commercialRate float,"  //商品薯率字段
+            + "plotYield1 float,"  //小区产量1字段
+            + "plotYield2 float,"  //小区产量2字段
+            + "plotYield3 float,"  //小区产量3字段
+            + "acreYield float,"  //亩产量字段
+            + "bigPlantHeight1 float,"  //十株株高字段
+            + "bigPlantHeight2 float,"
+            + "bigPlantHeight3 float,"
+            + "bigPlantHeight4 float,"
+            + "bigPlantHeight5 float,"
+            + "bigPlantHeight6 float,"
+            + "bigPlantHeight7 float,"
+            + "bigPlantHeight8 float,"
+            + "bigPlantHeight9 float,"
+            + "bigPlantHeight10 float,"
+            + "plantHeightAvg float,"  //平均株高字段
+            + "bigBranchNumber1 integer,"  //十株的分支数字段
+            + "bigBranchNumber2 integer,"
+            + "bigBranchNumber3 integer,"
+            + "bigBranchNumber4 integer,"
+            + "bigBranchNumber5 integer,"
+            + "bigBranchNumber6 integer,"
+            + "bigBranchNumber7 integer,"
+            + "bigBranchNumber8 integer,"
+            + "bigBranchNumber9 integer,"
+            + "bigBranchNumber10 integer,"
+            + "branchNumberAvg float,"  //平均分支数字段
+            + "bigYield1 float," //大薯十株测产字段
+            + "bigYield2 float,"
+            + "bigYield3 float,"
+            + "bigYield4 float,"
+            + "bigYield5 float,"
+            + "bigYield6 float,"
+            + "bigYield7 float,"
+            + "bigYield8 float,"
+            + "bigYield9 float,"
+            + "bigYield10 float,"
+            + "smalYield1 float," //小薯十株测产
+            + "smalYield2 float,"
+            + "smalYield3 float,"
+            + "smalYield4 float,"
+            + "smalYield5 float,"
+            + "smalYield6 float,"
+            + "smalYield7 float,"
+            + "smalYield8 float,"
+            + "smalYield9 float,"
+            + "smalYield10 float,"
+            + "img1 text," //图片路径字段
+            + "img2 text,"
+            + "img3 text,"
+            + "img4 text,"
+            + "img5 text)";
 
     public SpeciesDBHelper(Context context, String name,
                            SQLiteDatabase.CursorFactory factory, int version) {
@@ -57,14 +99,13 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 //        String sql_prepare = "drop table SpeciesTable if exists(select * from sys.databases where name='SpeciesTable')";
 //        db.execSQL(sql_prepare);
-//        String string = "drop table SpeciesTable;";
-//        db.execSQL(string);
         db.execSQL(CREATE_SPECIES_TABLE);
-//        Toast.makeText(mContext, "创建品种信息表成功", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, "创建品种信息表成功", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL("drop table if exists SpeciesTable");
+        onCreate(db);
     }
 }

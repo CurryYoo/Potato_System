@@ -105,7 +105,7 @@ public class HttpRequest {
         Log.d("POST_general", jsonObject.toString());
 
         //volley进行网络传输
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "/experimentfield/getExperimentFieldList", jsonObject, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "experimentfield/getExperimentFieldList", jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) { //接收数据
                 Log.d("TAG_response", response.toString());
@@ -353,15 +353,15 @@ public class HttpRequest {
     }
 
 
-    public static void doUploadTest(String picPath, Context context, final HttpCallback_Str callback) {
+    public static void doUploadTest(String picPath, String speciesId, String picNo, Context context, final HttpCallback_Str callback) {
         requestQueue = Volley.newRequestQueue(context);
 
         String path = picPath;
-        Log.e("zb", "img1=" + picPath);
+        Log.e("zb", "img=" + picPath);
         //String url = "http://app.sod90.com/xxx/upload/app_upload"; //换成自己的测试url地址
         Map<String, String> params = new HashMap<String, String>();
-        params.put("speciesId", "110");
-        params.put("picNo", "1");
+        params.put("speciesId", speciesId);
+        params.put("picNo", picNo);
         Log.e("zb", "params=" + params);
         File f1 = new File(path);
         Log.e("zb", "f1=" + f1.toString());

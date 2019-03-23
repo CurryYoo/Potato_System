@@ -36,6 +36,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button button;
 
     String img1;
+    String img2;
+    String img3;
+    String img4;
+    String img5;
 
     private SpeciesDBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
@@ -150,13 +154,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //将暂存的数据从数据库取出并提交到远程服务器
                 if (userRole.equals("admin")) {
                     dbHelper = new SpeciesDBHelper(this,
-                            "SpeciesTable.db", null, 1);
-                    sqLiteDatabase = dbHelper.getWritableDatabase();
+                            "SpeciesTable.db", null, 2);
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
                     Cursor cursor = sqLiteDatabase.query("SpeciesTable", null, null, null, null, null, null);
                     if (cursor.moveToFirst()) {
                         do {
                             int id = cursor.getInt(cursor.getColumnIndex("id"));
-                            String speciesId = cursor.getString(cursor.getColumnIndex("speciesId")); //++++++++++++++
+                            final String speciesId = cursor.getString(cursor.getColumnIndex("speciesId")); //++++++++++++++
                             String plantingDate = cursor.getString(cursor.getColumnIndex("plantingDate"));
                             String emergenceDate = cursor.getString(cursor.getColumnIndex("emergenceDate"));
                             int sproutRate = cursor.getInt(cursor.getColumnIndex("sproutRate"));
@@ -182,17 +186,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             int lmWeight = cursor.getInt(cursor.getColumnIndex("lmWeight"));
                             int sNum = cursor.getInt(cursor.getColumnIndex("sNum"));
                             int sWeight = cursor.getInt(cursor.getColumnIndex("sWeight"));
-                            int commercialRate = cursor.getInt(cursor.getColumnIndex("commercialRate"));
-                            int plotYield1 = cursor.getInt(cursor.getColumnIndex("plotYield1"));
-                            int plotYield2 = cursor.getInt(cursor.getColumnIndex("plotYield2"));
-                            int plotYield3 = cursor.getInt(cursor.getColumnIndex("plotYield3"));
-                            int acreYield = cursor.getInt(cursor.getColumnIndex("acreYield"));
-                            int bigPlantHeight = cursor.getInt(cursor.getColumnIndex("bigPlantHeight"));
-                            int plantHeightAvg = cursor.getInt(cursor.getColumnIndex("plantHeightAvg"));
-                            int bigBranchNumber = cursor.getInt(cursor.getColumnIndex("bigBranchNumber"));
-                            int branchNumberAvg = cursor.getInt(cursor.getColumnIndex("branchNumberAvg"));
-                            int bigYield = cursor.getInt(cursor.getColumnIndex("bigYield"));
+                            float commercialRate = cursor.getFloat(cursor.getColumnIndex("commercialRate"));
+                            float plotYield1 = cursor.getFloat(cursor.getColumnIndex("plotYield1"));
+                            float plotYield2 = cursor.getFloat(cursor.getColumnIndex("plotYield2"));
+                            float plotYield3 = cursor.getFloat(cursor.getColumnIndex("plotYield3"));
+                            float acreYield = cursor.getFloat(cursor.getColumnIndex("acreYield"));
+                            float bigPlantHeight1 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight1"));
+                            float bigPlantHeight2 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight2"));
+                            float bigPlantHeight3 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight3"));
+                            float bigPlantHeight4 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight4"));
+                            float bigPlantHeight5 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight5"));
+                            float bigPlantHeight6 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight6"));
+                            float bigPlantHeight7 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight7"));
+                            float bigPlantHeight8 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight8"));
+                            float bigPlantHeight9 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight9"));
+                            float bigPlantHeight10 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight10"));
+                            float plantHeightAvg = cursor.getFloat(cursor.getColumnIndex("plantHeightAvg"));
+                            int bigBranchNumber1 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber1"));
+                            int bigBranchNumber2 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber2"));
+                            int bigBranchNumber3 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber3"));
+                            int bigBranchNumber4 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber4"));
+                            int bigBranchNumber5 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber5"));
+                            int bigBranchNumber6 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber6"));
+                            int bigBranchNumber7 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber7"));
+                            int bigBranchNumber8 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber8"));
+                            int bigBranchNumber9 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber9"));
+                            int bigBranchNumber10 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber10"));
+                            float branchNumberAvg = cursor.getFloat(cursor.getColumnIndex("branchNumberAvg"));
+                            float bigYield1 = cursor.getFloat(cursor.getColumnIndex("bigYield1"));
+                            float bigYield2 = cursor.getFloat(cursor.getColumnIndex("bigYield2"));
+                            float bigYield3 = cursor.getFloat(cursor.getColumnIndex("bigYield3"));
+                            float bigYield4 = cursor.getFloat(cursor.getColumnIndex("bigYield4"));
+                            float bigYield5 = cursor.getFloat(cursor.getColumnIndex("bigYield5"));
+                            float bigYield6 = cursor.getFloat(cursor.getColumnIndex("bigYield6"));
+                            float bigYield7 = cursor.getFloat(cursor.getColumnIndex("bigYield7"));
+                            float bigYield8 = cursor.getFloat(cursor.getColumnIndex("bigYield8"));
+                            float bigYield9 = cursor.getFloat(cursor.getColumnIndex("bigYield9"));
+                            float bigYield10 = cursor.getFloat(cursor.getColumnIndex("bigYield10"));
+                            float smalYield1 = cursor.getFloat(cursor.getColumnIndex("smalYield1"));
+                            float smalYield2 = cursor.getFloat(cursor.getColumnIndex("smalYield2"));
+                            float smalYield3 = cursor.getFloat(cursor.getColumnIndex("smalYield3"));
+                            float smalYield4 = cursor.getFloat(cursor.getColumnIndex("smalYield4"));
+                            float smalYield5 = cursor.getFloat(cursor.getColumnIndex("smalYield5"));
+                            float smalYield6 = cursor.getFloat(cursor.getColumnIndex("smalYield6"));
+                            float smalYield7 = cursor.getFloat(cursor.getColumnIndex("smalYield7"));
+                            float smalYield8 = cursor.getFloat(cursor.getColumnIndex("smalYield8"));
+                            float smalYield9 = cursor.getFloat(cursor.getColumnIndex("smalYield9"));
+                            float smalYield10 = cursor.getFloat(cursor.getColumnIndex("smalYield10"));
                             img1 = cursor.getString(cursor.getColumnIndex("img1"));
+                            img2 = cursor.getString(cursor.getColumnIndex("img2"));
+                            img3 = cursor.getString(cursor.getColumnIndex("img3"));
+                            img4 = cursor.getString(cursor.getColumnIndex("img4"));
+                            img5 = cursor.getString(cursor.getColumnIndex("img5"));
 
                             Log.d("testImg1", img1);
 
@@ -234,11 +279,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 jsonObject.put("plotYield2", plotYield2);
                                 jsonObject.put("plotYield3", plotYield3);
                                 jsonObject.put("acreYield", acreYield);
-                                jsonObject.put("bigPlantHeight", bigPlantHeight);
+                                jsonObject.put("bigPlantHeight1", bigPlantHeight1);
+                                jsonObject.put("bigPlantHeight2", bigPlantHeight2);
+                                jsonObject.put("bigPlantHeight3", bigPlantHeight3);
+                                jsonObject.put("bigPlantHeight4", bigPlantHeight4);
+                                jsonObject.put("bigPlantHeight5", bigPlantHeight5);
+                                jsonObject.put("bigPlantHeight6", bigPlantHeight6);
+                                jsonObject.put("bigPlantHeight7", bigPlantHeight7);
+                                jsonObject.put("bigPlantHeight8", bigPlantHeight8);
+                                jsonObject.put("bigPlantHeight9", bigPlantHeight9);
+                                jsonObject.put("bigPlantHeight10", bigPlantHeight10);
                                 jsonObject.put("plantHeightAvg", plantHeightAvg);
-                                jsonObject.put("bigBranchNumber", bigBranchNumber);
+                                jsonObject.put("bigBranchNumber1", bigBranchNumber1);
+                                jsonObject.put("bigBranchNumber2", bigBranchNumber2);
+                                jsonObject.put("bigBranchNumber3", bigBranchNumber3);
+                                jsonObject.put("bigBranchNumber4", bigBranchNumber4);
+                                jsonObject.put("bigBranchNumber5", bigBranchNumber5);
+                                jsonObject.put("bigBranchNumber6", bigBranchNumber6);
+                                jsonObject.put("bigBranchNumber7", bigBranchNumber7);
+                                jsonObject.put("bigBranchNumber8", bigBranchNumber8);
+                                jsonObject.put("bigBranchNumber9", bigBranchNumber9);
+                                jsonObject.put("bigBranchNumber10", bigBranchNumber10);
                                 jsonObject.put("branchNumberAvg", branchNumberAvg);
-                                jsonObject.put("bigYield", bigYield);
+                                jsonObject.put("bigYield1", bigYield1);
+                                jsonObject.put("bigYield2", bigYield2);
+                                jsonObject.put("bigYield3", bigYield3);
+                                jsonObject.put("bigYield4", bigYield4);
+                                jsonObject.put("bigYield5", bigYield5);
+                                jsonObject.put("bigYield6", bigYield6);
+                                jsonObject.put("bigYield7", bigYield7);
+                                jsonObject.put("bigYield8", bigYield8);
+                                jsonObject.put("bigYield9", bigYield9);
+                                jsonObject.put("bigYield10", bigYield10);
+                                jsonObject.put("smalYield1", smalYield1);
+                                jsonObject.put("smalYield2", smalYield2);
+                                jsonObject.put("smalYield3", smalYield3);
+                                jsonObject.put("smalYield4", smalYield4);
+                                jsonObject.put("smalYield5", smalYield5);
+                                jsonObject.put("smalYield6", smalYield6);
+                                jsonObject.put("smalYield7", smalYield7);
+                                jsonObject.put("smalYield8", smalYield8);
+                                jsonObject.put("smalYield9", smalYield9);
+                                jsonObject.put("smalYield10", smalYield10);
                                 jsonObject.put("speciesId", speciesId);
 
                                 Log.d("testJson", jsonObject.toString());
@@ -256,12 +338,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                             Log.d("response_update", result.toString());
                                         }
                                     });
-                                HttpRequest.doUploadTest(img1, MainActivity.this, new HttpRequest.HttpCallback_Str() {
-                                    @Override
-                                    public void onSuccess(String result) {
-                                        Log.d("response_pic", result);
-                                    }
-                                });
+                                    if(img1 != null)
+                                    HttpRequest.doUploadTest(img1, speciesId, "1", MainActivity.this, new HttpRequest.HttpCallback_Str() {
+                                        @Override
+                                        public void onSuccess(String result) {
+                                            Log.d("response_pic", result);
+                                        }
+                                    });
+                                    if(img2 != null)
+                                    HttpRequest.doUploadTest(img2, speciesId, "2", MainActivity.this, new HttpRequest.HttpCallback_Str() {
+                                        @Override
+                                        public void onSuccess(String result) {
+                                            Log.d("response_pic", result);
+                                        }
+                                    });
+                                    if(img3 != null)
+                                    HttpRequest.doUploadTest(img3, speciesId, "3", MainActivity.this, new HttpRequest.HttpCallback_Str() {
+                                        @Override
+                                        public void onSuccess(String result) {
+                                            Log.d("response_pic", result);
+                                        }
+                                    });
+                                    if(img4 != null)
+                                    HttpRequest.doUploadTest(img4, speciesId, "4", MainActivity.this, new HttpRequest.HttpCallback_Str() {
+                                        @Override
+                                        public void onSuccess(String result) {
+                                            Log.d("response_pic", result);
+                                        }
+                                    });
+                                    if(img5 != null)
+                                    HttpRequest.doUploadTest(img5, speciesId, "5", MainActivity.this, new HttpRequest.HttpCallback_Str() {
+                                        @Override
+                                        public void onSuccess(String result) {
+                                            Log.d("response_pic", result);
+                                        }
+                                    });
                                 }
                             }.start();
 
