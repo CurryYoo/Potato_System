@@ -157,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             "SpeciesTable.db", null, 3);
                     sqLiteDatabase = dbHelper.getReadableDatabase();
                     Cursor cursor = sqLiteDatabase.query("SpeciesTable", null, null, null, null, null, null);
+
                     if (cursor.moveToFirst()) {
                         do {
                             int id = cursor.getInt(cursor.getColumnIndex("id"));
@@ -386,9 +387,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }.start();
 
                         } while (cursor.moveToNext());
+                        Toast.makeText(MainActivity.this, "数据上传成功！", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText(MainActivity.this, "尚未采集数据!", Toast.LENGTH_SHORT).show();
                     }
                     cursor.close();
-                    Toast.makeText(MainActivity.this, "数据上传成功！", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(MainActivity.this, "对不起，您没有该权限！", Toast.LENGTH_SHORT).show();
                 }
