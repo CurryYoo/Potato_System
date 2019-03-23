@@ -388,6 +388,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         } while (cursor.moveToNext());
                     }
                     cursor.close();
+                    Toast.makeText(MainActivity.this, "数据上传成功！", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(MainActivity.this, "对不起，您没有该权限！", Toast.LENGTH_SHORT).show();
                 }

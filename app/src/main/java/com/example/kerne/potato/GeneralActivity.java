@@ -203,7 +203,11 @@ public class GeneralActivity extends AppCompatActivity {
 
                     for(int i = 0; i < mList.size(); i++){
                         if(X > DrawView.coord[i][0] && X < DrawView.coord[i][2] && Y > DrawView.coord[i][1] && Y < DrawView.coord[i][3]){
-                            Toast.makeText(GeneralActivity.this, "点击了第"+ i +"个模块", Toast.LENGTH_SHORT).show();
+                            try {
+                                Toast.makeText(GeneralActivity.this, "点击了'"+ mList.get(i).getString("expType") +"'模块", Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             Intent intent = new Intent(GeneralActivity.this, SpeciesClickActivity.class);
                             try {
                                 intent.putExtra("fieldId", mList.get(i).getString("id"));
@@ -232,19 +236,19 @@ public class GeneralActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.map_color:
-
-                break;
-//            case android.R.id.home:
-//                Intent intent = new Intent(this, MainActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-            default:
-        }
-        return true;
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.map_color:
+//
+//                break;
+////            case android.R.id.home:
+////                Intent intent = new Intent(this, MainActivity.class);
+////                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+////                startActivity(intent);
+//            default:
+//        }
+//        return true;
+//    }
 
 }

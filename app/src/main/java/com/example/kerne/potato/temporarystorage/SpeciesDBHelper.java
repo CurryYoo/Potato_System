@@ -101,7 +101,7 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
 //        String sql_prepare = "drop table SpeciesTable if exists(select * from sys.databases where name='SpeciesTable')";
 //        db.execSQL(sql_prepare);
         db.execSQL(CREATE_SPECIES_TABLE);
-        Toast.makeText(mContext, "创建品种信息表成功", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(mContext, "创建品种信息表成功", Toast.LENGTH_SHORT).show();
     }
 
     @Override
