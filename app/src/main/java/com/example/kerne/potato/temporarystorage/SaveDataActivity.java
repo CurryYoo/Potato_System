@@ -1211,7 +1211,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 String zeroDay = "";
                 if (month < 10) zeroMonth = "0"; //当月份小于10时，需要在月份前加入0，需要符合yyyy-mm-dd当格式
                 if (dayOfMonth < 10) zeroDay = "0"; //同上
-                editText.setText(year + "-" + zeroMonth + month + "-" + zeroDay + dayOfMonth); //yyyy-mm-dd
+                editText.setText(year + "-" + zeroMonth + (month + 1) + "-" + zeroDay + dayOfMonth); //yyyy-mm-dd
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
