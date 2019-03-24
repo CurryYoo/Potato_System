@@ -241,8 +241,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             img4 = cursor.getString(cursor.getColumnIndex("img4"));
                             img5 = cursor.getString(cursor.getColumnIndex("img5"));
 
-                            Log.d("testImg1", img1);
-
                             Gson gson = new Gson();
 
                             final JSONObject jsonObject = new JSONObject();

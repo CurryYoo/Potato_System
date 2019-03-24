@@ -86,6 +86,11 @@ public class SpeciesClickAdapter extends RecyclerView.Adapter<SpeciesClickAdapte
                 if (!userRole.equals("farmer")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     //builder.setIcon(R.drawable.ic_launcher_background);
+                    try {
+                        speciesId = jsonObject.getString("speciesId");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     builder.setTitle("选择一个操作");
                     //    指定下拉列表的显示数据
                     final String[] options = {"进入"};
