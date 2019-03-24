@@ -338,7 +338,7 @@
                     android:inputType="none" />
             </LinearLayout>
 
-            <LinearLayout
+            <!--<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -354,6 +354,30 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:gravity="center_horizontal" />
+            </LinearLayout>-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="13-生育日数" />
+
+                <EditText
+                    android:id="@+id/growing_days"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:focusable="false"
+                    android:gravity="center_horizontal" />
+
+                <Button
+                    android:id="@+id/btn_compute_growing_days"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="计算" />
             </LinearLayout>
 
             <LinearLayout

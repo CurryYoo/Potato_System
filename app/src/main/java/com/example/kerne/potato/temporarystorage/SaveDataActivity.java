@@ -37,12 +37,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class SaveDataActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
     //解析两位小数
     DecimalFormat decimalFormat = new DecimalFormat("0.00");
+    //解析日期
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     //需要暂存的各字段
     //品种id
@@ -311,6 +316,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
         //生育日数
         edtGrowingDays = (EditText) findViewById(R.id.growing_days);
+        //计算生育日数
+        Button btnComputeRateOfGrowingDays = (Button) findViewById(R.id.btn_compute_growing_days);
+        btnComputeRateOfGrowingDays.setOnClickListener(this);
 
         //块茎整齐度
         spnTuberUniformity = (Spinner) findViewById(R.id.tuber_uniformity);
@@ -996,6 +1004,22 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.mature_period:
                 showDatePickerDialog(edtMaturePeriod);
+                break;
+            //计算生育日数
+            case R.id.btn_compute_growing_days:
+                Date sowingDate = null;
+                Date matureDate = null;
+                try {
+                    //播种期
+                    sowingDate = simpleDateFormat.parse(edtSowingPeriodInput.getText().toString());
+                    //成熟期
+                    matureDate = simpleDateFormat.parse(edtMaturePeriod.getText().toString());
+                } catch (ParseException e) {
+                    Toast.makeText(this,"输入日期有误，请检查！",Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+                Integer growingDays = ((int) ((matureDate.getTime() - sowingDate.getTime()) / (3600 * 1000 * 24)));
+                edtGrowingDays.setText(growingDays.toString());
                 break;
             //计算商品薯率
             case R.id.btn_compute_rate_of_economic_potato:
