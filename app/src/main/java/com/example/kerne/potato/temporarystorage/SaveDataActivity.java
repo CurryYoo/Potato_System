@@ -1,16 +1,27 @@
 package com.example.kerne.potato.temporarystorage;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,18 +47,25 @@ import com.example.kerne.potato.R;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import static com.example.kerne.potato.temporarystorage.Util.getAverage;
+import static com.example.kerne.potato.temporarystorage.Util.getGrowingDays;
+import static com.example.kerne.potato.temporarystorage.Util.showDatePickerDialog;
+import static com.example.kerne.potato.temporarystorage.Util.watchLargePhoto;
 
 public class SaveDataActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
     //解析两位小数
     DecimalFormat decimalFormat = new DecimalFormat("0.00");
     //解析日期
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     //需要暂存的各字段
     //品种id
@@ -219,6 +237,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     private ImageView ivShowFleshColor = null;
     private Uri imageUriFleshColor = null;
 
+    //从相册选择叶颜色
+    public static final int SELECT_PHOTO_COLOR = 12;
+
     //暂存功能
     private SpeciesDBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
@@ -275,6 +296,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         imbTakePhotoColor.setOnClickListener(this);
         ivShowColor = (ImageView) findViewById(R.id.imv_colors);
         ivShowColor.setOnClickListener(this);
+        //从相册选择照片
+        Button btnSelectPhotoFromAlbum = (Button) findViewById(R.id.btn_select_from_album);
+        btnSelectPhotoFromAlbum.setOnClickListener(this);
 
         //花冠色
         spnCorollaColors = (Spinner) findViewById(R.id.corolla_colors);
@@ -764,7 +788,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                     contentValues.put("img3", pathPlantFlourish);
                     contentValues.put("img4", pathStemColors);
                     contentValues.put("img5", pathNaturalFecundity);
-                
+
                 } catch (NumberFormatException e) {
                     Toast.makeText(this,"请检查输入数据的格式是否正确！",Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
@@ -802,9 +826,22 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUriColor);
                 startActivityForResult(intent, TAKE_PHOTO_COLOR);
                 break;
+            //从相册选择叶颜色照片
+            case R.id.btn_select_from_album:
+//                selectPhotoFromAlbum();
+                if (ContextCompat.checkSelfPermission(SaveDataActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(SaveDataActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                } else {
+                    Intent intent1 = new Intent("android.intent.action.GET_CONTENT");
+                    intent1.setType("image/*");
+                    startActivityForResult(intent1, SELECT_PHOTO_COLOR);
+                }
+
+                break;
             //叶颜色查看大图
             case R.id.imv_colors:
-                watchLargePhoto(imageUriColor);
+                watchLargePhoto(this,imageUriColor);
                 break;
             //花冠色拍照并显示
             case R.id.imb_corolla_colors:
@@ -823,7 +860,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //花冠色查看大图
             case R.id.imv_corolla_colors:
-                watchLargePhoto(imageUriCorollaColor);
+                watchLargePhoto(this, imageUriCorollaColor);
                 break;
             //花繁茂性拍照并显示
             case R.id.imb_plant_flourish:
@@ -842,7 +879,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //花繁茂性查看大图
             case R.id.imv_plant_flourish:
-                watchLargePhoto(imageUriPlantFlourish);
+                watchLargePhoto(this,imageUriPlantFlourish);
                 break;
             //茎色拍照并显示
             case R.id.imb_stem_color:
@@ -861,7 +898,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //茎色查看大图
             case R.id.imv_stem_color:
-                watchLargePhoto(imageUriStemColors);
+                watchLargePhoto(this, imageUriStemColors);
                 break;
             //天然结实性拍照并显示
             case R.id.imb_natural_fecundity:
@@ -880,7 +917,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //天然结实性查看大图
             case R.id.imv_natural_fecundity:
-                watchLargePhoto(imageUriNaturalFecundity);
+                watchLargePhoto(this,imageUriNaturalFecundity);
                 break;
             //块茎整齐度拍照并显示
 //            case R.id.imb_tuber_uniformity:
@@ -991,35 +1028,35 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 //                watchLargePhoto(imageUriFleshColor);
 //                break;
             case R.id.sowing_period_input:
-                showDatePickerDialog(edtSowingPeriodInput);
+                showDatePickerDialog(SaveDataActivity.this, edtSowingPeriodInput);
                 break;
             case R.id.emergence_period:
-                showDatePickerDialog(edtEmergencePeriod);
+                showDatePickerDialog(SaveDataActivity.this, edtEmergencePeriod);
                 break;
             case R.id.squaring_period:
-                showDatePickerDialog(edtSquaringPeriod);
+                showDatePickerDialog(SaveDataActivity.this, edtSquaringPeriod);
                 break;
             case R.id.flowering_period:
-                showDatePickerDialog(edtFloweringPeriod);
+                showDatePickerDialog(SaveDataActivity.this, edtFloweringPeriod);
                 break;
             case R.id.mature_period:
-                showDatePickerDialog(edtMaturePeriod);
+                showDatePickerDialog(SaveDataActivity.this, edtMaturePeriod);
                 break;
             //计算生育日数
             case R.id.btn_compute_growing_days:
-                Date sowingDate = null;
-                Date matureDate = null;
+                String sowingDate = edtSowingPeriodInput.getText().toString();
+                String matureDate = edtMaturePeriod.getText().toString();
+//                sowingDate = edtSowingPeriodInput.getText().toString();
+//                matureDate = edtMaturePeriod.getText().toString();
                 try {
-                    //播种期
-                    sowingDate = simpleDateFormat.parse(edtSowingPeriodInput.getText().toString());
-                    //成熟期
-                    matureDate = simpleDateFormat.parse(edtMaturePeriod.getText().toString());
+                    edtGrowingDays.setText(getGrowingDays(SaveDataActivity.this, sowingDate, matureDate));
                 } catch (ParseException e) {
-                    Toast.makeText(this,"输入日期有误，请检查！",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SaveDataActivity.this, "输入日期有误，请检查！", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    Toast.makeText(SaveDataActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
-                Integer growingDays = ((int) ((matureDate.getTime() - sowingDate.getTime()) / (3600 * 1000 * 24)));
-                edtGrowingDays.setText(growingDays.toString());
                 break;
             //计算商品薯率
             case R.id.btn_compute_rate_of_economic_potato:
@@ -1032,91 +1069,47 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //计算亩产量
             case R.id.btn_compute_average_per_mu_yield:
-                float smallSectionYield1 = Float.parseFloat(edtSmallSectionYield1.getText().toString().isEmpty()?"0":
-                        edtSmallSectionYield1.getText().toString());
-                float smallSectionYield2 = Float.parseFloat(edtSmallSectionYield2.getText().toString().isEmpty()?"0":
-                        edtSmallSectionYield2.getText().toString());
-                float smallSectionYield3 = Float.parseFloat(edtSmallSectionYield3.getText().toString().isEmpty()?"0":
-                        edtSmallSectionYield3.getText().toString());
-                //利用DecimalFormat进行解析
-                float perMuYield = (smallSectionYield1 + smallSectionYield2 + smallSectionYield3) / 3;
-                edtPerMuYield.setText(decimalFormat.format(perMuYield));
+                ArrayList<String> strings2 = new ArrayList<>();
+                strings2.add(edtSmallSectionYield1.getText().toString().isEmpty() ? "0" : edtSmallSectionYield1.getText().toString());
+                strings2.add(edtSmallSectionYield2.getText().toString().isEmpty() ? "0" : edtSmallSectionYield2.getText().toString());
+                strings2.add(edtSmallSectionYield3.getText().toString().isEmpty() ? "0" : edtSmallSectionYield3.getText().toString());
+                edtPerMuYield.setText(getAverage(strings2));
                 break;
 //            计算十株平均株高
             case R.id.btn_compute_average_plant_height:
-                float edtBigPotatoHeightContent1 = Float.parseFloat(edtBigPotatoHeight1.getText().toString().isEmpty()?"0":
-                        edtBigPotatoHeight1.getText().toString());
-                float edtBigPotatoHeightContent2 = Float.parseFloat(edtBigPotatoHeight2.getText().toString().isEmpty()?"0":
-                        edtBigPotatoHeight2.getText().toString());
-                float edtBigPotatoHeightContent3 = Float.parseFloat(edtBigPotatoHeight3.getText().toString().isEmpty()?"0":
-                        edtBigPotatoHeight3.getText().toString());
-                float edtBigPotatoHeightContent4 = Float.parseFloat(edtBigPotatoHeight4.getText().toString().isEmpty()?"0":
-                        edtBigPotatoHeight4.getText().toString());
-                float edtBigPotatoHeightContent5 = Float.parseFloat(edtBigPotatoHeight5.getText().toString().isEmpty()?"0":
-                        edtBigPotatoHeight5.getText().toString());
-                float edtBigPotatoHeightContent6 = Float.parseFloat(edtBigPotatoHeight6.getText().toString().isEmpty()?"0":
-                        edtBigPotatoHeight6.getText().toString());
-                float edtBigPotatoHeightContent7 = Float.parseFloat(edtBigPotatoHeight7.getText().toString().isEmpty()?"0":
-                        edtBigPotatoHeight7.getText().toString());
-                float edtBigPotatoHeightContent8 = Float.parseFloat(edtBigPotatoHeight8.getText().toString().isEmpty()?"0":
-                        edtBigPotatoHeight8.getText().toString());
-                float edtBigPotatoHeightContent9 = Float.parseFloat(edtBigPotatoHeight9.getText().toString().isEmpty()?"0":
-                        edtBigPotatoHeight9.getText().toString());
-                float edtBigPotatoHeightContent10 = Float.parseFloat(edtBigPotatoHeight10.getText().toString().isEmpty()?"0":
-                        edtBigPotatoHeight10.getText().toString());
-                float avergePlantHeight = (edtBigPotatoHeightContent1 + edtBigPotatoHeightContent2 + edtBigPotatoHeightContent3
-                        + edtBigPotatoHeightContent4 + edtBigPotatoHeightContent5 + edtBigPotatoHeightContent6 + edtBigPotatoHeightContent7
-                        + edtBigPotatoHeightContent8 + edtBigPotatoHeightContent9 + edtBigPotatoHeightContent10) / 10;
-                edtAveragePlantHeightOfBigPotato.setText(decimalFormat.format(avergePlantHeight));
+                ArrayList<String> strings1 = new ArrayList<String>();
+                strings1.add(edtBigPotatoHeight1.getText().toString().isEmpty() ? "0" : edtBigPotatoHeight1.getText().toString());
+                strings1.add(edtBigPotatoHeight2.getText().toString().isEmpty() ? "0" : edtBigPotatoHeight2.getText().toString());
+                strings1.add(edtBigPotatoHeight3.getText().toString().isEmpty() ? "0" : edtBigPotatoHeight3.getText().toString());
+                strings1.add(edtBigPotatoHeight4.getText().toString().isEmpty() ? "0" : edtBigPotatoHeight4.getText().toString());
+                strings1.add(edtBigPotatoHeight5.getText().toString().isEmpty() ? "0" : edtBigPotatoHeight5.getText().toString());
+                strings1.add(edtBigPotatoHeight6.getText().toString().isEmpty() ? "0" : edtBigPotatoHeight6.getText().toString());
+                strings1.add(edtBigPotatoHeight7.getText().toString().isEmpty() ? "0" : edtBigPotatoHeight7.getText().toString());
+                strings1.add(edtBigPotatoHeight8.getText().toString().isEmpty() ? "0" : edtBigPotatoHeight8.getText().toString());
+                strings1.add(edtBigPotatoHeight9.getText().toString().isEmpty() ? "0" : edtBigPotatoHeight9.getText().toString());
+                strings1.add(edtBigPotatoHeight10.getText().toString().isEmpty() ? "0" : edtBigPotatoHeight10.getText().toString());
+                edtAveragePlantHeightOfBigPotato.setText(getAverage(strings1));
                 break;
             //计算十株平均分支数
             case R.id.btn_compute_average_branch_num:
-                int edtBranchNumOfBigPotatoContent1 = Integer.parseInt(edtBranchNumOfBigPotato1.getText().toString().isEmpty()?"0":
-                        edtBranchNumOfBigPotato1.getText().toString());
-                int edtBranchNumOfBigPotatoContent2 = Integer.parseInt(edtBranchNumOfBigPotato2.getText().toString().isEmpty()?"0":
-                        edtBranchNumOfBigPotato2.getText().toString());
-                int edtBranchNumOfBigPotatoContent3 = Integer.parseInt(edtBranchNumOfBigPotato3.getText().toString().isEmpty()?"0":
-                        edtBranchNumOfBigPotato3.getText().toString());
-                int edtBranchNumOfBigPotatoContent4 = Integer.parseInt(edtBranchNumOfBigPotato4.getText().toString().isEmpty()?"0":
-                        edtBranchNumOfBigPotato4.getText().toString());
-                int edtBranchNumOfBigPotatoContent5 = Integer.parseInt(edtBranchNumOfBigPotato5.getText().toString().isEmpty()?"0":
-                        edtBranchNumOfBigPotato5.getText().toString());
-                int edtBranchNumOfBigPotatoContent6 = Integer.parseInt(edtBranchNumOfBigPotato6.getText().toString().isEmpty()?"0":
-                        edtBranchNumOfBigPotato6.getText().toString());
-                int edtBranchNumOfBigPotatoContent7 = Integer.parseInt(edtBranchNumOfBigPotato7.getText().toString().isEmpty()?"0":
-                        edtBranchNumOfBigPotato7.getText().toString());
-                int edtBranchNumOfBigPotatoContent8 = Integer.parseInt(edtBranchNumOfBigPotato8.getText().toString().isEmpty()?"0":
-                        edtBranchNumOfBigPotato8.getText().toString());
-                int edtBranchNumOfBigPotatoContent9 = Integer.parseInt(edtBranchNumOfBigPotato9.getText().toString().isEmpty()?"0":
-                        edtBranchNumOfBigPotato9.getText().toString());
-                int edtBranchNumOfBigPotatoContent10 = Integer.parseInt(edtBranchNumOfBigPotato10.getText().toString().isEmpty()?"0":
-                        edtBranchNumOfBigPotato10.getText().toString());
-                float averageBranchNum = (float) ((edtBranchNumOfBigPotatoContent1 + edtBranchNumOfBigPotatoContent2 + edtBranchNumOfBigPotatoContent3
-                                        + edtBranchNumOfBigPotatoContent4 + edtBranchNumOfBigPotatoContent5 + edtBranchNumOfBigPotatoContent6 + edtBranchNumOfBigPotatoContent7
-                                        + edtBranchNumOfBigPotatoContent8 + edtBranchNumOfBigPotatoContent9 + edtBranchNumOfBigPotatoContent10) / 10.0);
-                edtAverageBranchNumOfBigPotato.setText(decimalFormat.format(averageBranchNum));
+                ArrayList<String> strings = new ArrayList<String>();
+                strings.add(edtBranchNumOfBigPotato1.getText().toString().isEmpty() ? "0" : edtBranchNumOfBigPotato1.getText().toString());
+                strings.add(edtBranchNumOfBigPotato2.getText().toString().isEmpty() ? "0" : edtBranchNumOfBigPotato2.getText().toString());
+                strings.add(edtBranchNumOfBigPotato3.getText().toString().isEmpty() ? "0" : edtBranchNumOfBigPotato3.getText().toString());
+                strings.add(edtBranchNumOfBigPotato4.getText().toString().isEmpty() ? "0" : edtBranchNumOfBigPotato4.getText().toString());
+                strings.add(edtBranchNumOfBigPotato5.getText().toString().isEmpty() ? "0" : edtBranchNumOfBigPotato5.getText().toString());
+                strings.add(edtBranchNumOfBigPotato6.getText().toString().isEmpty() ? "0" : edtBranchNumOfBigPotato6.getText().toString());
+                strings.add(edtBranchNumOfBigPotato7.getText().toString().isEmpty() ? "0" : edtBranchNumOfBigPotato7.getText().toString());
+                strings.add(edtBranchNumOfBigPotato8.getText().toString().isEmpty() ? "0" : edtBranchNumOfBigPotato8.getText().toString());
+                strings.add(edtBranchNumOfBigPotato9.getText().toString().isEmpty() ? "0" : edtBranchNumOfBigPotato9.getText().toString());
+                strings.add(edtBranchNumOfBigPotato10.getText().toString().isEmpty() ? "0" : edtBranchNumOfBigPotato10.getText().toString());
+                edtAverageBranchNumOfBigPotato.setText(getAverage(strings));
                 break;
             default:
         }
     }
 
-    public String getAverage(String s,String item) {
-        float sum = 0;
-        float average = 0;
-        if (s.isEmpty()) {
-            Toast.makeText(this, "请输入十株的"+item, Toast.LENGTH_SHORT).show();
-        } else {
-            String[] strings = s.split("-");
-            for (String e :strings
-                    ) {
-                sum += Integer.valueOf(e);
-            }
-            average = sum / strings.length;
-        }
-        DecimalFormat decimalFormat=new DecimalFormat(".00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
-        return decimalFormat.format(average);//format 返回的是字符串
-    }
-
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -1164,6 +1157,20 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
             case TAKE_PHOTO_FLESH_COLOR:
                 onResultOfPhoto(resultCode,imageUriFleshColor, ivShowFleshColor);
                 break;
+            //从相册选择叶颜色图片
+            case SELECT_PHOTO_COLOR:
+                String imagePathLeafColor = null;
+                Uri uri = data.getData();
+                if(uri!=null) {
+                    Bitmap bit = null;
+                    try {
+                        bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    ivShowColor.setImageBitmap(bit);
+                }
+                break;
             default:
                 break;
         }
@@ -1182,62 +1189,33 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void watchLargePhoto(Uri imageUri) {
-        LayoutInflater layoutInflater = LayoutInflater.from(this);
-        View imgLargeView = layoutInflater.inflate(R.layout.dialog_watch_big_photo, null);
-        final AlertDialog alertDialogShowLargeImage = new AlertDialog.Builder(this).setTitle("点击可关闭").create();
-        //获取ImageView
-        ImageView imvLargePhoto = (ImageView) imgLargeView.findViewById(R.id.imv_large_photo);
-        //设置图片到ImageView
-        imvLargePhoto.setImageURI(imageUri);
-        //定义dialog
-        alertDialogShowLargeImage.setView(imgLargeView);
-        alertDialogShowLargeImage.show();
-        //点击大图关闭dialog
-        imgLargeView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialogShowLargeImage.cancel();
-            }
-        });
-    }
-
-    private File getSavePhotoFile() {
-        File appDir = new File(Environment.getExternalStorageDirectory(), "Potato");
-        if (!appDir.exists()) {
-            appDir.mkdir();
-        }
-        String fileName = System.currentTimeMillis() + ".jpg";
-        File file = new File(appDir, fileName);
-        return file;
-    }
-
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         switch (v.getId()) {
             case R.id.sowing_period_input:
-                showDatePickerDialog(edtSowingPeriodInput);
+                showDatePickerDialog(SaveDataActivity.this, edtSowingPeriodInput);
                 break;
             case R.id.emergence_period:
-                showDatePickerDialog(edtEmergencePeriod);
+                showDatePickerDialog(SaveDataActivity.this, edtEmergencePeriod);
                 break;
             default:
         }
     }
 
-    private void showDatePickerDialog(final EditText editText) {
-        Calendar calendar = Calendar.getInstance();
-        new DatePickerDialog(SaveDataActivity.this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String zeroMonth = "";
-                String zeroDay = "";
-                if (month < 10) zeroMonth = "0"; //当月份小于10时，需要在月份前加入0，需要符合yyyy-mm-dd当格式
-                if (dayOfMonth < 10) zeroDay = "0"; //同上
-                editText.setText(year + "-" + zeroMonth + (month + 1) + "-" + zeroDay + dayOfMonth); //yyyy-mm-dd
-            }
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 6:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent1 = new Intent("android.intent.action.GET_CONTENT");
+                    intent1.setType("image/*");
+                    startActivityForResult(intent1, 6);
+                } else {
+                    Toast.makeText(SaveDataActivity.this, "你没有赋予应用权限", Toast.LENGTH_SHORT).show();
+                }
+        }
     }
 
     @Override
@@ -1259,4 +1237,3 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         Log.d("SaveDataActivity", "onStop method");
     }
 }
-
