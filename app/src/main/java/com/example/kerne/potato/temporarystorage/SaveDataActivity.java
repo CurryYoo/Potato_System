@@ -1,22 +1,14 @@
 package com.example.kerne.potato.temporarystorage;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -27,13 +19,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -41,19 +31,14 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.kerne.potato.MainActivity;
 import com.example.kerne.potato.R;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 import static com.example.kerne.potato.temporarystorage.Util.getAverage;
 import static com.example.kerne.potato.temporarystorage.Util.getGrowingDays;
@@ -239,6 +224,14 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
     //从相册选择叶颜色
     public static final int SELECT_PHOTO_COLOR = 12;
+    //从相册选择花冠色
+    public static final int SELECT_PHOTO_COROLLA_COLORS = 13;
+    //从相册选择花繁茂性
+    public static final int SELECT_PHOTO_PLANT_FLOURISH = 14;
+    //从相册选择茎色
+    public static final int SELECT_PHOTO_STEM_COLOR = 15;
+    //从相册选择天然结实性
+    public static final int SELECT_PHOTO_NATURAL_FECUNDITY = 16;
 
     //暂存功能
     private SpeciesDBHelper dbHelper;
@@ -296,9 +289,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         imbTakePhotoColor.setOnClickListener(this);
         ivShowColor = (ImageView) findViewById(R.id.imv_colors);
         ivShowColor.setOnClickListener(this);
-        //从相册选择照片
-        Button btnSelectPhotoFromAlbum = (Button) findViewById(R.id.btn_select_from_album);
-        btnSelectPhotoFromAlbum.setOnClickListener(this);
+        //从相册选择叶颜色照片
+        Button btnSelectPhotoFromAlbumColors = (Button) findViewById(R.id.btn_select_from_album_colors);
+        btnSelectPhotoFromAlbumColors.setOnClickListener(this);
 
         //花冠色
         spnCorollaColors = (Spinner) findViewById(R.id.corolla_colors);
@@ -307,6 +300,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         imbTakePhotoCorollaColors.setOnClickListener(this);
         ivShowCorollaColor = (ImageView) findViewById(R.id.imv_corolla_colors);
         ivShowCorollaColor.setOnClickListener(this);
+        //从相册选择花冠色照片
+        Button btnSelectPhotoFromAlbumCorollaColors = (Button) findViewById(R.id.btn_select_from_album_corolla_colors);
+        btnSelectPhotoFromAlbumCorollaColors.setOnClickListener(this);
 
         //花繁茂性
         spnPlantFlourish = (Spinner) findViewById(R.id.plant_flourish);
@@ -315,6 +311,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         imbTakePhotoPlantFlourish.setOnClickListener(this);
         ivShowPlantFlourish = (ImageView) findViewById(R.id.imv_plant_flourish);
         ivShowPlantFlourish.setOnClickListener(this);
+        //从相册选择花繁茂性照片
+        Button btnSelectPhotoFromAlbumPlantFlourish = (Button) findViewById(R.id.btn_select_from_album_plant_flourish);
+        btnSelectPhotoFromAlbumPlantFlourish.setOnClickListener(this);
 
         //茎色
         spnStemColor = (Spinner) findViewById(R.id.stem_color);
@@ -323,6 +322,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         imbTakePhotoStemColor.setOnClickListener(this);
         ivShowStemColors = (ImageView) findViewById(R.id.imv_stem_color);
         ivShowStemColors.setOnClickListener(this);
+        //从相册选择茎色照片
+        Button btnSelectPhotoFromAlbumStemColor = (Button) findViewById(R.id.btn_select_from_album_stem_color);
+        btnSelectPhotoFromAlbumStemColor.setOnClickListener(this);
 
         //天然结实性
         spnNaturalFecundity = (Spinner) findViewById(R.id.natural_fecundity);
@@ -331,7 +333,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         imbTakePhotoNaturalFecundity.setOnClickListener(this);
         ivShowNaturalFecundity = (ImageView) findViewById(R.id.imv_natural_fecundity);
         ivShowNaturalFecundity.setOnClickListener(this);
-
+        //从相册选择天然结实性照片
+        Button btnSelectPhotoFromAlbumNaturalFecundity = (Button) findViewById(R.id.btn_select_from_album_natural_fecundity);
+        btnSelectPhotoFromAlbumNaturalFecundity.setOnClickListener(this);
 
         //成熟期
         edtMaturePeriod = (EditText) findViewById(R.id.mature_period);
@@ -827,17 +831,8 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 startActivityForResult(intent, TAKE_PHOTO_COLOR);
                 break;
             //从相册选择叶颜色照片
-            case R.id.btn_select_from_album:
-//                selectPhotoFromAlbum();
-                if (ContextCompat.checkSelfPermission(SaveDataActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(SaveDataActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                } else {
-                    Intent intent1 = new Intent("android.intent.action.GET_CONTENT");
-                    intent1.setType("image/*");
-                    startActivityForResult(intent1, SELECT_PHOTO_COLOR);
-                }
-
+            case R.id.btn_select_from_album_colors:
+                selectPhotoFromAlbum(SELECT_PHOTO_COLOR);
                 break;
             //叶颜色查看大图
             case R.id.imv_colors:
@@ -862,6 +857,10 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
             case R.id.imv_corolla_colors:
                 watchLargePhoto(this, imageUriCorollaColor);
                 break;
+            //从相册选择花冠色照片
+            case R.id.btn_select_from_album_corolla_colors:
+                selectPhotoFromAlbum(SELECT_PHOTO_COROLLA_COLORS);
+                break;
             //花繁茂性拍照并显示
             case R.id.imb_plant_flourish:
                 File outputImagePlantFlourish = new File(getExternalCacheDir(), System.currentTimeMillis() + ".jpg");
@@ -880,6 +879,10 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
             //花繁茂性查看大图
             case R.id.imv_plant_flourish:
                 watchLargePhoto(this,imageUriPlantFlourish);
+                break;
+            //从相册选择花繁茂性照片
+            case R.id.btn_select_from_album_plant_flourish:
+                selectPhotoFromAlbum(SELECT_PHOTO_PLANT_FLOURISH);
                 break;
             //茎色拍照并显示
             case R.id.imb_stem_color:
@@ -900,6 +903,10 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
             case R.id.imv_stem_color:
                 watchLargePhoto(this, imageUriStemColors);
                 break;
+            //从相册选择茎色照片
+            case R.id.btn_select_from_album_stem_color:
+                selectPhotoFromAlbum(SELECT_PHOTO_STEM_COLOR);
+                break;
             //天然结实性拍照并显示
             case R.id.imb_natural_fecundity:
                 File outputImageNaturalFecundity = new File(getExternalCacheDir(), System.currentTimeMillis() + ".jpg");
@@ -918,6 +925,10 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
             //天然结实性查看大图
             case R.id.imv_natural_fecundity:
                 watchLargePhoto(this,imageUriNaturalFecundity);
+                break;
+            //从相册选择天然结实性照片
+            case R.id.btn_select_from_album_natural_fecundity:
+                selectPhotoFromAlbum(SELECT_PHOTO_NATURAL_FECUNDITY);
                 break;
             //块茎整齐度拍照并显示
 //            case R.id.imb_tuber_uniformity:
@@ -1109,6 +1120,17 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    private void selectPhotoFromAlbum(int selectType) {
+        if (ContextCompat.checkSelfPermission(SaveDataActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(SaveDataActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        } else {
+            Intent intent = new Intent("android.intent.action.GET_CONTENT");
+            intent.setType("image/*");
+            startActivityForResult(intent, selectType);
+        }
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -1159,7 +1181,6 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //从相册选择叶颜色图片
             case SELECT_PHOTO_COLOR:
-                String imagePathLeafColor = null;
                 Uri uri = data.getData();
                 if(uri!=null) {
                     Bitmap bit = null;
@@ -1169,6 +1190,58 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                         e.printStackTrace();
                     }
                     ivShowColor.setImageBitmap(bit);
+                }
+                break;
+            //从相册选择花冠色图片
+            case SELECT_PHOTO_COROLLA_COLORS:
+                Uri uriCorollaColors = data.getData();
+                if(uriCorollaColors!=null) {
+                    Bitmap bit = null;
+                    try {
+                        bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(uriCorollaColors));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    ivShowCorollaColor.setImageBitmap(bit);
+                }
+                break;
+            //从相册选择花繁茂性图片
+            case SELECT_PHOTO_PLANT_FLOURISH:
+                Uri uriPlantFlourish = data.getData();
+                if(uriPlantFlourish!=null) {
+                    Bitmap bit = null;
+                    try {
+                        bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(uriPlantFlourish));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    ivShowPlantFlourish.setImageBitmap(bit);
+                }
+                break;
+            //从相册选择茎色图片
+            case SELECT_PHOTO_STEM_COLOR:
+                Uri uriStemColor = data.getData();
+                if(uriStemColor!=null) {
+                    Bitmap bit = null;
+                    try {
+                        bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(uriStemColor));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    ivShowStemColors.setImageBitmap(bit);
+                }
+                break;
+            //从相册选择天然结实性图片
+            case SELECT_PHOTO_NATURAL_FECUNDITY:
+                Uri uriNaturalFecundity = data.getData();
+                if(uriNaturalFecundity!=null) {
+                    Bitmap bit = null;
+                    try {
+                        bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(uriNaturalFecundity));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    ivShowNaturalFecundity.setImageBitmap(bit);
                 }
                 break;
             default:
