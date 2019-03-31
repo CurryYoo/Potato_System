@@ -9,7 +9,7 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
     private Context mContext = null;
 
     public static final String CREATE_SPECIES_TABLE = "create table SpeciesTable ("  //创建存储品种信息的表
-            + "id integer primary key autoincrement, "  //id字段
+            + "id text primary key, "  //id字段
             + "speciesId text,"  //小区id字段 (+++++++++++)
             + "experimentType text," //实验类型
             + "plantingDate text,"  //播种期字段

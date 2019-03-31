@@ -49,7 +49,7 @@
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:gravity="center_horizontal"/>
+                    android:gravity="center_horizontal" />
             </LinearLayout>
 
             <LinearLayout
@@ -428,7 +428,7 @@
                     android:layout_marginLeft="5dp"
                     android:entries="@array/tuber_uniformity_arr"
                     android:gravity="center_horizontal"></Spinner>
-<!--
+                <!--
                 <ImageButton
                     android:id="@+id/imb_tuber_uniformity"
                     android:layout_width="wrap_content"
@@ -458,7 +458,7 @@
                     android:layout_marginLeft="5dp"
                     android:entries="@array/potato_types"
                     android:gravity="center_horizontal"></Spinner>
-<!--
+                <!--
                 <ImageButton
                     android:id="@+id/imb_tuber_shape"
                     android:layout_width="wrap_content"
@@ -488,7 +488,7 @@
                     android:layout_marginLeft="5dp"
                     android:entries="@array/potato_skin_smoothness_arr"
                     android:gravity="center_horizontal"></Spinner>
-<!--
+                <!--
                 <ImageButton
                     android:id="@+id/imb_potato_skin_smoothness"
                     android:layout_width="wrap_content"
@@ -518,7 +518,7 @@
                     android:layout_marginLeft="5dp"
                     android:entries="@array/eye_arr"
                     android:gravity="center_horizontal"></Spinner>
-<!--
+                <!--
                 <ImageButton
                     android:id="@+id/imb_eye"
                     android:layout_width="wrap_content"
@@ -548,7 +548,7 @@
                     android:layout_marginLeft="5dp"
                     android:entries="@array/skin_colors"
                     android:gravity="center_horizontal"></Spinner>
-<!--
+                <!--
                 <ImageButton
                     android:id="@+id/imb_skin_color"
                     android:layout_width="wrap_content"
@@ -578,7 +578,7 @@
                     android:layout_marginLeft="5dp"
                     android:entries="@array/flesh_colors"
                     android:gravity="center_horizontal"></Spinner>
-<!--
+                <!--
                 <ImageButton
                     android:id="@+id/imb_flesh_color"
                     android:layout_width="wrap_content"
@@ -880,48 +880,56 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/ten_plant_height3"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/ten_plant_height4"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/ten_plant_height5"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/ten_plant_height6"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/ten_plant_height7"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/ten_plant_height8"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/ten_plant_height9"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/ten_plant_height10"
                         android:layout_width="100dp"
@@ -1093,54 +1101,63 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/yield_monitoring_of_ten_plant2"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/yield_monitoring_of_ten_plant3"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/yield_monitoring_of_ten_plant4"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/yield_monitoring_of_ten_plant5"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/yield_monitoring_of_ten_plant6"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/yield_monitoring_of_ten_plant7"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/yield_monitoring_of_ten_plant8"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/yield_monitoring_of_ten_plant9"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/yield_monitoring_of_ten_plant10"
                         android:layout_width="100dp"
@@ -1173,54 +1190,63 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/yield_monitoring_of_small_plant2"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/yield_monitoring_of_small_plant3"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/yield_monitoring_of_small_plant4"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/yield_monitoring_of_small_plant5"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/yield_monitoring_of_small_plant6"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/yield_monitoring_of_small_plant7"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/yield_monitoring_of_small_plant8"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/yield_monitoring_of_small_plant9"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_horizontal" />
+
                     <EditText
                         android:id="@+id/yield_monitoring_of_small_plant10"
                         android:layout_width="100dp"
@@ -1234,16 +1260,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:orientation="vertical">
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/save_offline"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="暂存"
-                    android:textAllCaps="false" />
+                    android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
 
+                    <Button
+                        android:id="@+id/save_offline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginRight="10dp"
+                        android:text="暂存"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/update_offline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="10dp"
+                        android:text="更新"
+                        android:textAllCaps="false" />
+
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
