@@ -834,6 +834,10 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     //暂存数据到本地数据库
     private void savaDataLocally() {
         ContentValues contentValues = assembleData();
+        if (contentValues == null) {
+            Toast.makeText(SaveDataActivity.this, "输入有误！", Toast.LENGTH_SHORT).show();
+            return;
+        }
         sqLiteDatabase.insert("SpeciesTable", null, contentValues);
         contentValues.clear();
         Toast.makeText(this,
@@ -880,7 +884,13 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
             contentValues.put("emergenceDate", edtEmergencePeriod.getText().toString());
             //出苗率
             String edtRateOfEmergenceContent = edtRateOfEmergence.getText().toString();
-            contentValues.put("sproutRate", Integer.parseInt(edtRateOfEmergenceContent.isEmpty() ? "0" : edtRateOfEmergenceContent));
+            int edtRateOfEmergenceContentParseInt = Integer.parseInt(edtRateOfEmergenceContent.isEmpty() ? "0" : edtRateOfEmergenceContent);
+            if (edtRateOfEmergenceContentParseInt > 100) {
+                Toast.makeText(SaveDataActivity.this, "出苗率输入有误！", Toast.LENGTH_SHORT).show();
+                return null;
+            } else {
+                contentValues.put("sproutRate", edtRateOfEmergenceContentParseInt);
+            }
             //现蕾期
             contentValues.put("squaringStage", edtSquaringPeriod.getText().toString());
             //开花期
