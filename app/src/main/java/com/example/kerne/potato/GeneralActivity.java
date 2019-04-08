@@ -1,6 +1,8 @@
 package com.example.kerne.potato;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -19,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
 import com.hb.dialog.myDialog.MyAlertInputDialog;
 
 import org.json.JSONArray;
@@ -125,35 +128,72 @@ public class GeneralActivity extends AppCompatActivity {
     }
 
     private void getData(){
-        new Thread(){
-            @Override
-            public void run(){
-                HttpRequest.HttpRequest_map(farmlandId, GeneralActivity.this, new HttpRequest.HttpCallback() {
-                    @Override
-                    public void onSuccess(JSONObject result) {
-                        try {
-                            JSONArray rows = new JSONArray();
-                            rows = result.getJSONArray("rows");
-                            int total = result.getInt("total");
-                            for(int i = 0; i < total; i++){
-                                mList.add(rows.getJSONObject(i));
-                                //jsonObject[i] = rows.getJSONObject(i);
-                                //jsonObject0.put("userRole", userRole);
-                            }
-                            //Log.d("GeneralJsonList", mList.toString());
+        //获取分块的坐标信息
+        SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 7);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+        Cursor cursor = db.query("ExperimentField", null, "farmlandId=?", new String[]{farmlandId}, null, null, null);
+        if(cursor.moveToFirst()){
+            do {
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("id", cursor.getString(cursor.getColumnIndex("id")));
+                    jsonObject.put("deleted", cursor.getString(cursor.getColumnIndex("deleted")));
+                    jsonObject.put("expType", cursor.getString(cursor.getColumnIndex("expType")));
+                    jsonObject.put("moveX", cursor.getString(cursor.getColumnIndex("moveX")));
+                    jsonObject.put("moveY", cursor.getString(cursor.getColumnIndex("moveY")));
+                    jsonObject.put("moveX1", cursor.getString(cursor.getColumnIndex("moveX1")));
+                    jsonObject.put("moveY1", cursor.getString(cursor.getColumnIndex("moveY1")));
+                    jsonObject.put("num", cursor.getString(cursor.getColumnIndex("num")));
+                    jsonObject.put("color", cursor.getString(cursor.getColumnIndex("color")));
+                    jsonObject.put("farmlandId", cursor.getString(cursor.getColumnIndex("farmlandId")));
+                    jsonObject.put("year", cursor.getString(cursor.getColumnIndex("year")));
+                    mList.add(jsonObject);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e("fieldId_error", cursor.getString(cursor.getColumnIndex("id")));
+                }
+            } while (cursor.moveToNext());
+        }
+        else {
+            Toast.makeText(GeneralActivity.this, "ExperimentField null", Toast.LENGTH_SHORT).show();
+        }
+        cursor.close();
+        //Log.d("mList.toString", mList.toString());
 
-                        Message msg = new Message();
-                        msg.what = 1;
-                        uiHandler.sendMessage(msg);
+        Message msg = new Message();
+        msg.what = 1;
+        uiHandler.sendMessage(msg);
 
-                    }
-                });
-            }
-        }.start();
+//        new Thread(){
+//            @Override
+//            public void run(){
+//                HttpRequest.HttpRequest_map(farmlandId, GeneralActivity.this, new HttpRequest.HttpCallback() {
+//                    @Override
+//                    public void onSuccess(JSONObject result) {
+//                        try {
+//                            JSONArray rows = new JSONArray();
+//                            rows = result.getJSONArray("rows");
+//                            int total = result.getInt("total");
+//                            for(int i = 0; i < total; i++){
+//                                mList.add(rows.getJSONObject(i));
+//                                //jsonObject[i] = rows.getJSONObject(i);
+//                                //jsonObject0.put("userRole", userRole);
+//                            }
+//                            //Log.d("GeneralJsonList", mList.toString());
+//
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                        Message msg = new Message();
+//                        msg.what = 1;
+//                        uiHandler.sendMessage(msg);
+//
+//                    }
+//                });
+//            }
+//        }.start();
     }
 
     private View.OnTouchListener touch = new View.OnTouchListener() {

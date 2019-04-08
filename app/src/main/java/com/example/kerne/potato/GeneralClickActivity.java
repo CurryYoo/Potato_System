@@ -2,6 +2,8 @@ package com.example.kerne.potato;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
 import com.hb.dialog.myDialog.MyAlertInputDialog;
 
 import org.json.JSONArray;
@@ -97,31 +100,58 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
 
     private void initData() {
         //获取服务器中数据
-        new Thread(){
-            @Override
-            public void run(){
-                HttpRequest.HttpRequest_general(name, GeneralClickActivity.this, new HttpRequest.HttpCallback() {
-                    @Override
-                    public void onSuccess(JSONObject result) {
-                        try {
-                            JSONArray rows = new JSONArray();
-                            rows = result.getJSONArray("rows");
-                            int total = result.getInt("total");
-                            for(int i = 0; i < total; i++){
-                                JSONObject jsonObject0 = rows.getJSONObject(i);
-                                jsonObject0.put("userRole", userRole);
-                                mList.add(jsonObject0);
-                            }
-                            Log.d("GeneralJsonList", mList.toString());
+        SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 7);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-                            initView();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            }
-        }.start();
+        Cursor cursor = db.query("FarmList", null, null, null, null, null, null);
+        if(cursor.moveToFirst()){
+            do {
+                JSONObject jsonObject0 = new JSONObject();
+                try {
+                    jsonObject0.put("farmlandId", cursor.getString(cursor.getColumnIndex("farmlandId")));
+                    jsonObject0.put("name", cursor.getString(cursor.getColumnIndex("name")));
+                    jsonObject0.put("length", cursor.getString(cursor.getColumnIndex("length")));
+                    jsonObject0.put("width", cursor.getString(cursor.getColumnIndex("width")));
+                    jsonObject0.put("userRole", userRole);
+                    mList.add(jsonObject0);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e("farmlandId_error", cursor.getString(cursor.getColumnIndex("farmlandId")));
+                }
+            } while (cursor.moveToNext());
+        }
+        else {
+            Toast.makeText(GeneralClickActivity.this, "FarmList null", Toast.LENGTH_SHORT).show();
+        }
+        cursor.close();
+        //Log.d("mList.toString", mList.toString());
+        initView();
+
+//        new Thread(){
+//            @Override
+//            public void run(){
+//                HttpRequest.HttpRequest_general(name, GeneralClickActivity.this, new HttpRequest.HttpCallback() {
+//                    @Override
+//                    public void onSuccess(JSONObject result) {
+//                        try {
+//                            JSONArray rows = new JSONArray();
+//                            rows = result.getJSONArray("rows");
+//                            int total = result.getInt("total");
+//                            for(int i = 0; i < total; i++){
+//                                JSONObject jsonObject0 = rows.getJSONObject(i);
+//                                jsonObject0.put("userRole", userRole);
+//                                mList.add(jsonObject0);
+//                            }
+//                            Log.d("GeneralJsonList", mList.toString());
+//
+//                            initView();
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
+//            }
+//        }.start();
 
     }
 
