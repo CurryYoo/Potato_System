@@ -1,8 +1,11 @@
 package com.example.kerne.potato;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +22,7 @@ import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
 import com.facebook.stetho.Stetho;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //    private static final String URL = "file:///android_asset/vue/index.html";
     WebView webView = null;
     Button btn_general;
+    Button btn_download;
 //    Button btn_farmland;
 //    Button btn_shot;
 //    Button btn_field;
@@ -46,6 +51,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //用户角色字段
     String userRole = null;
+
+    private static final int FARMLIST_OK = 1;
+    private static final int EXPERIMENTFIELD_OK = 2;
+    private static final int SPECIESLIST_OK = 3;
+
+    private String Fid[] = new String[5000];
+
+    private Handler uiHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg){
+            switch (msg.what){
+                case FARMLIST_OK:
+                    break;
+                case EXPERIMENTFIELD_OK:
+                    break;
+                case SPECIESLIST_OK:
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("MainActivity", "hello main");
@@ -57,8 +83,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
+        btn_download = (Button) findViewById(R.id.btn_download);
+        btn_download.setOnClickListener(this);
+
         btn_general = (Button) findViewById(R.id.btn_general);
         btn_general.setOnClickListener(this);
+
+        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 7);
+
 //        btn_farmland = (Button)findViewById(R.id.btn_farmland);
 //        btn_farmland.setOnClickListener(this);
 //        btn_shot = (Button)findViewById(R.id.btn_shot);
@@ -153,8 +185,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.commit:
                 //将暂存的数据从数据库取出并提交到远程服务器
                 if (userRole.equals("admin")) {
-                    dbHelper = new SpeciesDBHelper(this,
-                            "SpeciesTable.db", null, 3);
                     sqLiteDatabase = dbHelper.getReadableDatabase();
                     Cursor cursor = sqLiteDatabase.query("SpeciesTable", null, null, null, null, null, null);
 
@@ -412,6 +442,138 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.btn_download:
+                new Thread(){
+                    @Override
+                    public void run(){
+                        HttpRequest.HttpRequest_general(null, MainActivity.this, new HttpRequest.HttpCallback() {
+                            @Override
+                            public void onSuccess(JSONObject result) { //获取FarmList信息
+                                try {
+                                    JSONArray rows = new JSONArray();
+                                    rows = result.getJSONArray("rows");
+                                    int total = result.getInt("total");
+                                    for(int i = 0; i < total; i++){
+                                        JSONObject jsonObject0 = rows.getJSONObject(i);
+                                        ContentValues contentValues = new ContentValues();
+                                        contentValues.put("farmlandId", jsonObject0.getString("farmlandId"));
+                                        if(jsonObject0.getBoolean("deleted")){
+                                            contentValues.put("deleted", "true");
+                                        }
+                                        else{
+                                            contentValues.put("deleted", "false");
+                                        }
+                                        contentValues.put("name", jsonObject0.getString("name"));
+                                        if(jsonObject0.get("length") != null){
+                                            contentValues.put("length", jsonObject0.getString("length"));
+                                        }
+                                        if(jsonObject0.get("width") != null){
+                                            contentValues.put("width", jsonObject0.getString("width"));
+                                        }
+                                        contentValues.put("spare1", jsonObject0.getString("spare1"));
+                                        contentValues.put("spare2", jsonObject0.getString("spare2"));
+                                        updateSqlite("FarmList", "farmlandId", contentValues); //缓存数据到本地sqlite
+                                        contentValues.clear();
+                                    }
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                                Message msg = new Message();
+                                msg.what = FARMLIST_OK;
+                                uiHandler.sendMessage(msg);
+                            }
+                        });
+
+                        HttpRequest.HttpRequest_map(null, MainActivity.this, new HttpRequest.HttpCallback() {
+                            @Override
+                            public void onSuccess(JSONObject result) { //获取ExperimentField信息
+                                try {
+                                    JSONArray rows = result.getJSONArray("rows");
+                                    int total = result.getInt("total");
+                                    ContentValues contentValues = new ContentValues();
+                                    for(int i = 0; i < total; i++){
+                                        JSONObject jsonObject0 = rows.getJSONObject(i);
+
+                                        contentValues.put("id", jsonObject0.getString("id"));
+                                        if(jsonObject0.getBoolean("deleted")){
+                                            contentValues.put("deleted", "true");
+                                        }
+                                        else{
+                                            contentValues.put("deleted", "false");
+                                        }
+                                        contentValues.put("expType", jsonObject0.getString("expType"));
+                                        if(jsonObject0.get("moveX") != null){
+                                            contentValues.put("moveX", jsonObject0.getInt("moveX"));
+                                        }
+                                        if(jsonObject0.get("moveY") != null){
+                                            contentValues.put("moveY", jsonObject0.getInt("moveY"));
+                                        }
+                                        if(jsonObject0.get("moveX1") != null){
+                                            contentValues.put("moveX1", jsonObject0.getInt("moveX1"));
+                                        }
+                                        if(jsonObject0.get("moveY1") != null){
+                                            contentValues.put("moveY1", jsonObject0.getInt("moveY1"));
+                                        }
+                                        contentValues.put("spare1", jsonObject0.getString("spare1"));
+                                        contentValues.put("spare2", jsonObject0.getString("spare2"));
+                                        contentValues.put("num", jsonObject0.getString("num"));
+                                        contentValues.put("color", jsonObject0.getString("color"));
+                                        contentValues.put("farmlandId", jsonObject0.getString("farmlandId"));
+                                        if(jsonObject0.get("year") != null){
+                                            contentValues.put("year", jsonObject0.getInt("year"));
+                                        }
+                                        updateSqlite("ExperimentField", "id", contentValues); //缓存数据到本地sqlite
+                                        contentValues.clear();
+                                    }
+                                    //Log.d("GeneralJsonList", mList.toString());
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                                Message msg = new Message();
+                                msg.what = EXPERIMENTFIELD_OK;
+                                uiHandler.sendMessage(msg);
+
+                            }
+                        });
+
+                        HttpRequest.HttpRequest_Species(MainActivity.this, new HttpRequest.HttpCallback() {
+                            @Override
+                            public void onSuccess(JSONObject result) {
+                                try {
+                                    JSONArray rows = result.getJSONArray("rows");
+                                    int total = result.getInt("total");
+                                    ContentValues contentValues = new ContentValues();
+                                    for(int i = 0; i < total; i++){
+                                        JSONObject jsonObject0 = rows.getJSONObject(i);
+
+                                        contentValues.put("blockId", jsonObject0.getString("blockId"));
+                                        contentValues.put("fieldId", jsonObject0.getString("fieldId"));
+                                        contentValues.put("speciesId", jsonObject0.getString("speciesId"));
+                                        contentValues.put("x", jsonObject0.getString("x"));
+                                        contentValues.put("y", jsonObject0.getString("y"));
+                                        updateSqlite("SpeciesList", "blockId", contentValues); //缓存数据到本地sqlite
+                                        contentValues.clear();
+                                    }
+                                    //Log.d("GeneralJsonList", mList.toString());
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                                Message msg = new Message();
+                                msg.what = SPECIESLIST_OK;
+                                uiHandler.sendMessage(msg);
+                            }
+                        });
+
+                    }
+                }.start();
+
+                break;
             case R.id.btn_general:
                 Intent intent_general = new Intent(MainActivity.this, GeneralClickActivity.class);
                 intent_general.putExtra("userRole", userRole);
@@ -426,5 +588,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                  break;
         }
+    }
+
+    public void updateSqlite(String table_name, String column_name, ContentValues contentValues){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.query(table_name, new String[]{column_name}, null, null, null, null, null);
+        if(cursor != null && cursor.moveToFirst()){
+            Boolean isExist = false;
+            do {
+                if (contentValues.getAsString(column_name).equals(cursor.getString(0))) {
+                    db.update(table_name, contentValues, column_name + "=?", new String[]{cursor.getString(0)});
+                    isExist = true;
+                }
+            } while (cursor.moveToNext());
+            if (!isExist) {
+                db.insert(table_name, null, contentValues);
+            }
+        }
+        else {
+            Log.d("updateSqlite", "CursorNull");
+            db.insert(table_name, null, contentValues);
+        }
+        cursor.close();
     }
 }

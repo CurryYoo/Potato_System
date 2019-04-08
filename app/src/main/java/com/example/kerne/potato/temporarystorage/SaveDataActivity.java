@@ -474,7 +474,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
         //数据存储
         dbHelper = new SpeciesDBHelper(this,
-                "SpeciesTable.db", null, 3);
+                "SpeciesTable.db", null, 7);
         sqLiteDatabase = dbHelper.getWritableDatabase();
     }
 
@@ -848,7 +848,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     private void updateDataLocally() {
         String id = edtSpeciesID.getText().toString();
         ContentValues contentValues = assembleData();
-        sqLiteDatabase.delete("SpeciesTable", "id=?", new String[]{id});
+        sqLiteDatabase.delete("SpeciesTable", "speciesId=?", new String[]{id});
         sqLiteDatabase.insert("SpeciesTable", null, contentValues);
         contentValues.clear();
         Toast.makeText(this,

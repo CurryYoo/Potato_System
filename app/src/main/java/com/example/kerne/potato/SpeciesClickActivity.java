@@ -1,6 +1,8 @@
 package com.example.kerne.potato;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +10,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,34 +53,60 @@ public class SpeciesClickActivity extends AppCompatActivity implements SpeciesCl
     }
 
     private void initData() {
-        new Thread(){
-            @Override
-            public void run(){
-                HttpRequest.HttpRequest_species(fieldId, SpeciesClickActivity.this, new HttpRequest.HttpCallback() {
-                    @Override
-                    public void onSuccess(JSONObject result) {
-                        try {
-                            JSONObject data = new JSONObject();
-                            data = result.getJSONObject("data");
-                            int num = Integer.parseInt(data.getString("num"));
-                            for(int i = 0; i < num; i++){
-                                JSONArray jsonArray0 = data.getJSONArray("speciesId");
-                                JSONObject jsonObject = new JSONObject();
-                                jsonObject.put("speciesId", jsonArray0.getString(i));
-                                jsonObject.put("userRole", userRole);
-                                mList.add(jsonObject);
-                            }
-                            Log.d("ShotJsonList", mList.toString());
+        SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 7);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-                            initView(); //!!!
+        Cursor cursor = db.query("SpeciesList", null, "fieldId=?", new String[]{fieldId}, null, null, null);
+        if(cursor.moveToFirst()){
+            do {
+                JSONObject jsonObject0 = new JSONObject();
+                try {
+                    jsonObject0.put("blockId", cursor.getString(cursor.getColumnIndex("blockId")));
+                    jsonObject0.put("fieldId", cursor.getString(cursor.getColumnIndex("fieldId")));
+                    jsonObject0.put("speciesId", cursor.getString(cursor.getColumnIndex("speciesId")));
+                    jsonObject0.put("userRole", userRole);
+                    mList.add(jsonObject0);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e("blockId_error", cursor.getString(cursor.getColumnIndex("blockId")));
+                }
+            } while (cursor.moveToNext());
+        }
+        else {
+            Toast.makeText(SpeciesClickActivity.this, "SpeciesList null", Toast.LENGTH_SHORT).show();
+        }
+        cursor.close();
+        //Log.d("mList.toString", mList.toString());
+        initView();
 
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            }
-        }.start();
+//        new Thread(){
+//            @Override
+//            public void run(){
+//                HttpRequest.HttpRequest_species(fieldId, SpeciesClickActivity.this, new HttpRequest.HttpCallback() {
+//                    @Override
+//                    public void onSuccess(JSONObject result) {
+//                        try {
+//                            JSONObject data = new JSONObject();
+//                            data = result.getJSONObject("data");
+//                            int num = Integer.parseInt(data.getString("num"));
+//                            for(int i = 0; i < num; i++){
+//                                JSONArray jsonArray0 = data.getJSONArray("speciesId");
+//                                JSONObject jsonObject = new JSONObject();
+//                                jsonObject.put("speciesId", jsonArray0.getString(i));
+//                                jsonObject.put("userRole", userRole);
+//                                mList.add(jsonObject);
+//                            }
+//                            Log.d("ShotJsonList", mList.toString());
+//
+//                            initView(); //!!!
+//
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
+//            }
+//        }.start();
 
 //        JSONObject jsonObject0 = new JSONObject();
 //        JSONObject jsonObject1 = new JSONObject();

@@ -31,6 +31,7 @@ public class HttpRequest {
     private static String picUrl = "http://10.103.241.85:9527/";
     private static RequestQueue requestQueue;
 
+    //获取试验田列表
     public static void HttpRequest_general(final String name, Context context, final HttpCallback callback) {
         requestQueue = Volley.newRequestQueue(context);
 
@@ -58,39 +59,12 @@ public class HttpRequest {
             }
         });
 
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url + "farm/getFarmlist", new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//                Log.d("general_response", response);
-//                try {
-//                    callback.onSuccess(new JSONObject(response));
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.e("general_error", error.getMessage(), error);
-//            }
-//        }) {
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                // 请求参数
-//                Map<String, String> map = new HashMap<String, String>();
-//                //new 一个Map  参数放到Map中
-//                if (name != null) {
-//                    map.put("name", name);
-//                }
-//                return map;
-//            }
-//        };
-
         requestQueue.add(jsonObjectRequest);
         //requestQueue.add(stringRequest);
 
     }
 
+    //获取种植图信息
     public static void HttpRequest_map(final String farmlandId, Context context, final HttpCallback callback) {
         requestQueue = Volley.newRequestQueue(context);
 
@@ -118,68 +92,14 @@ public class HttpRequest {
             }
         });
 
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url + "farm/getFarmlist", new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//                Log.d("general_response", response);
-//                try {
-//                    callback.onSuccess(new JSONObject(response));
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.e("general_error", error.getMessage(), error);
-//            }
-//        }) {
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                // 请求参数
-//                Map<String, String> map = new HashMap<String, String>();
-//                //new 一个Map  参数放到Map中
-//                if (name != null) {
-//                    map.put("name", name);
-//                }
-//                return map;
-//            }
-//        };
-
         requestQueue.add(jsonObjectRequest);
         //requestQueue.add(stringRequest);
 
     }
 
+    //获取品种信息
     public static void HttpRequest_species(final String fieldId, Context context, final HttpCallback callback) {
         requestQueue = Volley.newRequestQueue(context);
-
-//        JSONObject jsonObject = new JSONObject();
-//
-//        Map<String, String> merchant = new HashMap<String, String>();
-//        merchant.put("fieldId", fieldId);
-//        JSONObject jsonObject1 = new JSONObject(merchant);
-//
-//        try {
-//            jsonObject.put("fieldId", fieldId);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        Log.d("POST_field", jsonObject.toString());
-//
-//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "Block/getInnerSpeciesByFieldId", jsonObject, new Response.Listener<JSONObject>() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                Log.d("TAG_response", response.toString());
-//                callback.onSuccess(response);
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.e("TAG_error", error.getMessage(), error);
-//            }
-//        });
-//        Log.d("TAG_request", jsonObjectRequest.toString());
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "Block/getInnerSpeciesByFieldId", new Response.Listener<String>() {
             @Override
@@ -211,6 +131,30 @@ public class HttpRequest {
         requestQueue.add(stringRequest);
     }
 
+    public static void HttpRequest_Species(Context context, final HttpCallback callback) {
+        requestQueue = Volley.newRequestQueue(context);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url + "Block/getAllInnerBlocks", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("Species_Response", response);
+                try {
+                    callback.onSuccess(new JSONObject(response));
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Species_Error", error.getMessage(), error);
+            }
+        });
+
+        requestQueue.add(stringRequest);
+    }
+
+    //上传品种采集信息
     public static void HttpRequest_SpeciesData(final JSONObject jsonObject, Context context, final HttpCallback callback) {
         requestQueue = Volley.newRequestQueue(context);
 
@@ -239,120 +183,7 @@ public class HttpRequest {
         requestQueue.add(jsonObjectRequest);
     }
 
-    //==========================================
-
-    public static void HttpRequest_farmland(final String farmlandId, Context context, final HttpCallback callback) {
-        requestQueue = Volley.newRequestQueue(context);
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("farmlandId", farmlandId);
-            jsonObject.put("startYear", 2010);
-            jsonObject.put("endYear", 2018);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d("POST_farmland", jsonObject.toString());
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "getShotList", jsonObject, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.d("TAG_response", response.toString());
-                callback.onSuccess(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("TAG_error", error.getMessage(), error);
-            }
-        });
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "getShotList", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d("farmland_response", response);
-                try {
-                    callback.onSuccess(new JSONObject(response));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("farmland_error", error.getMessage(), error);
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                // 请求参数
-                Map<String, String> map = new HashMap<String, String>();
-                //new 一个Map  参数放到Map中
-                map.put("farmlandId", farmlandId);
-                return map;
-            }
-        };
-
-        //requestQueue.add(jsonObjectRequest);
-        requestQueue.add(stringRequest);
-    }
-
-    public static void HttpRequest_shot(final String shotId, Context context, final HttpCallback callback) {
-        requestQueue = Volley.newRequestQueue(context);
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("shotId", shotId);
-            jsonObject.put("experimentName", "");
-            jsonObject.put("fieldName", "");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d("POST_shot", jsonObject.toString());
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "getFieldList", jsonObject, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.d("TAG_response", response.toString());
-                callback.onSuccess(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("TAG_error", error.getMessage(), error);
-            }
-        });
-        Log.d("TAG_request0", jsonObjectRequest.toString());
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "getFieldList", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d("shot_response", response);
-                try {
-                    callback.onSuccess(new JSONObject(response));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("shot_error", error.getMessage(), error);
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                // 请求参数
-                Map<String, String> map = new HashMap<String, String>();
-                //new 一个Map  参数放到Map中
-                map.put("shotId", shotId);
-                return map;
-            }
-        };
-
-        //requestQueue.add(jsonObjectRequest);
-        requestQueue.add(stringRequest);
-    }
-
-
+    //上传图片信息
     public static void doUploadTest(String picPath, String speciesId, String picNo, Context context, final HttpCallback_Str callback) {
         requestQueue = Volley.newRequestQueue(context);
 
@@ -365,8 +196,6 @@ public class HttpRequest {
         Log.e("zb", "params=" + params);
         File f1 = new File(path);
         Log.e("zb", "f1=" + f1.toString());
-//    File f2 = new File(path);
-//    Log.e("zb","f2="+f2.toString());
 
         if (!f1.exists()) {
             //Toast.makeText(getApplicationContext(), "图片不存在，测试无效", Toast.LENGTH_SHORT).show();

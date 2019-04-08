@@ -90,6 +90,37 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "img4 text,"
             + "img5 text)";
 
+    public static final String CREATE_FARMLIST = "create table FarmList ("
+            + "farmlandId text primary key,"
+            + "deleted text,"
+            + "name text,"
+            + "length integer,"
+            + "width integer,"
+            + "spare1 text,"
+            + "spare2 text)";
+
+    public static final String CREATE_EXPERIMENTFIELD = "create table ExperimentField ("
+            + "id text primary key,"
+            + "deleted text,"
+            + "expType text,"
+            + "moveX integer,"
+            + "moveY integer,"
+            + "moveX1 integer,"
+            + "moveY1 integer,"
+            + "spare1 text,"
+            + "spare2 text,"
+            + "num text,"
+            + "color text,"
+            + "farmlandId text,"
+            + "year integer)";
+
+    public static final String CREATE_SPECIESLIST = "create table SpeciesList ("
+            + "blockId text primary key,"
+            + "fieldId text,"
+            + "speciesId text,"
+            + "x text,"
+            + "y text)";
+
     public SpeciesDBHelper(Context context, String name,
                            SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -101,12 +132,18 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
 //        String sql_prepare = "drop table SpeciesTable if exists(select * from sys.databases where name='SpeciesTable')";
 //        db.execSQL(sql_prepare);
         db.execSQL(CREATE_SPECIES_TABLE);
+        db.execSQL(CREATE_FARMLIST);
+        db.execSQL(CREATE_EXPERIMENTFIELD);
+        db.execSQL(CREATE_SPECIESLIST);
         //Toast.makeText(mContext, "创建品种信息表成功", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("drop table if exists SpeciesTable");
+        db.execSQL("drop table if exists FarmList");
+        db.execSQL("drop table if exists ExperimentField");
+        db.execSQL("drop table if exists SpeciesList");
         onCreate(db);
     }
 }
