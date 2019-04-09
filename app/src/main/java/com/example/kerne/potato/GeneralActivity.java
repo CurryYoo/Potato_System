@@ -39,6 +39,7 @@ public class GeneralActivity extends AppCompatActivity {
     private Canvas canvas;
     private Paint paint;
     private String farmlandId = null;
+    private int year;
     private String userRole;
     private int flag = 0;
 
@@ -77,8 +78,9 @@ public class GeneralActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_general);
 
-        //获取farmlandId
+        //获取farmlandId、year
         farmlandId = getIntent().getStringExtra("farmlandId");
+        year = getIntent().getIntExtra("year", 0);
 
         //获取权限角色
         userRole = getIntent().getStringExtra("userRole");
@@ -132,7 +134,10 @@ public class GeneralActivity extends AppCompatActivity {
         SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 7);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.query("ExperimentField", null, "farmlandId=?", new String[]{farmlandId}, null, null, null);
+        String sql = "select * from ExperimentField where (farmlandId,year) in (('" + farmlandId + "',"+ year +"))";
+//        String sql = "select * from ExperimentField where farmlandId='" + farmlandId + "'";
+        Cursor cursor = db.rawQuery(sql, null);
+//        Cursor cursor = db.query("ExperimentField", null, "farmlandId=?", new String[]{farmlandId}, null, null, null);
         if(cursor.moveToFirst()){
             do {
                 JSONObject jsonObject = new JSONObject();
@@ -159,7 +164,7 @@ public class GeneralActivity extends AppCompatActivity {
             Toast.makeText(GeneralActivity.this, "ExperimentField null", Toast.LENGTH_SHORT).show();
         }
         cursor.close();
-        //Log.d("mList.toString", mList.toString());
+        Log.d("mList.toString", mList.toString());
 
         Message msg = new Message();
         msg.what = 1;
