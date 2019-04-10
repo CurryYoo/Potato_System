@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -52,6 +53,8 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     //解析日期
 //    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+    //blockId
+    String blockId;
     //需要暂存的各字段
     //品种id
     private String speciesId;
@@ -217,7 +220,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_commit_data);
 
-        //从上一层获取小区id和实验类型
+        //从上一层品种id和实验类型
         Intent intent_speciesId = getIntent();
         speciesId = intent_speciesId.getStringExtra("speciesId");
         expType = intent_speciesId.getStringExtra("expType");
@@ -473,9 +476,46 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         btnUpdateOffline.setOnClickListener(this);
 
         //数据存储
-        dbHelper = new SpeciesDBHelper(this,
-                "SpeciesTable.db", null, 7);
+        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 8);
         sqLiteDatabase = dbHelper.getWritableDatabase();
+
+        //如果品种信息不存在，进行初始化
+        //如果品种信息存在，进行展示
+        blockId = intent_speciesId.getStringExtra("blockId");
+        Cursor cursor = sqLiteDatabase.query("SpeciesTable", null, "speciesId" + "=?" + " and  "
+                    + "blockId" + "=?", new String[]{speciesId, blockId},null,null,null);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            for (int i = 0; i < cursor.getCount(); i++) {
+                //播种期
+                String plantingDate = cursor.getString(4);
+                edtSowingPeriodInput.setText(plantingDate);
+                //出苗期
+                String emergenceDate = cursor.getString(5);
+                edtEmergencePeriod.setText(emergenceDate);
+                //出苗率
+                int sproutRate = cursor.getInt(6);
+                edtRateOfEmergence.setText(String.valueOf(sproutRate));
+                //现蕾期
+                String squaringStage = cursor.getString(7);
+                edtSquaringPeriod.setText(squaringStage);
+                //开花期
+                String blooming = cursor.getString(8);
+                edtFloweringPeriod.setText(blooming);
+                //叶颜色
+                String leafColour = cursor.getString(9);
+//                spnLeafColor.
+//                edtEmergencePeriod.setText(leafColour);
+//                Log.d("SaveDataActivity", "onCreate: hahaha" + " " + blockId + " " + speciesId +
+//                        " speciesId" + speciesIdtemp + " sproutRate:" + sproutRate + " growingPeriod:" + growingPeriod);
+                Log.d("SaveDataActivity", "onCreate: haha" + cursor);
+                cursor.moveToNext();
+            }
+        } else {
+            Log.d("SaveDataActivity", "onCreate: cursor<=0" + cursor);
+            savaDataLocally();
+        }
+        cursor.close();
     }
 
     @Override
@@ -508,7 +548,8 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
             //将数据暂存到本地
             case R.id.save_offline:
-                savaDataLocally();
+//                savaDataLocally();
+                updateDataLocally();
                 break;
             //更新本地暂存的数据
             case R.id.update_offline:
@@ -878,6 +919,8 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
             contentValues.put("speciesId", edtSpeciesID.getText().toString());
             //实验类型
             contentValues.put("experimentType", edtExperimentType.getText().toString());
+            //blockId
+            contentValues.put("blockId", blockId);
             //播种期
             contentValues.put("plantingDate", edtSowingPeriodInput.getText().toString());
             //出苗期

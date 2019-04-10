@@ -41,6 +41,7 @@ public class SpeciesClickAdapter extends RecyclerView.Adapter<SpeciesClickAdapte
     private String speciesId;
     private String fieldId;
     private String userRole;
+    private String blockId;
 
     public SpeciesClickAdapter(Context context, OnItemClickListener listener) {
         mContext = context;
@@ -88,6 +89,9 @@ public class SpeciesClickAdapter extends RecyclerView.Adapter<SpeciesClickAdapte
                     //builder.setIcon(R.drawable.ic_launcher_background);
                     try {
                         speciesId = jsonObject.getString("speciesId");
+                        blockId = jsonObject.getString("blockId");
+                        fieldId = jsonObject.getString("fieldId");
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -104,6 +108,8 @@ public class SpeciesClickAdapter extends RecyclerView.Adapter<SpeciesClickAdapte
                                 intent.putExtra("userRole", userRole);
                                 intent.putExtra("speciesId", speciesId);
                                 intent.putExtra("expType", SpeciesClickActivity.expType);
+                                intent.putExtra("blockId", blockId);
+                                intent.putExtra("fieldId", fieldId);
                                 mContext.startActivity(intent);
                             } else {
                                 mList.remove(position);

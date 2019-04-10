@@ -9,9 +9,11 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
     private Context mContext = null;
 
     public static final String CREATE_SPECIES_TABLE = "create table SpeciesTable ("  //创建存储品种信息的表
-            + "id text primary key, "  //id字段
-            + "speciesId text,"  //小区id字段 (+++++++++++)
+//            + "id text primary key, "  //id字段
+            + "speciesId text,"  //品种id字段 (+++++++++++)
+            + "blockId text,"
             + "experimentType text," //实验类型
+//            + "isStoredTemporarily integer,"  //是否被暂存过
             + "plantingDate text,"  //播种期字段
             + "emergenceDate text,"  //出苗期字段
             + "sproutRate integer,"  //出苗率字段
@@ -88,7 +90,9 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "img2 text,"
             + "img3 text,"
             + "img4 text,"
-            + "img5 text)";
+            + "img5 text,"
+            + "primary key(speciesId, blockId)"  //speciesId和blockId组成复合主键
+            + ")";
 
     public static final String CREATE_FARMLIST = "create table FarmList ("
             + "farmlandId text primary key,"
