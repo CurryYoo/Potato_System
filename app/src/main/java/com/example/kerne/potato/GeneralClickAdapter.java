@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hb.dialog.myDialog.MyAlertInputDialog;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,6 +39,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
 
     private String farmlandId;
     private String name;
+    private String year;
 
     private String userRole;
 
@@ -94,10 +97,31 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(which == 0){ //点击"进入"操作时
-                            Intent intent = new Intent(mContext, GeneralActivity.class);
-                            intent.putExtra("farmlandId", farmlandId);
-                            intent.putExtra("userRole", userRole);
-                            mContext.startActivity(intent);
+                            final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(mContext).builder()
+                                .setTitle("请输入年份：")
+                                .setEditText("");
+                            myAlertInputDialog.setPositiveButton("确认", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //showMsg(myAlertInputDialog.getResult());
+                                    year = myAlertInputDialog.getResult();
+
+                                    Intent intent = new Intent(mContext, GeneralActivity.class);
+                                    intent.putExtra("farmlandId", farmlandId);
+                                    intent.putExtra("year", Integer.parseInt(year));
+                                    intent.putExtra("userRole", userRole);
+                                    mContext.startActivity(intent);
+                                    myAlertInputDialog.dismiss();
+                                }
+                            }).setNegativeButton("取消", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //showMsg("取消");
+                                    myAlertInputDialog.dismiss();
+                                }
+                            });
+                            myAlertInputDialog.show();
+
                         }
                         else{ //点击"删除"操作时
                             mList.remove(position);

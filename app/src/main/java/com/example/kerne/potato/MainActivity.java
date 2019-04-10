@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //将暂存的数据从数据库取出并提交到远程服务器
                 if (userRole.equals("admin")) {
                     sqLiteDatabase = dbHelper.getReadableDatabase();
-                    Cursor cursor = sqLiteDatabase.query("SpeciesTable", null, null, null, null, null, null);
+                    final Cursor cursor = sqLiteDatabase.query("SpeciesTable", null, null, null, null, null, null);
 
                     if (cursor.moveToFirst()) {
                         do {
@@ -380,37 +380,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         HttpRequest.doUploadTest(img1, speciesId, "1", MainActivity.this, new HttpRequest.HttpCallback_Str() {
                                             @Override
                                             public void onSuccess(String result) {
-                                                Log.d("response_pic", result);
+                                                Log.d("response_pic1", result);
                                             }
                                         });
                                     if(img2 != null)
                                         HttpRequest.doUploadTest(img2, speciesId, "2", MainActivity.this, new HttpRequest.HttpCallback_Str() {
                                             @Override
                                             public void onSuccess(String result) {
-                                                Log.d("response_pic", result);
+                                                Log.d("response_pic2", result);
                                             }
                                         });
                                     if(img3 != null)
                                         HttpRequest.doUploadTest(img3, speciesId, "3", MainActivity.this, new HttpRequest.HttpCallback_Str() {
                                             @Override
                                             public void onSuccess(String result) {
-                                                Log.d("response_pic", result);
+                                                Log.d("response_pic3", result);
                                             }
                                         });
                                     if(img4 != null)
                                         HttpRequest.doUploadTest(img4, speciesId, "4", MainActivity.this, new HttpRequest.HttpCallback_Str() {
                                             @Override
                                             public void onSuccess(String result) {
-                                                Log.d("response_pic", result);
+                                                Log.d("response_pic4", result);
                                             }
                                         });
                                     if(img5 != null)
                                         HttpRequest.doUploadTest(img5, speciesId, "5", MainActivity.this, new HttpRequest.HttpCallback_Str() {
                                             @Override
                                             public void onSuccess(String result) {
-                                                Log.d("response_pic", result);
+                                                Log.d("response_pic5", result);
                                             }
                                         });
+                                    sqLiteDatabase.delete("SpeciesTable", null, null);
                                 }
                             }.start();
 
