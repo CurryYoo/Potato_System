@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- 搜索, 应该作为动作按钮展示-->
-    <item android:id="@+id/search"
-        android:icon="@android:drawable/ic_menu_search"
-        android:title="Search"
-        tools:ignore="MenuTitle"
-        app:showAsAction="ifRoom" />
+    <!--&lt;!&ndash; 搜索, 应该作为动作按钮展示&ndash;&gt;-->
+    <!--<item android:id="@+id/search"-->
+        <!--android:icon="@android:drawable/ic_menu_search"-->
+        <!--android:title="Search"-->
+        <!--tools:ignore="MenuTitle"-->
+        <!--app:showAsAction="ifRoom" />-->
 </menu>

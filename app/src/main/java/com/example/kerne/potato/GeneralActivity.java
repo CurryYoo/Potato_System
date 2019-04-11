@@ -273,13 +273,13 @@ public class GeneralActivity extends AppCompatActivity {
         }
     };
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // 为ActionBar扩展菜单项
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.map, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // 为ActionBar扩展菜单项
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.map, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
 
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {

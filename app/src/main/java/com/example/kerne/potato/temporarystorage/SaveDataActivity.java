@@ -489,9 +489,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.search:
-                Toast.makeText(this, "Search item selected", Toast.LENGTH_SHORT).show();
-                break;
+//            case R.id.search:
+//                Toast.makeText(this, "Search item selected", Toast.LENGTH_SHORT).show();
+//                break;
             case android.R.id.home:
                 this.finish();
 //                Intent intent = new Intent(this, MainActivity.class);
