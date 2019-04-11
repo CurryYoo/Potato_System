@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_general = (Button) findViewById(R.id.btn_general);
         btn_general.setOnClickListener(this);
 
-        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 7);
+        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 8);
 
 //        btn_farmland = (Button)findViewById(R.id.btn_farmland);
 //        btn_farmland.setOnClickListener(this);

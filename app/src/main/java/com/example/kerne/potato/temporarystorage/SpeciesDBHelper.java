@@ -23,7 +23,7 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "corollaColour text,"  //花冠色字段
             + "flowering text,"  //花繁茂性字段
             + "stemColour text,"  //茎色字段
-            + "openpollinated text,"  //天然结实性字段
+            + "openpollinated text,"  //天然结实性字段 12
             + "maturingStage text,"  //成熟期字段
             + "growingPeriod integer,"  //生育日数字段
             + "uniformityOfTuberSize text,"  //块茎整齐度字段
@@ -36,10 +36,10 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "remark text,"  //备注字段
             + "harvestNum integer,"  //收获株数字段
             + "lmNum integer,"  //大中薯数字段
-            + "lmWeight integer,"  //大中薯重字段
+            + "lmWeight real,"  //大中薯重字段
             + "sNum integer,"  //小薯数字段
-            + "sWeight integer,"  //小薯重字段
-            + "commercialRate float,"  //商品薯率字段
+            + "sWeight real,"  //小薯重字段
+            + "commercialRate integer,"  //商品薯率字段
             + "plotYield1 float,"  //小区产量1字段
             + "plotYield2 float,"  //小区产量2字段
             + "plotYield3 float,"  //小区产量3字段
