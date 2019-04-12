@@ -56,6 +56,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int EXPERIMENTFIELD_OK = 2;
     private static final int SPECIESLIST_OK = 3;
 
+    private int downloadSuccess_Num = 0;
+    private int request_Num = 0;
+    private int uploadSuccess_Num = 0;
+
     private String Fid[] = new String[5000];
 
     private Handler uiHandler = new Handler(){
@@ -63,10 +67,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void handleMessage(Message msg){
             switch (msg.what){
                 case FARMLIST_OK:
+                    downloadSuccess_Num++;
+                    if(downloadSuccess_Num == 3){
+                        Toast.makeText(MainActivity.this, "下载成功!", Toast.LENGTH_SHORT);
+                    }
                     break;
                 case EXPERIMENTFIELD_OK:
+                    downloadSuccess_Num++;
+                    if(downloadSuccess_Num == 3){
+                        Toast.makeText(MainActivity.this, "下载成功!", Toast.LENGTH_SHORT);
+                    }
                     break;
                 case SPECIESLIST_OK:
+                    downloadSuccess_Num++;
+                    if(downloadSuccess_Num == 3){
+                        Toast.makeText(MainActivity.this, "下载成功!", Toast.LENGTH_SHORT);
+                    }
                     break;
             }
         }
@@ -192,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         do {
                             int id = cursor.getInt(cursor.getColumnIndex("id"));
                             final String speciesId = cursor.getString(cursor.getColumnIndex("speciesId")); //++++++++++++++
+                            final String blockId = cursor.getString(cursor.getColumnIndex("blockId")); //+++++++++++++
                             String experimentType = cursor.getString(cursor.getColumnIndex("experimentType"));
                             String plantingDate = cursor.getString(cursor.getColumnIndex("plantingDate"));
                             String emergenceDate = cursor.getString(cursor.getColumnIndex("emergenceDate"));
@@ -352,6 +369,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 jsonObject.put("smalYield9", smalYield9);
                                 jsonObject.put("smalYield10", smalYield10);
                                 jsonObject.put("speciesId", speciesId);
+                                jsonObject.put("testId", blockId);
                                 jsonObject.put("experimentType", experimentType);
 
                                 Log.d("testJson", jsonObject.toString());

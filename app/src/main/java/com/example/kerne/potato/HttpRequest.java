@@ -158,7 +158,7 @@ public class HttpRequest {
     public static void HttpRequest_SpeciesData(final JSONObject jsonObject, Context context, final HttpCallback callback) {
         requestQueue = Volley.newRequestQueue(context);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "SpeciesCommontest/addCommontest", jsonObject, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "SpeciesCommontest/updateCommontest", jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("SpeciesData_response", response.toString());
