@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,6 +30,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import com.example.kerne.potato.R;
@@ -52,6 +54,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     //解析日期
 //    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+    String TAG = "SaveDataActivity";
+    //blockId
+    String blockId;
     //需要暂存的各字段
     //品种id
     private String speciesId;
@@ -217,7 +222,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_commit_data);
 
-        //从上一层获取小区id和实验类型
+        //从上一层品种id和实验类型
         Intent intent_speciesId = getIntent();
         speciesId = intent_speciesId.getStringExtra("speciesId");
         expType = intent_speciesId.getStringExtra("expType");
@@ -369,6 +374,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
         //是否入选
         rgWhetherToBeIncluded = (RadioGroup) findViewById(R.id.whether_to_be_included);
+//        rgWhetherToBeIncluded.check(R.id.no);
 
         //备注
         edtRemark = (EditText) findViewById(R.id.remark);
@@ -473,9 +479,373 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         btnUpdateOffline.setOnClickListener(this);
 
         //数据存储
-        dbHelper = new SpeciesDBHelper(this,
-                "SpeciesTable.db", null, 7);
+        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 8);
         sqLiteDatabase = dbHelper.getWritableDatabase();
+
+        //如果品种信息不存在，进行初始化
+        //如果品种信息存在，进行展示
+        blockId = intent_speciesId.getStringExtra("blockId");
+        Cursor cursor = sqLiteDatabase.query("SpeciesTable", null, "speciesId" + "=?" + " and  "
+                    + "blockId" + "=?", new String[]{speciesId, blockId},null,null,null);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            for (int i = 0; i < cursor.getCount(); i++) {
+                //播种期
+                String plantingDate = cursor.getString(3);
+                edtSowingPeriodInput.setText(plantingDate);
+                //出苗期
+                String emergenceDate = cursor.getString(4);
+                edtEmergencePeriod.setText(emergenceDate);
+                //出苗率
+                int sproutRate = cursor.getInt(5);
+                edtRateOfEmergence.setText(String.valueOf(sproutRate));
+                //现蕾期
+                String squaringStage = cursor.getString(6);
+                edtSquaringPeriod.setText(squaringStage);
+                //开花期
+                String blooming = cursor.getString(7);
+                edtFloweringPeriod.setText(blooming);
+                //叶颜色
+                String leafColour = cursor.getString(8);
+                Log.d(TAG, "onCreate: "+"leafColour:"+leafColour);
+                SpinnerAdapter leafColourAdapter= spnLeafColor.getAdapter();
+//                int k= apsAdapter.getCount();
+                for(int j=0;j<leafColourAdapter.getCount();j++){
+                    if(leafColour.equals(leafColourAdapter.getItem(j).toString())){
+                        spnLeafColor.setSelection(j,true);
+                        break;
+                    }
+                }
+                //花冠色
+                String corollaColour = cursor.getString(9);
+                SpinnerAdapter corollaColourAdapter= spnCorollaColors.getAdapter();
+                Log.d(TAG, "onCreate: "+"corollaColour:"+corollaColour);
+                for(int j=0;j<corollaColourAdapter.getCount();j++){
+                    if(corollaColour.equals(corollaColourAdapter.getItem(j).toString())){
+                        spnCorollaColors.setSelection(j,true);
+                        break;
+                    }
+                }
+                //花繁茂性
+                String flowering = cursor.getString(10);
+                SpinnerAdapter floweringAdapter= spnPlantFlourish.getAdapter();
+//                Log.d(TAG, "onCreate: "+"corollaColour:"+corollaColour);
+                for(int j=0;j<floweringAdapter.getCount();j++){
+                    if(flowering.equals(floweringAdapter.getItem(j).toString())){
+                        spnPlantFlourish.setSelection(j,true);
+                        break;
+                    }
+                }
+                //茎色
+                String stemColour = cursor.getString(11);
+                SpinnerAdapter stemColourAdapter= spnStemColor.getAdapter();
+//                Log.d(TAG, "onCreate: "+"corollaColour:"+corollaColour);
+                for(int j=0;j<stemColourAdapter.getCount();j++){
+                    if(stemColour.equals(stemColourAdapter.getItem(j).toString())){
+                        spnStemColor.setSelection(j,true);
+                        break;
+                    }
+                }
+                //天然结实性
+                String openpollinated = cursor.getString(12);
+                SpinnerAdapter openpollinatedAdapter= spnNaturalFecundity.getAdapter();
+//                Log.d(TAG, "onCreate: "+"corollaColour:"+corollaColour);
+                for(int j=0;j<openpollinatedAdapter.getCount();j++){
+                    if(openpollinated.equals(openpollinatedAdapter.getItem(j).toString())){
+                        spnNaturalFecundity.setSelection(j,true);
+                        break;
+                    }
+                }
+                //成熟期
+                String maturingStage = cursor.getString(13);
+                edtMaturePeriod.setText(maturingStage);
+//                Log.d("SaveDataActivity", "onCreate: hahaha" + " " + blockId + " " + speciesId +
+//                        " speciesId" + speciesIdtemp + " sproutRate:" + sproutRate + " growingPeriod:" + growingPeriod);
+                //生育日数
+                int growingPeriod = cursor.getInt(14);
+                edtGrowingDays.setText(String.valueOf(growingPeriod));
+                //块茎整齐度
+                String uniformityOfTuberSize = cursor.getString(15);
+                SpinnerAdapter uniformityOfTuberSizeAdapter= spnTuberUniformity.getAdapter();
+//                Log.d(TAG, "onCreate: "+"corollaColour:"+corollaColour);
+                for(int j=0;j<uniformityOfTuberSizeAdapter.getCount();j++){
+                    if(uniformityOfTuberSize.equals(uniformityOfTuberSizeAdapter.getItem(j).toString())){
+                        spnTuberUniformity.setSelection(j,true);
+                        break;
+                    }
+                }
+                //薯型
+                String tuberShape = cursor.getString(16);
+                SpinnerAdapter tuberShapeAdapter= spnTuberShape.getAdapter();
+//                Log.d(TAG, "onCreate: "+"corollaColour:"+corollaColour);
+                for(int j=0;j<tuberShapeAdapter.getCount();j++){
+                    if(tuberShape.equals(tuberShapeAdapter.getItem(j).toString())){
+                        spnTuberShape.setSelection(j,true);
+                        break;
+                    }
+                }
+                //薯皮光滑度
+                String skinSmoothness = cursor.getString(17);
+                SpinnerAdapter skinSmoothnessAdapter= spnPotatoSkinSmoothness.getAdapter();
+//                Log.d(TAG, "onCreate: "+"corollaColour:"+corollaColour);
+                for(int j=0;j<skinSmoothnessAdapter.getCount();j++){
+                    if(skinSmoothness.equals(skinSmoothnessAdapter.getItem(j).toString())){
+                        spnPotatoSkinSmoothness.setSelection(j,true);
+                        break;
+                    }
+                }
+                //芽眼深浅
+                String eyeDepth = cursor.getString(18);
+                SpinnerAdapter eyeDepthAdapter= spnEye.getAdapter();
+//                Log.d(TAG, "onCreate: "+"corollaColour:"+corollaColour);
+                for(int j=0;j<eyeDepthAdapter.getCount();j++){
+                    if(eyeDepth.equals(eyeDepthAdapter.getItem(j).toString())){
+                        spnEye.setSelection(j,true);
+                        break;
+                    }
+                }
+                //皮色
+                String skinColour = cursor.getString(19);
+                SpinnerAdapter skinColourAdapter= spnSkinColor.getAdapter();
+//                Log.d(TAG, "onCreate: "+"corollaColour:"+corollaColour);
+                for(int j=0;j<skinColourAdapter.getCount();j++){
+                    if(skinColour.equals(skinColourAdapter.getItem(j).toString())){
+                        spnSkinColor.setSelection(j,true);
+                        break;
+                    }
+                }
+                //肉色
+                String fleshColour = cursor.getString(20);
+                SpinnerAdapter fleshColourAdapter= spnFleshColor.getAdapter();
+//                Log.d(TAG, "onCreate: "+"corollaColour:"+corollaColour);
+                for(int j=0;j<fleshColourAdapter.getCount();j++){
+                    if(fleshColour.equals(fleshColourAdapter.getItem(j).toString())){
+                        spnFleshColor.setSelection(j,true);
+                        break;
+                    }
+                }
+                //是否入选
+                String isChoozenString = cursor.getString(21);
+                if (isChoozenString.equals("0")) {
+                    rgWhetherToBeIncluded.check(R.id.no);
+                } else {
+                    rgWhetherToBeIncluded.check(R.id.yes);
+                }
+                //备注
+                String remark = cursor.getString(22);
+                edtRemark.setText(remark);
+                //收获株数
+                int harvestNum = cursor.getInt(23);
+                edtNumOfHarvestedPlants.setText(String.valueOf(harvestNum));
+                //大中薯数
+                int lmNum = cursor.getInt(24);
+                edtNumOfLargeAndMediumPotatoes.setText(String.valueOf(lmNum));
+                //大中薯重
+                float lmWeight = cursor.getFloat(25);
+                edtWeightOfLargeAndMediumPotatoes.setText(String.valueOf(lmWeight));
+                //小薯数
+                int sNum = cursor.getInt(26);
+                edtNumOfSmallPotatoes.setText(String.valueOf(sNum));
+                //小薯重
+                float sWeight = cursor.getFloat(27);
+                edtWeightOfSmallPotatoes.setText(String.valueOf(sWeight));
+                //商品薯率
+                int commercialRate = cursor.getInt(28);
+                edtRateOfEconomicPotato.setText(String.valueOf(commercialRate));
+                //小区产量1
+                float plotYield1 = cursor.getFloat(29);
+                edtSmallSectionYield1.setText(String.valueOf(plotYield1));
+                //小区产量2
+                float plotYield2 = cursor.getFloat(30);
+                edtSmallSectionYield2.setText(String.valueOf(plotYield2));
+                //小区产量3
+                float plotYield3 = cursor.getFloat(31);
+                edtSmallSectionYield3.setText(String.valueOf(plotYield3));
+                //亩产量
+                float acreYield = cursor.getFloat(32);
+                edtPerMuYield.setText(String.valueOf(acreYield));
+                //十株株高
+                float bigPlantHeight1 = cursor.getFloat(33);
+                edtBigPotatoHeight1.setText(String.valueOf(bigPlantHeight1));
+                float bigPlantHeight2 = cursor.getFloat(34);
+                edtBigPotatoHeight2.setText(String.valueOf(bigPlantHeight2));
+                float bigPlantHeight3 = cursor.getFloat(35);
+                edtBigPotatoHeight3.setText(String.valueOf(bigPlantHeight3));
+                float bigPlantHeight4 = cursor.getFloat(36);
+                edtBigPotatoHeight4.setText(String.valueOf(bigPlantHeight4));
+                float bigPlantHeight5 = cursor.getFloat(37);
+                edtBigPotatoHeight5.setText(String.valueOf(bigPlantHeight5));
+                float bigPlantHeight6 = cursor.getFloat(38);
+                edtBigPotatoHeight6.setText(String.valueOf(bigPlantHeight6));
+                float bigPlantHeight7 = cursor.getFloat(39);
+                edtBigPotatoHeight7.setText(String.valueOf(bigPlantHeight7));
+                float bigPlantHeight8 = cursor.getFloat(40);
+                edtBigPotatoHeight8.setText(String.valueOf(bigPlantHeight8));
+                float bigPlantHeight9 = cursor.getFloat(41);
+                edtBigPotatoHeight9.setText(String.valueOf(bigPlantHeight9));
+                float bigPlantHeight10 = cursor.getFloat(42);
+                edtBigPotatoHeight10.setText(String.valueOf(bigPlantHeight10));
+                //平均株高
+                float plantHeightAvg = cursor.getFloat(43);
+                edtAveragePlantHeightOfBigPotato.setText(String.valueOf(plantHeightAvg));
+                //十株分支数
+                int bigBranchNumber1 = cursor.getInt(44);
+                edtBranchNumOfBigPotato1.setText(String.valueOf(bigBranchNumber1));
+                int bigBranchNumber2 = cursor.getInt(45);
+                edtBranchNumOfBigPotato2.setText(String.valueOf(bigBranchNumber2));
+                int bigBranchNumber3 = cursor.getInt(46);
+                edtBranchNumOfBigPotato3.setText(String.valueOf(bigBranchNumber3));
+                int bigBranchNumber4 = cursor.getInt(47);
+                edtBranchNumOfBigPotato4.setText(String.valueOf(bigBranchNumber4));
+                int bigBranchNumber5 = cursor.getInt(48);
+                edtBranchNumOfBigPotato5.setText(String.valueOf(bigBranchNumber5));
+                int bigBranchNumber6 = cursor.getInt(49);
+                edtBranchNumOfBigPotato6.setText(String.valueOf(bigBranchNumber6));
+                int bigBranchNumber7 = cursor.getInt(50);
+                edtBranchNumOfBigPotato7.setText(String.valueOf(bigBranchNumber7));
+                int bigBranchNumber8 = cursor.getInt(51);
+                edtBranchNumOfBigPotato8.setText(String.valueOf(bigBranchNumber8));
+                int bigBranchNumber9 = cursor.getInt(52);
+                edtBranchNumOfBigPotato9.setText(String.valueOf(bigBranchNumber9));
+                int bigBranchNumber10 = cursor.getInt(53);
+                edtBranchNumOfBigPotato10.setText(String.valueOf(bigBranchNumber10));
+                //平均分支数
+                float branchNumberAvg = cursor.getFloat(54);
+                edtAverageBranchNumOfBigPotato.setText(String.valueOf(branchNumberAvg));
+                //大薯十株测产
+                float bigYield1 = cursor.getFloat(55);
+                edtYieldMonitoringOfBigPotato1.setText(String.valueOf(bigYield1));
+                float bigYield2 = cursor.getFloat(56);
+                edtYieldMonitoringOfBigPotato2.setText(String.valueOf(bigYield2));
+                float bigYield3 = cursor.getFloat(57);
+                edtYieldMonitoringOfBigPotato3.setText(String.valueOf(bigYield3));
+                float bigYield4 = cursor.getFloat(58);
+                edtYieldMonitoringOfBigPotato4.setText(String.valueOf(bigYield4));
+                float bigYield5 = cursor.getFloat(59);
+                edtYieldMonitoringOfBigPotato5.setText(String.valueOf(bigYield5));
+                float bigYield6 = cursor.getFloat(60);
+                edtYieldMonitoringOfBigPotato6.setText(String.valueOf(bigYield6));
+                float bigYield7 = cursor.getFloat(61);
+                edtYieldMonitoringOfBigPotato7.setText(String.valueOf(bigYield7));
+                float bigYield8 = cursor.getFloat(62);
+                edtYieldMonitoringOfBigPotato8.setText(String.valueOf(bigYield8));
+                float bigYield9 = cursor.getFloat(63);
+                edtYieldMonitoringOfBigPotato9.setText(String.valueOf(bigYield9));
+                float bigYield10 = cursor.getFloat(64);
+                edtYieldMonitoringOfBigPotato10.setText(String.valueOf(bigYield10));
+                //小薯十株测产
+                float smalYield1 = cursor.getFloat(65);
+                edtYieldMonitoringOfSmallPotato1.setText(String.valueOf(smalYield1));
+                float smalYield2 = cursor.getFloat(66);
+                edtYieldMonitoringOfSmallPotato2.setText(String.valueOf(smalYield2));
+                float smalYield3 = cursor.getFloat(67);
+                edtYieldMonitoringOfSmallPotato3.setText(String.valueOf(smalYield3));
+                float smalYield4 = cursor.getFloat(68);
+                edtYieldMonitoringOfSmallPotato4.setText(String.valueOf(smalYield4));
+                float smalYield5 = cursor.getFloat(69);
+                edtYieldMonitoringOfSmallPotato5.setText(String.valueOf(smalYield5));
+                float smalYield6 = cursor.getFloat(70);
+                edtYieldMonitoringOfSmallPotato6.setText(String.valueOf(smalYield6));
+                float smalYield7 = cursor.getFloat(71);
+                edtYieldMonitoringOfSmallPotato7.setText(String.valueOf(smalYield7));
+                float smalYield8 = cursor.getFloat(72);
+                edtYieldMonitoringOfSmallPotato8.setText(String.valueOf(smalYield8));
+                float smalYield9 = cursor.getFloat(73);
+                edtYieldMonitoringOfSmallPotato9.setText(String.valueOf(smalYield9));
+                float smalYield10 = cursor.getFloat(74);
+                edtYieldMonitoringOfSmallPotato10.setText(String.valueOf(smalYield10));
+                //叶颜色图片
+                pathColor = cursor.getString(75);
+//                Log.d(TAG, "onCreate: "+ "imgColor:" + imgColor);
+//                    content://com.example.kerne.potato.fileprovider/potato_images/Android/data/com.example.kerne.potato/cache/1554976338705.jpg
+//                    /storage/emulated/0/Android/data/com.example.kerne.potato/cache/1554976338705.jpg
+                if (pathColor != null) {
+                    Bitmap bitmapColor = null;
+
+                    try {
+                        bitmapColor = BitmapFactory.decodeStream(getContentResolver().openInputStream(Uri.parse(
+                                "content://com.example.kerne.potato.fileprovider/potato_images/"+pathColor.replace("/storage/emulated/0/",""))));
+                    } catch (FileNotFoundException e) {
+                        Log.d(TAG, "onCreate: img"+"FileNotFoundException"+bitmapColor);
+                        e.printStackTrace();
+                    } catch (NullPointerException e) {
+                        Log.d(TAG, "onCreate: img"+"NullPointerException"+bitmapColor);
+                        e.printStackTrace();
+                    }
+                    ivShowColor.setImageBitmap(bitmapColor);
+                }
+                //花冠色图片
+                pathCorollaColor = cursor.getString(76);
+                Log.d(TAG, "onCreate: "+ "imgCorollaColors:" + pathCorollaColor);
+                if (pathCorollaColor != null) {
+                    Bitmap bitmapCorollaColors = null;
+                    try {
+                        bitmapCorollaColors = BitmapFactory.decodeStream(getContentResolver().openInputStream(Uri.parse(
+                                "content://com.example.kerne.potato.fileprovider/potato_images/"
+                                        +pathCorollaColor.replace("/storage/emulated/0/",""))));
+                    } catch (FileNotFoundException e) {
+                        Log.d(TAG, "onCreate: img"+"FileNotFoundException"+bitmapCorollaColors);
+                        e.printStackTrace();
+                    } catch (NullPointerException e) {
+                        Log.d(TAG, "onCreate: img"+"NullPointerException"+bitmapCorollaColors);
+                        e.printStackTrace();
+                    }
+                    ivShowCorollaColor.setImageBitmap(bitmapCorollaColors);
+                }
+                //花繁茂性图片
+                pathPlantFlourish = cursor.getString(77);
+                if (pathPlantFlourish != null) {
+                    Bitmap bitmapPlantFlourish = null;
+                    try {
+                        bitmapPlantFlourish = BitmapFactory.decodeStream(getContentResolver().openInputStream(Uri.parse(
+                                "content://com.example.kerne.potato.fileprovider/potato_images/"
+                                        +pathPlantFlourish.replace("/storage/emulated/0/",""))));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+                    ivShowPlantFlourish.setImageBitmap(bitmapPlantFlourish);
+                }
+                //茎色图片
+                pathStemColors = cursor.getString(78);
+                if (pathStemColors != null) {
+                    Bitmap bitmapStemColors = null;
+                    try {
+                        bitmapStemColors = BitmapFactory.decodeStream(getContentResolver().openInputStream(Uri.parse(
+                                "content://com.example.kerne.potato.fileprovider/potato_images/"
+                                        +pathStemColors.replace("/storage/emulated/0/",""))));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+                    ivShowStemColors.setImageBitmap(bitmapStemColors);
+                }
+                //天然结实性图片
+                pathNaturalFecundity = cursor.getString(79);
+                if (pathNaturalFecundity != null) {
+                    Bitmap bitmapNaturalFecundity = null;
+                    try {
+                        bitmapNaturalFecundity = BitmapFactory.decodeStream(getContentResolver().openInputStream(Uri.parse(
+                                "content://com.example.kerne.potato.fileprovider/potato_images/"
+                                        +pathNaturalFecundity.replace("/storage/emulated/0/",""))));
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+                    ivShowNaturalFecundity.setImageBitmap(bitmapNaturalFecundity);
+                }
+
+                Log.d("SaveDataActivity", "onCreate: haha" + cursor);
+                cursor.moveToNext();
+            }
+        }else {
+            Log.d("SaveDataActivity", "onCreate: cursor<=0" + cursor);
+            savaDataLocally();
+        }
+        cursor.close();
     }
 
     @Override
@@ -508,7 +878,8 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
             //将数据暂存到本地
             case R.id.save_offline:
-                savaDataLocally();
+//                savaDataLocally();
+                updateDataLocally();
                 break;
             //更新本地暂存的数据
             case R.id.update_offline:
@@ -533,6 +904,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 if (Build.VERSION.SDK_INT >= 24) {
                     imageUriColor = FileProvider.getUriForFile(SaveDataActivity.this,
                             "com.example.kerne.potato.fileprovider", outputImage);
+                    Log.d(TAG, "onClick: img"+imageUriColor);
                 } else {
                     imageUriColor = Uri.fromFile(outputImage);
                 }
@@ -552,9 +924,12 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
             //花冠色拍照并显示
             case R.id.imb_corolla_colors:
                 File outputImageCorollaColors = new File(getExternalCacheDir(), System.currentTimeMillis() + ".jpg");
-                pathCorollaColor = outputImageCorollaColors.getAbsolutePath();
+//                pathCorollaColor = outputImageCorollaColors.getAbsolutePath();
+//                Log.d(TAG, "onClick: img "+"corolla" + pathCorollaColor);
                 try {
                     outputImageCorollaColors.createNewFile();
+                    pathCorollaColor = outputImageCorollaColors.getAbsolutePath();
+                    Log.d(TAG, "onClick: img "+"corolla" + pathCorollaColor);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -786,8 +1161,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                         edtNumOfLargeAndMediumPotatoes.getText().toString());
                 float edtFloatNumOfSmallPotatoesContent = Float.parseFloat(edtNumOfSmallPotatoes.getText().toString().isEmpty()?"0":
                         edtNumOfSmallPotatoes.getText().toString());
-                float rateOfEconomicPotato = edtFloatNumOfLargeAndMediumPotatoesContent / (edtFloatNumOfLargeAndMediumPotatoesContent + edtFloatNumOfSmallPotatoesContent);
-                edtRateOfEconomicPotato.setText(decimalFormat.format(rateOfEconomicPotato));
+                float rateOfEconomicPotato = edtFloatNumOfLargeAndMediumPotatoesContent / (edtFloatNumOfLargeAndMediumPotatoesContent + edtFloatNumOfSmallPotatoesContent) * 100;
+//                edtRateOfEconomicPotato.setText(decimalFormat.format(rateOfEconomicPotato));
+                edtRateOfEconomicPotato.setText(String.valueOf(Math.round(rateOfEconomicPotato)));
                 break;
             //计算亩产量
             case R.id.btn_compute_average_per_mu_yield:
@@ -878,6 +1254,8 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
             contentValues.put("speciesId", edtSpeciesID.getText().toString());
             //实验类型
             contentValues.put("experimentType", edtExperimentType.getText().toString());
+            //blockId
+            contentValues.put("blockId", blockId);
             //播种期
             contentValues.put("plantingDate", edtSowingPeriodInput.getText().toString());
             //出苗期
@@ -944,19 +1322,19 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
             contentValues.put("lmNum", Integer.parseInt(edtNumOfLargeAndMediumPotatoesContent.isEmpty() ? "0" : edtNumOfLargeAndMediumPotatoesContent));
             //大中薯重
             String edtWeightOfLargeAndMediumPotatoesContent = edtWeightOfLargeAndMediumPotatoes.getText().toString();
-            contentValues.put("lmWeight", Integer.parseInt(edtWeightOfLargeAndMediumPotatoesContent.isEmpty() ? "0" : edtWeightOfLargeAndMediumPotatoesContent));
+            contentValues.put("lmWeight", Float.parseFloat(edtWeightOfLargeAndMediumPotatoesContent.isEmpty() ? "0.00" : edtWeightOfLargeAndMediumPotatoesContent));
             //小薯数
             String edtNumOfSmallPotatoesContent = edtNumOfSmallPotatoes.getText().toString();
             contentValues.put("sNum", Integer.parseInt(edtNumOfSmallPotatoesContent.isEmpty() ? "0" : edtNumOfSmallPotatoesContent));
             //小薯重
             String edtWeightOfSmallPotatoesContent = edtWeightOfSmallPotatoes.getText().toString();
-            contentValues.put("sWeight", Integer.parseInt(edtWeightOfSmallPotatoesContent.isEmpty() ? "0" : edtWeightOfSmallPotatoesContent));
+            contentValues.put("sWeight", Float.parseFloat(edtWeightOfSmallPotatoesContent.isEmpty() ? "0.00" : edtWeightOfSmallPotatoesContent));
             //商品薯率
             String edtRateOfEconomicPotatoContent = edtRateOfEconomicPotato.getText().toString();
-            contentValues.put("commercialRate", Float.parseFloat(edtRateOfEconomicPotatoContent.isEmpty() ? "0" : edtRateOfEconomicPotatoContent));
+            contentValues.put("commercialRate", Integer.parseInt(edtRateOfEconomicPotatoContent.isEmpty() ? "0" : edtRateOfEconomicPotatoContent));
             //小区产量1
             String edtSmallSectionYield1Content = edtSmallSectionYield1.getText().toString();
-            contentValues.put("plotYield1", Float.parseFloat(edtSmallSectionYield1Content.isEmpty() ? "0" : edtSmallSectionYield1Content));
+            contentValues.put("plotYield1", Float.parseFloat(edtSmallSectionYield1Content.isEmpty() ? "0.00" : edtSmallSectionYield1Content));
             //小区产量2
             String edtSmallSectionYield2Content = edtSmallSectionYield2.getText().toString();
             contentValues.put("plotYield2", Float.parseFloat(edtSmallSectionYield2Content.isEmpty() ? "0" : edtSmallSectionYield2Content));
