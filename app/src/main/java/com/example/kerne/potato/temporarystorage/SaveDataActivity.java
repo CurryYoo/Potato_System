@@ -1,7 +1,10 @@
 package com.example.kerne.potato.temporarystorage;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -10,11 +13,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,6 +47,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+import static com.example.kerne.potato.temporarystorage.RealPath.getRealPathFromUri;
 import static com.example.kerne.potato.temporarystorage.Util.getAverage;
 import static com.example.kerne.potato.temporarystorage.Util.getGrowingDays;
 import static com.example.kerne.potato.temporarystorage.Util.showDatePickerDialog;
@@ -908,6 +914,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 } else {
                     imageUriColor = Uri.fromFile(outputImage);
                 }
+                //Log.d("Uriiiiiii", pathColor + " || " + imageUriColor);
                 //启动相机程序
                 Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUriColor);
@@ -1216,8 +1223,8 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         }
         sqLiteDatabase.insert("SpeciesTable", null, contentValues);
         contentValues.clear();
-        Toast.makeText(this,
-                "暂存成功，当手机在线时，请提交到远程服务器", Toast.LENGTH_LONG).show();
+//        Toast.makeText(this,
+//                "暂存成功，当手机在线时，请提交到远程服务器", Toast.LENGTH_LONG).show();
     }
 
     //更新本地数据
@@ -1481,6 +1488,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -1531,68 +1539,89 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //从相册选择叶颜色图片
             case SELECT_PHOTO_COLOR:
-                Uri uri = data.getData();
-                if(uri!=null) {
-                    Bitmap bit = null;
-                    try {
-                        bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                if(data != null){
+                    imageUriColor = data.getData();
+                    pathColor = getRealPathFromUri(SaveDataActivity.this, imageUriColor);
+                    //Log.d("Uriiiii2", imageUriColor + " || " + pathColor);
+                    if(imageUriColor!=null) {
+                        Bitmap bit = null;
+                        try {
+                            bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUriColor));
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        ivShowColor.setImageBitmap(bit);
                     }
-                    ivShowColor.setImageBitmap(bit);
                 }
+
                 break;
             //从相册选择花冠色图片
             case SELECT_PHOTO_COROLLA_COLORS:
-                Uri uriCorollaColors = data.getData();
-                if(uriCorollaColors!=null) {
-                    Bitmap bit = null;
-                    try {
-                        bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(uriCorollaColors));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                if(data != null){
+                    imageUriCorollaColor = data.getData();
+                    pathCorollaColor = getRealPathFromUri(SaveDataActivity.this, imageUriCorollaColor);
+                    if(imageUriCorollaColor!=null) {
+                        Bitmap bit = null;
+                        try {
+                            bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUriCorollaColor));
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        ivShowCorollaColor.setImageBitmap(bit);
                     }
-                    ivShowCorollaColor.setImageBitmap(bit);
                 }
+
                 break;
             //从相册选择花繁茂性图片
             case SELECT_PHOTO_PLANT_FLOURISH:
-                Uri uriPlantFlourish = data.getData();
-                if(uriPlantFlourish!=null) {
-                    Bitmap bit = null;
-                    try {
-                        bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(uriPlantFlourish));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                if(data != null){
+                    imageUriPlantFlourish = data.getData();
+                    pathPlantFlourish = getRealPathFromUri(SaveDataActivity.this, imageUriPlantFlourish);
+                    if(imageUriPlantFlourish!=null) {
+                        Bitmap bit = null;
+                        try {
+                            bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUriPlantFlourish));
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        ivShowPlantFlourish.setImageBitmap(bit);
                     }
-                    ivShowPlantFlourish.setImageBitmap(bit);
                 }
+
                 break;
             //从相册选择茎色图片
             case SELECT_PHOTO_STEM_COLOR:
-                Uri uriStemColor = data.getData();
-                if(uriStemColor!=null) {
-                    Bitmap bit = null;
-                    try {
-                        bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(uriStemColor));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                if(data != null){
+                    imageUriStemColors = data.getData();
+                    pathStemColors = getRealPathFromUri(SaveDataActivity.this, imageUriStemColors);
+                    if(imageUriStemColors!=null) {
+                        Bitmap bit = null;
+                        try {
+                            bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUriStemColors));
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        ivShowStemColors.setImageBitmap(bit);
                     }
-                    ivShowStemColors.setImageBitmap(bit);
                 }
+
                 break;
             //从相册选择天然结实性图片
             case SELECT_PHOTO_NATURAL_FECUNDITY:
-                Uri uriNaturalFecundity = data.getData();
-                if(uriNaturalFecundity!=null) {
-                    Bitmap bit = null;
-                    try {
-                        bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(uriNaturalFecundity));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                if(data != null){
+                    imageUriNaturalFecundity = data.getData();
+                    pathNaturalFecundity = getRealPathFromUri(SaveDataActivity.this, imageUriNaturalFecundity);
+                    if(imageUriNaturalFecundity!=null) {
+                        Bitmap bit = null;
+                        try {
+                            bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUriNaturalFecundity));
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        ivShowNaturalFecundity.setImageBitmap(bit);
                     }
-                    ivShowNaturalFecundity.setImageBitmap(bit);
                 }
+
                 break;
             default:
                 break;

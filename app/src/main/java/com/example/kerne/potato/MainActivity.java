@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             switch (msg.what){
                 case FARMLIST_OK:
                     downloadSuccess_Num++;
+                    Log.d("ttttttt", "tttttttt");
+
                     if(downloadSuccess_Num == 3){
                         Toast.makeText(MainActivity.this, "下载成功!", Toast.LENGTH_SHORT);
                     }
@@ -206,7 +208,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     if (cursor.moveToFirst()) {
                         do {
-                            int id = cursor.getInt(cursor.getColumnIndex("id"));
                             final String speciesId = cursor.getString(cursor.getColumnIndex("speciesId")); //++++++++++++++
                             final String blockId = cursor.getString(cursor.getColumnIndex("blockId")); //+++++++++++++
                             String experimentType = cursor.getString(cursor.getColumnIndex("experimentType"));
@@ -429,7 +430,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                                 Log.d("response_pic5", result);
                                             }
                                         });
-                                    sqLiteDatabase.delete("SpeciesTable", null, null);
+                                    //sqLiteDatabase.delete("SpeciesTable", null, null);
                                 }
                             }.start();
 
