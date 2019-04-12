@@ -1276,17 +1276,17 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginRight="10dp"
-                        android:text="暂存"
+                        android:text="存储数据"
                         android:textAllCaps="false" />
 
-                    <Button
-                        android:id="@+id/update_offline"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginLeft="10dp"
-                        android:text="更新"
-                        android:textAllCaps="false" />
+                    <!--<Button-->
+                        <!--android:id="@+id/update_offline"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center_horizontal"-->
+                        <!--android:layout_marginLeft="10dp"-->
+                        <!--android:text="更新"-->
+                        <!--android:textAllCaps="false" />-->
 
                 </LinearLayout>
             </LinearLayout>

@@ -480,9 +480,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         //暂存监听
         Button btnSaveOffline = (Button) findViewById(R.id.save_offline);
         btnSaveOffline.setOnClickListener(this);
-        //更新监听
-        Button btnUpdateOffline = (Button) findViewById(R.id.update_offline);
-        btnUpdateOffline.setOnClickListener(this);
+//        //更新监听
+//        Button btnUpdateOffline = (Button) findViewById(R.id.update_offline);
+//        btnUpdateOffline.setOnClickListener(this);
 
         //数据存储
         dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 8);
@@ -887,10 +887,10 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 //                savaDataLocally();
                 updateDataLocally();
                 break;
-            //更新本地暂存的数据
-            case R.id.update_offline:
-                updateDataLocally();
-                break;
+//            //更新本地暂存的数据
+//            case R.id.update_offline:
+//                updateDataLocally();
+//                break;
             //叶颜色拍照并显示
             case R.id.imb_colors:
                 String fileNameString = System.currentTimeMillis() + ".jpg";
