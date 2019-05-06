@@ -36,6 +36,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <activity android:name=".SpeciesListActivity"></activity>
     </application>
 
 </manifest>

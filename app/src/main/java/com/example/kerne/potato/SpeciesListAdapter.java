@@ -2,7 +2,6 @@ package com.example.kerne.potato;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -27,9 +26,9 @@ import java.util.List;
  * Created by Tnno Wu on 2018/03/05.
  */
 
-public class SpeciesClickAdapter extends RecyclerView.Adapter<SpeciesClickAdapter.RcvClickViewHolder> {
+public class SpeciesListAdapter extends RecyclerView.Adapter<SpeciesListAdapter.RcvClickViewHolder> {
 
-    private static final String TAG = SpeciesClickAdapter.class.getSimpleName();
+    private static final String TAG = SpeciesListAdapter.class.getSimpleName();
 
     private Context mContext;
 
@@ -42,8 +41,9 @@ public class SpeciesClickAdapter extends RecyclerView.Adapter<SpeciesClickAdapte
     private String fieldId;
     private String userRole;
     private String blockId;
+    private String expType;
 
-    public SpeciesClickAdapter(Context context, OnItemClickListener listener) {
+    public SpeciesListAdapter(Context context, OnItemClickListener listener) {
         mContext = context;
 
         mListener = listener;
@@ -60,7 +60,7 @@ public class SpeciesClickAdapter extends RecyclerView.Adapter<SpeciesClickAdapte
     @NonNull
     @Override
     public RcvClickViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.species_click_recycle_item, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.species_list_recycle_item, parent, false);
         return new RcvClickViewHolder(view);
     }
 
@@ -70,11 +70,12 @@ public class SpeciesClickAdapter extends RecyclerView.Adapter<SpeciesClickAdapte
 
         try {
             speciesId = jsonObject.getString("speciesId");
-            //fieldId = jsonObject.getString("fieldId");
+            blockId = jsonObject.getString("blockId");
+            fieldId = jsonObject.getString("fieldId");
             userRole = jsonObject.getString("userRole");
             //holder.tvPlotId.setText("plot编号：" + plotId);
             holder.tvSpeciesId.setText("品种编号：" + speciesId);
-            //holder.tvFieldId.setText("所属试验田：" + fieldId);
+            holder.tvFieldId.setText("所属试验田分块编号：" + fieldId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -91,6 +92,7 @@ public class SpeciesClickAdapter extends RecyclerView.Adapter<SpeciesClickAdapte
                         speciesId = jsonObject.getString("speciesId");
                         blockId = jsonObject.getString("blockId");
                         fieldId = jsonObject.getString("fieldId");
+                        expType = jsonObject.getString("expType");
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -99,7 +101,7 @@ public class SpeciesClickAdapter extends RecyclerView.Adapter<SpeciesClickAdapte
                     Intent intent = new Intent(mContext, SaveDataActivity.class);
                     intent.putExtra("userRole", userRole);
                     intent.putExtra("speciesId", speciesId);
-                    intent.putExtra("expType", SpeciesClickActivity.expType);
+                    intent.putExtra("expType", expType);
                     intent.putExtra("blockId", blockId);
                     intent.putExtra("fieldId", fieldId);
                     mContext.startActivity(intent);
@@ -130,7 +132,7 @@ public class SpeciesClickAdapter extends RecyclerView.Adapter<SpeciesClickAdapte
 //                    });
 //                    builder.show();
 
-                    Toast.makeText(mContext, "你点击的speciesId是：" + speciesId, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "你点击的fieldId是：" + fieldId, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(mContext, "对不起，您没有该权限！", Toast.LENGTH_SHORT).show();
 
@@ -158,9 +160,9 @@ public class SpeciesClickAdapter extends RecyclerView.Adapter<SpeciesClickAdapte
 
         public RcvClickViewHolder(View itemView) {
             super(itemView);
-            tvPlotId = itemView.findViewById(R.id.tv_plotId);
-            tvSpeciesId = itemView.findViewById(R.id.tv_speciesId);
-            tvFieldId = itemView.findViewById(R.id.tv_fieldId);
+            tvPlotId = itemView.findViewById(R.id.tv_plotId1);
+            tvSpeciesId = itemView.findViewById(R.id.tv_speciesId1);
+            tvFieldId = itemView.findViewById(R.id.tv_fieldId1);
         }
     }
 

@@ -21,6 +21,7 @@ import com.example.kerne.potato.temporarystorage.SaveDataActivity;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
 import com.facebook.stetho.Stetho;
 import com.google.gson.Gson;
+import com.hb.dialog.myDialog.MyAlertInputDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     WebView webView = null;
     Button btn_general;
     Button btn_download;
+    Button btn_data;
 //    Button btn_farmland;
 //    Button btn_shot;
 //    Button btn_field;
@@ -68,22 +70,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             switch (msg.what){
                 case FARMLIST_OK:
                     downloadSuccess_Num++;
-                    Log.d("ttttttt", "tttttttt");
+                    Log.d("num1", "" + downloadSuccess_Num);
 
                     if(downloadSuccess_Num == 3){
-                        Toast.makeText(MainActivity.this, "下载成功!", Toast.LENGTH_SHORT);
+                        Log.d("download1", "ok");
+                        Toast.makeText(MainActivity.this, "下载成功!", Toast.LENGTH_SHORT).show();
+                        downloadSuccess_Num = 0;
                     }
                     break;
                 case EXPERIMENTFIELD_OK:
                     downloadSuccess_Num++;
+                    Log.d("num2", "" + downloadSuccess_Num);
                     if(downloadSuccess_Num == 3){
-                        Toast.makeText(MainActivity.this, "下载成功!", Toast.LENGTH_SHORT);
+                        Log.d("download2", "ok");
+                        Toast.makeText(MainActivity.this, "下载成功!", Toast.LENGTH_SHORT).show();
+                        downloadSuccess_Num = 0;
                     }
                     break;
                 case SPECIESLIST_OK:
                     downloadSuccess_Num++;
+                    Log.d("num3", "" + downloadSuccess_Num);
                     if(downloadSuccess_Num == 3){
-                        Toast.makeText(MainActivity.this, "下载成功!", Toast.LENGTH_SHORT);
+                        Log.d("download3", "ok");
+                        Toast.makeText(MainActivity.this, "下载成功!", Toast.LENGTH_LONG).show();
+                        downloadSuccess_Num = 0;
                     }
                     break;
             }
@@ -106,6 +116,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         btn_general = (Button) findViewById(R.id.btn_general);
         btn_general.setOnClickListener(this);
+
+        btn_data = (Button) findViewById(R.id.btn_data);
+        btn_data.setOnClickListener(this);
 
         dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 8);
 
@@ -463,135 +476,274 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_download:
-                new Thread(){
+                Toast.makeText(MainActivity.this, "开始下载数据……", Toast.LENGTH_SHORT).show();
+
+                HttpRequest.HttpRequest_general(null, MainActivity.this, new HttpRequest.HttpCallback() {
                     @Override
-                    public void run(){
-                        HttpRequest.HttpRequest_general(null, MainActivity.this, new HttpRequest.HttpCallback() {
-                            @Override
-                            public void onSuccess(JSONObject result) { //获取FarmList信息
-                                try {
-                                    JSONArray rows = new JSONArray();
-                                    rows = result.getJSONArray("rows");
-                                    int total = result.getInt("total");
-                                    for(int i = 0; i < total; i++){
-                                        JSONObject jsonObject0 = rows.getJSONObject(i);
-                                        ContentValues contentValues = new ContentValues();
-                                        contentValues.put("farmlandId", jsonObject0.getString("farmlandId"));
-                                        if(jsonObject0.getBoolean("deleted")){
-                                            contentValues.put("deleted", "true");
-                                        }
-                                        else{
-                                            contentValues.put("deleted", "false");
-                                        }
-                                        contentValues.put("name", jsonObject0.getString("name"));
-                                        if(jsonObject0.get("length") != null){
-                                            contentValues.put("length", jsonObject0.getString("length"));
-                                        }
-                                        if(jsonObject0.get("width") != null){
-                                            contentValues.put("width", jsonObject0.getString("width"));
-                                        }
-                                        contentValues.put("spare1", jsonObject0.getString("spare1"));
-                                        contentValues.put("spare2", jsonObject0.getString("spare2"));
-                                        updateSqlite("FarmList", "farmlandId", contentValues); //缓存数据到本地sqlite
-                                        contentValues.clear();
-                                    }
-
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                    public void onSuccess(JSONObject result) { //获取FarmList信息
+                        try {
+                            JSONArray rows = new JSONArray();
+                            rows = result.getJSONArray("rows");
+                            int total = result.getInt("total");
+                            JSONObject jsonObject0;
+                            for(int i = 0; i < total; i++){
+                                jsonObject0 = rows.getJSONObject(i);
+                                ContentValues contentValues = new ContentValues();
+                                contentValues.put("farmlandId", jsonObject0.getString("farmlandId"));
+                                if(jsonObject0.getBoolean("deleted")){
+                                    contentValues.put("deleted", "true");
                                 }
-
-                                Message msg = new Message();
-                                msg.what = FARMLIST_OK;
-                                uiHandler.sendMessage(msg);
-                            }
-                        });
-
-                        HttpRequest.HttpRequest_map(null, MainActivity.this, new HttpRequest.HttpCallback() {
-                            @Override
-                            public void onSuccess(JSONObject result) { //获取ExperimentField信息
-                                try {
-                                    JSONArray rows = result.getJSONArray("rows");
-                                    int total = result.getInt("total");
-                                    ContentValues contentValues = new ContentValues();
-                                    for(int i = 0; i < total; i++){
-                                        JSONObject jsonObject0 = rows.getJSONObject(i);
-
-                                        contentValues.put("id", jsonObject0.getString("id"));
-                                        if(jsonObject0.getBoolean("deleted")){
-                                            contentValues.put("deleted", "true");
-                                        }
-                                        else{
-                                            contentValues.put("deleted", "false");
-                                        }
-                                        contentValues.put("expType", jsonObject0.getString("expType"));
-                                        if(jsonObject0.get("moveX") != null){
-                                            contentValues.put("moveX", jsonObject0.getInt("moveX"));
-                                        }
-                                        if(jsonObject0.get("moveY") != null){
-                                            contentValues.put("moveY", jsonObject0.getInt("moveY"));
-                                        }
-                                        if(jsonObject0.get("moveX1") != null){
-                                            contentValues.put("moveX1", jsonObject0.getInt("moveX1"));
-                                        }
-                                        if(jsonObject0.get("moveY1") != null){
-                                            contentValues.put("moveY1", jsonObject0.getInt("moveY1"));
-                                        }
-                                        contentValues.put("spare1", jsonObject0.getString("spare1"));
-                                        contentValues.put("spare2", jsonObject0.getString("spare2"));
-                                        contentValues.put("num", jsonObject0.getString("num"));
-                                        contentValues.put("color", jsonObject0.getString("color"));
-                                        contentValues.put("farmlandId", jsonObject0.getString("farmlandId"));
-                                        if(jsonObject0.get("year") != null){
-                                            contentValues.put("year", jsonObject0.getInt("year"));
-                                        }
-                                        updateSqlite("ExperimentField", "id", contentValues); //缓存数据到本地sqlite
-                                        contentValues.clear();
-                                    }
-                                    //Log.d("GeneralJsonList", mList.toString());
-
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                else{
+                                    contentValues.put("deleted", "false");
                                 }
-
-                                Message msg = new Message();
-                                msg.what = EXPERIMENTFIELD_OK;
-                                uiHandler.sendMessage(msg);
-
-                            }
-                        });
-
-                        HttpRequest.HttpRequest_Species(MainActivity.this, new HttpRequest.HttpCallback() {
-                            @Override
-                            public void onSuccess(JSONObject result) {
-                                try {
-                                    JSONArray rows = result.getJSONArray("rows");
-                                    int total = result.getInt("total");
-                                    ContentValues contentValues = new ContentValues();
-                                    for(int i = 0; i < total; i++){
-                                        JSONObject jsonObject0 = rows.getJSONObject(i);
-
-                                        contentValues.put("blockId", jsonObject0.getString("blockId"));
-                                        contentValues.put("fieldId", jsonObject0.getString("fieldId"));
-                                        contentValues.put("speciesId", jsonObject0.getString("speciesId"));
-                                        contentValues.put("x", jsonObject0.getString("x"));
-                                        contentValues.put("y", jsonObject0.getString("y"));
-                                        updateSqlite("SpeciesList", "blockId", contentValues); //缓存数据到本地sqlite
-                                        contentValues.clear();
-                                    }
-                                    //Log.d("GeneralJsonList", mList.toString());
-
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                contentValues.put("name", jsonObject0.getString("name"));
+                                if(jsonObject0.get("length") != null){
+                                    contentValues.put("length", jsonObject0.getString("length"));
                                 }
-
-                                Message msg = new Message();
-                                msg.what = SPECIESLIST_OK;
-                                uiHandler.sendMessage(msg);
+                                if(jsonObject0.get("width") != null){
+                                    contentValues.put("width", jsonObject0.getString("width"));
+                                }
+                                contentValues.put("spare1", jsonObject0.getString("spare1"));
+                                contentValues.put("spare2", jsonObject0.getString("spare2"));
+                                updateSqlite("FarmList", "farmlandId", contentValues); //缓存数据到本地sqlite
+                                contentValues.clear();
                             }
-                        });
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        Message msg = new Message();
+                        msg.what = FARMLIST_OK;
+                        uiHandler.sendMessage(msg);
+                    }
+                });
+
+                HttpRequest.HttpRequest_map(null, MainActivity.this, new HttpRequest.HttpCallback() {
+                    @Override
+                    public void onSuccess(JSONObject result) { //获取ExperimentField信息
+                        try {
+                            JSONArray rows = result.getJSONArray("rows");
+                            int total = result.getInt("total");
+                            ContentValues contentValues = new ContentValues();
+                            JSONObject jsonObject0;
+                            for(int i = 0; i < total; i++){
+                                jsonObject0 = rows.getJSONObject(i);
+
+                                contentValues.put("id", jsonObject0.getString("id"));
+                                if(jsonObject0.getBoolean("deleted")){
+                                    contentValues.put("deleted", "true");
+                                }
+                                else{
+                                    contentValues.put("deleted", "false");
+                                }
+                                contentValues.put("expType", jsonObject0.getString("expType"));
+                                if(jsonObject0.get("moveX") != null){
+                                    contentValues.put("moveX", jsonObject0.getInt("moveX"));
+                                }
+                                if(jsonObject0.get("moveY") != null){
+                                    contentValues.put("moveY", jsonObject0.getInt("moveY"));
+                                }
+                                if(jsonObject0.get("moveX1") != null){
+                                    contentValues.put("moveX1", jsonObject0.getInt("moveX1"));
+                                }
+                                if(jsonObject0.get("moveY1") != null){
+                                    contentValues.put("moveY1", jsonObject0.getInt("moveY1"));
+                                }
+                                contentValues.put("spare1", jsonObject0.getString("spare1"));
+                                contentValues.put("spare2", jsonObject0.getString("spare2"));
+                                contentValues.put("num", jsonObject0.getString("num"));
+                                contentValues.put("color", jsonObject0.getString("color"));
+                                contentValues.put("farmlandId", jsonObject0.getString("farmlandId"));
+                                if(jsonObject0.get("year") != null){
+                                    contentValues.put("year", jsonObject0.getInt("year"));
+                                }
+                                updateSqlite("ExperimentField", "id", contentValues); //缓存数据到本地sqlite
+                                contentValues.clear();
+                            }
+                            //Log.d("GeneralJsonList", mList.toString());
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        Message msg = new Message();
+                        msg.what = EXPERIMENTFIELD_OK;
+                        uiHandler.sendMessage(msg);
 
                     }
-                }.start();
+                });
+
+                HttpRequest.HttpRequest_Species(MainActivity.this, new HttpRequest.HttpCallback() {
+                    @Override
+                    public void onSuccess(JSONObject result) {
+                        try {
+                            JSONArray rows = result.getJSONArray("rows");
+                            int total = result.getInt("total");
+                            ContentValues contentValues = new ContentValues();
+                            JSONObject jsonObject0;
+                            for(int i = 0; i < total; i++){
+                                jsonObject0 = rows.getJSONObject(i);
+
+                                contentValues.put("blockId", jsonObject0.getString("blockId"));
+                                contentValues.put("fieldId", jsonObject0.getString("fieldId"));
+                                contentValues.put("speciesId", jsonObject0.getString("speciesId"));
+                                contentValues.put("x", jsonObject0.getString("x"));
+                                contentValues.put("y", jsonObject0.getString("y"));
+                                updateSqlite("SpeciesList", "blockId", contentValues); //缓存数据到本地sqlite
+                                contentValues.clear();
+                            }
+                            //Log.d("GeneralJsonList", mList.toString());
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        Message msg = new Message();
+                        msg.what = SPECIESLIST_OK;
+                        uiHandler.sendMessage(msg);
+                    }
+                });
+
+//                new Thread(){
+//                    @Override
+//                    public void run(){
+//                        HttpRequest.HttpRequest_general(null, MainActivity.this, new HttpRequest.HttpCallback() {
+//                            @Override
+//                            public void onSuccess(JSONObject result) { //获取FarmList信息
+//                                try {
+//                                    JSONArray rows = new JSONArray();
+//                                    rows = result.getJSONArray("rows");
+//                                    int total = result.getInt("total");
+//                                    for(int i = 0; i < total; i++){
+//                                        JSONObject jsonObject0 = rows.getJSONObject(i);
+//                                        ContentValues contentValues = new ContentValues();
+//                                        contentValues.put("farmlandId", jsonObject0.getString("farmlandId"));
+//                                        if(jsonObject0.getBoolean("deleted")){
+//                                            contentValues.put("deleted", "true");
+//                                        }
+//                                        else{
+//                                            contentValues.put("deleted", "false");
+//                                        }
+//                                        contentValues.put("name", jsonObject0.getString("name"));
+//                                        if(jsonObject0.get("length") != null){
+//                                            contentValues.put("length", jsonObject0.getString("length"));
+//                                        }
+//                                        if(jsonObject0.get("width") != null){
+//                                            contentValues.put("width", jsonObject0.getString("width"));
+//                                        }
+//                                        contentValues.put("spare1", jsonObject0.getString("spare1"));
+//                                        contentValues.put("spare2", jsonObject0.getString("spare2"));
+//                                        updateSqlite("FarmList", "farmlandId", contentValues); //缓存数据到本地sqlite
+//                                        contentValues.clear();
+//                                    }
+//
+//                                } catch (Exception e) {
+//                                    e.printStackTrace();
+//                                }
+//
+//                                Message msg = new Message();
+//                                msg.what = FARMLIST_OK;
+//                                uiHandler.sendMessage(msg);
+//                            }
+//                        });
+//
+//                    }
+//                }.start();
+//
+//                new Thread(){
+//                    @Override
+//                    public void run() {
+//                        HttpRequest.HttpRequest_map(null, MainActivity.this, new HttpRequest.HttpCallback() {
+//                            @Override
+//                            public void onSuccess(JSONObject result) { //获取ExperimentField信息
+//                                try {
+//                                    JSONArray rows = result.getJSONArray("rows");
+//                                    int total = result.getInt("total");
+//                                    ContentValues contentValues = new ContentValues();
+//                                    for(int i = 0; i < total; i++){
+//                                        JSONObject jsonObject0 = rows.getJSONObject(i);
+//
+//                                        contentValues.put("id", jsonObject0.getString("id"));
+//                                        if(jsonObject0.getBoolean("deleted")){
+//                                            contentValues.put("deleted", "true");
+//                                        }
+//                                        else{
+//                                            contentValues.put("deleted", "false");
+//                                        }
+//                                        contentValues.put("expType", jsonObject0.getString("expType"));
+//                                        if(jsonObject0.get("moveX") != null){
+//                                            contentValues.put("moveX", jsonObject0.getInt("moveX"));
+//                                        }
+//                                        if(jsonObject0.get("moveY") != null){
+//                                            contentValues.put("moveY", jsonObject0.getInt("moveY"));
+//                                        }
+//                                        if(jsonObject0.get("moveX1") != null){
+//                                            contentValues.put("moveX1", jsonObject0.getInt("moveX1"));
+//                                        }
+//                                        if(jsonObject0.get("moveY1") != null){
+//                                            contentValues.put("moveY1", jsonObject0.getInt("moveY1"));
+//                                        }
+//                                        contentValues.put("spare1", jsonObject0.getString("spare1"));
+//                                        contentValues.put("spare2", jsonObject0.getString("spare2"));
+//                                        contentValues.put("num", jsonObject0.getString("num"));
+//                                        contentValues.put("color", jsonObject0.getString("color"));
+//                                        contentValues.put("farmlandId", jsonObject0.getString("farmlandId"));
+//                                        if(jsonObject0.get("year") != null){
+//                                            contentValues.put("year", jsonObject0.getInt("year"));
+//                                        }
+//                                        updateSqlite("ExperimentField", "id", contentValues); //缓存数据到本地sqlite
+//                                        contentValues.clear();
+//                                    }
+//                                    //Log.d("GeneralJsonList", mList.toString());
+//
+//                                } catch (Exception e) {
+//                                    e.printStackTrace();
+//                                }
+//
+//                                Message msg = new Message();
+//                                msg.what = EXPERIMENTFIELD_OK;
+//                                uiHandler.sendMessage(msg);
+//
+//                            }
+//                        });
+//                    }
+//                }.start();
+//
+//                new Thread(){
+//                    @Override
+//                    public void run() {
+//                        HttpRequest.HttpRequest_Species(MainActivity.this, new HttpRequest.HttpCallback() {
+//                            @Override
+//                            public void onSuccess(JSONObject result) {
+//                                try {
+//                                    JSONArray rows = result.getJSONArray("rows");
+//                                    int total = result.getInt("total");
+//                                    ContentValues contentValues = new ContentValues();
+//                                    for(int i = 0; i < total; i++){
+//                                        JSONObject jsonObject0 = rows.getJSONObject(i);
+//
+//                                        contentValues.put("blockId", jsonObject0.getString("blockId"));
+//                                        contentValues.put("fieldId", jsonObject0.getString("fieldId"));
+//                                        contentValues.put("speciesId", jsonObject0.getString("speciesId"));
+//                                        contentValues.put("x", jsonObject0.getString("x"));
+//                                        contentValues.put("y", jsonObject0.getString("y"));
+//                                        updateSqlite("SpeciesList", "blockId", contentValues); //缓存数据到本地sqlite
+//                                        contentValues.clear();
+//                                    }
+//                                    //Log.d("GeneralJsonList", mList.toString());
+//
+//                                } catch (Exception e) {
+//                                    e.printStackTrace();
+//                                }
+//
+//                                Message msg = new Message();
+//                                msg.what = SPECIESLIST_OK;
+//                                uiHandler.sendMessage(msg);
+//                            }
+//                        });
+//                    }
+//                }.start();
 
                 break;
             case R.id.btn_general:
@@ -600,6 +752,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent_general);
                 break;
 
+            case R.id.btn_data:
+                final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(MainActivity.this).builder()
+                        .setTitle("请输入品种编号：")
+                        .setEditText("");
+                myAlertInputDialog.setPositiveButton("确认", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //showMsg(myAlertInputDialog.getResult());
+                        String speciesId;
+                        speciesId = myAlertInputDialog.getResult();
+
+                        Intent intent = new Intent(MainActivity.this, SpeciesListActivity.class);
+                        intent.putExtra("speciesId", speciesId);
+                        intent.putExtra("userRole", userRole);
+                        startActivity(intent);
+                        myAlertInputDialog.dismiss();
+                    }
+                }).setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //showMsg("取消");
+                        myAlertInputDialog.dismiss();
+                    }
+                });
+                myAlertInputDialog.show();
+                break;
 /*            case R.id.commit_data:
                 Intent intent = new Intent(MainActivity.this, SaveDataActivity.class);
                 startActivity(intent);

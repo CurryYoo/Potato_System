@@ -89,48 +89,76 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                builder.setTitle("选择一个操作");
-                //    指定下拉列表的显示数据
-                final String[] options = {"进入"};
-                //    设置一个下拉的列表选择项
-                builder.setItems(options, new DialogInterface.OnClickListener() {
+
+                //弹出输入年份的对话框
+                final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(mContext).builder()
+                        .setTitle("请输入年份：")
+                        .setEditText("");
+                myAlertInputDialog.setPositiveButton("确认", new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(which == 0){ //点击"进入"操作时
-                            final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(mContext).builder()
-                                .setTitle("请输入年份：")
-                                .setEditText("");
-                            myAlertInputDialog.setPositiveButton("确认", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    //showMsg(myAlertInputDialog.getResult());
-                                    year = myAlertInputDialog.getResult();
+                    public void onClick(View v) {
+                        //showMsg(myAlertInputDialog.getResult());
+                        year = myAlertInputDialog.getResult();
 
-                                    Intent intent = new Intent(mContext, GeneralActivity.class);
-                                    intent.putExtra("farmlandId", farmlandId);
-                                    intent.putExtra("year", Integer.parseInt(year));
-                                    intent.putExtra("userRole", userRole);
-                                    mContext.startActivity(intent);
-                                    myAlertInputDialog.dismiss();
-                                }
-                            }).setNegativeButton("取消", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    //showMsg("取消");
-                                    myAlertInputDialog.dismiss();
-                                }
-                            });
-                            myAlertInputDialog.show();
-
-                        }
-                        else{ //点击"删除"操作时
-                            mList.remove(position);
-                            notifyItemRemoved(position);
-                            Toast.makeText(mContext, "删除farmlandId " + farmlandId, Toast.LENGTH_SHORT).show();
-                        }
+                        Intent intent = new Intent(mContext, GeneralActivity.class);
+                        intent.putExtra("farmlandId", farmlandId);
+                        intent.putExtra("year", Integer.parseInt(year));
+                        intent.putExtra("userRole", userRole);
+                        mContext.startActivity(intent);
+                        myAlertInputDialog.dismiss();
+                    }
+                }).setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //showMsg("取消");
+                        myAlertInputDialog.dismiss();
                     }
                 });
-                builder.show();
+                myAlertInputDialog.show();
+
+//                builder.setTitle("选择一个操作");
+//                //    指定下拉列表的显示数据
+//                final String[] options = {"进入"};
+//                //    设置一个下拉的列表选择项
+//                builder.setItems(options, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        if(which == 0){ //点击"进入"操作时
+//                            final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(mContext).builder()
+//                                .setTitle("请输入年份：")
+//                                .setEditText("");
+//                            myAlertInputDialog.setPositiveButton("确认", new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    //showMsg(myAlertInputDialog.getResult());
+//                                    year = myAlertInputDialog.getResult();
+//
+//                                    Intent intent = new Intent(mContext, GeneralActivity.class);
+//                                    intent.putExtra("farmlandId", farmlandId);
+//                                    intent.putExtra("year", Integer.parseInt(year));
+//                                    intent.putExtra("userRole", userRole);
+//                                    mContext.startActivity(intent);
+//                                    myAlertInputDialog.dismiss();
+//                                }
+//                            }).setNegativeButton("取消", new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    //showMsg("取消");
+//                                    myAlertInputDialog.dismiss();
+//                                }
+//                            });
+//                            myAlertInputDialog.show();
+//
+//                        }
+//                        else{ //点击"删除"操作时
+//                            mList.remove(position);
+//                            notifyItemRemoved(position);
+//                            Toast.makeText(mContext, "删除farmlandId " + farmlandId, Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
+//                builder.show();
+
                 Toast.makeText(mContext, "你点击的farmlandId是：" + farmlandId, Toast.LENGTH_SHORT).show();
             }
         });

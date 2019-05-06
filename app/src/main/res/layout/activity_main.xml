@@ -29,4 +29,10 @@
         android:layout_height="wrap_content"
         android:text="实验田列表" />
 
+    <Button
+        android:id="@+id/btn_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="录入数据" />
+
 </LinearLayout>
