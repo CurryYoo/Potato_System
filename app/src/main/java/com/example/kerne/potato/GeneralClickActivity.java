@@ -41,14 +41,16 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
     private List<JSONObject> mList = new ArrayList<>();
 
     private String name = null;
-    private String userRole = null;
+    private String userRole;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //在Action bar显示返回键
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.general_click_activity);
 
-        userRole = getIntent().getStringExtra("userRole");
+//        userRole = getIntent().getStringExtra("userRole");
 
         initData();
 
@@ -112,7 +114,7 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
                     jsonObject0.put("name", cursor.getString(cursor.getColumnIndex("name")));
                     jsonObject0.put("length", cursor.getString(cursor.getColumnIndex("length")));
                     jsonObject0.put("width", cursor.getString(cursor.getColumnIndex("width")));
-                    jsonObject0.put("userRole", userRole);
+//                    jsonObject0.put("userRole", userRole);
                     mList.add(jsonObject0);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -193,4 +195,18 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
 //
 //        //Toast.makeText(this, "你点击的是：" + content, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+//                Intent intent = new Intent(this, MainActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+            default:
+        }
+        return true;
+    }
+
 }

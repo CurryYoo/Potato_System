@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SQLiteDatabase sqLiteDatabase;
 
     //用户角色字段
-    String userRole = null;
+    String userRole = "farmer";
 
     private static final int FARMLIST_OK = 1;
     private static final int EXPERIMENTFIELD_OK = 2;
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d("MainActivity", "hello main");
         super.onCreate(savedInstanceState);
         //获取用户角色
-        userRole = getIntent().getStringExtra("userRole");
+//        userRole = getIntent().getStringExtra("userRole");
         Stetho.initializeWithDefaults(this);
 
 //        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -197,25 +197,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d("MainActivity", userRole);
-        if (userRole.equals("farmer")) {
-            return super.onCreateOptionsMenu(menu);
-        } else {
-            getMenuInflater().inflate(R.menu.main, menu);
-            return true;
-        }
+//        userRole = UserRole.getUserRole();
+//        Log.d("MainActivity", userRole);
+//        if (userRole.equals("farmer")) {
+//            return super.onCreateOptionsMenu(menu);
+//        } else {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+//        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.save_offline:
-                Intent intent = new Intent(MainActivity.this, SaveDataActivity.class);
-                startActivity(intent);
-                break;
+//            case R.id.save_offline:
+//                Intent intent = new Intent(MainActivity.this, SaveDataActivity.class);
+//                startActivity(intent);
+//                break;
             case R.id.commit:
                 //将暂存的数据从数据库取出并提交到远程服务器
-                if (userRole.equals("admin")) {
+                userRole = UserRole.getUserRole();
+                if (!userRole.equals("farmer")) {
                     sqLiteDatabase = dbHelper.getReadableDatabase();
                     final Cursor cursor = sqLiteDatabase.query("SpeciesTable", null, null, null, null, null, null);
 
@@ -395,17 +397,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             new Thread() {
                                 @Override
                                 public void run() {
-                                    final int[] signal = {1};
                                     HttpRequest.HttpRequest_SpeciesData(jsonObject, MainActivity.this, new HttpRequest.HttpCallback() {
                                         @Override
                                         public void onSuccess(JSONObject result) {
                                             Log.d("response_update", result.toString());
-                                            try {
-                                                if(result.getBoolean("success"))
-                                                    signal[0]--;
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
                                         }
                                     });
                                     if(img1 != null)
@@ -455,7 +450,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     cursor.close();
                 } else {
-                    Toast.makeText(MainActivity.this, "对不起，您没有该权限！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "对不起，您没有该权限！请登录有权限的账号！", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivityForResult(intent, 1);
                 }
                 break;
             default:
@@ -748,7 +745,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_general:
                 Intent intent_general = new Intent(MainActivity.this, GeneralClickActivity.class);
-                intent_general.putExtra("userRole", userRole);
+//                intent_general.putExtra("userRole", userRole);
                 startActivity(intent_general);
                 break;
 
@@ -808,5 +805,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             db.insert(table_name, null, contentValues);
         }
         cursor.close();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        switch (requestCode){
+            case 1:
+                if(resultCode == RESULT_OK){
+//                    userRole = data.getStringExtra("userRole");
+//                    Log.d("userRole", userRole);
+                }
+                break;
+            default:
+                break;
+        }
     }
 }

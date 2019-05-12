@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -48,6 +49,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("LoginActivity", "hello");
         super.onCreate(savedInstanceState);
+        //在Action bar显示返回键
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         setContentView(R.layout.activity_login);
         pref = PreferenceManager.getDefaultSharedPreferences(this);
         accountEdit = (EditText) findViewById(R.id.account);
@@ -152,9 +156,10 @@ public class LoginActivity extends AppCompatActivity {
                 editor.apply();
                 Log.d("Login_pre_test", pref.getString("account", ""));
                 Log.d("Login_pre_test", pref.getString("account", ""));
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra("userRole", userRole);
-                startActivity(intent);
+                Intent intent = new Intent();
+                UserRole.setUserRole(userRole);
+//                intent.putExtra("userRole", userRole);
+                setResult(RESULT_OK, intent);
                 finish();
 
             }else{
@@ -186,5 +191,19 @@ public class LoginActivity extends AppCompatActivity {
 //            }
 //        }
 //    };
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+//                Intent intent = new Intent(this, MainActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+            default:
+        }
+        return true;
+    }
+
 
 }

@@ -72,7 +72,7 @@ public class SpeciesListAdapter extends RecyclerView.Adapter<SpeciesListAdapter.
             speciesId = jsonObject.getString("speciesId");
             blockId = jsonObject.getString("blockId");
             fieldId = jsonObject.getString("fieldId");
-            userRole = jsonObject.getString("userRole");
+//            userRole = jsonObject.getString("userRole");
             //holder.tvPlotId.setText("plot编号：" + plotId);
             holder.tvSpeciesId.setText("品种编号：" + speciesId);
             holder.tvFieldId.setText("所属试验田分块编号：" + fieldId);
@@ -84,27 +84,28 @@ public class SpeciesListAdapter extends RecyclerView.Adapter<SpeciesListAdapter.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (userRole.equals("experimenter") || userRole.equals("admin")) {
-                if (!userRole.equals("farmer")) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                    //builder.setIcon(R.drawable.ic_launcher_background);
-                    try {
-                        speciesId = jsonObject.getString("speciesId");
-                        blockId = jsonObject.getString("blockId");
-                        fieldId = jsonObject.getString("fieldId");
-                        expType = jsonObject.getString("expType");
+////                if (userRole.equals("experimenter") || userRole.equals("admin")) {
+//                userRole = UserRole.getUserRole();
+//                if (!userRole.equals("farmer")) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                //builder.setIcon(R.drawable.ic_launcher_background);
+                try {
+                    speciesId = jsonObject.getString("speciesId");
+                    blockId = jsonObject.getString("blockId");
+                    fieldId = jsonObject.getString("fieldId");
+                    expType = jsonObject.getString("expType");
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                    Intent intent = new Intent(mContext, SaveDataActivity.class);
-                    intent.putExtra("userRole", userRole);
-                    intent.putExtra("speciesId", speciesId);
-                    intent.putExtra("expType", expType);
-                    intent.putExtra("blockId", blockId);
-                    intent.putExtra("fieldId", fieldId);
-                    mContext.startActivity(intent);
+                Intent intent = new Intent(mContext, SaveDataActivity.class);
+//                    intent.putExtra("userRole", userRole);
+                intent.putExtra("speciesId", speciesId);
+                intent.putExtra("expType", expType);
+                intent.putExtra("blockId", blockId);
+                intent.putExtra("fieldId", fieldId);
+                mContext.startActivity(intent);
 
 //                    builder.setTitle("选择一个操作");
 //                    //    指定下拉列表的显示数据
@@ -132,11 +133,11 @@ public class SpeciesListAdapter extends RecyclerView.Adapter<SpeciesListAdapter.
 //                    });
 //                    builder.show();
 
-                    Toast.makeText(mContext, "你点击的fieldId是：" + fieldId, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(mContext, "对不起，您没有该权限！", Toast.LENGTH_SHORT).show();
-
-                }
+                Toast.makeText(mContext, "你点击的fieldId是：" + fieldId, Toast.LENGTH_SHORT).show();
+//                } else {
+//                    Toast.makeText(mContext, "对不起，您没有该权限！", Toast.LENGTH_SHORT).show();
+//
+//                }
             }
         });
 

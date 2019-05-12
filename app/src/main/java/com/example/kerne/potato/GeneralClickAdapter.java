@@ -71,7 +71,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
         try {
             farmlandId = jsonObject.getString("farmlandId");
             name = jsonObject.getString("name");
-            userRole = jsonObject.getString("userRole");
+//            userRole = jsonObject.getString("userRole");
             holder.tvNum.setText("实验田序号：" + farmlandId);
             holder.tvName.setText("实验田名称：" + name);
         } catch (JSONException e) {
@@ -103,7 +103,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                         Intent intent = new Intent(mContext, GeneralActivity.class);
                         intent.putExtra("farmlandId", farmlandId);
                         intent.putExtra("year", Integer.parseInt(year));
-                        intent.putExtra("userRole", userRole);
+//                        intent.putExtra("userRole", userRole);
                         mContext.startActivity(intent);
                         myAlertInputDialog.dismiss();
                     }

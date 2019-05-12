@@ -28,7 +28,7 @@ import java.util.Map;
 
 public class HttpRequest {
     private static String url = "http://120.78.130.251:9527/"; //数据库ip
-    private static String picUrl = "http://10.103.241.85:9527/"; //图片服务器ip
+    private static String picUrl = "http://120.78.130.251:9527/"; //图片服务器ip
     private static RequestQueue requestQueue;
 
     //获取试验田列表

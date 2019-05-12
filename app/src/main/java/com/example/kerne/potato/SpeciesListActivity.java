@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
@@ -41,11 +42,13 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //在Action bar显示返回键
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.species_list_activity);
 
         Intent intent = getIntent();
         speciesId = intent.getStringExtra("speciesId");
-        userRole = intent.getStringExtra("userRole");
+//        userRole = intent.getStringExtra("userRole");
 
         initData();
 
@@ -65,7 +68,7 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
                     fieldId = cursor.getString(cursor.getColumnIndex("fieldId"));
                     jsonObject0.put("fieldId", fieldId);
                     jsonObject0.put("speciesId", cursor.getString(cursor.getColumnIndex("speciesId")));
-                    jsonObject0.put("userRole", userRole);
+//                    jsonObject0.put("userRole", userRole);
                     Cursor cursor1 = db.query("ExperimentField", null, "id=?", new String[]{fieldId}, null, null, null);
                     if(cursor1.moveToFirst()){
                         jsonObject0.put("expType", cursor1.getString(cursor1.getColumnIndex("expType")));
@@ -75,6 +78,7 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
                     }
                     cursor1.close();
                     mList.add(jsonObject0);
+//                    Log.d("mList.jsonObject", jsonObject0.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.e("speciesId_error", cursor.getString(cursor.getColumnIndex("speciesId")));
@@ -82,15 +86,19 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
             } while (cursor.moveToNext());
         }
         else {
-            Toast.makeText(SpeciesListActivity.this, "SpeciesList null", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SpeciesListActivity.this, "该品种不存在！", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(SpeciesListActivity.this, MainActivity.class);
+            startActivity(intent);
         }
 
-        cursor = db.query("ExperimentField", null, "id=?", new String[]{fieldId}, null, null, null);
-        if(cursor.moveToFirst()){
-            expType = cursor.getString(cursor.getColumnIndex("expType"));
-        }
-        else{
-            Toast.makeText(SpeciesListActivity.this, "Do not have the fieldId '" + fieldId + "' in ExperimentField", Toast.LENGTH_SHORT).show();
+        if(fieldId != null){
+            cursor = db.query("ExperimentField", null, "id=?", new String[]{fieldId}, null, null, null);
+            if(cursor.moveToFirst()){
+                expType = cursor.getString(cursor.getColumnIndex("expType"));
+            }
+            else{
+                Toast.makeText(SpeciesListActivity.this, "Do not have the fieldId '" + fieldId + "' in ExperimentField", Toast.LENGTH_SHORT).show();
+            }
         }
 
         cursor.close();
@@ -163,4 +171,18 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
     public void onItemClick(String content) {
         Toast.makeText(this, "你点击的是：" + content, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+//                Intent intent = new Intent(this, MainActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+            default:
+        }
+        return true;
+    }
+
 }

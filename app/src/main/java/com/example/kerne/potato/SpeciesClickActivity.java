@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
@@ -40,12 +41,14 @@ public class SpeciesClickActivity extends AppCompatActivity implements SpeciesCl
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //在Action bar显示返回键
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.species_click_activity);
 
         Intent intent = getIntent();
         fieldId = intent.getStringExtra("fieldId");
         expType = intent.getStringExtra("expType");
-        userRole = intent.getStringExtra("userRole");
+//        userRole = intent.getStringExtra("userRole");
 
         initData();
 
@@ -64,7 +67,7 @@ public class SpeciesClickActivity extends AppCompatActivity implements SpeciesCl
                     jsonObject0.put("blockId", cursor.getString(cursor.getColumnIndex("blockId")));
                     jsonObject0.put("fieldId", cursor.getString(cursor.getColumnIndex("fieldId")));
                     jsonObject0.put("speciesId", cursor.getString(cursor.getColumnIndex("speciesId")));
-                    jsonObject0.put("userRole", userRole);
+//                    jsonObject0.put("userRole", userRole);
                     mList.add(jsonObject0);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -145,4 +148,32 @@ public class SpeciesClickActivity extends AppCompatActivity implements SpeciesCl
     public void onItemClick(String content) {
         Toast.makeText(this, "你点击的是：" + content, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        switch (requestCode){
+            case 1:
+                if(resultCode == RESULT_OK){
+//                    userRole = data.getStringExtra("userRole");
+//                    Log.d("userRole", userRole);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+//                Intent intent = new Intent(this, MainActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+            default:
+        }
+        return true;
+    }
+
 }

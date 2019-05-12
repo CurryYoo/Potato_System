@@ -76,6 +76,8 @@ public class GeneralActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //在Action bar显示返回键
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_general);
 
         //获取farmlandId、year
@@ -83,7 +85,7 @@ public class GeneralActivity extends AppCompatActivity {
         year = getIntent().getIntExtra("year", 0);
 
         //获取权限角色
-        userRole = getIntent().getStringExtra("userRole");
+//        userRole = getIntent().getStringExtra("userRole");
 
         getData();
 
@@ -260,7 +262,7 @@ public class GeneralActivity extends AppCompatActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            intent.putExtra("userRole", userRole);
+//                            intent.putExtra("userRole", userRole);
                             startActivity(intent);
                         }
                     }
@@ -281,19 +283,18 @@ public class GeneralActivity extends AppCompatActivity {
 //        return super.onCreateOptionsMenu(menu);
 //    }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.map_color:
-//
-//                break;
-////            case android.R.id.home:
-////                Intent intent = new Intent(this, MainActivity.class);
-////                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-////                startActivity(intent);
-//            default:
-//        }
-//        return true;
-//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+//                Intent intent = new Intent(this, MainActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+            default:
+        }
+        return true;
+    }
+
 
 }
