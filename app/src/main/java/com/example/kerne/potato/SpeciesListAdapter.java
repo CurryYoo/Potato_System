@@ -99,7 +99,7 @@ public class SpeciesListAdapter extends RecyclerView.Adapter<SpeciesListAdapter.
                     e.printStackTrace();
                 }
 
-                Intent intent = new Intent(mContext, SaveDataActivity.class);
+                Intent intent = new Intent(mContext, TestActivity.class);
 //                    intent.putExtra("userRole", userRole);
                 intent.putExtra("speciesId", speciesId);
                 intent.putExtra("expType", expType);

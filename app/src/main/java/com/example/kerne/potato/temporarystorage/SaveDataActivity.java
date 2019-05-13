@@ -25,6 +25,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,8 +37,10 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kerne.potato.HiddenAnimUtils;
 import com.example.kerne.potato.R;
 
 import java.io.File;
@@ -221,12 +224,19 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     private SpeciesDBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
 
+    //下拉按键
+    private TextView down = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //在Action bar显示返回键
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_commit_data);
+
+        //下拉测试
+        down = (TextView) findViewById(R.id.down);
+        down.setOnClickListener(this);
 
         //从上一层品种id和实验类型
         Intent intent_speciesId = getIntent();
@@ -882,6 +892,12 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
 
         switch (v.getId()) {
+            //下拉测试
+            case R.id.down:
+//                View view = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_height, null);
+//                HiddenAnimUtils.newInstance(SaveDataActivity.this, view, down, 100).toggle();
+                break;
+
             //将数据暂存到本地
             case R.id.save_offline:
 //                savaDataLocally();
