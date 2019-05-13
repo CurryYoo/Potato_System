@@ -16,6 +16,7 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
+        //
         LinearLayout mLinearLayout = (LinearLayout) findViewById(R.id.mianliner);
         View view_basic = LayoutInflater.from(TestActivity.this).inflate(R.layout.item_basicinfo, null);
         InfoItemBar mbar_basic = new InfoItemBar(TestActivity.this, "基本信息");
