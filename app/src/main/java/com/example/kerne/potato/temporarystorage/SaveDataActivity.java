@@ -1,10 +1,7 @@
 package com.example.kerne.potato.temporarystorage;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.ContentUris;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -13,13 +10,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,13 +29,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.kerne.potato.HiddenAnimUtils;
 import com.example.kerne.potato.R;
 
 import java.io.File;
@@ -232,11 +227,34 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         //在Action bar显示返回键
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setContentView(R.layout.activity_commit_data);
+        setContentView(R.layout.activity_commit);
 
-        //下拉测试
-        down = (TextView) findViewById(R.id.down);
-        down.setOnClickListener(this);
+        LinearLayout mLinearLayout = (LinearLayout) findViewById(R.id.mianliner);
+        View view_basic = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_basicinfo, null);
+        InfoItemBar mbar_basic = new InfoItemBar(SaveDataActivity.this, "基本信息");
+        mbar_basic.addView(view_basic);
+        mbar_basic.setShow(true);
+        mLinearLayout.addView(mbar_basic);
+        View view_height = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_height, null);
+        InfoItemBar mbar_height = new InfoItemBar(SaveDataActivity.this, "十株株高");
+        mbar_height.addView(view_height);
+        mbar_height.setShow(true);
+        mLinearLayout.addView(mbar_height);
+        View view_branch = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_branch, null);
+        InfoItemBar mbar_branch = new InfoItemBar(SaveDataActivity.this, "十株分支数");
+        mbar_branch.addView(view_branch);
+        mbar_branch.setShow(true);
+        mLinearLayout.addView(mbar_branch);
+        View view_big = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_big, null);
+        InfoItemBar mbar_big = new InfoItemBar(SaveDataActivity.this, "大薯十株测产");
+        mbar_big.addView(view_big);
+        mbar_big.setShow(true);
+        mLinearLayout.addView(mbar_big);
+        View view_small = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_small, null);
+        InfoItemBar mbar_small = new InfoItemBar(SaveDataActivity.this, "小薯十株测产");
+        mbar_small.addView(view_small);
+        mbar_small.setShow(true);
+        mLinearLayout.addView(mbar_small);
 
         //从上一层品种id和实验类型
         Intent intent_speciesId = getIntent();
@@ -892,12 +910,6 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
 
         switch (v.getId()) {
-            //下拉测试
-            case R.id.down:
-//                View view = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_height, null);
-//                HiddenAnimUtils.newInstance(SaveDataActivity.this, view, down, 100).toggle();
-                break;
-
             //将数据暂存到本地
             case R.id.save_offline:
 //                savaDataLocally();

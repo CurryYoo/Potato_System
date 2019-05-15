@@ -1,4 +1,4 @@
-package com.example.kerne.potato;
+package com.example.kerne.potato.temporarystorage;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.kerne.potato.R;
 
 public class InfoItemBar extends LinearLayout {
 
@@ -27,10 +29,10 @@ public class InfoItemBar extends LinearLayout {
             public void onClick(View v) {
                 if (mLinearLayout.getVisibility() == View.GONE) {
                     mLinearLayout.setVisibility(View.VISIBLE);
-                    //Image.setImageResource(R.drawable.item_pressed);
+                    Image.setImageResource(R.drawable.item_pressed);
                 } else {
                     mLinearLayout.setVisibility(View.GONE);
-                    //Image.setImageResource(R.drawable.item_unpressed);
+                    Image.setImageResource(R.drawable.item_unpressed);
                 }
             }
 
@@ -44,10 +46,10 @@ public class InfoItemBar extends LinearLayout {
     public void setShow(boolean isShow) {
         if (isShow) {
             mLinearLayout.setVisibility(View.VISIBLE);
-            //Image.setImageResource(R.drawable.item_pressed);
+            Image.setImageResource(R.drawable.item_pressed);
         } else {
             mLinearLayout.setVisibility(View.GONE);
-            //Image.setImageResource(R.drawable.item_unpressed);
+            Image.setImageResource(R.drawable.item_unpressed);
         }
     }
     /**

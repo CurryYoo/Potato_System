@@ -26,10 +26,11 @@
 
         <ImageView
             android:id="@+id/item_img_title"
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
             android:layout_marginRight="10dp"
-            android:src="@android:drawable/ic_menu_more" />
+            android:src="@drawable/item_pressed" />
 
     </LinearLayout>
 

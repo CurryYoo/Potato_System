@@ -72,8 +72,9 @@ public class SpeciesListAdapter extends RecyclerView.Adapter<SpeciesListAdapter.
             speciesId = jsonObject.getString("speciesId");
             blockId = jsonObject.getString("blockId");
             fieldId = jsonObject.getString("fieldId");
+//            expType = jsonObject.getString("expType");
 //            userRole = jsonObject.getString("userRole");
-            //holder.tvPlotId.setText("plot编号：" + plotId);
+//            holder.tvPlotId.setText("试验类型：" + expType);
             holder.tvSpeciesId.setText("品种编号：" + speciesId);
             holder.tvFieldId.setText("所属试验田分块编号：" + fieldId);
         } catch (JSONException e) {
@@ -99,7 +100,7 @@ public class SpeciesListAdapter extends RecyclerView.Adapter<SpeciesListAdapter.
                     e.printStackTrace();
                 }
 
-                Intent intent = new Intent(mContext, TestActivity.class);
+                Intent intent = new Intent(mContext, SaveDataActivity.class);
 //                    intent.putExtra("userRole", userRole);
                 intent.putExtra("speciesId", speciesId);
                 intent.putExtra("expType", expType);
