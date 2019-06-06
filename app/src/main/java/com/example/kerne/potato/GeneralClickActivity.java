@@ -61,8 +61,22 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
     public boolean onCreateOptionsMenu(Menu menu) {
         // 为ActionBar扩展菜单项
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.actions, menu);
+//        inflater.inflate(R.menu.actions, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                break;
+//                Intent intent = new Intent(this, MainActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+            default:
+        }
+        return true;
     }
 
 //    @Override
@@ -102,7 +116,7 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
 
     private void initData() {
         //获取服务器中数据
-        SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 8);
+        SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 9);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.query("FarmList", null, null, null, null, null, null);
@@ -126,6 +140,8 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
             Toast.makeText(GeneralClickActivity.this, "FarmList null", Toast.LENGTH_SHORT).show();
         }
         cursor.close();
+        db.close();
+        dbHelper.close();
         //Log.d("mList.toString", mList.toString());
         initView();
 
@@ -196,17 +212,6 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
 //        //Toast.makeText(this, "你点击的是：" + content, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-//                Intent intent = new Intent(this, MainActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-            default:
-        }
-        return true;
-    }
+
 
 }

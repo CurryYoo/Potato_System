@@ -56,7 +56,7 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
     }
 
     private void initData() {
-        SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 8);
+        SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 9);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.query("SpeciesList", null, "speciesId=?", new String[]{speciesId}, null, null, null);
@@ -102,6 +102,8 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
         }
 
         cursor.close();
+        db.close();
+        dbHelper.close();
         //Log.d("mList.toString", mList.toString());
         initView();
 
@@ -177,6 +179,7 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
+                break;
 //                Intent intent = new Intent(this, MainActivity.class);
 //                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                startActivity(intent);

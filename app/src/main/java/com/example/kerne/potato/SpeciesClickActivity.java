@@ -56,7 +56,7 @@ public class SpeciesClickActivity extends AppCompatActivity implements SpeciesCl
     }
 
     private void initData() {
-        SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 8);
+        SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 9);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.query("SpeciesList", null, "fieldId=?", new String[]{fieldId}, null, null, null);
@@ -168,6 +168,7 @@ public class SpeciesClickActivity extends AppCompatActivity implements SpeciesCl
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
+                break;
 //                Intent intent = new Intent(this, MainActivity.class);
 //                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                startActivity(intent);

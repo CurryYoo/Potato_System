@@ -3,4 +3,9 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <!--ProgressWheel-->
+    <color name="ProgressWheel_color">#489df3</color>
+    <!-- 透明 -->
+    <color name="transparent">#00000000</color>
 </resources>

@@ -125,6 +125,12 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "x text,"
             + "y text)";
 
+    public static final String CREATE_SPECIES_SEQUENCE = "create table SpeciesSequence ("
+            + "id integer primary key autoincrement,"
+            + "fieldId text,"
+            + "NumofColumns integer,"
+            + "ContentofRow text)";
+
     public SpeciesDBHelper(Context context, String name,
                            SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -139,6 +145,7 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_FARMLIST);
         db.execSQL(CREATE_EXPERIMENTFIELD);
         db.execSQL(CREATE_SPECIESLIST);
+        db.execSQL(CREATE_SPECIES_SEQUENCE);
         //Toast.makeText(mContext, "创建品种信息表成功", Toast.LENGTH_SHORT).show();
     }
 
@@ -148,6 +155,7 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
         db.execSQL("drop table if exists FarmList");
         db.execSQL("drop table if exists ExperimentField");
         db.execSQL("drop table if exists SpeciesList");
+        db.execSQL("drop table if exists SpeciesSequence");
         onCreate(db);
     }
 }

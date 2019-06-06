@@ -1,5 +1,7 @@
 package com.example.kerne.potato;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -21,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.kerne.potato.complextable.TableActivity;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
 import com.hb.dialog.myDialog.MyAlertInputDialog;
 
@@ -30,6 +33,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.kerne.potato.complextable.TableActivity.STATUS_EDIT;
+import static com.example.kerne.potato.complextable.TableActivity.STATUS_READ;
 
 public class GeneralActivity extends AppCompatActivity {
 
@@ -133,7 +139,7 @@ public class GeneralActivity extends AppCompatActivity {
 
     private void getData(){
         //获取分块的坐标信息
-        SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 8);
+        SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 9);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String sql = "select * from ExperimentField where (farmlandId,year) in (('" + farmlandId + "',"+ year +"))";
@@ -166,6 +172,8 @@ public class GeneralActivity extends AppCompatActivity {
             Toast.makeText(GeneralActivity.this, "ExperimentField null", Toast.LENGTH_SHORT).show();
         }
         cursor.close();
+        db.close();
+        dbHelper.close();
         Log.d("mList.toString", mList.toString());
 
         Message msg = new Message();
@@ -255,15 +263,44 @@ public class GeneralActivity extends AppCompatActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            Intent intent = new Intent(GeneralActivity.this, SpeciesClickActivity.class);
-                            try {
-                                intent.putExtra("fieldId", mList.get(i).getString("id"));
-                                intent.putExtra("expType", mList.get(i).getString("expType"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-//                            intent.putExtra("userRole", userRole);
-                            startActivity(intent);
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(GeneralActivity.this);
+                            builder.setTitle("选择一个操作");
+                            // 指定下拉列表的显示数据
+                            final String[] options = {"品种规划", "查看品种规划详情"};
+                            // 设置一个下拉的列表选择项
+                            final int finalI = i;
+                            builder.setItems(options, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    String fieldId = null, expType = null;
+                                    try {
+                                        fieldId = mList.get(finalI).getString("id");
+                                        expType = mList.get(finalI).getString("expType");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    if(which == 0){    // 点击第一个操作"品种规划"时
+                                        Intent intent = new Intent(GeneralActivity.this, TableActivity.class);
+                                        intent.putExtra("status", STATUS_EDIT);
+                                        intent.putExtra("fieldId", fieldId);
+                                        intent.putExtra("expType", expType);
+//                                        intent.putExtra("userRole", userRole);
+                                        startActivity(intent);
+                                    }
+                                    else {   // 点击第二个操作"查看品种规划详情"时
+                                        Intent intent = new Intent(GeneralActivity.this, TableActivity.class);
+                                        intent.putExtra("status", STATUS_READ);
+                                        intent.putExtra("fieldId", fieldId);
+                                        intent.putExtra("expType", expType);
+//                                        intent.putExtra("userRole", userRole);
+                                        startActivity(intent);
+//                                        Toast.makeText(mContext, "删除farmlandId " + farmlandId, Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                            builder.show();
+
                         }
                     }
 
@@ -288,6 +325,7 @@ public class GeneralActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
+                break;
 //                Intent intent = new Intent(this, MainActivity.class);
 //                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                startActivity(intent);

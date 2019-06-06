@@ -2,6 +2,7 @@ package com.example.kerne.potato.temporarystorage;
 
 import android.Manifest;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -16,6 +17,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -44,6 +46,8 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+
+import javax.xml.parsers.SAXParser;
 
 import static com.example.kerne.potato.temporarystorage.RealPath.getRealPathFromUri;
 import static com.example.kerne.potato.temporarystorage.Util.getAverage;
@@ -513,7 +517,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 //        btnUpdateOffline.setOnClickListener(this);
 
         //数据存储
-        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 8);
+        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 9);
         sqLiteDatabase = dbHelper.getWritableDatabase();
 
         //如果品种信息不存在，进行初始化
@@ -898,9 +902,29 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 //                break;
             case android.R.id.home:
                 this.finish();
+                break;
 //                Intent intent = new Intent(this, MainActivity.class);
 //                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                startActivity(intent);
+            case R.id.save_off:
+                final AlertDialog.Builder saveDialog = new AlertDialog.Builder(SaveDataActivity.this);
+//                saveDialog.setIcon();
+                saveDialog.setTitle("提示");
+                saveDialog.setMessage("是否确定保存？");
+                saveDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        updateDataLocally();
+                    }
+                });
+                saveDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                saveDialog.show();
+                break;
             default:
         }
         return true;
@@ -1259,7 +1283,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     private void updateDataLocally() {
         String id = edtSpeciesID.getText().toString();
         ContentValues contentValues = assembleData();
-        sqLiteDatabase.delete("SpeciesTable", "speciesId=?", new String[]{id});
+        sqLiteDatabase.delete("SpeciesTable", "blockId=?", new String[]{blockId});
         sqLiteDatabase.insert("SpeciesTable", null, contentValues);
         contentValues.clear();
         Toast.makeText(this,

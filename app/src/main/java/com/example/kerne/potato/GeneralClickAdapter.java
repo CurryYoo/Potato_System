@@ -82,7 +82,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+//                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 //builder.setIcon(R.drawable.ic_launcher_background);
                 try {
                     farmlandId = jsonObject.getString("farmlandId");

@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_data = (Button) findViewById(R.id.btn_data);
         btn_data.setOnClickListener(this);
 
-        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 8);
+        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 9);
 
 //        btn_farmland = (Button)findViewById(R.id.btn_farmland);
 //        btn_farmland.setOnClickListener(this);
@@ -536,16 +536,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 }
                                 contentValues.put("expType", jsonObject0.getString("expType"));
                                 if(jsonObject0.get("moveX") != null){
-                                    contentValues.put("moveX", jsonObject0.getInt("moveX"));
+                                    if(!jsonObject0.getString("moveX").equals("null")){
+                                        contentValues.put("moveX", jsonObject0.getInt("moveX"));
+                                    }
                                 }
                                 if(jsonObject0.get("moveY") != null){
-                                    contentValues.put("moveY", jsonObject0.getInt("moveY"));
+                                    if(!jsonObject0.getString("moveY").equals("null")){
+                                        contentValues.put("moveY", jsonObject0.getInt("moveY"));
+                                    }
                                 }
                                 if(jsonObject0.get("moveX1") != null){
-                                    contentValues.put("moveX1", jsonObject0.getInt("moveX1"));
+                                    if(!jsonObject0.getString("moveX1").equals("null")){
+                                        contentValues.put("moveX1", jsonObject0.getInt("moveX1"));
+                                    }
                                 }
                                 if(jsonObject0.get("moveY1") != null){
-                                    contentValues.put("moveY1", jsonObject0.getInt("moveY1"));
+                                    if(!jsonObject0.getString("moveY1").equals("null")){
+                                        contentValues.put("moveY1", jsonObject0.getInt("moveY1"));
+                                    }
                                 }
                                 contentValues.put("spare1", jsonObject0.getString("spare1"));
                                 contentValues.put("spare2", jsonObject0.getString("spare2"));
@@ -561,6 +569,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             //Log.d("GeneralJsonList", mList.toString());
 
                         } catch (Exception e) {
+//                            Log.e("HttpRequest_map", "");
                             e.printStackTrace();
                         }
 
@@ -747,6 +756,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent_general = new Intent(MainActivity.this, GeneralClickActivity.class);
 //                intent_general.putExtra("userRole", userRole);
                 startActivity(intent_general);
+                dbHelper.close();
                 break;
 
             case R.id.btn_data:
@@ -764,6 +774,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         intent.putExtra("speciesId", speciesId);
                         intent.putExtra("userRole", userRole);
                         startActivity(intent);
+                        dbHelper.close();
                         myAlertInputDialog.dismiss();
                     }
                 }).setNegativeButton("取消", new View.OnClickListener() {
@@ -805,6 +816,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             db.insert(table_name, null, contentValues);
         }
         cursor.close();
+        db.close();
     }
 
     @Override

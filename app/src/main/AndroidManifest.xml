@@ -38,6 +38,7 @@
 
         <activity android:name=".SpeciesListActivity" />
         <activity android:name=".TestActivity"></activity>
+        <activity android:name=".complextable.TableActivity" />
     </application>
 
 </manifest>
