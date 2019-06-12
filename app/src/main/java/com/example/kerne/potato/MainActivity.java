@@ -17,7 +17,6 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.kerne.potato.temporarystorage.SaveDataActivity;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
 import com.facebook.stetho.Stetho;
 import com.google.gson.Gson;
@@ -54,12 +53,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //用户角色字段
     String userRole = "farmer";
 
+    private static final int BIGFARMLIST_OK = 0;
     private static final int FARMLIST_OK = 1;
     private static final int EXPERIMENTFIELD_OK = 2;
     private static final int SPECIESLIST_OK = 3;
 
     private int downloadSuccess_Num = 0;
-    private int request_Num = 0;
+    private int request_Num = 4;
     private int uploadSuccess_Num = 0;
 
     private String Fid[] = new String[5000];
@@ -68,11 +68,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void handleMessage(Message msg){
             switch (msg.what){
+                case BIGFARMLIST_OK:
+                    downloadSuccess_Num++;
+                    Log.d("num0", "" + downloadSuccess_Num);
+
+                    if(downloadSuccess_Num == request_Num){
+                        Log.d("download0", "ok");
+                        Toast.makeText(MainActivity.this, "下载成功!", Toast.LENGTH_SHORT).show();
+                        downloadSuccess_Num = 0;
+                    }
+                    break;
                 case FARMLIST_OK:
                     downloadSuccess_Num++;
                     Log.d("num1", "" + downloadSuccess_Num);
 
-                    if(downloadSuccess_Num == 3){
+                    if(downloadSuccess_Num == request_Num){
                         Log.d("download1", "ok");
                         Toast.makeText(MainActivity.this, "下载成功!", Toast.LENGTH_SHORT).show();
                         downloadSuccess_Num = 0;
@@ -81,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case EXPERIMENTFIELD_OK:
                     downloadSuccess_Num++;
                     Log.d("num2", "" + downloadSuccess_Num);
-                    if(downloadSuccess_Num == 3){
+                    if(downloadSuccess_Num == request_Num){
                         Log.d("download2", "ok");
                         Toast.makeText(MainActivity.this, "下载成功!", Toast.LENGTH_SHORT).show();
                         downloadSuccess_Num = 0;
@@ -90,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case SPECIESLIST_OK:
                     downloadSuccess_Num++;
                     Log.d("num3", "" + downloadSuccess_Num);
-                    if(downloadSuccess_Num == 3){
+                    if(downloadSuccess_Num == request_Num){
                         Log.d("download3", "ok");
                         Toast.makeText(MainActivity.this, "下载成功!", Toast.LENGTH_LONG).show();
                         downloadSuccess_Num = 0;
@@ -475,7 +485,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_download:
                 Toast.makeText(MainActivity.this, "开始下载数据……", Toast.LENGTH_SHORT).show();
 
-                HttpRequest.HttpRequest_general(null, MainActivity.this, new HttpRequest.HttpCallback() {
+                HttpRequest.HttpRequest_bigfarm(null, MainActivity.this, new HttpRequest.HttpCallback() {
+                    @Override
+                    public void onSuccess(JSONObject result) {
+                        try {
+                            JSONArray rows = result.getJSONArray("rows");
+                            int total = result.getInt("total");
+                            JSONObject jsonObject0 = new JSONObject();
+                            ContentValues contentValues = new ContentValues();
+                            for (int i = 0; i < total; i++){
+                                jsonObject0 = rows.getJSONObject(i);
+
+                                contentValues.put("bigfarmId", jsonObject0.getString("id"));
+                                contentValues.put("name", jsonObject0.getString("name"));
+                                contentValues.put("description", jsonObject0.getString("description"));
+                                contentValues.put("img", jsonObject0.getString("img"));
+                                if (jsonObject0.get("year") != null) {
+                                    contentValues.put("year", jsonObject0.getInt("year"));
+                                }
+                                updateSqlite("BigfarmList", "bigfarmId", contentValues);
+                                contentValues.clear();
+                            }
+
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                        Message msg = new Message();
+                        msg.what = BIGFARMLIST_OK;
+                        uiHandler.sendMessage(msg);
+                    }
+                });
+
+                HttpRequest.HttpRequest_farm(null, MainActivity.this, new HttpRequest.HttpCallback() {
                     @Override
                     public void onSuccess(JSONObject result) { //获取FarmList信息
                         try {
@@ -495,13 +537,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 }
                                 contentValues.put("name", jsonObject0.getString("name"));
                                 if(jsonObject0.get("length") != null){
-                                    contentValues.put("length", jsonObject0.getString("length"));
+                                    contentValues.put("length", jsonObject0.getInt("length"));
                                 }
                                 if(jsonObject0.get("width") != null){
-                                    contentValues.put("width", jsonObject0.getString("width"));
+                                    contentValues.put("width", jsonObject0.getInt("width"));
                                 }
-                                contentValues.put("spare1", jsonObject0.getString("spare1"));
-                                contentValues.put("spare2", jsonObject0.getString("spare2"));
+                                contentValues.put("type", jsonObject0.getString("type"));
+                                contentValues.put("bigfarmId", jsonObject0.getString("bigfarmId"));
                                 updateSqlite("FarmList", "farmlandId", contentValues); //缓存数据到本地sqlite
                                 contentValues.clear();
                             }
@@ -528,6 +570,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 jsonObject0 = rows.getJSONObject(i);
 
                                 contentValues.put("id", jsonObject0.getString("id"));
+                                contentValues.put("name", jsonObject0.getString("name"));
                                 if(jsonObject0.getBoolean("deleted")){
                                     contentValues.put("deleted", "true");
                                 }
@@ -555,14 +598,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         contentValues.put("moveY1", jsonObject0.getInt("moveY1"));
                                     }
                                 }
-                                contentValues.put("spare1", jsonObject0.getString("spare1"));
-                                contentValues.put("spare2", jsonObject0.getString("spare2"));
                                 contentValues.put("num", jsonObject0.getString("num"));
                                 contentValues.put("color", jsonObject0.getString("color"));
                                 contentValues.put("farmlandId", jsonObject0.getString("farmlandId"));
-                                if(jsonObject0.get("year") != null){
-                                    contentValues.put("year", jsonObject0.getInt("year"));
+                                if(jsonObject0.get("rows") != null){
+                                    contentValues.put("rows", jsonObject0.getInt("rows"));
                                 }
+                                contentValues.put("speciesList", jsonObject0.getString("speciesList"));
                                 updateSqlite("ExperimentField", "id", contentValues); //缓存数据到本地sqlite
                                 contentValues.clear();
                             }
@@ -591,11 +633,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             for(int i = 0; i < total; i++){
                                 jsonObject0 = rows.getJSONObject(i);
 
-                                contentValues.put("blockId", jsonObject0.getString("blockId"));
+                                contentValues.put("blockId", jsonObject0.getString("id"));
                                 contentValues.put("fieldId", jsonObject0.getString("fieldId"));
                                 contentValues.put("speciesId", jsonObject0.getString("speciesId"));
-                                contentValues.put("x", jsonObject0.getString("x"));
-                                contentValues.put("y", jsonObject0.getString("y"));
+
+                                if(jsonObject0.get("x") != null){
+                                    if(!jsonObject0.getString("x").equals("null")){
+                                        contentValues.put("x", jsonObject0.getInt("x"));
+                                    }
+                                }
+                                if(jsonObject0.get("y") != null){
+                                    if(!jsonObject0.getString("y").equals("null")){
+                                        contentValues.put("y", jsonObject0.getInt("y"));
+                                    }
+                                }
                                 updateSqlite("SpeciesList", "blockId", contentValues); //缓存数据到本地sqlite
                                 contentValues.clear();
                             }
@@ -614,7 +665,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                new Thread(){
 //                    @Override
 //                    public void run(){
-//                        HttpRequest.HttpRequest_general(null, MainActivity.this, new HttpRequest.HttpCallback() {
+//                        HttpRequest.HttpRequest_farm(null, MainActivity.this, new HttpRequest.HttpCallback() {
 //                            @Override
 //                            public void onSuccess(JSONObject result) { //获取FarmList信息
 //                                try {
@@ -753,7 +804,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.btn_general:
-                Intent intent_general = new Intent(MainActivity.this, GeneralClickActivity.class);
+                Intent intent_general = new Intent(MainActivity.this, BigfarmClickActivity.class);
 //                intent_general.putExtra("userRole", userRole);
                 startActivity(intent_general);
                 dbHelper.close();

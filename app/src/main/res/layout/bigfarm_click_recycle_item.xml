@@ -22,10 +22,10 @@
         tools:text="名称" />
 
     <TextView
-        android:id="@+id/tv_type"
+        android:id="@+id/tv_year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        tools:text="类型" />
+        tools:text="年份" />
 
 </LinearLayout>

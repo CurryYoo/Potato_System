@@ -37,8 +37,9 @@
         </provider>
 
         <activity android:name=".SpeciesListActivity" />
-        <activity android:name=".TestActivity"></activity>
+        <activity android:name=".TestActivity" />
         <activity android:name=".complextable.TableActivity" />
+        <activity android:name=".BigfarmClickActivity"></activity>
     </application>
 
 </manifest>

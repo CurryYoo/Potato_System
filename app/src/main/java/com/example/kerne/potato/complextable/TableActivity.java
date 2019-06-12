@@ -114,14 +114,14 @@ public class TableActivity extends AppCompatActivity {
         if(cursor.getCount() > 0){
             cursor.moveToFirst();
             for(int i = 0; i < cursor.getCount(); i++){
-                int NumofColumns = cursor.getInt(cursor.getColumnIndex("NumofColumns"));
-                String ContentofRow = cursor.getString(cursor.getColumnIndex("ContentofRow"));
-                Log.d("str__", NumofColumns + "," + ContentofRow);
+                int NumofRows = cursor.getInt(cursor.getColumnIndex("NumofRows"));
+                String ContentofColumn = cursor.getString(cursor.getColumnIndex("ContentofColumn"));
+                Log.d("str__", NumofRows + "," + ContentofColumn);
                 JSONObject jsonObject0 = null;
                 try {
-                    jsonObject0 = new JSONObject(ContentofRow);
-                    for(int j = 0; j < NumofColumns; j++){
-                        str[i][j] = jsonObject0.getString("column_" + j);
+                    jsonObject0 = new JSONObject(ContentofColumn);
+                    for(int j = 0; j < NumofRows; j++){
+                        str[j][i] = jsonObject0.getString("row_" + j);
                     }
 
                 } catch (JSONException e) {
@@ -134,7 +134,7 @@ public class TableActivity extends AppCompatActivity {
         }
         else {
             List<ContentValues> contentValuesList = assembleData(str, STATUS_INIT);
-            for(int i = 0; i < maxRows; i++){
+            for(int i = 0; i < maxColumns; i++){
                 db.insert("SpeciesSequence", null, contentValuesList.get(i));
             }
             Log.d("str_", "111");
@@ -168,10 +168,10 @@ public class TableActivity extends AppCompatActivity {
                 //保存操作 sqlite
                 List<ContentValues> contentValuesList = assembleData(str, STATUS_UPDATE);
                 db.delete("SpeciesSequence", "fieldId=?", new String[]{fieldId});
-                for(int i = 0; i < maxRows; i++){
+                for(int i = 0; i < maxColumns; i++){
                     db.insert("SpeciesSequence", null, contentValuesList.get(i));
                 }
-                Log.d("str_content", contentValuesList.get(0).getAsString("ContentofRow") + "");
+                Log.d("str_content", contentValuesList.get(0).getAsString("ContentofColumn") + "");
                 Toast.makeText(TableActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
                 break;
             default:
@@ -186,30 +186,30 @@ public class TableActivity extends AppCompatActivity {
     private List<ContentValues> assembleData(String[][] str, int status){
         Log.d("str_save", str[0][0] + "");
         List<ContentValues> contentValuesList = new ArrayList<>();
-        for(int i = 0; i < maxRows; i++){
+        for(int i = 0; i < maxColumns; i++){
             ContentValues contentValues = new ContentValues();
             contentValues.put("fieldId", fieldId);
-            contentValues.put("NumofColumns", maxColumns);
+            contentValues.put("NumofRows", maxRows);
             if(status == STATUS_INIT){
-                contentValues.put("ContentofRow", "");
+                contentValues.put("ContentofColumn", "");
             }
             else if(status == STATUS_UPDATE){
                 //将一行的所有数据存为json格式
                 JSONObject jsonObject = new JSONObject();
-                for (int j = 0; j < maxColumns; j++){
+                for (int j = 0; j < maxRows; j++){
                     try {
-                        if(str[i][j] != null){
-                            jsonObject.put("column_" + j, str[i][j]);
+                        if(str[j][i] != null){
+                            jsonObject.put("row_" + j, str[j][i]);
                         }
                         else {
-                            jsonObject.put("column_" + j, "");
+                            jsonObject.put("row_" + j, "");
                         }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                contentValues.put("ContentofRow", jsonObject.toString());
+                contentValues.put("ContentofColumn", jsonObject.toString());
             }
             contentValuesList.add(contentValues);
         }
