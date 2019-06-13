@@ -40,8 +40,8 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
 
     private List<JSONObject> mList = new ArrayList<>();
 
-    private String name = null;
-    private String userRole;
+    private String bigfarmId = null;
+    private String img;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,7 +50,8 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.general_click_activity);
 
-//        userRole = getIntent().getStringExtra("userRole");
+        bigfarmId = getIntent().getStringExtra("bigfarmId");
+        img = getIntent().getStringExtra("img");
 
         initData();
 
@@ -119,15 +120,18 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
         SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 9);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.query("FarmList", null, null, null, null, null, null);
+        Cursor cursor = db.query("FarmList", null, "bigfarmId=?", new String[]{bigfarmId}, null, null, null);
         if(cursor.moveToFirst()){
             do {
                 JSONObject jsonObject0 = new JSONObject();
                 try {
                     jsonObject0.put("farmlandId", cursor.getString(cursor.getColumnIndex("farmlandId")));
                     jsonObject0.put("name", cursor.getString(cursor.getColumnIndex("name")));
-                    jsonObject0.put("length", cursor.getString(cursor.getColumnIndex("length")));
-                    jsonObject0.put("width", cursor.getString(cursor.getColumnIndex("width")));
+                    jsonObject0.put("length", cursor.getInt(cursor.getColumnIndex("length")));
+                    jsonObject0.put("width", cursor.getInt(cursor.getColumnIndex("width")));
+                    jsonObject0.put("type", cursor.getString(cursor.getColumnIndex("type")));
+                    jsonObject0.put("bigfarmId", cursor.getString(cursor.getColumnIndex("bigfarmId")));
+
 //                    jsonObject0.put("userRole", userRole);
                     mList.add(jsonObject0);
                 } catch (JSONException e) {
@@ -148,7 +152,7 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
 //        new Thread(){
 //            @Override
 //            public void run(){
-//                HttpRequest.HttpRequest_general(name, GeneralClickActivity.this, new HttpRequest.HttpCallback() {
+//                HttpRequest.HttpRequest_farm(name, GeneralClickActivity.this, new HttpRequest.HttpCallback() {
 //                    @Override
 //                    public void onSuccess(JSONObject result) {
 //                        try {

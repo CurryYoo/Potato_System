@@ -31,8 +31,55 @@ public class HttpRequest {
     private static String picUrl = "http://120.78.130.251:9527/"; //图片服务器ip
     private static RequestQueue requestQueue;
 
+    public static void HttpRequest_bigfarm(final String name, Context context, final HttpCallback callback) {
+        requestQueue = Volley.newRequestQueue(context);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "getAllBigfarm", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("Bigfarm_Response", response);
+                try {
+                    callback.onSuccess(new JSONObject(response));
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Bigfarm_Error", error.getMessage(), error);
+            }
+        });
+
+        JSONObject jsonObject = new JSONObject();
+        if(name != null){
+            try {
+                jsonObject.put("name", name); //POST数据
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        Log.d("POST_bigfarm", jsonObject.toString());
+
+        //volley进行网络传输
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "bigfarm/getAllBigfarm", jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) { //接收数据
+                Log.d("TAG_response", response.toString());
+                callback.onSuccess(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("TAG_error_bigfarm", error.getMessage(), error);
+            }
+        });
+
+        requestQueue.add(stringRequest);
+    }
+
     //获取试验田列表
-    public static void HttpRequest_general(final String name, Context context, final HttpCallback callback) {
+    public static void HttpRequest_farm(final String name, Context context, final HttpCallback callback) {
         requestQueue = Volley.newRequestQueue(context);
 
         JSONObject jsonObject = new JSONObject();
@@ -43,19 +90,19 @@ public class HttpRequest {
                 e.printStackTrace();
             }
         }
-        Log.d("POST_general", jsonObject.toString());
+        Log.d("POST_farm_name", jsonObject.toString());
 
         //volley进行网络传输
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "farm/getFarmList", jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) { //接收数据
-                Log.d("TAG_response", response.toString());
+                Log.d("TAG_farm", response.toString());
                 callback.onSuccess(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("TAG_error", error.getMessage(), error);
+                Log.e("TAG_error_farm", error.getMessage(), error);
             }
         });
 

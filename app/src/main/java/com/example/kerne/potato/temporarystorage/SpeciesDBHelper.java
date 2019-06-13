@@ -94,42 +94,49 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "primary key(speciesId, blockId)"  //speciesId和blockId组成复合主键
             + ")";
 
+    public static final String CREATE_BIGFARMLIST = "create table BigfarmList ("
+            + "bigfarmId text primary key,"
+            + "name text,"
+            + "description text,"
+            + "img text,"
+            + "year integer)";
+
     public static final String CREATE_FARMLIST = "create table FarmList ("
             + "farmlandId text primary key,"
             + "deleted text,"
             + "name text,"
             + "length integer,"
             + "width integer,"
-            + "spare1 text,"
-            + "spare2 text)";
+            + "type text,"
+            + "bigfarmId text)";
 
     public static final String CREATE_EXPERIMENTFIELD = "create table ExperimentField ("
             + "id text primary key,"
+            + "name text,"
             + "deleted text,"
             + "expType text,"
             + "moveX integer,"
             + "moveY integer,"
             + "moveX1 integer,"
             + "moveY1 integer,"
-            + "spare1 text,"
-            + "spare2 text,"
             + "num text,"
             + "color text,"
             + "farmlandId text,"
-            + "year integer)";
+            + "rows integer,"
+            + "speciesList text)";
 
     public static final String CREATE_SPECIESLIST = "create table SpeciesList ("
             + "blockId text primary key,"
             + "fieldId text,"
             + "speciesId text,"
-            + "x text,"
-            + "y text)";
+            + "x integer,"
+            + "y integer)";
 
     public static final String CREATE_SPECIES_SEQUENCE = "create table SpeciesSequence ("
             + "id integer primary key autoincrement,"
             + "fieldId text,"
-            + "NumofColumns integer,"
-            + "ContentofRow text)";
+            + "NumofRows integer,"
+            + "ContentofColumn text)";
 
     public SpeciesDBHelper(Context context, String name,
                            SQLiteDatabase.CursorFactory factory, int version) {
@@ -142,6 +149,7 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
 //        String sql_prepare = "drop table SpeciesTable if exists(select * from sys.databases where name='SpeciesTable')";
 //        db.execSQL(sql_prepare);
         db.execSQL(CREATE_SPECIES_TABLE);
+        db.execSQL(CREATE_BIGFARMLIST);
         db.execSQL(CREATE_FARMLIST);
         db.execSQL(CREATE_EXPERIMENTFIELD);
         db.execSQL(CREATE_SPECIESLIST);

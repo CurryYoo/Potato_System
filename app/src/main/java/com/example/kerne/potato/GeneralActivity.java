@@ -45,6 +45,8 @@ public class GeneralActivity extends AppCompatActivity {
     private Canvas canvas;
     private Paint paint;
     private String farmlandId = null;
+    private int length;
+    private int width;
     private int year;
     private String userRole;
     private int flag = 0;
@@ -88,7 +90,9 @@ public class GeneralActivity extends AppCompatActivity {
 
         //获取farmlandId、year
         farmlandId = getIntent().getStringExtra("farmlandId");
-        year = getIntent().getIntExtra("year", 0);
+        length = getIntent().getIntExtra("length", 0);
+        width = getIntent().getIntExtra("width", 0);
+//        year = getIntent().getIntExtra("year", 0);
 
         //获取权限角色
 //        userRole = getIntent().getStringExtra("userRole");
@@ -142,15 +146,18 @@ public class GeneralActivity extends AppCompatActivity {
         SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 9);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String sql = "select * from ExperimentField where (farmlandId,year) in (('" + farmlandId + "',"+ year +"))";
+//        String sql = "select * from ExperimentField where (farmlandId,year) in (('" + farmlandId + "',"+ year +"))";
 //        String sql = "select * from ExperimentField where farmlandId='" + farmlandId + "'";
-        Cursor cursor = db.rawQuery(sql, null);
+//        Cursor cursor = db.rawQuery(sql, null);
+        Cursor cursor = db.query("ExperimentField", null, "farmlandId=?", new String[]{farmlandId}, null, null, null);
+
 //        Cursor cursor = db.query("ExperimentField", null, "farmlandId=?", new String[]{farmlandId}, null, null, null);
         if(cursor.moveToFirst()){
             do {
                 JSONObject jsonObject = new JSONObject();
                 try {
                     jsonObject.put("id", cursor.getString(cursor.getColumnIndex("id")));
+                    jsonObject.put("name", cursor.getString(cursor.getColumnIndex("name")));
                     jsonObject.put("deleted", cursor.getString(cursor.getColumnIndex("deleted")));
                     jsonObject.put("expType", cursor.getString(cursor.getColumnIndex("expType")));
                     jsonObject.put("moveX", cursor.getString(cursor.getColumnIndex("moveX")));
@@ -160,7 +167,8 @@ public class GeneralActivity extends AppCompatActivity {
                     jsonObject.put("num", cursor.getString(cursor.getColumnIndex("num")));
                     jsonObject.put("color", cursor.getString(cursor.getColumnIndex("color")));
                     jsonObject.put("farmlandId", cursor.getString(cursor.getColumnIndex("farmlandId")));
-                    jsonObject.put("year", cursor.getString(cursor.getColumnIndex("year")));
+                    jsonObject.put("rows", cursor.getInt(cursor.getColumnIndex("rows")));
+                    jsonObject.put("speciesList", cursor.getString(cursor.getColumnIndex("speciesList")));
                     mList.add(jsonObject);
                 } catch (JSONException e) {
                     e.printStackTrace();
