@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button btn_general;
     Button btn_download;
     Button btn_data;
+    Button btn_mutlilevel;
 //    Button btn_farmland;
 //    Button btn_shot;
 //    Button btn_field;
@@ -126,6 +127,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         btn_general = (Button) findViewById(R.id.btn_general);
         btn_general.setOnClickListener(this);
+
+        btn_mutlilevel=findViewById(R.id.btn_mutlilevel);
+        btn_mutlilevel.setOnClickListener(this);
 
         btn_data = (Button) findViewById(R.id.btn_data);
         btn_data.setOnClickListener(this);
@@ -810,6 +814,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dbHelper.close();
                 break;
 
+            case R.id.btn_mutlilevel:
+                Intent intent_mutlilevel=new Intent(MainActivity.this,MultiLevelActivity.class);
+                startActivity(intent_mutlilevel);
+                break;
             case R.id.btn_data:
                 final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(MainActivity.this).builder()
                         .setTitle("请输入品种编号：")

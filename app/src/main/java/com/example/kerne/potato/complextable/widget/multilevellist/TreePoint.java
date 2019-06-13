@@ -12,6 +12,10 @@ public class TreePoint {
     private int DISPLAY_ORDER; // 1       //同一个级别的显示顺序
     private boolean isExpand = false;  //是否展开了
     private boolean isSelected = false; //是否选中了
+    private String farmlandID;
+    private int length;
+    private int width;
+    private String type;
 
 
     public TreePoint(String ID, String NNAME, String PARENTID, String ISLEAF, int DISPLAY_ORDER) {
@@ -20,6 +24,38 @@ public class TreePoint {
         this.PARENTID = PARENTID;
         this.ISLEAF = ISLEAF;
         this.DISPLAY_ORDER = DISPLAY_ORDER;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public String getFarmlandID() {
+        return farmlandID;
+    }
+
+    public void setFarmlandID(String farmlandID) {
+        this.farmlandID = farmlandID;
     }
 
     public String getID() {

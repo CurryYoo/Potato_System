@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.annotation.IntDef;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kerne.potato.GeneralActivity;
+import com.example.kerne.potato.GeneralClickActivity;
 import com.example.kerne.potato.MainActivity;
 import com.example.kerne.potato.R;
+import com.example.kerne.potato.complextable.TableActivity;
 
 import java.util.HashMap;
 import java.util.List;
@@ -211,9 +214,19 @@ public class TreeAdapter extends BaseAdapter {
         TreePoint treePoint = (TreePoint) getItem(position);
         if ("1".equals(treePoint.getISLEAF())) {   //点击叶子节点
             //处理回填
-            Intent intent=new Intent(mActivity, MainActivity.class);
+            Intent intent=new Intent();
+            if (treePoint.getType().equals("common")){
+                intent = new Intent(mcontext, GeneralActivity.class);
+            }
+            else {
+                intent = new Intent(mcontext, TableActivity.class);
+            }
+            intent.putExtra("farmlandId", treePoint.getFarmlandID());
+            intent.putExtra("length", treePoint.getLength());
+            intent.putExtra("width", treePoint.getWidth());
+            intent.putExtra("type", treePoint.getType());
             mcontext.startActivity(intent);
-            Toast.makeText(mcontext, getSubmitResult(treePoint), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mcontext, treePoint.getFarmlandID(), Toast.LENGTH_SHORT).show();
         } else {  //如果点击的是父类
             if (treePoint.isExpand()) {
                 for (TreePoint tempPoint : pointList) {
