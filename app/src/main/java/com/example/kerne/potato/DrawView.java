@@ -31,8 +31,10 @@ public class DrawView extends View {
     private int width;
     private int height;
 
-    private static final int mapWidth = 2099; //原种植图的宽度
-    private static final int mapHeight = 2414; //原种植图的高度
+    private int mapWidth = 2099; //原种植图的宽度
+    private int mapHeight = 2414; //原种植图的高度
+    private double line_spacing = 0.65; //行距
+    private double row_spacing = 0.3; //株距
     private static final float multiple_X = 0.005f; //边框适应屏幕的左上角坐标需要乘以的倍数
     private static final float multiple_X1 = 0.92f; //边框适应屏幕的右上角坐标需要乘以的倍数
     private static final float multiple_Y = 0.004f; //边框适应屏幕的右上角坐标需要乘以的倍数
@@ -43,9 +45,12 @@ public class DrawView extends View {
 
     private List<JSONObject> mList = new ArrayList<>();
 
-    public DrawView(Context context, List<JSONObject> mList) {
+    public DrawView(Context context, List<JSONObject> mList, int len, int wid) {
         super(context);
         this.mList = mList;
+
+        this.mapWidth = Double.valueOf(wid / row_spacing / 5 * 50).intValue();
+        this.mapHeight = Double.valueOf(len / line_spacing * 20).intValue();
 
         WindowManager wm = (WindowManager) getContext()
                 .getSystemService(Context.WINDOW_SERVICE);
@@ -68,7 +73,6 @@ public class DrawView extends View {
         float adaptRateWidth = frameWidth / mapWidth;
         float adaptRateHeight = frameHeight / mapHeight;
 
-
         /*
          * 方法 说明 drawRect 绘制矩形 drawCircle 绘制圆形 drawOval 绘制椭圆 drawPath 绘制任意多边形
          * drawLine 绘制直线 drawPoint 绘制点
@@ -88,6 +92,7 @@ public class DrawView extends View {
         //画种植图
         try {
             for(int i = 0; i < mList.size(); i++){
+                Log.d("mlist_color", mList.get(i).toString());
                 p.setColor(Color.parseColor(mList.get(i).getString("color")));
                 p.setStyle(Paint.Style.FILL);
                 coord[i][0] = mList.get(i).getInt("moveX") * adaptRateWidth + frameX;  //种植块的左上角X坐标

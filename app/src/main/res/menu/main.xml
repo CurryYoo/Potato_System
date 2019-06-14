@@ -6,8 +6,10 @@
     <!--<item-->
         <!--android:id="@+id/save_offline"-->
         <!--android:title="离线存储" />-->
-
+    <item
+        android:id="@+id/list_commit"
+        android:title="上传品种位置规划数据" />
     <item
         android:id="@+id/commit"
-        android:title="提交"/>
+        android:title="上传品种采集数据" />
 </menu>

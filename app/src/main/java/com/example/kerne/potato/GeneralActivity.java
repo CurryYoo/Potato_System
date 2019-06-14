@@ -45,11 +45,14 @@ public class GeneralActivity extends AppCompatActivity {
     private Canvas canvas;
     private Paint paint;
     private String farmlandId = null;
-    private int length;
-    private int width;
+    private int length;  //试验田的长
+    private int width;  //试验田的宽
     private int year;
     private String userRole;
     private int flag = 0;
+
+    private SpeciesDBHelper dbHelper;
+    private SQLiteDatabase db;
 
     private List<JSONObject> mList = new ArrayList<>();
     private JSONObject jsonObject[] = new JSONObject[100];
@@ -63,7 +66,7 @@ public class GeneralActivity extends AppCompatActivity {
                         Log.d("Data-----", mList.get(0).toString());
                         flag = 1;
 
-                        final DrawView view=new DrawView(GeneralActivity.this, mList);
+                        final DrawView view=new DrawView(GeneralActivity.this, mList, length, width);
 
                         view.setMinimumHeight(500);
                         view.setMinimumWidth(300);
@@ -96,6 +99,9 @@ public class GeneralActivity extends AppCompatActivity {
 
         //获取权限角色
 //        userRole = getIntent().getStringExtra("userRole");
+
+        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 9);
+        db = dbHelper.getReadableDatabase();
 
         getData();
 
@@ -143,12 +149,6 @@ public class GeneralActivity extends AppCompatActivity {
 
     private void getData(){
         //获取分块的坐标信息
-        SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 9);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-//        String sql = "select * from ExperimentField where (farmlandId,year) in (('" + farmlandId + "',"+ year +"))";
-//        String sql = "select * from ExperimentField where farmlandId='" + farmlandId + "'";
-//        Cursor cursor = db.rawQuery(sql, null);
         Cursor cursor = db.query("ExperimentField", null, "farmlandId=?", new String[]{farmlandId}, null, null, null);
 
 //        Cursor cursor = db.query("ExperimentField", null, "farmlandId=?", new String[]{farmlandId}, null, null, null);
@@ -180,8 +180,6 @@ public class GeneralActivity extends AppCompatActivity {
             Toast.makeText(GeneralActivity.this, "ExperimentField null", Toast.LENGTH_SHORT).show();
         }
         cursor.close();
-        db.close();
-        dbHelper.close();
         Log.d("mList.toString", mList.toString());
 
         Message msg = new Message();
@@ -282,15 +280,35 @@ public class GeneralActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String fieldId = null, expType = null;
+                                    int columns = 0, rows = 0;
+                                    JSONObject jsonObject = new JSONObject();
+                                    JSONArray jsonArray = new JSONArray();
                                     try {
                                         fieldId = mList.get(finalI).getString("id");
                                         expType = mList.get(finalI).getString("expType");
+                                        Cursor cursor = db.query("ExperimentField", null, "farmlandId=? and expType=?",
+                                                new String[]{farmlandId, expType}, null, null, null);
+                                        columns = cursor.getCount();
+                                        if (columns >0){
+                                            cursor.moveToFirst();
+                                            for (int i = 0; i < columns; i++){
+                                                jsonArray.put(i, cursor.getString(cursor.getColumnIndex("id")));
+                                                int num = cursor.getInt(cursor.getColumnIndex("num"));
+                                                rows = (num > rows ? num : rows);
+                                                cursor.moveToNext();
+                                            }
+                                        }
+                                        jsonObject.put("columns", columns);
+                                        jsonObject.put("rows", rows);
+                                        jsonObject.put("ids", jsonArray);
+                                        cursor.close();
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
                                     if(which == 0){    // 点击第一个操作"品种规划"时
                                         Intent intent = new Intent(GeneralActivity.this, TableActivity.class);
                                         intent.putExtra("status", STATUS_EDIT);
+                                        intent.putExtra("fields_json", jsonObject.toString());
                                         intent.putExtra("fieldId", fieldId);
                                         intent.putExtra("expType", expType);
 //                                        intent.putExtra("userRole", userRole);
@@ -299,6 +317,7 @@ public class GeneralActivity extends AppCompatActivity {
                                     else {   // 点击第二个操作"查看品种规划详情"时
                                         Intent intent = new Intent(GeneralActivity.this, TableActivity.class);
                                         intent.putExtra("status", STATUS_READ);
+                                        intent.putExtra("fields_json", jsonObject.toString());
                                         intent.putExtra("fieldId", fieldId);
                                         intent.putExtra("expType", expType);
 //                                        intent.putExtra("userRole", userRole);

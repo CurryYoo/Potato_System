@@ -9,10 +9,12 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -225,7 +227,6 @@ public class HttpRequest {
                 return headers;
             }
         };
-        Log.d("TAG_request", jsonObjectRequest.toString());
 
         requestQueue.add(jsonObjectRequest);
     }
@@ -271,6 +272,77 @@ public class HttpRequest {
 
         //mSingleQueue.add(request);
         requestQueue.add(request);
+    }
+
+    //上传品种位置规划数据
+    public static void HttpRequest_SpeciesList(final JSONArray jsonArray, Context context, final HttpCallback callback) {
+        requestQueue = Volley.newRequestQueue(context);
+
+//        StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "/Block/putSpeciesPositionToBlock", new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                Log.d("species_response", response);
+//                try {
+//                    callback.onSuccess(new JSONObject(response));
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.e("species_error", error.getMessage(), error);
+//            }
+//        }) {
+////            @Override
+////            protected Map<String, String> getParams() throws AuthFailureError {
+////                // 请求参数
+////                Map<String, String> map = new HashMap<String, String>();
+////                //new 一个Map  参数放到Map中
+////                map.put("blockList", fieldId);
+////                return map;
+////            }
+//
+//            @Override
+//            public byte[] getBody() {
+//                return jsonArray.toString();
+//            }
+//        };
+
+//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "/Block/putSpeciesPositionToBlock", jsonObject, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                Log.d("SpeciesList_response", response.toString());
+//                callback.onSuccess(response);
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.e("SpeciesList_error", error.getMessage(), error);
+//            }
+//        }) {
+//            @Override
+//            public Map<String, String> getHeaders() {
+//                HashMap<String, String> headers = new HashMap<String, String>();
+//                headers.put("Accept", "application/json");
+//                headers.put("Content-Type", "application/json; charset=UTF-8");
+//                return headers;
+//            }
+//        };
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url + "/Block/putSpeciesPositionToBlock", jsonArray, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                Log.d("SpeciesList_response", response.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                Log.e("SpeciesList_error", error.getMessage(), error);
+            }
+        });
+
+        requestQueue.add(jsonArrayRequest);
     }
 
     public interface HttpCallback {

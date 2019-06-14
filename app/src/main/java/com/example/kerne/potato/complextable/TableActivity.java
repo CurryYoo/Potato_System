@@ -39,6 +39,7 @@ import com.example.kerne.potato.complextable.widget.pullrefresh.AbPullToRefreshV
 import com.example.kerne.potato.temporarystorage.SaveDataActivity;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xmlpull.v1.XmlSerializer;
@@ -78,8 +79,10 @@ public class TableActivity extends AppCompatActivity {
     public static final int STATUS_INIT = 2;
     public static final int STATUS_UPDATE = 3;
     private int status = STATUS_EDIT;
+    private JSONObject fields_json;
     private String fieldId;
     private String expType;
+    private JSONArray ids;
 
     private String[][] str = null;
 
@@ -97,50 +100,84 @@ public class TableActivity extends AppCompatActivity {
         //在Action bar显示返回键
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        maxRows = 40;
-        maxColumns = 3;
-
-        str = new String[maxRows][maxColumns];
-
         status = getIntent().getIntExtra("status", STATUS_EDIT);
+        try {
+            fields_json = new JSONObject(getIntent().getStringExtra("fields_json"));
+            maxRows = fields_json.getInt("rows");
+            maxColumns = fields_json.getInt("columns");
+            ids = fields_json.getJSONArray("ids");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         fieldId = getIntent().getStringExtra("fieldId");
         expType = getIntent().getStringExtra("expType");
+
+        str = new String[maxRows][maxColumns];
 
         dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 9);
         db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.query("SpeciesSequence", null, "fieldId=?",
-                new String[]{fieldId}, null, null, "id");
-        if(cursor.getCount() > 0){
-            cursor.moveToFirst();
-            for(int i = 0; i < cursor.getCount(); i++){
-                int NumofRows = cursor.getInt(cursor.getColumnIndex("NumofRows"));
-                String ContentofColumn = cursor.getString(cursor.getColumnIndex("ContentofColumn"));
-                Log.d("str__", NumofRows + "," + ContentofColumn);
-                JSONObject jsonObject0 = null;
-                try {
-                    jsonObject0 = new JSONObject(ContentofColumn);
-                    for(int j = 0; j < NumofRows; j++){
-                        str[j][i] = jsonObject0.getString("row_" + j);
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+        String sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
+                "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
+                "' order by ExperimentField.moveX";
+        Cursor cursor0 = db.rawQuery(sql, null);
+        if (cursor0.moveToFirst()) {
+            String fieldId = "";
+            int x = 0, y = 0;
+            int columns = 0;
+            fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
+            do {
+                if (!fieldId.equals(cursor0.getString(cursor0.getColumnIndex("id")))) {
+                    columns++;
+                    fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
                 }
-
-                cursor.moveToNext();
-            }
-            Log.d("str_init", str[0][0] + " | count=" + cursor.getCount());
+                x = cursor0.getInt(cursor0.getColumnIndex("x")) + columns * 2 - 1; //从0开始
+                y = cursor0.getInt(cursor0.getColumnIndex("y")) - 1; //从0开始
+                str[y][x] = cursor0.getString(cursor0.getColumnIndex("speciesId"));
+            } while (cursor0.moveToNext());
         }
         else {
-            List<ContentValues> contentValuesList = assembleData(str, STATUS_INIT);
-            for(int i = 0; i < maxColumns; i++){
-                db.insert("SpeciesSequence", null, contentValuesList.get(i));
-            }
-            Log.d("str_", "111");
-            Toast.makeText(TableActivity.this, "创建成功", Toast.LENGTH_SHORT).show();
+//            List<ContentValues> contentValuesList = assembleData(str, STATUS_INIT);
+//            for(int i = 0; i < maxColumns; i++){
+//                db.insert("SpeciesSequence", null, contentValuesList.get(i));
+//            }
+//            Log.d("str_", "111");
+//            Toast.makeText(TableActivity.this, "创建成功", Toast.LENGTH_SHORT).show();
         }
-        cursor.close();
+        cursor0.close();
+
+//        Cursor cursor = db.query("SpeciesSequence", null, "fieldId=?",
+//                new String[]{fieldId}, null, null, "id");
+//        if(cursor.getCount() > 0){
+//            cursor.moveToFirst();
+//            for(int i = 0; i < cursor.getCount(); i++){
+//                int NumofRows = cursor.getInt(cursor.getColumnIndex("NumofRows"));
+//                String ContentofColumn = cursor.getString(cursor.getColumnIndex("ContentofColumn"));
+//                Log.d("str__", NumofRows + "," + ContentofColumn);
+//                JSONObject jsonObject0 = null;
+//                try {
+//                    jsonObject0 = new JSONObject(ContentofColumn);
+//                    for(int j = 0; j < NumofRows; j++){
+//                        str[j][i] = jsonObject0.getString("row_" + j);
+//                    }
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                cursor.moveToNext();
+//            }
+//            Log.d("str_init", str[0][0] + " | count=" + cursor.getCount());
+//        }
+//        else {
+//            List<ContentValues> contentValuesList = assembleData(str, STATUS_INIT);
+//            for(int i = 0; i < maxColumns; i++){
+//                db.insert("SpeciesSequence", null, contentValuesList.get(i));
+//            }
+//            Log.d("str_", "111");
+//            Toast.makeText(TableActivity.this, "创建成功", Toast.LENGTH_SHORT).show();
+//        }
+//        cursor.close();
 
         init();
     }
@@ -167,9 +204,11 @@ public class TableActivity extends AppCompatActivity {
             case R.id.save_off_seq:
                 //保存操作 sqlite
                 List<ContentValues> contentValuesList = assembleData(str, STATUS_UPDATE);
-                db.delete("SpeciesSequence", "fieldId=?", new String[]{fieldId});
-                for(int i = 0; i < maxColumns; i++){
-                    db.insert("SpeciesSequence", null, contentValuesList.get(i));
+                Log.d("contentvaluesList", contentValuesList.toString());
+//                db.delete("SpeciesList", "fieldId=?", new String[]{fieldId});
+                for(int i = 0; i < maxRows; i++){
+                    db.update("SpeciesList", contentValuesList.get(i), "fieldId=? and x=? and y=?", new String[]{fieldId, contentValuesList.get(i).getAsString("x"), contentValuesList.get(i).getAsString("y")});
+//                    db.insert("SpeciesList", null, contentValuesList.get(i));
                 }
                 Log.d("str_content", contentValuesList.get(0).getAsString("ContentofColumn") + "");
                 Toast.makeText(TableActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
@@ -187,32 +226,41 @@ public class TableActivity extends AppCompatActivity {
         Log.d("str_save", str[0][0] + "");
         List<ContentValues> contentValuesList = new ArrayList<>();
         for(int i = 0; i < maxColumns; i++){
-            ContentValues contentValues = new ContentValues();
-            contentValues.put("fieldId", fieldId);
-            contentValues.put("NumofRows", maxRows);
-            if(status == STATUS_INIT){
-                contentValues.put("ContentofColumn", "");
+            for (int j = 0; j < maxRows; j++) {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put("fieldId", fieldId);
+                contentValues.put("speciesId", str[j][i]);
+                contentValues.put("x", i + 1);
+                contentValues.put("y", j + 1);
+                Log.d("contentValues", contentValues.toString());
+                contentValuesList.add(contentValues);
+                Log.d("contentvaluesList0", contentValuesList.toString());
             }
-            else if(status == STATUS_UPDATE){
-                //将一行的所有数据存为json格式
-                JSONObject jsonObject = new JSONObject();
-                for (int j = 0; j < maxRows; j++){
-                    try {
-                        if(str[j][i] != null){
-                            jsonObject.put("row_" + j, str[j][i]);
-                        }
-                        else {
-                            jsonObject.put("row_" + j, "");
-                        }
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                contentValues.put("ContentofColumn", jsonObject.toString());
-            }
-            contentValuesList.add(contentValues);
+//            contentValues.put("NumofRows", maxRows);
+//            if(status == STATUS_INIT){
+//                contentValues.put("ContentofColumn", "");
+//            }
+//            else if(status == STATUS_UPDATE){
+//                //将一行的所有数据存为json格式
+//                JSONObject jsonObject = new JSONObject();
+//                for (int j = 0; j < maxRows; j++){
+//                    try {
+//                        if(str[j][i] != null){
+//                            jsonObject.put("row_" + j, str[j][i]);
+//                        }
+//                        else {
+//                            jsonObject.put("row_" + j, "");
+//                        }
+//
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                contentValues.put("ContentofColumn", jsonObject.toString());
+//            }
         }
+
         return contentValuesList;
     }
 
@@ -519,21 +567,21 @@ public class TableActivity extends AppCompatActivity {
                     }
                 }
 
-                tableMode.setText0(str[i][0] + "");//列0内容
-                tableMode.setText1(str[i][1] + "");//列1内容
-                tableMode.setText2(str[i][2] + "");//列2内容
-                tableMode.setText3(onlineSaleBean.getSaleAllOneNow() + "");
-                tableMode.setText4(onlineSaleBean.getSaleAllLast() + "");
-                tableMode.setText5(onlineSaleBean.getSaleAllOneNowLast() + "");//
-                tableMode.setText6(onlineSaleBean.getSaleAllRate() + "");//
-                tableMode.setText7(onlineSaleBean.getSaleAllOneNowRate() + "");//
-                tableMode.setText8(onlineSaleBean.getRetailSale() + "");//
-                tableMode.setText9(onlineSaleBean.getRetailSaleOneNow() + "");//
-                tableMode.setText10(onlineSaleBean.getRetailSaleLast() + "");//
-                tableMode.setText11(onlineSaleBean.getRetailSaleOneNowLast() + "");//
-                tableMode.setText12(onlineSaleBean.getRetailSaleRate() + "");//
-                tableMode.setText13(onlineSaleBean.getRetailSaleOneNowRate() + "");//
-                tableMode.setText14(onlineSaleBean.getOnlineSale() + "");//
+//                tableMode.setText0(str[i][0] + "");//列0内容
+//                tableMode.setText1(str[i][1] + "");//列1内容
+//                tableMode.setText2(str[i][2] + "");//列2内容
+//                tableMode.setText3(onlineSaleBean.getSaleAllOneNow() + "");
+//                tableMode.setText4(onlineSaleBean.getSaleAllLast() + "");
+//                tableMode.setText5(onlineSaleBean.getSaleAllOneNowLast() + "");//
+//                tableMode.setText6(onlineSaleBean.getSaleAllRate() + "");//
+//                tableMode.setText7(onlineSaleBean.getSaleAllOneNowRate() + "");//
+//                tableMode.setText8(onlineSaleBean.getRetailSale() + "");//
+//                tableMode.setText9(onlineSaleBean.getRetailSaleOneNow() + "");//
+//                tableMode.setText10(onlineSaleBean.getRetailSaleLast() + "");//
+//                tableMode.setText11(onlineSaleBean.getRetailSaleOneNowLast() + "");//
+//                tableMode.setText12(onlineSaleBean.getRetailSaleRate() + "");//
+//                tableMode.setText13(onlineSaleBean.getRetailSaleOneNowRate() + "");//
+//                tableMode.setText14(onlineSaleBean.getOnlineSale() + "");//
                 mDatas.add(tableMode);
             }
             boolean isMore;

@@ -224,6 +224,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                Intent intent = new Intent(MainActivity.this, SaveDataActivity.class);
 //                startActivity(intent);
 //                break;
+            case R.id.list_commit:
+                JSONArray jsonArray = new JSONArray();
+                sqLiteDatabase = dbHelper.getReadableDatabase();
+                Cursor cursor0 = sqLiteDatabase.query("SpeciesList", null, null, null, null, null, null);
+                if (cursor0.moveToFirst()) {
+                    do {
+                        String blockId = cursor0.getString(cursor0.getColumnIndex("blockId"));
+                        String fieldId = cursor0.getString(cursor0.getColumnIndex("fieldId"));
+                        String speciesId = cursor0.getString(cursor0.getColumnIndex("speciesId"));
+                        int x = cursor0.getInt(cursor0.getColumnIndex("x"));
+                        int y = cursor0.getInt(cursor0.getColumnIndex("y"));
+                        JSONObject jsonObject0 = new JSONObject();
+                        try {
+                            jsonObject0.put("id", blockId);
+                            jsonObject0.put("fieldId", fieldId);
+                            jsonObject0.put("speciesId", speciesId);
+                            jsonObject0.put("x", x);
+                            jsonObject0.put("y", y);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        jsonArray.put(jsonObject0);
+
+                        Log.d("json_SpeciesList", jsonObject0.toString());
+
+                    } while (cursor0.moveToNext());
+                    HttpRequest.HttpRequest_SpeciesList(jsonArray, MainActivity.this, new HttpRequest.HttpCallback() {
+                        @Override
+                        public void onSuccess(JSONObject result) {
+//                            Log.d("Response_SpeciesList", result.toString());
+                        }
+                    });
+                    Toast.makeText(MainActivity.this, "上传成功!", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(MainActivity.this, "尚未填写数据!", Toast.LENGTH_SHORT).show();
+                }
+                break;
             case R.id.commit:
                 //将暂存的数据从数据库取出并提交到远程服务器
                 userRole = UserRole.getUserRole();
@@ -317,86 +355,114 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Gson gson = new Gson();
 
                             final JSONObject jsonObject = new JSONObject();
+                            JSONObject jsonObject_common = new JSONObject();
+                            JSONObject jsonObject_local = new JSONObject();
                             try {
-                                jsonObject.put("plantingDate", plantingDate);
-                                jsonObject.put("emergenceDate", emergenceDate);
-                                jsonObject.put("sproutRate", sproutRate);
-                                jsonObject.put("squaringStage", squaringStage);
-                                jsonObject.put("blooming", blooming);
-                                jsonObject.put("leafColour", leafColour);
-                                jsonObject.put("corollaColour", corollaColour);
-                                jsonObject.put("flowering", flowering);
-                                jsonObject.put("stemColour", stemColour);
-                                jsonObject.put("openpollinated", openpollinated);
-                                jsonObject.put("maturingStage", maturingStage);
-                                jsonObject.put("growingPeriod", growingPeriod);
-                                jsonObject.put("uniformityOfTuberSize", uniformityOfTuberSize);
-                                jsonObject.put("tuberShape", tuberShape);
-                                jsonObject.put("skinSmoothness", skinSmoothness);
-                                jsonObject.put("eyeDepth", eyeDepth);
-                                jsonObject.put("skinColour", skinColour);
-                                jsonObject.put("fleshColour", fleshColour);
+                                jsonObject_common.put("plantingDate", plantingDate);
+                                jsonObject_common.put("emergenceDate", emergenceDate);
+                                jsonObject_common.put("sproutRate", sproutRate);
+                                jsonObject_common.put("squaringStage", squaringStage);
+                                jsonObject_common.put("blooming", blooming);
+//                                jsonObject.put("leafColour", leafColour);
+//                                jsonObject.put("corollaColour", corollaColour);
+//                                jsonObject.put("flowering", flowering);
+//                                jsonObject.put("stemColour", stemColour);
+//                                jsonObject.put("openpollinated", openpollinated);
+                                jsonObject_common.put("maturingStage", maturingStage);
+                                jsonObject_common.put("growingPeriod", growingPeriod);
+//                                jsonObject.put("uniformityOfTuberSize", uniformityOfTuberSize);
+//                                jsonObject.put("tuberShape", tuberShape);
+//                                jsonObject.put("skinSmoothness", skinSmoothness);
+//                                jsonObject.put("eyeDepth", eyeDepth);
+//                                jsonObject.put("skinColour", skinColour);
+//                                jsonObject.put("fleshColour", fleshColour);
+//                                if (isChoozen.equals("yes")) {
+//                                    jsonObject.put("isChoozen", 1);
+//                                } else {
+//                                    jsonObject.put("isChoozen", 0);
+//                                }
+                                jsonObject_common.put("remark", remark);
+                                jsonObject_common.put("harvestNum", harvestNum);
+                                jsonObject_common.put("lmNum", lmNum);
+                                jsonObject_common.put("lmWeight", lmWeight);
+                                jsonObject_common.put("sNum", sNum);
+                                jsonObject_common.put("sWeight", sWeight);
+                                jsonObject_common.put("commercialRate", commercialRate);
+                                jsonObject_common.put("plotYield1", plotYield1);
+                                jsonObject_common.put("plotYield2", plotYield2);
+                                jsonObject_common.put("plotYield3", plotYield3);
+                                jsonObject_common.put("acreYield", acreYield);
+                                jsonObject_common.put("bigPlantHeight1", bigPlantHeight1);
+                                jsonObject_common.put("bigPlantHeight2", bigPlantHeight2);
+                                jsonObject_common.put("bigPlantHeight3", bigPlantHeight3);
+                                jsonObject_common.put("bigPlantHeight4", bigPlantHeight4);
+                                jsonObject_common.put("bigPlantHeight5", bigPlantHeight5);
+                                jsonObject_common.put("bigPlantHeight6", bigPlantHeight6);
+                                jsonObject_common.put("bigPlantHeight7", bigPlantHeight7);
+                                jsonObject_common.put("bigPlantHeight8", bigPlantHeight8);
+                                jsonObject_common.put("bigPlantHeight9", bigPlantHeight9);
+                                jsonObject_common.put("bigPlantHeight10", bigPlantHeight10);
+                                jsonObject_common.put("plantHeightAvg", plantHeightAvg);
+                                jsonObject_common.put("bigBranchNumber1", bigBranchNumber1);
+                                jsonObject_common.put("bigBranchNumber2", bigBranchNumber2);
+                                jsonObject_common.put("bigBranchNumber3", bigBranchNumber3);
+                                jsonObject_common.put("bigBranchNumber4", bigBranchNumber4);
+                                jsonObject_common.put("bigBranchNumber5", bigBranchNumber5);
+                                jsonObject_common.put("bigBranchNumber6", bigBranchNumber6);
+                                jsonObject_common.put("bigBranchNumber7", bigBranchNumber7);
+                                jsonObject_common.put("bigBranchNumber8", bigBranchNumber8);
+                                jsonObject_common.put("bigBranchNumber9", bigBranchNumber9);
+                                jsonObject_common.put("bigBranchNumber10", bigBranchNumber10);
+                                jsonObject_common.put("branchNumberAvg", branchNumberAvg);
+                                jsonObject_common.put("bigYield1", bigYield1);
+                                jsonObject_common.put("bigYield2", bigYield2);
+                                jsonObject_common.put("bigYield3", bigYield3);
+                                jsonObject_common.put("bigYield4", bigYield4);
+                                jsonObject_common.put("bigYield5", bigYield5);
+                                jsonObject_common.put("bigYield6", bigYield6);
+                                jsonObject_common.put("bigYield7", bigYield7);
+                                jsonObject_common.put("bigYield8", bigYield8);
+                                jsonObject_common.put("bigYield9", bigYield9);
+                                jsonObject_common.put("bigYield10", bigYield10);
+                                jsonObject_common.put("smalYield1", smalYield1);
+                                jsonObject_common.put("smalYield2", smalYield2);
+                                jsonObject_common.put("smalYield3", smalYield3);
+                                jsonObject_common.put("smalYield4", smalYield4);
+                                jsonObject_common.put("smalYield5", smalYield5);
+                                jsonObject_common.put("smalYield6", smalYield6);
+                                jsonObject_common.put("smalYield7", smalYield7);
+                                jsonObject_common.put("smalYield8", smalYield8);
+                                jsonObject_common.put("smalYield9", smalYield9);
+                                jsonObject_common.put("smalYield10", smalYield10);
+                                jsonObject_common.put("speciesId", speciesId);
+                                jsonObject_common.put("testId", blockId);
+                                jsonObject_common.put("experimentType", experimentType);
+
+                                jsonObject_local.put("corollaColour", corollaColour);
+                                jsonObject_local.put("eyeDepth", eyeDepth);
+                                jsonObject_local.put("fleshColour", fleshColour);
+                                jsonObject_local.put("flowering", flowering);
+//                                jsonObject_local.put("img1", img1);
+//                                jsonObject_local.put("img2", img2);
+//                                jsonObject_local.put("img3", img3);
+//                                jsonObject_local.put("img4", img4);
+//                                jsonObject_local.put("img5", img5);
                                 if (isChoozen.equals("yes")) {
-                                    jsonObject.put("isChoozen", 1);
+                                    jsonObject_local.put("isChoozen", 1);
                                 } else {
-                                    jsonObject.put("isChoozen", 0);
+                                    jsonObject_local.put("isChoozen", 0);
                                 }
-                                jsonObject.put("remark", remark);
-                                jsonObject.put("harvestNum", harvestNum);
-                                jsonObject.put("lmNum", lmNum);
-                                jsonObject.put("lmWeight", lmWeight);
-                                jsonObject.put("sNum", sNum);
-                                jsonObject.put("sWeight", sWeight);
-                                jsonObject.put("commercialRate", commercialRate);
-                                jsonObject.put("plotYield1", plotYield1);
-                                jsonObject.put("plotYield2", plotYield2);
-                                jsonObject.put("plotYield3", plotYield3);
-                                jsonObject.put("acreYield", acreYield);
-                                jsonObject.put("bigPlantHeight1", bigPlantHeight1);
-                                jsonObject.put("bigPlantHeight2", bigPlantHeight2);
-                                jsonObject.put("bigPlantHeight3", bigPlantHeight3);
-                                jsonObject.put("bigPlantHeight4", bigPlantHeight4);
-                                jsonObject.put("bigPlantHeight5", bigPlantHeight5);
-                                jsonObject.put("bigPlantHeight6", bigPlantHeight6);
-                                jsonObject.put("bigPlantHeight7", bigPlantHeight7);
-                                jsonObject.put("bigPlantHeight8", bigPlantHeight8);
-                                jsonObject.put("bigPlantHeight9", bigPlantHeight9);
-                                jsonObject.put("bigPlantHeight10", bigPlantHeight10);
-                                jsonObject.put("plantHeightAvg", plantHeightAvg);
-                                jsonObject.put("bigBranchNumber1", bigBranchNumber1);
-                                jsonObject.put("bigBranchNumber2", bigBranchNumber2);
-                                jsonObject.put("bigBranchNumber3", bigBranchNumber3);
-                                jsonObject.put("bigBranchNumber4", bigBranchNumber4);
-                                jsonObject.put("bigBranchNumber5", bigBranchNumber5);
-                                jsonObject.put("bigBranchNumber6", bigBranchNumber6);
-                                jsonObject.put("bigBranchNumber7", bigBranchNumber7);
-                                jsonObject.put("bigBranchNumber8", bigBranchNumber8);
-                                jsonObject.put("bigBranchNumber9", bigBranchNumber9);
-                                jsonObject.put("bigBranchNumber10", bigBranchNumber10);
-                                jsonObject.put("branchNumberAvg", branchNumberAvg);
-                                jsonObject.put("bigYield1", bigYield1);
-                                jsonObject.put("bigYield2", bigYield2);
-                                jsonObject.put("bigYield3", bigYield3);
-                                jsonObject.put("bigYield4", bigYield4);
-                                jsonObject.put("bigYield5", bigYield5);
-                                jsonObject.put("bigYield6", bigYield6);
-                                jsonObject.put("bigYield7", bigYield7);
-                                jsonObject.put("bigYield8", bigYield8);
-                                jsonObject.put("bigYield9", bigYield9);
-                                jsonObject.put("bigYield10", bigYield10);
-                                jsonObject.put("smalYield1", smalYield1);
-                                jsonObject.put("smalYield2", smalYield2);
-                                jsonObject.put("smalYield3", smalYield3);
-                                jsonObject.put("smalYield4", smalYield4);
-                                jsonObject.put("smalYield5", smalYield5);
-                                jsonObject.put("smalYield6", smalYield6);
-                                jsonObject.put("smalYield7", smalYield7);
-                                jsonObject.put("smalYield8", smalYield8);
-                                jsonObject.put("smalYield9", smalYield9);
-                                jsonObject.put("smalYield10", smalYield10);
-                                jsonObject.put("speciesId", speciesId);
-                                jsonObject.put("testId", blockId);
-                                jsonObject.put("experimentType", experimentType);
+                                jsonObject_local.put("leafColour", leafColour);
+                                jsonObject_local.put("openpollinated", openpollinated);
+                                jsonObject_local.put("skinColour", skinColour);
+                                jsonObject_local.put("skinSmoothness", skinSmoothness);
+                                jsonObject_local.put("speciesId", speciesId);
+                                jsonObject_local.put("stemColour", stemColour);
+                                jsonObject_local.put("tuberShape", tuberShape);
+                                jsonObject_local.put("uniformityOfTuberSize", uniformityOfTuberSize);
+
+                                jsonObject.put("commontest", jsonObject_common);
+                                jsonObject.put("localSpecies", jsonObject_local);
 
                                 Log.d("testJson", jsonObject.toString());
 
