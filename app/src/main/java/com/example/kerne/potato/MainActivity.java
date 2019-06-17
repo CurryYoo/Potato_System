@@ -225,42 +225,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                startActivity(intent);
 //                break;
             case R.id.list_commit:
-                JSONArray jsonArray = new JSONArray();
-                sqLiteDatabase = dbHelper.getReadableDatabase();
-                Cursor cursor0 = sqLiteDatabase.query("SpeciesList", null, null, null, null, null, null);
-                if (cursor0.moveToFirst()) {
-                    do {
-                        String blockId = cursor0.getString(cursor0.getColumnIndex("blockId"));
-                        String fieldId = cursor0.getString(cursor0.getColumnIndex("fieldId"));
-                        String speciesId = cursor0.getString(cursor0.getColumnIndex("speciesId"));
-                        int x = cursor0.getInt(cursor0.getColumnIndex("x"));
-                        int y = cursor0.getInt(cursor0.getColumnIndex("y"));
-                        JSONObject jsonObject0 = new JSONObject();
-                        try {
-                            jsonObject0.put("id", blockId);
-                            jsonObject0.put("fieldId", fieldId);
-                            jsonObject0.put("speciesId", speciesId);
-                            jsonObject0.put("x", x);
-                            jsonObject0.put("y", y);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        jsonArray.put(jsonObject0);
+                userRole = UserRole.getUserRole();
+                if (!userRole.equals("farmer")) {
+                    JSONArray jsonArray = new JSONArray();
+                    sqLiteDatabase = dbHelper.getReadableDatabase();
+                    Cursor cursor0 = sqLiteDatabase.query("SpeciesList", null, null, null, null, null, null);
+                    if (cursor0.moveToFirst()) {
+                        do {
+                            String blockId = cursor0.getString(cursor0.getColumnIndex("blockId"));
+                            String fieldId = cursor0.getString(cursor0.getColumnIndex("fieldId"));
+                            String speciesId = cursor0.getString(cursor0.getColumnIndex("speciesId"));
+                            int x = cursor0.getInt(cursor0.getColumnIndex("x"));
+                            int y = cursor0.getInt(cursor0.getColumnIndex("y"));
+                            JSONObject jsonObject0 = new JSONObject();
+                            try {
+                                jsonObject0.put("id", blockId);
+                                jsonObject0.put("fieldId", fieldId);
+                                jsonObject0.put("speciesId", speciesId);
+                                jsonObject0.put("x", x);
+                                jsonObject0.put("y", y);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            jsonArray.put(jsonObject0);
 
-                        Log.d("json_SpeciesList", jsonObject0.toString());
+                            Log.d("json_SpeciesList", jsonObject0.toString());
 
-                    } while (cursor0.moveToNext());
-                    HttpRequest.HttpRequest_SpeciesList(jsonArray, MainActivity.this, new HttpRequest.HttpCallback() {
-                        @Override
-                        public void onSuccess(JSONObject result) {
+                        } while (cursor0.moveToNext());
+                        HttpRequest.HttpRequest_SpeciesList(jsonArray, MainActivity.this, new HttpRequest.HttpCallback() {
+                            @Override
+                            public void onSuccess(JSONObject result) {
 //                            Log.d("Response_SpeciesList", result.toString());
-                        }
-                    });
-                    Toast.makeText(MainActivity.this, "上传成功!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        Toast.makeText(MainActivity.this, "上传成功!", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText(MainActivity.this, "尚未填写数据!", Toast.LENGTH_SHORT).show();
+                    }
+                    cursor0.close();
                 }
-                else{
-                    Toast.makeText(MainActivity.this, "尚未填写数据!", Toast.LENGTH_SHORT).show();
+                else {
+                    Toast.makeText(MainActivity.this, "对不起，您没有该权限！请登录有权限的账号！", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivityForResult(intent, 1);
                 }
+
                 break;
             case R.id.commit:
                 //将暂存的数据从数据库取出并提交到远程服务器
@@ -727,146 +737,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         uiHandler.sendMessage(msg);
                     }
                 });
-
-//                new Thread(){
-//                    @Override
-//                    public void run(){
-//                        HttpRequest.HttpRequest_farm(null, MainActivity.this, new HttpRequest.HttpCallback() {
-//                            @Override
-//                            public void onSuccess(JSONObject result) { //获取FarmList信息
-//                                try {
-//                                    JSONArray rows = new JSONArray();
-//                                    rows = result.getJSONArray("rows");
-//                                    int total = result.getInt("total");
-//                                    for(int i = 0; i < total; i++){
-//                                        JSONObject jsonObject0 = rows.getJSONObject(i);
-//                                        ContentValues contentValues = new ContentValues();
-//                                        contentValues.put("farmlandId", jsonObject0.getString("farmlandId"));
-//                                        if(jsonObject0.getBoolean("deleted")){
-//                                            contentValues.put("deleted", "true");
-//                                        }
-//                                        else{
-//                                            contentValues.put("deleted", "false");
-//                                        }
-//                                        contentValues.put("name", jsonObject0.getString("name"));
-//                                        if(jsonObject0.get("length") != null){
-//                                            contentValues.put("length", jsonObject0.getString("length"));
-//                                        }
-//                                        if(jsonObject0.get("width") != null){
-//                                            contentValues.put("width", jsonObject0.getString("width"));
-//                                        }
-//                                        contentValues.put("spare1", jsonObject0.getString("spare1"));
-//                                        contentValues.put("spare2", jsonObject0.getString("spare2"));
-//                                        updateSqlite("FarmList", "farmlandId", contentValues); //缓存数据到本地sqlite
-//                                        contentValues.clear();
-//                                    }
-//
-//                                } catch (Exception e) {
-//                                    e.printStackTrace();
-//                                }
-//
-//                                Message msg = new Message();
-//                                msg.what = FARMLIST_OK;
-//                                uiHandler.sendMessage(msg);
-//                            }
-//                        });
-//
-//                    }
-//                }.start();
-//
-//                new Thread(){
-//                    @Override
-//                    public void run() {
-//                        HttpRequest.HttpRequest_map(null, MainActivity.this, new HttpRequest.HttpCallback() {
-//                            @Override
-//                            public void onSuccess(JSONObject result) { //获取ExperimentField信息
-//                                try {
-//                                    JSONArray rows = result.getJSONArray("rows");
-//                                    int total = result.getInt("total");
-//                                    ContentValues contentValues = new ContentValues();
-//                                    for(int i = 0; i < total; i++){
-//                                        JSONObject jsonObject0 = rows.getJSONObject(i);
-//
-//                                        contentValues.put("id", jsonObject0.getString("id"));
-//                                        if(jsonObject0.getBoolean("deleted")){
-//                                            contentValues.put("deleted", "true");
-//                                        }
-//                                        else{
-//                                            contentValues.put("deleted", "false");
-//                                        }
-//                                        contentValues.put("expType", jsonObject0.getString("expType"));
-//                                        if(jsonObject0.get("moveX") != null){
-//                                            contentValues.put("moveX", jsonObject0.getInt("moveX"));
-//                                        }
-//                                        if(jsonObject0.get("moveY") != null){
-//                                            contentValues.put("moveY", jsonObject0.getInt("moveY"));
-//                                        }
-//                                        if(jsonObject0.get("moveX1") != null){
-//                                            contentValues.put("moveX1", jsonObject0.getInt("moveX1"));
-//                                        }
-//                                        if(jsonObject0.get("moveY1") != null){
-//                                            contentValues.put("moveY1", jsonObject0.getInt("moveY1"));
-//                                        }
-//                                        contentValues.put("spare1", jsonObject0.getString("spare1"));
-//                                        contentValues.put("spare2", jsonObject0.getString("spare2"));
-//                                        contentValues.put("num", jsonObject0.getString("num"));
-//                                        contentValues.put("color", jsonObject0.getString("color"));
-//                                        contentValues.put("farmlandId", jsonObject0.getString("farmlandId"));
-//                                        if(jsonObject0.get("year") != null){
-//                                            contentValues.put("year", jsonObject0.getInt("year"));
-//                                        }
-//                                        updateSqlite("ExperimentField", "id", contentValues); //缓存数据到本地sqlite
-//                                        contentValues.clear();
-//                                    }
-//                                    //Log.d("GeneralJsonList", mList.toString());
-//
-//                                } catch (Exception e) {
-//                                    e.printStackTrace();
-//                                }
-//
-//                                Message msg = new Message();
-//                                msg.what = EXPERIMENTFIELD_OK;
-//                                uiHandler.sendMessage(msg);
-//
-//                            }
-//                        });
-//                    }
-//                }.start();
-//
-//                new Thread(){
-//                    @Override
-//                    public void run() {
-//                        HttpRequest.HttpRequest_Species(MainActivity.this, new HttpRequest.HttpCallback() {
-//                            @Override
-//                            public void onSuccess(JSONObject result) {
-//                                try {
-//                                    JSONArray rows = result.getJSONArray("rows");
-//                                    int total = result.getInt("total");
-//                                    ContentValues contentValues = new ContentValues();
-//                                    for(int i = 0; i < total; i++){
-//                                        JSONObject jsonObject0 = rows.getJSONObject(i);
-//
-//                                        contentValues.put("blockId", jsonObject0.getString("blockId"));
-//                                        contentValues.put("fieldId", jsonObject0.getString("fieldId"));
-//                                        contentValues.put("speciesId", jsonObject0.getString("speciesId"));
-//                                        contentValues.put("x", jsonObject0.getString("x"));
-//                                        contentValues.put("y", jsonObject0.getString("y"));
-//                                        updateSqlite("SpeciesList", "blockId", contentValues); //缓存数据到本地sqlite
-//                                        contentValues.clear();
-//                                    }
-//                                    //Log.d("GeneralJsonList", mList.toString());
-//
-//                                } catch (Exception e) {
-//                                    e.printStackTrace();
-//                                }
-//
-//                                Message msg = new Message();
-//                                msg.what = SPECIESLIST_OK;
-//                                uiHandler.sendMessage(msg);
-//                            }
-//                        });
-//                    }
-//                }.start();
 
                 break;
             case R.id.btn_general:

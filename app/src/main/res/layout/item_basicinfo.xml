@@ -141,7 +141,7 @@
             android:id="@+id/btn_select_from_album_colors"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="从相册选取" />
+            android:text="相册" />
 
         <ImageView
             android:id="@+id/imv_colors"
@@ -222,7 +222,7 @@
             android:id="@+id/btn_select_from_album_corolla_colors"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="从相册选取" />
+            android:text="相册" />
 
         <ImageView
             android:id="@+id/imv_corolla_colors"
@@ -258,7 +258,7 @@
             android:id="@+id/btn_select_from_album_plant_flourish"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="从相册选取" />
+            android:text="相册" />
 
         <ImageView
             android:id="@+id/imv_plant_flourish"
@@ -294,7 +294,7 @@
             android:id="@+id/btn_select_from_album_stem_color"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="从相册选取" />
+            android:text="相册" />
 
         <ImageView
             android:id="@+id/imv_stem_color"
@@ -330,7 +330,7 @@
             android:id="@+id/btn_select_from_album_natural_fecundity"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="从相册选取" />
+            android:text="相册" />
 
         <ImageView
             android:id="@+id/imv_natural_fecundity"

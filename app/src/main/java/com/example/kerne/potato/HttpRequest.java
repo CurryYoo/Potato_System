@@ -5,12 +5,16 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -19,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -309,27 +314,6 @@ public class HttpRequest {
 //            }
 //        };
 
-//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "/Block/putSpeciesPositionToBlock", jsonObject, new Response.Listener<JSONObject>() {
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                Log.d("SpeciesList_response", response.toString());
-//                callback.onSuccess(response);
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.e("SpeciesList_error", error.getMessage(), error);
-//            }
-//        }) {
-//            @Override
-//            public Map<String, String> getHeaders() {
-//                HashMap<String, String> headers = new HashMap<String, String>();
-//                headers.put("Accept", "application/json");
-//                headers.put("Content-Type", "application/json; charset=UTF-8");
-//                return headers;
-//            }
-//        };
-
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url + "/Block/putSpeciesPositionToBlock", jsonArray, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -338,9 +322,24 @@ public class HttpRequest {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                Log.e("SpeciesList_error", error.getMessage(), error);
+                Log.e("SpeciesList_error", error.getMessage(), error);
             }
-        });
+        }){
+            @Override
+            protected Response<JSONArray> parseNetworkResponse(NetworkResponse response){
+                try {
+                    String jsonString = new String(response.data,
+                            HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
+                    jsonString = "[" + jsonString + "]"; //由于返回的数据是jsonobject而不是jsonarray，因此需要将其改为jsonarray格式
+                    return Response.success(new JSONArray(jsonString),
+                            HttpHeaderParser.parseCacheHeaders(response));
+                } catch (UnsupportedEncodingException e) {
+                    return Response.error(new ParseError(e));
+                } catch (JSONException je) {
+                    return Response.error(new ParseError(je));
+                }
+            }
+        };
 
         requestQueue.add(jsonArrayRequest);
     }

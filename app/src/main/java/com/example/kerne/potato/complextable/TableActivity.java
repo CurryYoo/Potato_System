@@ -82,7 +82,8 @@ public class TableActivity extends AppCompatActivity {
     private JSONObject fields_json;
     private String fieldId;
     private String expType;
-    private JSONArray ids;
+    private JSONArray rows = new JSONArray();
+    private JSONArray jsonArray = new JSONArray();
 
     private String[][] str = null;
 
@@ -100,22 +101,40 @@ public class TableActivity extends AppCompatActivity {
         //在Action bar显示返回键
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 9);
+        db = dbHelper.getWritableDatabase();
+
         status = getIntent().getIntExtra("status", STATUS_EDIT);
+        fieldId = getIntent().getStringExtra("fieldId");
+        expType = getIntent().getStringExtra("expType");
+        String farmlandId;
+        farmlandId = getIntent().getStringExtra("farmlandId");
+
         try {
             fields_json = new JSONObject(getIntent().getStringExtra("fields_json"));
-            maxRows = fields_json.getInt("rows");
-            maxColumns = fields_json.getInt("columns");
-            ids = fields_json.getJSONArray("ids");
+//            maxRows = fields_json.getInt("rows");
+//            maxColumns = fields_json.getInt("columns");
+//            ids = fields_json.getJSONArray("ids");
+
+            Cursor cursor = db.query("ExperimentField", null, "farmlandId=? and expType=?",
+                    new String[]{farmlandId, expType}, null, null, "moveX");
+            maxColumns = cursor.getCount();
+            if (maxColumns >0){
+                cursor.moveToFirst();
+                for (int i = 0; i < maxColumns; i++){
+                    jsonArray.put(i, cursor.getString(cursor.getColumnIndex("id")));
+                    int num = cursor.getInt(cursor.getColumnIndex("num"));
+                    rows.put(i, num);
+                    maxRows = (num > maxRows ? num : maxRows);
+                    cursor.moveToNext();
+                }
+            }
+            cursor.close();
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        fieldId = getIntent().getStringExtra("fieldId");
-        expType = getIntent().getStringExtra("expType");
 
         str = new String[maxRows][maxColumns];
-
-        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 9);
-        db = dbHelper.getWritableDatabase();
 
         String sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
                 "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
@@ -131,7 +150,7 @@ public class TableActivity extends AppCompatActivity {
                     columns++;
                     fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
                 }
-                x = cursor0.getInt(cursor0.getColumnIndex("x")) + columns * 2 - 1; //从0开始
+                x = cursor0.getInt(cursor0.getColumnIndex("x")) + columns * 1 - 1; //从0开始
                 y = cursor0.getInt(cursor0.getColumnIndex("y")) - 1; //从0开始
                 str[y][x] = cursor0.getString(cursor0.getColumnIndex("speciesId"));
             } while (cursor0.moveToNext());
@@ -185,9 +204,14 @@ public class TableActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // 为ActionBar扩展菜单项
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.sequence, menu);
-        return super.onCreateOptionsMenu(menu);
+        if (status == STATUS_UPDATE) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.sequence, menu);
+            return super.onCreateOptionsMenu(menu);
+        }
+        else {
+            return super.onCreateOptionsMenu(menu);
+        }
     }
 
     @Override
@@ -196,20 +220,32 @@ public class TableActivity extends AppCompatActivity {
             case android.R.id.home:
                 this.finish();
                 break;
-            case R.id.species_list:
-                Intent intent= new Intent(TableActivity.this, SpeciesClickActivity.class);
-                intent.putExtra("fieldId", fieldId);
-                startActivity(intent);
-                break;
+//            case R.id.species_list:
+//                Intent intent= new Intent(TableActivity.this, SpeciesClickActivity.class);
+//                intent.putExtra("fieldId", fieldId);
+//                startActivity(intent);
+//                break;
             case R.id.save_off_seq:
                 //保存操作 sqlite
                 List<ContentValues> contentValuesList = assembleData(str, STATUS_UPDATE);
                 Log.d("contentvaluesList", contentValuesList.toString());
 //                db.delete("SpeciesList", "fieldId=?", new String[]{fieldId});
-                for(int i = 0; i < maxRows; i++){
-                    db.update("SpeciesList", contentValuesList.get(i), "fieldId=? and x=? and y=?", new String[]{fieldId, contentValuesList.get(i).getAsString("x"), contentValuesList.get(i).getAsString("y")});
-//                    db.insert("SpeciesList", null, contentValuesList.get(i));
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    int rows_num = 0;
+                    try {
+                        rows_num = rows.getInt(i);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    for (int j = 0; j < rows_num; j++) {
+                        db.update("SpeciesList", contentValuesList.get(j), "fieldId=? and x=? and y=?",
+                                new String[]{contentValuesList.get(j).getAsString("fieldId"), contentValuesList.get(j).getAsString("x"), contentValuesList.get(j).getAsString("y")});
+                    }
                 }
+//                for(int i = 0; i < maxRows; i++){
+//                    db.update("SpeciesList", contentValuesList.get(i), "fieldId=? and x=? and y=?", new String[]{fieldId, contentValuesList.get(i).getAsString("x"), contentValuesList.get(i).getAsString("y")});
+////                    db.insert("SpeciesList", null, contentValuesList.get(i));
+//                }
                 Log.d("str_content", contentValuesList.get(0).getAsString("ContentofColumn") + "");
                 Toast.makeText(TableActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
                 break;
@@ -225,41 +261,59 @@ public class TableActivity extends AppCompatActivity {
     private List<ContentValues> assembleData(String[][] str, int status){
         Log.d("str_save", str[0][0] + "");
         List<ContentValues> contentValuesList = new ArrayList<>();
-        for(int i = 0; i < maxColumns; i++){
-            for (int j = 0; j < maxRows; j++) {
-                ContentValues contentValues = new ContentValues();
-                contentValues.put("fieldId", fieldId);
-                contentValues.put("speciesId", str[j][i]);
-                contentValues.put("x", i + 1);
-                contentValues.put("y", j + 1);
-                Log.d("contentValues", contentValues.toString());
-                contentValuesList.add(contentValues);
-                Log.d("contentvaluesList0", contentValuesList.toString());
+        try {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                int rows_num = rows.getInt(i);
+                for (int j = 0; j < rows_num; j++) {
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put("fieldId", jsonArray.getString(i));
+                    contentValues.put("speciesId", str[j][i]);
+                    contentValues.put("x", i + 1);
+                    contentValues.put("y", j + 1);
+                    Log.d("contentValues", contentValues.toString());
+                    contentValuesList.add(contentValues);
+                    Log.d("contentvaluesList0", contentValuesList.toString());
+                }
             }
-
-//            contentValues.put("NumofRows", maxRows);
-//            if(status == STATUS_INIT){
-//                contentValues.put("ContentofColumn", "");
-//            }
-//            else if(status == STATUS_UPDATE){
-//                //将一行的所有数据存为json格式
-//                JSONObject jsonObject = new JSONObject();
-//                for (int j = 0; j < maxRows; j++){
-//                    try {
-//                        if(str[j][i] != null){
-//                            jsonObject.put("row_" + j, str[j][i]);
-//                        }
-//                        else {
-//                            jsonObject.put("row_" + j, "");
-//                        }
-//
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                contentValues.put("ContentofColumn", jsonObject.toString());
-//            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+
+//        for(int i = 0; i < maxColumns; i++){
+//            for (int j = 0; j < maxRows; j++) {
+//                ContentValues contentValues = new ContentValues();
+//                contentValues.put("fieldId", fieldId);
+//                contentValues.put("speciesId", str[j][i]);
+//                contentValues.put("x", i + 1);
+//                contentValues.put("y", j + 1);
+//                Log.d("contentValues", contentValues.toString());
+//                contentValuesList.add(contentValues);
+//                Log.d("contentvaluesList0", contentValuesList.toString());
+//            }
+//
+////            contentValues.put("NumofRows", maxRows);
+////            if(status == STATUS_INIT){
+////                contentValues.put("ContentofColumn", "");
+////            }
+////            else if(status == STATUS_UPDATE){
+////                //将一行的所有数据存为json格式
+////                JSONObject jsonObject = new JSONObject();
+////                for (int j = 0; j < maxRows; j++){
+////                    try {
+////                        if(str[j][i] != null){
+////                            jsonObject.put("row_" + j, str[j][i]);
+////                        }
+////                        else {
+////                            jsonObject.put("row_" + j, "");
+////                        }
+////
+////                    } catch (JSONException e) {
+////                        e.printStackTrace();
+////                    }
+////                }
+////                contentValues.put("ContentofColumn", jsonObject.toString());
+////            }
+//        }
 
         return contentValuesList;
     }
@@ -403,7 +457,7 @@ public class TableActivity extends AppCompatActivity {
                                 final EditText editText = new EditText(TableActivity.this);
                                 editText.setGravity(Gravity.CENTER); //文字居中
                                 AlertDialog.Builder inputDialog = new AlertDialog.Builder(TableActivity.this);
-                                inputDialog.setTitle("我是一个输入Dialog" + pos).setView(editText);
+                                inputDialog.setTitle(finalI+1 + "-" + pos+1 + ":请输入品种编号").setView(editText);
                                 inputDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -433,7 +487,7 @@ public class TableActivity extends AppCompatActivity {
                                 }
 
                                 startActivity(intent);
-                                Toast.makeText(TableActivity.this, "next--->" + tv.getText(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(TableActivity.this, "点击的品种编号：" + tv.getText(), Toast.LENGTH_SHORT).show();
                                 c.close();
                             }
                             else {
@@ -541,11 +595,11 @@ public class TableActivity extends AppCompatActivity {
         for(int i = 0 + pageno * maxRows; i < maxRows * (pageno + 1); i++){
             onlineSaleBeanList.add(new OnlineSaleBean("品种行"+ (i + 1)));
         }
-        if(state == RefreshParams.REFRESH_DATA){
-            pulltorefreshview.onHeaderRefreshFinish();
-        }else{
-            pulltorefreshview.onFooterLoadFinish();
-        }
+//        if(state == RefreshParams.REFRESH_DATA){
+//            pulltorefreshview.onHeaderRefreshFinish();
+//        }else{
+//            pulltorefreshview.onFooterLoadFinish();
+//        }
         setDatas(onlineSaleBeanList, state);
     }
 

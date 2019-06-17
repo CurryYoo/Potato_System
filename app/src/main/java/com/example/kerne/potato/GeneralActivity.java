@@ -311,6 +311,7 @@ public class GeneralActivity extends AppCompatActivity {
                                         intent.putExtra("fields_json", jsonObject.toString());
                                         intent.putExtra("fieldId", fieldId);
                                         intent.putExtra("expType", expType);
+                                        intent.putExtra("farmlandId", farmlandId);
 //                                        intent.putExtra("userRole", userRole);
                                         startActivity(intent);
                                     }
@@ -320,6 +321,7 @@ public class GeneralActivity extends AppCompatActivity {
                                         intent.putExtra("fields_json", jsonObject.toString());
                                         intent.putExtra("fieldId", fieldId);
                                         intent.putExtra("expType", expType);
+                                        intent.putExtra("farmlandId", farmlandId);
 //                                        intent.putExtra("userRole", userRole);
                                         startActivity(intent);
 //                                        Toast.makeText(mContext, "删除farmlandId " + farmlandId, Toast.LENGTH_SHORT).show();

@@ -165,7 +165,7 @@ public class AbPullToRefreshView extends LinearLayout {
         mContext = context;
         this.setOrientation(LinearLayout.VERTICAL);
         // 增加HeaderView
-        addHeaderView();
+//        addHeaderView();
     }
 
     /**
@@ -201,8 +201,8 @@ public class AbPullToRefreshView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        addFooterView();
-        initContentAdapterView();
+//        addFooterView();
+//        initContentAdapterView();
     }
 
     /**
