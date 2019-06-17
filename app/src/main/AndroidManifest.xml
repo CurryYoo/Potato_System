@@ -25,6 +25,7 @@
         <activity android:name=".GeneralClickActivity" />
         <activity android:name=".temporarystorage.SaveDataActivity" />
         <activity android:name=".SpeciesClickActivity" />
+        <activity android:name=".MultiLevelActivity"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
