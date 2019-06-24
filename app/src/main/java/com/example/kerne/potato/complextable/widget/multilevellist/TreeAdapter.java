@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.support.annotation.IntDef;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.kerne.potato.GeneralActivity;
-import com.example.kerne.potato.GeneralClickActivity;
-import com.example.kerne.potato.MainActivity;
 import com.example.kerne.potato.R;
-import com.example.kerne.potato.complextable.TableActivity;
+import com.example.kerne.potato.temporarystorage.SaveDataActivity;
+
+import org.json.JSONException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -42,13 +40,13 @@ public class TreeAdapter extends BaseAdapter {
     private static final int ModeClick = 1;
     private static final int ModeSelect = 2;
 
-    @IntDef({ModeClick,ModeSelect})
-    public @interface Mode{
+    @IntDef({ModeClick, ModeSelect})
+    public @interface Mode {
 
     }
 
     //设置操作模式
-    public void setOperateMode(@Mode int operateMode){
+    public void setOperateMode(@Mode int operateMode) {
         this.operateMode = operateMode;
     }
 
@@ -84,6 +82,7 @@ public class TreeAdapter extends BaseAdapter {
 
     /**
      * 从TreePoint开始一直展开到顶部
+     *
      * @param treePoint
      */
     private void openExpand(TreePoint treePoint) {
@@ -165,7 +164,7 @@ public class TreeAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         final TreePoint tempPoint = (TreePoint) getItem(position);
-        int level = TreeUtils.getLevel(tempPoint,pointMap);
+        int level = TreeUtils.getLevel(tempPoint, pointMap);
         holder.icon.setPadding(25 * level, holder.icon.getPaddingTop(), 0, holder.icon.getPaddingBottom());
         if ("0".equals(tempPoint.getISLEAF())) {  //如果为父节点
             if (!tempPoint.isExpand()) {    //不展开显示加号
@@ -178,7 +177,7 @@ public class TreeAdapter extends BaseAdapter {
         } else {   //如果叶子节点，不占位显示
             holder.icon.setVisibility(View.INVISIBLE);
         }
-        if(operateMode == ModeSelect){
+        if (operateMode == ModeSelect) {
             holder.ib_select.setVisibility(View.VISIBLE);
             holder.ib_select.setSelected(tempPoint.isSelected());
             holder.ib_select.setOnClickListener(new View.OnClickListener() {
@@ -209,24 +208,21 @@ public class TreeAdapter extends BaseAdapter {
     }
 
 
-
-    public void onItemClick(int position) {
+    public void onItemClick(int position) throws JSONException {
         TreePoint treePoint = (TreePoint) getItem(position);
         if ("1".equals(treePoint.getISLEAF())) {   //点击叶子节点
             //处理回填
-            Intent intent=new Intent();
-            if (treePoint.getType().equals("common")){
-                intent = new Intent(mcontext, GeneralActivity.class);
+            Intent intent = new Intent();
+            intent.putExtra("speciesId", treePoint.getJsonObject().getString("speciesId"));
+            intent.putExtra("expType", treePoint.getJsonObject().getString("expType"));
+            if (treePoint.getJsonObject().getString("blockId") != null) {
+                intent.putExtra("blockId", treePoint.getJsonObject().getString("blockId"));
+            } else {
+                intent.putExtra("blockId", "test");
             }
-            else {
-                intent = new Intent(mcontext, TableActivity.class);
-            }
-            intent.putExtra("farmlandId", treePoint.getFarmlandID());
-            intent.putExtra("length", treePoint.getLength());
-            intent.putExtra("width", treePoint.getWidth());
-            intent.putExtra("type", treePoint.getType());
+            intent = new Intent(mcontext, SaveDataActivity.class);
             mcontext.startActivity(intent);
-            Toast.makeText(mcontext, treePoint.getFarmlandID(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mcontext, "next--->"+treePoint.getJsonObject().getString("speciesId"), Toast.LENGTH_SHORT).show();
         } else {  //如果点击的是父类
             if (treePoint.isExpand()) {
                 for (TreePoint tempPoint : pointList) {
@@ -246,7 +242,7 @@ public class TreeAdapter extends BaseAdapter {
 
 
     //选择操作
-    private void onModeSelect(TreePoint treePoint){
+    private void onModeSelect(TreePoint treePoint) {
         if ("1".equals(treePoint.getISLEAF())) {   //选择叶子节点
             //处理回填
             treePoint.setSelected(!treePoint.isSelected());
@@ -254,16 +250,16 @@ public class TreeAdapter extends BaseAdapter {
             int position = pointList.indexOf(treePoint);
             boolean isSelect = treePoint.isSelected();
             treePoint.setSelected(!isSelect);
-            if(position == -1){
-                return ;
+            if (position == -1) {
+                return;
             }
-            if(position == pointList.size()-1){
+            if (position == pointList.size() - 1) {
                 return;
             }
             position++;
-            for(;position < pointList.size();position++){
-                TreePoint tempPoint =  pointList.get(position);
-                if(tempPoint.getPARENTID().equals(treePoint.getPARENTID())){    //如果找到和自己同级的数据就返回
+            for (; position < pointList.size(); position++) {
+                TreePoint tempPoint = pointList.get(position);
+                if (tempPoint.getPARENTID().equals(treePoint.getPARENTID())) {    //如果找到和自己同级的数据就返回
                     break;
                 }
                 tempPoint.setSelected(!isSelect);
@@ -278,8 +274,6 @@ public class TreeAdapter extends BaseAdapter {
 //
 //        }
 //    }
-
-
 
 
     private String getSubmitResult(TreePoint treePoint) {

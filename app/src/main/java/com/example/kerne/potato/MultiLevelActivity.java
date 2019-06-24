@@ -39,7 +39,8 @@ public class MultiLevelActivity extends AppCompatActivity {
 
     private List<JSONObject> mBigFarmList = new ArrayList<>();
     private List<JSONObject> mFarmList = new ArrayList<>();
-    private List<JSONObject> mfiledList = new ArrayList<>();
+    private List<JSONObject> mFieldList = new ArrayList<>();
+    private List<JSONObject> mSpeciesList = new ArrayList<>();
 
 
     @Override
@@ -47,21 +48,23 @@ public class MultiLevelActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_mutlilevel);
-        try {
-            init();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        init();
         addListener();
     }
 
-    public void init() throws JSONException {
+    public void init() {
         adapter = new TreeAdapter(this, pointList, pointMap);
         listView = findViewById(R.id.listView);
         listView.setAdapter(adapter);
         et_filter = findViewById(R.id.et_filter);
+
         getData();
-        initData();
+        try {
+            initData();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /*获取数据*/
@@ -117,6 +120,58 @@ public class MultiLevelActivity extends AppCompatActivity {
             Toast.makeText(MultiLevelActivity.this, "ExperimentField null", Toast.LENGTH_SHORT).show();
         }
         cursor2.close();
+
+        Cursor cursor3 = db.query("ExperimentField", null, null, null, null, null, null);
+        if (cursor3.moveToFirst()) {
+            do {
+                JSONObject jsonObject3 = new JSONObject();
+                try {
+                    jsonObject3.put("id", cursor3.getString(cursor3.getColumnIndex("id")));
+                    jsonObject3.put("name", cursor3.getString(cursor3.getColumnIndex("name")));
+                    jsonObject3.put("deleted", cursor3.getInt(cursor3.getColumnIndex("deleted")));
+                    jsonObject3.put("expType", cursor3.getInt(cursor3.getColumnIndex("expType")));
+                    jsonObject3.put("moveX", cursor3.getString(cursor3.getColumnIndex("moveX")));
+                    jsonObject3.put("moveY", cursor3.getString(cursor3.getColumnIndex("moveY")));
+                    jsonObject3.put("moveX1", cursor3.getString(cursor3.getColumnIndex("moveX1")));
+                    jsonObject3.put("moveY1", cursor3.getString(cursor3.getColumnIndex("moveY1")));
+                    jsonObject3.put("num", cursor3.getString(cursor3.getColumnIndex("num")));
+                    jsonObject3.put("color", cursor3.getString(cursor3.getColumnIndex("color")));
+                    jsonObject3.put("farmlandId", cursor3.getString(cursor3.getColumnIndex("farmlandId")));
+                    jsonObject3.put("speciesList", cursor3.getString(cursor3.getColumnIndex("speciesList")));
+
+                    mFieldList.add(jsonObject3);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e("FieldId_error", cursor.getString(cursor3.getColumnIndex("id")));
+                }
+            } while (cursor3.moveToNext());
+        } else {
+            Toast.makeText(MultiLevelActivity.this, "ExperimentField null", Toast.LENGTH_SHORT).show();
+        }
+        cursor3.close();
+
+        Cursor cursor4 = db.query("SpeciesList", null, null, null, null, null, null);
+        if (cursor4.moveToFirst()) {
+            do {
+                JSONObject jsonObject4 = new JSONObject();
+                try {
+                    jsonObject4.put("blockId", cursor4.getString(cursor4.getColumnIndex("blockId")));
+                    jsonObject4.put("fieldId", cursor4.getString(cursor4.getColumnIndex("fieldId")));
+                    jsonObject4.put("speciesId", cursor4.getInt(cursor4.getColumnIndex("speciesId")));
+                    jsonObject4.put("x", cursor4.getInt(cursor4.getColumnIndex("x")));
+                    jsonObject4.put("y", cursor4.getString(cursor4.getColumnIndex("y")));
+
+                    mSpeciesList.add(jsonObject4);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e("SpeciesId_error", cursor.getString(cursor4.getColumnIndex("id")));
+                }
+            } while (cursor4.moveToNext());
+        } else {
+            Toast.makeText(MultiLevelActivity.this, "ExperimentField null", Toast.LENGTH_SHORT).show();
+        }
+        cursor4.close();
+
         db.close();
         dbHelper.close();
     }
@@ -134,35 +189,38 @@ public class MultiLevelActivity extends AppCompatActivity {
         int parentId4 = 0;
         for (int i = 0; i < mBigFarmList.size(); i++) {
             id++;
-//            pointList.add(new TreePoint("" + id, "分类" + i, "" + parentId, "0", i));
-            pointList.add(new TreePoint("" + id, mBigFarmList.get(i).getString("name"), "" + parentId, "0", i));
+            pointList.add(new TreePoint("" + id, "第一层" + mBigFarmList.get(i).getString("name"), "" + parentId, "0", i));
+            int order_i = 1;
             for (int j = 0; j < mFarmList.size(); j++) {
                 if (j == 0) {
                     parentId2 = id;
                 }
-                id++;
                 if (mFarmList.get(j).getString("bigfarmId").equals(mBigFarmList.get(i).getString("bigfarmId"))) {
-                    TreePoint treePoint=new TreePoint("" + id, mFarmList.get(i).getString("name"), "" + parentId2, "1", j);
-                    treePoint.setFarmlandID(mFarmList.get(j).getString("farmlandId"));
-                    treePoint.setLength(mFarmList.get(j).getInt("length"));
-                    treePoint.setWidth(mFarmList.get(j).getInt("width"));
-                    treePoint.setType(mFarmList.get(j).getString("type"));
-                    pointList.add(treePoint);
+                    id++;
+                    pointList.add(new TreePoint("" + id, "第二层" + mFarmList.get(j).getString("name"), "" + parentId2, "0", order_i++));
+                    int order_j = 1;
+                    for (int k = 0; k < mFieldList.size(); k++) {
+                        if (k == 0) {
+                            parentId3 = id;
+                        }
+                        if (mFieldList.get(k).getString("farmlandId").equals(mFarmList.get(j).getString("farmlandId"))) {
+                            id++;
+                            pointList.add(new TreePoint("" + id, "第三层" + mFieldList.get(k).getString("id"), "" + parentId3, "0", order_j++));
+                            int order_k = 1;
+                            for (int l = 0; l < 5; l++) {
+                                if (l == 0) {
+                                    parentId4 = id;
+                                }
+                                if (mSpeciesList.get(l).getString("fieldId").equals(mFieldList.get(k).getString("id"))) {
+                                    id++;
+                                    TreePoint treePoint = new TreePoint("" + id, "第四层" + mSpeciesList.get(l).getString("blockId"), "" + parentId4, "1", order_k);
+                                    treePoint.setJsonObject(mSpeciesList.get(l));
+                                    pointList.add(treePoint);
+                                }
+                            }
+                        }
+                    }
                 }
-//                for (int k = 1; k < 5; k++) {
-//                    if (k == 1) {
-//                        parentId3 = id;
-//                    }
-//                    id++;
-//                    pointList.add(new TreePoint("" + id, "分类" + i + "_" + j + "_" + k, "" + parentId3, "0", k));
-//                    for (int l = 1; l < 5; l++) {
-//                        if (l == 1) {
-//                            parentId4 = id;
-//                        }
-//                        id++;
-//                        pointList.add(new TreePoint("" + id, "分类" + i + "_" + j + "_" + k + "_" + l, "" + parentId4, "1", l));
-//                    }
-//                }
             }
         }
         //打乱集合中的数据
@@ -177,7 +235,11 @@ public class MultiLevelActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                adapter.onItemClick(position);
+                try {
+                    adapter.onItemClick(position);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
