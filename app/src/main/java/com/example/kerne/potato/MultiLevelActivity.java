@@ -190,7 +190,7 @@ public class MultiLevelActivity extends AppCompatActivity {
         int parentId4 = 0;
         for (int i = 0; i < mBigFarmList.size(); i++) {
             id++;
-            pointList.add(new TreePoint("" + id, "第一层" + mBigFarmList.get(i).getString("name"), "" + parentId, "0", i));
+            pointList.add(new TreePoint("" + id, "" + mBigFarmList.get(i).getString("name"), "" + parentId, "0", i));
             int order_i = 1;
             for (int j = 0; j < mFarmList.size(); j++) {
                 if (j == 0) {
@@ -198,7 +198,7 @@ public class MultiLevelActivity extends AppCompatActivity {
                 }
                 if (mFarmList.get(j).getString("bigfarmId").equals(mBigFarmList.get(i).getString("bigfarmId"))) {
                     id++;
-                    pointList.add(new TreePoint("" + id, "第二层" + mFarmList.get(j).getString("name"), "" + parentId2, "0", order_i++));
+                    pointList.add(new TreePoint("" + id, "" + mFarmList.get(j).getString("name"), "" + parentId2, "0", order_i++));
                     int order_j = 1;
                     for (int k = 0; k < mFieldList.size(); k++) {
                         if (k == 0) {
@@ -206,7 +206,7 @@ public class MultiLevelActivity extends AppCompatActivity {
                         }
                         if (mFieldList.get(k).getString("farmlandId").equals(mFarmList.get(j).getString("farmlandId"))) {
                             id++;
-                            pointList.add(new TreePoint("" + id, "第三层" + mFieldList.get(k).getString("expType"), "" + parentId3, "0", order_j++));
+                            pointList.add(new TreePoint("" + id, "" + mFieldList.get(k).getString("expType"), "" + parentId3, "0", order_j++));
                             int order_k = 1;
                             for (int l = 0; l < mSpeciesList.size(); l++) {
                                 if (l == 0) {
@@ -214,7 +214,7 @@ public class MultiLevelActivity extends AppCompatActivity {
                                 }
                                 if (mSpeciesList.get(l).getString("fieldId").equals(mFieldList.get(k).getString("id"))) {
                                     id++;
-                                    TreePoint treePoint = new TreePoint("" + id, "第四层" + mSpeciesList.get(l).getString("speciesId"), "" + parentId4, "1", order_k);
+                                    TreePoint treePoint = new TreePoint("" + id, "" + mSpeciesList.get(l).getString("speciesId"), "" + parentId4, "1", order_k);
                                     mSpeciesList.get(l).put("expType", mFieldList.get(k).getString("expType"));
                                     treePoint.setJsonObject(mSpeciesList.get(l));
                                     pointList.add(treePoint);
