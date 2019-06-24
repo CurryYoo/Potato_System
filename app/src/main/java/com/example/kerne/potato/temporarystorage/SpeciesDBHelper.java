@@ -94,6 +94,10 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "primary key(speciesId, blockId)"  //speciesId和blockId组成复合主键
             + ")";
 
+    public static final String CREATE_LOCALSPECIES = "create table LocalSpecies ("
+            + "speciesid text primary key,"
+            + "name text)";
+
     public static final String CREATE_BIGFARMLIST = "create table BigfarmList ("
             + "bigfarmId text primary key,"
             + "name text,"
@@ -149,6 +153,7 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
 //        String sql_prepare = "drop table SpeciesTable if exists(select * from sys.databases where name='SpeciesTable')";
 //        db.execSQL(sql_prepare);
         db.execSQL(CREATE_SPECIES_TABLE);
+        db.execSQL(CREATE_LOCALSPECIES);
         db.execSQL(CREATE_BIGFARMLIST);
         db.execSQL(CREATE_FARMLIST);
         db.execSQL(CREATE_EXPERIMENTFIELD);
@@ -160,6 +165,8 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("drop table if exists SpeciesTable");
+        db.execSQL("drop table if exists LocalSpecies");
+        db.execSQL("drop table if exists BigfarmList");
         db.execSQL("drop table if exists FarmList");
         db.execSQL("drop table if exists ExperimentField");
         db.execSQL("drop table if exists SpeciesList");

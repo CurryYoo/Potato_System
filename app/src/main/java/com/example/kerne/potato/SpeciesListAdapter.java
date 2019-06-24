@@ -72,9 +72,12 @@ public class SpeciesListAdapter extends RecyclerView.Adapter<SpeciesListAdapter.
             speciesId = jsonObject.getString("speciesId");
             blockId = jsonObject.getString("blockId");
             fieldId = jsonObject.getString("fieldId");
-//            expType = jsonObject.getString("expType");
+            expType = jsonObject.getString("expType");
+            if (expType == null) {
+                expType = "";
+            }
 //            userRole = jsonObject.getString("userRole");
-//            holder.tvPlotId.setText("试验类型：" + expType);
+            holder.tvPlotId.setText("试验类型：" + expType);
             holder.tvSpeciesId.setText("品种编号：" + speciesId);
             holder.tvFieldId.setText("所属试验田分块编号：" + fieldId);
         } catch (JSONException e) {

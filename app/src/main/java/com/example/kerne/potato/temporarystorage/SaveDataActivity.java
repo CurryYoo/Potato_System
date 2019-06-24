@@ -264,6 +264,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         Intent intent_speciesId = getIntent();
         speciesId = intent_speciesId.getStringExtra("speciesId");
         expType = intent_speciesId.getStringExtra("expType");
+        blockId = intent_speciesId.getStringExtra("blockId");
 
         //品种Id
         edtSpeciesID = (EditText) findViewById(R.id.edt_species_id);
@@ -517,12 +518,11 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 //        btnUpdateOffline.setOnClickListener(this);
 
         //数据存储
-        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 9);
+        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
         sqLiteDatabase = dbHelper.getWritableDatabase();
 
         //如果品种信息不存在，进行初始化
         //如果品种信息存在，进行展示
-        blockId = intent_speciesId.getStringExtra("blockId");
         Cursor cursor = sqLiteDatabase.query("SpeciesTable", null, "speciesId" + "=?" + " and  "
                     + "blockId" + "=?", new String[]{speciesId, blockId},null,null,null);
         if (cursor.getCount() > 0) {

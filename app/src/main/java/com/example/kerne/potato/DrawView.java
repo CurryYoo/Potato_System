@@ -103,6 +103,8 @@ public class DrawView extends View {
                 canvas.drawRect(coord[i][0], coord[i][1], coord[i][2], coord[i][3], p);
 
                 p.setColor(Color.BLACK);
+                p.setTextSize(20);
+
                 canvas.drawText(mList.get(i).getString("expType"), coord[i][0], coord[i][3], p);
             }
 

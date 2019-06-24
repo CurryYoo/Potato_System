@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_data = (Button) findViewById(R.id.btn_data);
         btn_data.setOnClickListener(this);
 
-        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 9);
+        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
 
 //        btn_farmland = (Button)findViewById(R.id.btn_farmland);
 //        btn_farmland.setOnClickListener(this);
@@ -281,11 +281,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 userRole = UserRole.getUserRole();
                 if (!userRole.equals("farmer")) {
                     sqLiteDatabase = dbHelper.getReadableDatabase();
-                    final Cursor cursor = sqLiteDatabase.query("SpeciesTable", null, null, null, null, null, null);
+                    String sql = "select SpeciesTable.*, LocalSpecies.* from SpeciesTable, LocalSpecies " +
+                            "where SpeciesTable.speciesId=LocalSpecies.name";
+                    final Cursor cursor = sqLiteDatabase.rawQuery(sql, null);
+//                    final Cursor cursor = sqLiteDatabase.query("SpeciesTable", null, null, null, null, null, null);
 
                     if (cursor.moveToFirst()) {
                         do {
-                            final String speciesId = cursor.getString(cursor.getColumnIndex("speciesId")); //++++++++++++++
+                            final String speciesId = cursor.getString(cursor.getColumnIndex("speciesid"));
+                            final String name = cursor.getString(cursor.getColumnIndex("name")); //++++++++++++++
                             final String blockId = cursor.getString(cursor.getColumnIndex("blockId")); //+++++++++++++
                             String experimentType = cursor.getString(cursor.getColumnIndex("experimentType"));
                             String plantingDate = cursor.getString(cursor.getColumnIndex("plantingDate"));
@@ -365,8 +369,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             img3 = cursor.getString(cursor.getColumnIndex("img3"));
                             img4 = cursor.getString(cursor.getColumnIndex("img4"));
                             img5 = cursor.getString(cursor.getColumnIndex("img5"));
-
-                            Gson gson = new Gson();
 
                             final JSONObject jsonObject = new JSONObject();
                             JSONObject jsonObject_common = new JSONObject();
@@ -470,6 +472,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 jsonObject_local.put("openpollinated", openpollinated);
                                 jsonObject_local.put("skinColour", skinColour);
                                 jsonObject_local.put("skinSmoothness", skinSmoothness);
+                                jsonObject_local.put("name", name);
                                 jsonObject_local.put("speciesId", speciesId);
                                 jsonObject_local.put("stemColour", stemColour);
                                 jsonObject_local.put("tuberShape", tuberShape);
@@ -742,6 +745,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 });
 
+                HttpRequest.HttpRequest_LocalSpecies(new JSONObject(), MainActivity.this, new HttpRequest.HttpCallback() {
+                    @Override
+                    public void onSuccess(JSONObject result) {
+                        try {
+                            JSONArray rows = result.getJSONArray("rows");
+                            int total = result.getInt("total");
+                            ContentValues contentValues = new ContentValues();
+                            JSONObject jsonObject0;
+                            for(int i = 0; i < total; i++){
+                                jsonObject0 = rows.getJSONObject(i);
+                                contentValues.put("speciesid", jsonObject0.getString("speciesId"));
+                                contentValues.put("name", jsonObject0.getString("name"));
+                                updateSqlite("LocalSpecies", "speciesid", contentValues); //缓存数据到本地sqlite
+                                contentValues.clear();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
                 break;
             case R.id.btn_general:
                 Intent intent_general = new Intent(MainActivity.this, BigfarmClickActivity.class);
@@ -793,6 +817,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void updateSqlite(String table_name, String column_name, ContentValues contentValues){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+//        db.delete(table_name, null, null);
         Cursor cursor = db.query(table_name, new String[]{column_name}, null, null, null, null, null);
         if(cursor != null && cursor.moveToFirst()){
             Boolean isExist = false;
@@ -805,6 +830,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (!isExist) {
                 db.insert(table_name, null, contentValues);
             }
+
+//            db.insert(table_name, null, contentValues);
         }
         else {
             Log.d("updateSqlite", "CursorNull");

@@ -56,7 +56,7 @@ public class SpeciesClickActivity extends AppCompatActivity implements SpeciesCl
     }
 
     private void initData() {
-        SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 9);
+        SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.query("SpeciesList", null, "fieldId=?", new String[]{fieldId}, null, null, null);

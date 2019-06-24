@@ -68,7 +68,7 @@ public class BigfarmClickActivity extends AppCompatActivity implements BigfarmCl
 
     private void initData() {
         //获取服务器中数据
-        SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 9);
+        SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.query("BigfarmList", null, null, null, null, null, null);

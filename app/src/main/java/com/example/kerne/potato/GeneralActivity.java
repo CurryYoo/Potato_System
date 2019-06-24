@@ -100,7 +100,7 @@ public class GeneralActivity extends AppCompatActivity {
         //获取权限角色
 //        userRole = getIntent().getStringExtra("userRole");
 
-        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 9);
+        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
         db = dbHelper.getReadableDatabase();
 
         getData();
@@ -280,35 +280,35 @@ public class GeneralActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String fieldId = null, expType = null;
-                                    int columns = 0, rows = 0;
-                                    JSONObject jsonObject = new JSONObject();
-                                    JSONArray jsonArray = new JSONArray();
+//                                    int columns = 0, rows = 0;
+//                                    JSONObject jsonObject = new JSONObject();
+//                                    JSONArray jsonArray = new JSONArray();
                                     try {
                                         fieldId = mList.get(finalI).getString("id");
                                         expType = mList.get(finalI).getString("expType");
-                                        Cursor cursor = db.query("ExperimentField", null, "farmlandId=? and expType=?",
-                                                new String[]{farmlandId, expType}, null, null, null);
-                                        columns = cursor.getCount();
-                                        if (columns >0){
-                                            cursor.moveToFirst();
-                                            for (int i = 0; i < columns; i++){
-                                                jsonArray.put(i, cursor.getString(cursor.getColumnIndex("id")));
-                                                int num = cursor.getInt(cursor.getColumnIndex("num"));
-                                                rows = (num > rows ? num : rows);
-                                                cursor.moveToNext();
-                                            }
-                                        }
-                                        jsonObject.put("columns", columns);
-                                        jsonObject.put("rows", rows);
-                                        jsonObject.put("ids", jsonArray);
-                                        cursor.close();
+//                                        Cursor cursor = db.query("ExperimentField", null, "farmlandId=? and expType=?",
+//                                                new String[]{farmlandId, expType}, null, null, null);
+//                                        columns = cursor.getCount();
+//                                        if (columns >0){
+//                                            cursor.moveToFirst();
+//                                            for (int i = 0; i < columns; i++){
+//                                                jsonArray.put(i, cursor.getString(cursor.getColumnIndex("id")));
+//                                                int num = cursor.getInt(cursor.getColumnIndex("num"));
+//                                                rows = (num > rows ? num : rows);
+//                                                cursor.moveToNext();
+//                                            }
+//                                        }
+//                                        jsonObject.put("columns", columns);
+//                                        jsonObject.put("rows", rows);
+//                                        jsonObject.put("ids", jsonArray);
+//                                        cursor.close();
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
                                     if(which == 0){    // 点击第一个操作"品种规划"时
                                         Intent intent = new Intent(GeneralActivity.this, TableActivity.class);
                                         intent.putExtra("status", STATUS_EDIT);
-                                        intent.putExtra("fields_json", jsonObject.toString());
+//                                        intent.putExtra("fields_json", jsonObject.toString());
                                         intent.putExtra("fieldId", fieldId);
                                         intent.putExtra("expType", expType);
                                         intent.putExtra("farmlandId", farmlandId);
@@ -318,7 +318,7 @@ public class GeneralActivity extends AppCompatActivity {
                                     else {   // 点击第二个操作"查看品种规划详情"时
                                         Intent intent = new Intent(GeneralActivity.this, TableActivity.class);
                                         intent.putExtra("status", STATUS_READ);
-                                        intent.putExtra("fields_json", jsonObject.toString());
+//                                        intent.putExtra("fields_json", jsonObject.toString());
                                         intent.putExtra("fieldId", fieldId);
                                         intent.putExtra("expType", expType);
                                         intent.putExtra("farmlandId", farmlandId);

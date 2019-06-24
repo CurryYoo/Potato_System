@@ -56,8 +56,13 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
     }
 
     private void initData() {
-        SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 9);
+        SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+//        String sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
+//                "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
+//                "' order by ExperimentField.moveX";
+//        db.rawQuery(sql, null);
 
         Cursor cursor = db.query("SpeciesList", null, "speciesId=?", new String[]{speciesId}, null, null, null);
         if(cursor.moveToFirst()){

@@ -67,7 +67,7 @@ public class MultiLevelActivity extends AppCompatActivity {
     /*获取数据*/
     private void getData() {
         //获取服务器中数据
-        SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 9);
+        SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         //获取大田信息
