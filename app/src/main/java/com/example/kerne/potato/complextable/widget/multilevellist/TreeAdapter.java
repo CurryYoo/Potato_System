@@ -212,7 +212,7 @@ public class TreeAdapter extends BaseAdapter {
         TreePoint treePoint = (TreePoint) getItem(position);
         if ("1".equals(treePoint.getISLEAF())) {   //点击叶子节点
             //处理回填
-            Intent intent = new Intent();
+            Intent intent = new Intent(mcontext, SaveDataActivity.class);
             intent.putExtra("speciesId", treePoint.getJsonObject().getString("speciesId"));
             intent.putExtra("expType", treePoint.getJsonObject().getString("expType"));
             if (treePoint.getJsonObject().getString("blockId") != null) {
@@ -220,9 +220,8 @@ public class TreeAdapter extends BaseAdapter {
             } else {
                 intent.putExtra("blockId", "test");
             }
-            intent = new Intent(mcontext, SaveDataActivity.class);
             mcontext.startActivity(intent);
-            Toast.makeText(mcontext, "next--->"+treePoint.getJsonObject().getString("speciesId"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mcontext, "next--->" + treePoint.getJsonObject().getString("speciesId"), Toast.LENGTH_SHORT).show();
         } else {  //如果点击的是父类
             if (treePoint.isExpand()) {
                 for (TreePoint tempPoint : pointList) {

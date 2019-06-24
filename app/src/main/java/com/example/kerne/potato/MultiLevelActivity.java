@@ -129,14 +129,15 @@ public class MultiLevelActivity extends AppCompatActivity {
                     jsonObject3.put("id", cursor3.getString(cursor3.getColumnIndex("id")));
                     jsonObject3.put("name", cursor3.getString(cursor3.getColumnIndex("name")));
                     jsonObject3.put("deleted", cursor3.getInt(cursor3.getColumnIndex("deleted")));
-                    jsonObject3.put("expType", cursor3.getInt(cursor3.getColumnIndex("expType")));
-                    jsonObject3.put("moveX", cursor3.getString(cursor3.getColumnIndex("moveX")));
-                    jsonObject3.put("moveY", cursor3.getString(cursor3.getColumnIndex("moveY")));
-                    jsonObject3.put("moveX1", cursor3.getString(cursor3.getColumnIndex("moveX1")));
-                    jsonObject3.put("moveY1", cursor3.getString(cursor3.getColumnIndex("moveY1")));
+                    jsonObject3.put("expType", cursor3.getString(cursor3.getColumnIndex("expType")));
+                    jsonObject3.put("moveX", cursor3.getInt(cursor3.getColumnIndex("moveX")));
+                    jsonObject3.put("moveY", cursor3.getInt(cursor3.getColumnIndex("moveY")));
+                    jsonObject3.put("moveX1", cursor3.getInt(cursor3.getColumnIndex("moveX1")));
+                    jsonObject3.put("moveY1", cursor3.getInt(cursor3.getColumnIndex("moveY1")));
                     jsonObject3.put("num", cursor3.getString(cursor3.getColumnIndex("num")));
                     jsonObject3.put("color", cursor3.getString(cursor3.getColumnIndex("color")));
                     jsonObject3.put("farmlandId", cursor3.getString(cursor3.getColumnIndex("farmlandId")));
+                    jsonObject3.put("rows", cursor3.getInt(cursor3.getColumnIndex("rows")));
                     jsonObject3.put("speciesList", cursor3.getString(cursor3.getColumnIndex("speciesList")));
 
                     mFieldList.add(jsonObject3);
@@ -157,9 +158,9 @@ public class MultiLevelActivity extends AppCompatActivity {
                 try {
                     jsonObject4.put("blockId", cursor4.getString(cursor4.getColumnIndex("blockId")));
                     jsonObject4.put("fieldId", cursor4.getString(cursor4.getColumnIndex("fieldId")));
-                    jsonObject4.put("speciesId", cursor4.getInt(cursor4.getColumnIndex("speciesId")));
+                    jsonObject4.put("speciesId", cursor4.getString(cursor4.getColumnIndex("speciesId")));
                     jsonObject4.put("x", cursor4.getInt(cursor4.getColumnIndex("x")));
-                    jsonObject4.put("y", cursor4.getString(cursor4.getColumnIndex("y")));
+                    jsonObject4.put("y", cursor4.getInt(cursor4.getColumnIndex("y")));
 
                     mSpeciesList.add(jsonObject4);
                 } catch (JSONException e) {
@@ -205,15 +206,16 @@ public class MultiLevelActivity extends AppCompatActivity {
                         }
                         if (mFieldList.get(k).getString("farmlandId").equals(mFarmList.get(j).getString("farmlandId"))) {
                             id++;
-                            pointList.add(new TreePoint("" + id, "第三层" + mFieldList.get(k).getString("id"), "" + parentId3, "0", order_j++));
+                            pointList.add(new TreePoint("" + id, "第三层" + mFieldList.get(k).getString("expType"), "" + parentId3, "0", order_j++));
                             int order_k = 1;
-                            for (int l = 0; l < 5; l++) {
+                            for (int l = 0; l < mSpeciesList.size(); l++) {
                                 if (l == 0) {
                                     parentId4 = id;
                                 }
                                 if (mSpeciesList.get(l).getString("fieldId").equals(mFieldList.get(k).getString("id"))) {
                                     id++;
-                                    TreePoint treePoint = new TreePoint("" + id, "第四层" + mSpeciesList.get(l).getString("blockId"), "" + parentId4, "1", order_k);
+                                    TreePoint treePoint = new TreePoint("" + id, "第四层" + mSpeciesList.get(l).getString("speciesId"), "" + parentId4, "1", order_k);
+                                    mSpeciesList.get(l).put("expType", mFieldList.get(k).getString("expType"));
                                     treePoint.setJsonObject(mSpeciesList.get(l));
                                     pointList.add(treePoint);
                                 }
