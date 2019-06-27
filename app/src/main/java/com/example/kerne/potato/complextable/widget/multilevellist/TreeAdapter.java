@@ -177,16 +177,16 @@ public class TreeAdapter extends BaseAdapter {
         } else {   //如果叶子节点，不占位显示
             holder.icon.setVisibility(View.INVISIBLE);
         }
-        if (operateMode == ModeSelect) {
-            holder.ib_select.setVisibility(View.VISIBLE);
-            holder.ib_select.setSelected(tempPoint.isSelected());
-            holder.ib_select.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onModeSelect(tempPoint);
-                }
-            });
-        }
+//        if (operateMode == ModeSelect) {
+////            holder.ib_select.setVisibility(View.VISIBLE);
+////            holder.ib_select.setSelected(tempPoint.isSelected());
+////            holder.ib_select.setOnClickListener(new View.OnClickListener() {
+////                @Override
+////                public void onClick(View v) {
+////                    onModeSelect(tempPoint);
+////                }
+////            });
+////        }
 //        else{
 //            holder.ib_select.setVisibility(View.GONE);
 //        }
