@@ -3,6 +3,7 @@ package com.example.kerne.potato;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -17,15 +18,12 @@ import android.widget.Toast;
 
 import com.example.kerne.potato.complextable.widget.multilevellist.TreeAdapter;
 import com.example.kerne.potato.complextable.widget.multilevellist.TreePoint;
-import com.example.kerne.potato.complextable.widget.multilevellist.TreeUtils;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -61,12 +59,14 @@ public class MultiLevelActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Looper.prepare();
                 getData();
                 try {
                     initData();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                Looper.loop();
             }
         }).start();
 
@@ -278,6 +278,7 @@ public class MultiLevelActivity extends AppCompatActivity {
         for (TreePoint treePoint : pointList) {
             pointMap.put(treePoint.getID(), treePoint);
         }
+        /*数据排序易产生bug，在此删除*/
 //        Collections.sort(pointList, new Comparator<TreePoint>() {
 //            @Override
 //            public int compare(TreePoint lhs, TreePoint rhs) {

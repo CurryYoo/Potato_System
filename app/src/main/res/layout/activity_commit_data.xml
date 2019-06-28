@@ -23,13 +23,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1-品种ID" />
+                    android:text="1-品种ID"/>
 
                 <EditText
                     android:id="@+id/edt_species_id"
                     android:layout_width="230dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
+                    android:gravity="start"
                     android:layout_marginLeft="5dp"/>
                 <!--android:hint="每次提交请输入不同的数字"-->
             </LinearLayout>
@@ -48,8 +48,7 @@
                     android:id="@+id/edt_experiment_type"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:gravity="center_horizontal" />
+                    android:layout_marginLeft="5dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -69,7 +68,6 @@
                     android:layout_width="110dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:gravity="center_horizontal"
                     android:hint="双击输入"
                     android:inputType="none" />
             </LinearLayout>
@@ -96,7 +94,6 @@
                         android:layout_width="110dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:gravity="center_horizontal"
                         android:hint="双击输入"
                         android:inputType="none" />
                 </LinearLayout>
@@ -116,8 +113,7 @@
                         android:id="@+id/edt_rate_of_emergence"
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:gravity="center_horizontal" />
+                        android:layout_marginLeft="5dp"/>
                 </LinearLayout>
 
             </LinearLayout>

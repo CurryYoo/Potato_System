@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/shape_gray_border"
+    android:background="@color/white"
     android:orientation="horizontal">
 
     <!--<TextView-->
@@ -21,66 +21,66 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1."/>
+
 
         <EditText
             android:id="@+id/yield_monitoring_of_small_plant1"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
+            android:layout_marginTop="@dimen/dp_20"
+            style="@style/style_item_basicinfo_edittext" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/actionsheet_gray"
+            android:layout_marginStart="5dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3."/>
 
         <EditText
             android:id="@+id/yield_monitoring_of_small_plant3"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
+            android:layout_marginTop="@dimen/dp_20"
+            style="@style/style_item_basicinfo_edittext" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/actionsheet_gray"
+            android:layout_marginStart="5dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="5."/>
 
         <EditText
             android:id="@+id/yield_monitoring_of_small_plant5"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
+            android:layout_marginTop="@dimen/dp_20"
+            style="@style/style_item_basicinfo_edittext" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/actionsheet_gray"
+            android:layout_marginStart="5dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="7."/>
 
         <EditText
             android:id="@+id/yield_monitoring_of_small_plant7"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
+            android:layout_marginTop="@dimen/dp_20"
+            style="@style/style_item_basicinfo_edittext" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/actionsheet_gray"
+            android:layout_marginStart="5dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="9."/>
 
         <EditText
             android:id="@+id/yield_monitoring_of_small_plant9"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
-
+            android:layout_marginTop="@dimen/dp_20"
+            style="@style/style_item_basicinfo_edittext" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/actionsheet_gray"
+            android:layout_marginStart="5dp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -88,66 +88,62 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2."/>
-
         <EditText
             android:id="@+id/yield_monitoring_of_small_plant2"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4."/>
+            android:layout_marginTop="@dimen/dp_20"
+            style="@style/style_item_basicinfo_edittext"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/actionsheet_gray"
+            android:layout_marginStart="5dp"/>
 
         <EditText
             android:id="@+id/yield_monitoring_of_small_plant4"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
+            android:layout_marginTop="@dimen/dp_20"
+            style="@style/style_item_basicinfo_edittext" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/actionsheet_gray"
+            android:layout_marginStart="5dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="6."/>
 
         <EditText
             android:id="@+id/yield_monitoring_of_small_plant6"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="8."/>
+            android:layout_marginTop="@dimen/dp_20"
+            style="@style/style_item_basicinfo_edittext"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/actionsheet_gray"
+            android:layout_marginStart="5dp"/>
 
         <EditText
             android:id="@+id/yield_monitoring_of_small_plant8"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
+            android:layout_marginTop="@dimen/dp_20"
+            style="@style/style_item_basicinfo_edittext" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/actionsheet_gray"
+            android:layout_marginStart="5dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="10."/>
 
         <EditText
             android:id="@+id/yield_monitoring_of_small_plant10"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
-
+            android:layout_marginTop="@dimen/dp_20"
+            style="@style/style_item_basicinfo_edittext" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/actionsheet_gray"
+            android:layout_marginStart="5dp"/>
     </LinearLayout>
 
 </LinearLayout>

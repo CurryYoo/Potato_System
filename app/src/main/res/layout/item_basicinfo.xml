@@ -2,364 +2,501 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/shape_gray_border"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/style_item_basicinfo_textview"
             android:text="1-品种ID" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <EditText
             android:id="@+id/edt_species_id"
-            android:layout_width="230dp"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_marginLeft="5dp"/>
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="match_parent"/>
         <!--android:hint="每次提交请输入不同的数字"-->
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="实验类型" />
+            style="@style/style_item_basicinfo_textview"
+            android:text="2-实验类型" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <EditText
             android:id="@+id/edt_experiment_type"
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="match_parent" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/style_item_basicinfo_textview"
             android:text="2-播种期" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <EditText
             android:id="@+id/sowing_period_input"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="match_parent"
             android:hint="双击输入"
             android:inputType="none" />
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3-出苗期" />
-
-            <EditText
-                android:id="@+id/emergence_period"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:gravity="center_horizontal"
-                android:hint="双击输入"
-                android:inputType="none" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="4-出苗率(%)" />
-
-            <EditText
-                android:id="@+id/edt_rate_of_emergence"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:gravity="center_horizontal" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:layout_marginTop="4dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
+            style="@style/style_item_basicinfo_textview"
+            android:text="3-出苗期" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
+
+        <EditText
+            android:id="@+id/emergence_period"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="match_parent"
+            android:hint="双击输入"
+            android:inputType="none" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/style_item_basicinfo_textview"
+            android:text="4-出苗率(%)" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
+
+        <EditText
+            android:id="@+id/edt_rate_of_emergence"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="match_parent" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/style_item_basicinfo_textview"
+            android:text="5-现蕾期" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
+
+        <EditText
+            android:id="@+id/squaring_period"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="match_parent"
+            android:hint="双击输入"
+            android:inputType="none" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/style_item_basicinfo_textview"
+            android:text="6-开花期" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
+
+        <EditText
+            android:id="@+id/flowering_period"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="match_parent"
+            android:hint="双击输入"
+            android:inputType="none" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/style_item_basicinfo_textview"
             android:text="7-叶颜色" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <Spinner
             android:id="@+id/spn_colors"
-            android:layout_width="100dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="15dp"
             android:entries="@array/colors"
-            android:gravity="center_horizontal"></Spinner>
+            android:gravity="center_horizontal"
+            android:textSize="15sp" />
 
 
         <ImageButton
             android:id="@+id/imb_colors"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="@dimen/dp_40"
             android:src="@android:drawable/ic_menu_camera" />
 
         <Button
             android:id="@+id/btn_select_from_album_colors"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="相册" />
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="40dp"
+            android:stateListAnimator="@null"
+            android:text="相册"
+            android:textSize="15sp" />
 
         <ImageView
             android:id="@+id/imv_colors"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical" />
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="horizontal">
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="5-现蕾期" />
-
-        <EditText
-            android:id="@+id/squaring_period"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal"
-            android:hint="双击输入"
-            android:inputType="none" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="6-开花期" />
-
-        <EditText
-            android:id="@+id/flowering_period"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal"
-            android:hint="双击输入"
-            android:inputType="none" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
+            style="@style/style_item_basicinfo_textview"
             android:text="8-花冠色" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <Spinner
             android:id="@+id/corolla_colors"
-            android:layout_width="100dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="15dp"
             android:entries="@array/corolla_colors"
-            android:gravity="center_horizontal"></Spinner>
+            android:gravity="center_horizontal"
+            android:textSize="15sp" />
 
         <ImageButton
             android:id="@+id/imb_corolla_colors"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_40"
             android:src="@android:drawable/ic_menu_camera" />
 
         <Button
             android:id="@+id/btn_select_from_album_corolla_colors"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="相册" />
+            android:layout_width="60dp"
+            android:layout_height="@dimen/dp_40"
+            android:stateListAnimator="@null"
+            android:text="相册"
+            android:textSize="15sp" />
 
         <ImageView
             android:id="@+id/imv_corolla_colors"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical" />
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
+
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical">
 
         <TextView
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
+            style="@style/style_item_basicinfo_textview"
             android:text="9-花繁茂性" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <Spinner
             android:id="@+id/plant_flourish"
-            android:layout_width="100dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="15dp"
             android:entries="@array/plant_flourish"
-            android:gravity="center_horizontal"></Spinner>
+            android:gravity="center_horizontal"
+            android:textSize="15sp" />
 
         <ImageButton
             android:id="@+id/imb_plant_flourish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="40dp"
             android:src="@android:drawable/ic_menu_camera" />
 
         <Button
             android:id="@+id/btn_select_from_album_plant_flourish"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="相册" />
+            android:layout_width="60dp"
+            android:layout_height="@dimen/dp_40"
+            android:stateListAnimator="@null"
+            android:text="相册"
+            android:textSize="15sp" />
 
         <ImageView
             android:id="@+id/imv_plant_flourish"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
+
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
+            style="@style/style_item_basicinfo_textview"
             android:text="10-茎色" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <Spinner
             android:id="@+id/stem_color"
-            android:layout_width="100dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="15dp"
             android:entries="@array/stem_colors"
-            android:gravity="center_horizontal"></Spinner>
+            android:gravity="center_horizontal"
+            android:textSize="15sp" />
 
         <ImageButton
             android:id="@+id/imb_stem_color"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="@dimen/dp_40"
             android:src="@android:drawable/ic_menu_camera" />
 
         <Button
             android:id="@+id/btn_select_from_album_stem_color"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:stateListAnimator="@null"
             android:text="相册" />
 
         <ImageView
             android:id="@+id/imv_stem_color"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            style="@style/style_item_basicinfo_textview"
             android:text="11-天然结实性" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <Spinner
             android:id="@+id/natural_fecundity"
-            android:layout_width="100dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="15dp"
             android:entries="@array/natural_fecundity_arr"
-            android:gravity="center_horizontal"></Spinner>
+            android:gravity="center_horizontal"
+            android:textSize="15sp" />
 
         <ImageButton
             android:id="@+id/imb_natural_fecundity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="@dimen/dp_40"
             android:src="@android:drawable/ic_menu_camera" />
 
         <Button
             android:id="@+id/btn_select_from_album_natural_fecundity"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="相册" />
+            android:layout_width="60dp"
+            android:layout_height="@dimen/dp_40"
+            android:stateListAnimator="@null"
+            android:text="相册"
+            android:textSize="15sp" />
 
         <ImageView
             android:id="@+id/imv_natural_fecundity"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/style_item_basicinfo_textview"
             android:text="12-成熟期" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <EditText
             android:id="@+id/mature_period"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="match_parent"
             android:hint="双击输入"
             android:inputType="none" />
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
     <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -380,45 +517,63 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/style_item_basicinfo_textview"
             android:text="13-生育日数" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <EditText
             android:id="@+id/growing_days"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:focusable="false"
-            android:gravity="center_horizontal" />
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="80dp"
+            android:focusable="false" />
 
         <Button
             android:id="@+id/btn_compute_growing_days"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="计算" />
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:stateListAnimator="@null"
+            android:text="计算"
+            android:textSize="15sp" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/style_item_basicinfo_textview"
             android:text="14-块茎整齐度" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <Spinner
             android:id="@+id/tuber_uniformity"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="15dp"
             android:entries="@array/tuber_uniformity_arr"
-            android:gravity="center_horizontal"></Spinner>
+            android:gravity="center_horizontal"
+            android:textSize="15sp" />
         <!--
         <ImageButton
             android:id="@+id/imb_tuber_uniformity"
@@ -432,23 +587,35 @@
             android:layout_height="50dp" />-->
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/style_item_basicinfo_textview"
             android:text="15-薯型" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <Spinner
             android:id="@+id/tuber_shape"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="15dp"
             android:entries="@array/potato_types"
-            android:gravity="center_horizontal"></Spinner>
+            android:gravity="center_horizontal"
+            android:textSize="15sp" />
         <!--
         <ImageButton
             android:id="@+id/imb_tuber_shape"
@@ -462,23 +629,35 @@
             android:layout_height="50dp" />-->
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/style_item_basicinfo_textview"
             android:text="16-薯皮光滑度" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <Spinner
             android:id="@+id/potato_skin_smoothness"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="15dp"
             android:entries="@array/potato_skin_smoothness_arr"
-            android:gravity="center_horizontal"></Spinner>
+            android:gravity="center_horizontal"
+            android:textSize="15sp" />
         <!--
         <ImageButton
             android:id="@+id/imb_potato_skin_smoothness"
@@ -492,23 +671,35 @@
             android:layout_height="50dp" />-->
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/style_item_basicinfo_textview"
             android:text="17-芽眼深浅" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <Spinner
             android:id="@+id/eye"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="15dp"
             android:entries="@array/eye_arr"
-            android:gravity="center_horizontal"></Spinner>
+            android:gravity="center_horizontal"
+            android:textSize="15sp" />
         <!--
         <ImageButton
             android:id="@+id/imb_eye"
@@ -522,23 +713,35 @@
             android:layout_height="50dp" />-->
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/style_item_basicinfo_textview"
             android:text="18-皮色" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <Spinner
             android:id="@+id/skin_color"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="15dp"
             android:entries="@array/skin_colors"
-            android:gravity="center_horizontal"></Spinner>
+            android:gravity="center_horizontal"
+            android:textSize="15sp" />
         <!--
         <ImageButton
             android:id="@+id/imb_skin_color"
@@ -552,23 +755,35 @@
             android:layout_height="50dp" />-->
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/style_item_basicinfo_textview"
             android:text="19-肉色" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <Spinner
             android:id="@+id/flesh_color"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="15dp"
             android:entries="@array/flesh_colors"
-            android:gravity="center_horizontal"></Spinner>
+            android:gravity="center_horizontal"
+            android:textSize="15sp" />
         <!--
         <ImageButton
             android:id="@+id/imb_flesh_color"
@@ -582,22 +797,32 @@
             android:layout_height="50dp" />-->
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="20-是否入选"
-            android:textSize="15sp" />
+            style="@style/style_item_basicinfo_textview"
+            android:text="20-是否入选" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <RadioGroup
             android:id="@+id/whether_to_be_included"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="15dp"
             android:orientation="horizontal">
 
             <RadioButton
@@ -605,241 +830,345 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="是" />
+                android:text="是"
+                android:textSize="15sp" />
 
             <RadioButton
                 android:id="@+id/no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="否" />
+                android:text="否"
+                android:textSize="15sp" />
         </RadioGroup>
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/style_item_basicinfo_textview"
             android:text="21-备注" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <EditText
             android:id="@+id/remark"
+            style="@style/style_item_basicinfo_edittext"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal" />
+            android:layout_weight="1" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/style_item_basicinfo_textview"
             android:text="22-收获株数" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <EditText
             android:id="@+id/num_of_harvested_plants"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="match_parent" />
     </LinearLayout>
 
-    <LinearLayout
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="23-大中薯数" />
-
-            <EditText
-                android:id="@+id/num_of_large_and_medium_potatoes"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:gravity="center_horizontal" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="24-大中薯重(0.00kg)" />
-
-            <EditText
-                android:id="@+id/weight_of_large_and_medium_potatoes"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:gravity="center_horizontal" />
-        </LinearLayout>
-    </LinearLayout>
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="25-小薯数" />
-
-            <EditText
-                android:id="@+id/num_of_small_potatoes"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:gravity="center_horizontal" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="26-小薯重(0.00kg)" />
-
-            <EditText
-                android:id="@+id/weight_of_small_potatoes"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:gravity="center_horizontal" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/style_item_basicinfo_textview"
+            android:layout_width="160dp"
+            android:text="23-大中薯数" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
+
+        <EditText
+            android:id="@+id/num_of_large_and_medium_potatoes"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="match_parent" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/style_item_basicinfo_textview"
+            android:layout_width="160dp"
+            android:text="24-大中薯重(0.00kg)" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
+
+        <EditText
+            android:id="@+id/weight_of_large_and_medium_potatoes"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="match_parent" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/style_item_basicinfo_textview"
+            android:layout_width="160dp"
+            android:text="25-小薯数" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
+
+        <EditText
+            android:id="@+id/num_of_small_potatoes"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="match_parent" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/style_item_basicinfo_textview"
+            android:layout_width="160dp"
+            android:text="26-小薯重(0.00kg)" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
+
+        <EditText
+            android:id="@+id/weight_of_small_potatoes"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="match_parent" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/style_item_basicinfo_textview"
+            android:layout_width="160dp"
             android:text="27-商品薯率(%)" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <EditText
             android:id="@+id/rate_of_economic_potato"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:focusable="false"
-            android:gravity="center_horizontal" />
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="100dp"
+            android:focusable="false" />
 
         <Button
             android:id="@+id/btn_compute_rate_of_economic_potato"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="计算" />
+            android:layout_width="60dp"
+            android:layout_height="@dimen/dp_40"
+            android:stateListAnimator="@null"
+            android:text="计算"
+            android:textSize="15sp" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/style_item_basicinfo_textview"
+            android:layout_width="160dp"
             android:text="28-小区产量1(0.00kg)" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <EditText
             android:id="@+id/small_section_yield1"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="match_parent" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/style_item_basicinfo_textview"
+            android:layout_width="160dp"
             android:text="29-小区产量2(0.00kg)" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <EditText
             android:id="@+id/small_section_yield2"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="match_parent" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/style_item_basicinfo_textview"
+            android:layout_width="160dp"
             android:text="30-小区产量3(0.00kg)" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <EditText
             android:id="@+id/small_section_yield3"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="match_parent" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/style_item_basicinfo_textview"
+            android:layout_width="160dp"
             android:text="31-亩产量(0.00kg)" />
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_devider" />
 
         <EditText
             android:id="@+id/per_mu_yield"
+            style="@style/style_item_basicinfo_edittext"
             android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:focusable="false"
-            android:gravity="center_horizontal" />
+            android:focusable="false" />
 
         <Button
             android:id="@+id/btn_compute_average_per_mu_yield"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="计算" />
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="40dp"
+            android:stateListAnimator="@null"
+            android:text="计算"
+            android:textSize="15sp" />
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/actionsheet_gray" />
 </LinearLayout>

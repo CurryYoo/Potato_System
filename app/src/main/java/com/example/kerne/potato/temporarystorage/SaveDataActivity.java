@@ -269,6 +269,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         //品种Id
         edtSpeciesID = (EditText) findViewById(R.id.edt_species_id);
         edtSpeciesID.setText(speciesId);
+        edtSpeciesID.setSelection(speciesId.length());
 
         //实验类型
         edtExperimentType = (EditText) findViewById(R.id.edt_experiment_type);
@@ -511,8 +512,8 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         edtYieldMonitoringOfSmallPotato9 = (EditText) findViewById(R.id.yield_monitoring_of_small_plant9);
         edtYieldMonitoringOfSmallPotato10 = (EditText) findViewById(R.id.yield_monitoring_of_small_plant10);
         //暂存监听
-        Button btnSaveOffline = (Button) findViewById(R.id.save_offline);
-        btnSaveOffline.setOnClickListener(this);
+//        Button btnSaveOffline = (Button) findViewById(R.id.save_offline);
+//        btnSaveOffline.setOnClickListener(this);
 //        //更新监听
 //        Button btnUpdateOffline = (Button) findViewById(R.id.update_offline);
 //        btnUpdateOffline.setOnClickListener(this);
@@ -935,10 +936,10 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
         switch (v.getId()) {
             //将数据暂存到本地
-            case R.id.save_offline:
-//                savaDataLocally();
-                updateDataLocally();
-                break;
+//            case R.id.save_offline:
+////                savaDataLocally();
+//                updateDataLocally();
+//                break;
 //            //更新本地暂存的数据
 //            case R.id.update_offline:
 //                updateDataLocally();
