@@ -20,7 +20,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Item 点击对应的 Adapter

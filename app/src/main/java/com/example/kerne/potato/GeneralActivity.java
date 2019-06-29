@@ -47,6 +47,7 @@ public class GeneralActivity extends AppCompatActivity {
     private String farmlandId = null;
     private int length;  //试验田的长
     private int width;  //试验田的宽
+    private String type;
     private int year;
     private String userRole;
     private int flag = 0;
@@ -95,6 +96,7 @@ public class GeneralActivity extends AppCompatActivity {
         farmlandId = getIntent().getStringExtra("farmlandId");
         length = getIntent().getIntExtra("length", 0);
         width = getIntent().getIntExtra("width", 0);
+        type = getIntent().getStringExtra("type");
 //        year = getIntent().getIntExtra("year", 0);
 
         //获取权限角色
@@ -312,6 +314,7 @@ public class GeneralActivity extends AppCompatActivity {
                                         intent.putExtra("fieldId", fieldId);
                                         intent.putExtra("expType", expType);
                                         intent.putExtra("farmlandId", farmlandId);
+                                        intent.putExtra("type", type);
 //                                        intent.putExtra("userRole", userRole);
                                         startActivity(intent);
                                     }
@@ -322,6 +325,7 @@ public class GeneralActivity extends AppCompatActivity {
                                         intent.putExtra("fieldId", fieldId);
                                         intent.putExtra("expType", expType);
                                         intent.putExtra("farmlandId", farmlandId);
+                                        intent.putExtra("type", type);
 //                                        intent.putExtra("userRole", userRole);
                                         startActivity(intent);
 //                                        Toast.makeText(mContext, "删除farmlandId " + farmlandId, Toast.LENGTH_SHORT).show();
