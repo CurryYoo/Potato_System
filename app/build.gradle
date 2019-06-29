@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.kerne.potato"
-        minSdkVersion 15
+        minSdkVersion 22
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"

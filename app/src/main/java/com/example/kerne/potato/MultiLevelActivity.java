@@ -3,6 +3,7 @@ package com.example.kerne.potato;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -17,15 +18,12 @@ import android.widget.Toast;
 
 import com.example.kerne.potato.complextable.widget.multilevellist.TreeAdapter;
 import com.example.kerne.potato.complextable.widget.multilevellist.TreePoint;
-import com.example.kerne.potato.complextable.widget.multilevellist.TreeUtils;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -58,12 +56,20 @@ public class MultiLevelActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
         et_filter = findViewById(R.id.et_filter);
 
-        getData();
-        try {
-            initData();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Looper.prepare();
+                getData();
+                try {
+                    initData();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Looper.loop();
+            }
+        }).start();
+
 
     }
 
@@ -225,9 +231,9 @@ public class MultiLevelActivity extends AppCompatActivity {
                 }
             }
         }
-        //打乱集合中的数据
-        Collections.shuffle(pointList);
-        //对集合中的数据重新排序
+//        //打乱集合中的数据
+//        Collections.shuffle(pointList);
+//        //对集合中的数据重新排序
         updateData();
     }
 
@@ -272,38 +278,39 @@ public class MultiLevelActivity extends AppCompatActivity {
         for (TreePoint treePoint : pointList) {
             pointMap.put(treePoint.getID(), treePoint);
         }
-        Collections.sort(pointList, new Comparator<TreePoint>() {
-            @Override
-            public int compare(TreePoint lhs, TreePoint rhs) {
-                int llevel = TreeUtils.getLevel(lhs, pointMap);
-                int rlevel = TreeUtils.getLevel(rhs, pointMap);
-                if (llevel == rlevel) {
-                    if (lhs.getPARENTID().equals(rhs.getPARENTID())) {  //左边小
-                        return lhs.getDISPLAY_ORDER() > rhs.getDISPLAY_ORDER() ? 1 : -1;
-                    } else {  //如果父辈id不相等
-                        //同一级别，不同父辈
-                        TreePoint ltreePoint = TreeUtils.getTreePoint(lhs.getPARENTID(), pointMap);
-                        TreePoint rtreePoint = TreeUtils.getTreePoint(rhs.getPARENTID(), pointMap);
-                        return compare(ltreePoint, rtreePoint);  //父辈
-                    }
-                } else {  //不同级别
-                    if (llevel > rlevel) {   //左边级别大       左边小
-                        if (lhs.getPARENTID().equals(rhs.getID())) {
-                            return 1;
-                        } else {
-                            TreePoint lreasonTreePoint = TreeUtils.getTreePoint(lhs.getPARENTID(), pointMap);
-                            return compare(lreasonTreePoint, rhs);
-                        }
-                    } else {   //右边级别大   右边小
-                        if (rhs.getPARENTID().equals(lhs.getID())) {
-                            return -1;
-                        }
-                        TreePoint rreasonTreePoint = TreeUtils.getTreePoint(rhs.getPARENTID(), pointMap);
-                        return compare(lhs, rreasonTreePoint);
-                    }
-                }
-            }
-        });
+        /*数据排序易产生bug，在此删除*/
+//        Collections.sort(pointList, new Comparator<TreePoint>() {
+//            @Override
+//            public int compare(TreePoint lhs, TreePoint rhs) {
+//                int llevel = TreeUtils.getLevel(lhs, pointMap);
+//                int rlevel = TreeUtils.getLevel(rhs, pointMap);
+//                if (llevel == rlevel) {
+//                    if (lhs.getPARENTID().equals(rhs.getPARENTID())) {  //左边小
+//                        return lhs.getDISPLAY_ORDER() > rhs.getDISPLAY_ORDER() ? 1 : -1;
+//                    } else {  //如果父辈id不相等
+//                        //同一级别，不同父辈
+//                        TreePoint ltreePoint = TreeUtils.getTreePoint(lhs.getPARENTID(), pointMap);
+//                        TreePoint rtreePoint = TreeUtils.getTreePoint(rhs.getPARENTID(), pointMap);
+//                        return compare(ltreePoint, rtreePoint);  //父辈
+//                    }
+//                } else {  //不同级别
+//                    if (llevel > rlevel) {   //左边级别大       左边小
+//                        if (lhs.getPARENTID().equals(rhs.getID())) {
+//                            return 1;
+//                        } else {
+//                            TreePoint lreasonTreePoint = TreeUtils.getTreePoint(lhs.getPARENTID(), pointMap);
+//                            return compare(lreasonTreePoint, rhs);
+//                        }
+//                    } else {   //右边级别大   右边小
+//                        if (rhs.getPARENTID().equals(lhs.getID())) {
+//                            return -1;
+//                        }
+//                        TreePoint rreasonTreePoint = TreeUtils.getTreePoint(rhs.getPARENTID(), pointMap);
+//                        return compare(lhs, rreasonTreePoint);
+//                    }
+//                }
+//            }
+//        });
         adapter.notifyDataSetChanged();
     }
 

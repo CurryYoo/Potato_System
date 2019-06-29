@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
@@ -32,10 +33,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //    private static final String URL = "file:///android_asset/www/index.html";
 //    private static final String URL = "file:///android_asset/vue/index.html";
     WebView webView = null;
-    Button btn_general;
-    Button btn_download;
-    Button btn_data;
-    Button btn_mutlilevel;
+    LinearLayout btn_general;
+    LinearLayout btn_download;
+    LinearLayout btn_data;
+    LinearLayout btn_mutlilevel;
 //    Button btn_farmland;
 //    Button btn_shot;
 //    Button btn_field;
@@ -122,16 +123,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
-        btn_download = (Button) findViewById(R.id.btn_download);
+        btn_download = findViewById(R.id.btn_download);
         btn_download.setOnClickListener(this);
 
-        btn_general = (Button) findViewById(R.id.btn_general);
+        btn_general = findViewById(R.id.btn_general);
         btn_general.setOnClickListener(this);
 
         btn_mutlilevel=findViewById(R.id.btn_mutlilevel);
         btn_mutlilevel.setOnClickListener(this);
 
-        btn_data = (Button) findViewById(R.id.btn_data);
+        btn_data = findViewById(R.id.btn_data);
         btn_data.setOnClickListener(this);
 
         dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);

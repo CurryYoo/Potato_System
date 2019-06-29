@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/shape_gray_border"
+    android:background="@color/white"
     android:orientation="horizontal">
 
     <!--<TextView-->
@@ -22,66 +22,75 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1."/>
 
         <EditText
             android:id="@+id/yield_monitoring_of_ten_plant1"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_marginTop="@dimen/dp_20"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
+            android:inputType="number"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3."/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginStart="5dp"
+            android:background="@color/actionsheet_gray" />
+
 
         <EditText
             android:id="@+id/yield_monitoring_of_ten_plant3"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_marginTop="@dimen/dp_20"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
+            android:inputType="number"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="5."/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginStart="5dp"
+            android:background="@color/actionsheet_gray" />
+
 
         <EditText
             android:id="@+id/yield_monitoring_of_ten_plant5"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_marginTop="@dimen/dp_20"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
+            android:inputType="number" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="7."/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginStart="5dp"
+            android:background="@color/actionsheet_gray" />
+
 
         <EditText
             android:id="@+id/yield_monitoring_of_ten_plant7"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_marginTop="@dimen/dp_20"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
+            android:inputType="number"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="9."/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginStart="5dp"
+            android:background="@color/actionsheet_gray" />
+
 
         <EditText
             android:id="@+id/yield_monitoring_of_ten_plant9"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_marginTop="@dimen/dp_20"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
+            android:inputType="number" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginStart="5dp"
+            android:background="@color/actionsheet_gray" />
     </LinearLayout>
 
     <LinearLayout
@@ -89,66 +98,75 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2."/>
 
         <EditText
             android:id="@+id/yield_monitoring_of_ten_plant2"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_marginTop="@dimen/dp_20"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
+            android:inputType="number" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4."/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginStart="5dp"
+            android:background="@color/actionsheet_gray" />
+
 
         <EditText
             android:id="@+id/yield_monitoring_of_ten_plant4"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_marginTop="@dimen/dp_20"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
+            android:inputType="number" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="6."/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginStart="5dp"
+            android:background="@color/actionsheet_gray" />
+
 
         <EditText
             android:id="@+id/yield_monitoring_of_ten_plant6"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_marginTop="@dimen/dp_20"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
+            android:inputType="number" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="8."/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginStart="5dp"
+            android:background="@color/actionsheet_gray" />
+
 
         <EditText
             android:id="@+id/yield_monitoring_of_ten_plant8"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_marginTop="@dimen/dp_20"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
+            android:inputType="number"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="10."/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginStart="5dp"
+            android:background="@color/actionsheet_gray" />
+
 
         <EditText
             android:id="@+id/yield_monitoring_of_ten_plant10"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_marginTop="@dimen/dp_20"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
+            android:inputType="number" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:layout_marginStart="5dp"
+            android:background="@color/actionsheet_gray" />
     </LinearLayout>
 
 </LinearLayout>
