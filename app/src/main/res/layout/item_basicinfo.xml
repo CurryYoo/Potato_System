@@ -144,7 +144,8 @@
         <EditText
             android:id="@+id/edt_rate_of_emergence"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="match_parent" />
+            android:layout_width="match_parent"
+            android:inputType="number"/>
     </LinearLayout>
 
     <View
@@ -534,7 +535,8 @@
             android:id="@+id/growing_days"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="80dp"
-            android:focusable="false" />
+            android:focusable="false"
+            android:inputType="number"/>
 
         <Button
             android:id="@+id/btn_compute_growing_days"
@@ -894,7 +896,8 @@
         <EditText
             android:id="@+id/num_of_harvested_plants"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="match_parent" />
+            android:layout_width="match_parent"
+            android:inputType="number" />
     </LinearLayout>
 
     <View
@@ -922,7 +925,8 @@
         <EditText
             android:id="@+id/num_of_large_and_medium_potatoes"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="match_parent" />
+            android:layout_width="match_parent"
+            android:inputType="number" />
     </LinearLayout>
 
     <View
@@ -950,7 +954,8 @@
         <EditText
             android:id="@+id/weight_of_large_and_medium_potatoes"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="match_parent" />
+            android:layout_width="match_parent"
+            android:inputType="number" />
     </LinearLayout>
 
     <View
@@ -978,7 +983,8 @@
         <EditText
             android:id="@+id/num_of_small_potatoes"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="match_parent" />
+            android:layout_width="match_parent"
+            android:inputType="number"/>
     </LinearLayout>
 
     <View
@@ -1006,7 +1012,8 @@
         <EditText
             android:id="@+id/weight_of_small_potatoes"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="match_parent" />
+            android:layout_width="match_parent"
+            android:inputType="number" />
     </LinearLayout>
 
     <View
@@ -1035,7 +1042,8 @@
             android:id="@+id/rate_of_economic_potato"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="100dp"
-            android:focusable="false" />
+            android:focusable="false"
+            android:inputType="number"/>
 
         <Button
             android:id="@+id/btn_compute_rate_of_economic_potato"
@@ -1071,7 +1079,8 @@
         <EditText
             android:id="@+id/small_section_yield1"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="match_parent" />
+            android:layout_width="match_parent"
+            android:inputType="number" />
     </LinearLayout>
 
     <View
@@ -1099,7 +1108,8 @@
         <EditText
             android:id="@+id/small_section_yield2"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="match_parent" />
+            android:layout_width="match_parent"
+            android:inputType="number" />
     </LinearLayout>
 
     <View
@@ -1127,7 +1137,8 @@
         <EditText
             android:id="@+id/small_section_yield3"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="match_parent" />
+            android:layout_width="match_parent"
+            android:inputType="number" />
     </LinearLayout>
 
     <View
@@ -1156,7 +1167,8 @@
             android:id="@+id/per_mu_yield"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="100dp"
-            android:focusable="false" />
+            android:focusable="false"
+            android:inputType="number"/>
 
         <Button
             android:id="@+id/btn_compute_average_per_mu_yield"

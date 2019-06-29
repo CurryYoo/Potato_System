@@ -27,7 +27,8 @@
             android:id="@+id/yield_monitoring_of_ten_plant1"
             style="@style/style_item_basicinfo_edittext"
             android:layout_marginTop="@dimen/dp_20"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number"/>
 
         <View
             android:layout_width="match_parent"
@@ -40,7 +41,8 @@
             android:id="@+id/yield_monitoring_of_ten_plant3"
             style="@style/style_item_basicinfo_edittext"
             android:layout_marginTop="@dimen/dp_20"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number"/>
 
         <View
             android:layout_width="match_parent"
@@ -53,7 +55,8 @@
             android:id="@+id/yield_monitoring_of_ten_plant5"
             style="@style/style_item_basicinfo_edittext"
             android:layout_marginTop="@dimen/dp_20"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number" />
 
         <View
             android:layout_width="match_parent"
@@ -66,7 +69,8 @@
             android:id="@+id/yield_monitoring_of_ten_plant7"
             style="@style/style_item_basicinfo_edittext"
             android:layout_marginTop="@dimen/dp_20"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number"/>
 
         <View
             android:layout_width="match_parent"
@@ -79,7 +83,8 @@
             android:id="@+id/yield_monitoring_of_ten_plant9"
             style="@style/style_item_basicinfo_edittext"
             android:layout_marginTop="@dimen/dp_20"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number" />
 
         <View
             android:layout_width="match_parent"
@@ -98,7 +103,8 @@
             android:id="@+id/yield_monitoring_of_ten_plant2"
             style="@style/style_item_basicinfo_edittext"
             android:layout_marginTop="@dimen/dp_20"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number" />
 
         <View
             android:layout_width="match_parent"
@@ -111,7 +117,8 @@
             android:id="@+id/yield_monitoring_of_ten_plant4"
             style="@style/style_item_basicinfo_edittext"
             android:layout_marginTop="@dimen/dp_20"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number" />
 
         <View
             android:layout_width="match_parent"
@@ -124,7 +131,8 @@
             android:id="@+id/yield_monitoring_of_ten_plant6"
             style="@style/style_item_basicinfo_edittext"
             android:layout_marginTop="@dimen/dp_20"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number" />
 
         <View
             android:layout_width="match_parent"
@@ -137,7 +145,8 @@
             android:id="@+id/yield_monitoring_of_ten_plant8"
             style="@style/style_item_basicinfo_edittext"
             android:layout_marginTop="@dimen/dp_20"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number"/>
 
         <View
             android:layout_width="match_parent"
@@ -150,7 +159,8 @@
             android:id="@+id/yield_monitoring_of_ten_plant10"
             style="@style/style_item_basicinfo_edittext"
             android:layout_marginTop="@dimen/dp_20"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number" />
 
         <View
             android:layout_width="match_parent"

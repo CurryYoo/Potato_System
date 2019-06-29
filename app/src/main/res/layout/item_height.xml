@@ -26,7 +26,8 @@
             android:id="@+id/ten_plant_height1"
             android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number"/>
 
         <View
             android:layout_width="match_parent"
@@ -39,7 +40,8 @@
             android:id="@+id/ten_plant_height3"
             android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number" />
 
         <View
             android:layout_width="match_parent"
@@ -53,7 +55,8 @@
             android:id="@+id/ten_plant_height5"
             android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number" />
 
         <View
             android:layout_width="match_parent"
@@ -67,7 +70,8 @@
             android:id="@+id/ten_plant_height7"
             android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number"/>
 
         <View
             android:layout_width="match_parent"
@@ -81,7 +85,8 @@
             android:id="@+id/ten_plant_height9"
             android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number" />
 
         <View
             android:layout_width="match_parent"
@@ -108,7 +113,8 @@
             <EditText
                 android:id="@+id/average_plant_height"
                 style="@style/style_item_basicinfo_edittext"
-                android:layout_width="150dp"/>
+                android:layout_width="150dp"
+                android:inputType="number"/>
 
             <View
                 android:layout_width="match_parent"
@@ -130,7 +136,8 @@
             android:id="@+id/ten_plant_height2"
             android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number"/>
 
         <View
             android:layout_width="match_parent"
@@ -143,7 +150,8 @@
             android:id="@+id/ten_plant_height4"
             android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number"/>
 
         <View
             android:layout_width="match_parent"
@@ -156,7 +164,8 @@
             android:id="@+id/ten_plant_height6"
             android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number" />
 
         <View
             android:layout_width="match_parent"
@@ -170,7 +179,8 @@
             android:id="@+id/ten_plant_height8"
             android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number"/>
 
         <View
             android:layout_width="match_parent"
@@ -184,7 +194,8 @@
             android:id="@+id/ten_plant_height10"
             android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number" />
 
         <View
             android:layout_width="match_parent"

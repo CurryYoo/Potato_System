@@ -3,6 +3,7 @@ package com.example.kerne.potato.complextable.widget.multilevellist;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.IntDef;
 import android.text.Html;
 import android.text.Spanned;
@@ -159,6 +160,7 @@ public class TreeAdapter extends BaseAdapter {
             holder.text = (TextView) convertView.findViewById(R.id.text);
             holder.icon = (ImageView) convertView.findViewById(R.id.icon);
 //            holder.ib_select = (ImageButton) convertView.findViewById(R.id.ib_select);
+//            holder.potato_icon = (ImageView) convertView.findViewById(R.id.potato_icon);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -176,6 +178,7 @@ public class TreeAdapter extends BaseAdapter {
             }
         } else {   //如果叶子节点，不占位显示
             holder.icon.setVisibility(View.INVISIBLE);
+//            holder.potato_icon.setVisibility(View.VISIBLE);
         }
 //        if (operateMode == ModeSelect) {
 ////            holder.ib_select.setVisibility(View.VISIBLE);
@@ -221,7 +224,7 @@ public class TreeAdapter extends BaseAdapter {
                 intent.putExtra("blockId", "test");
             }
             mcontext.startActivity(intent);
-            Toast.makeText(mcontext, "next--->" + treePoint.getJsonObject().getString("speciesId"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mcontext, "查看品种ID:" + treePoint.getJsonObject().getString("speciesId"), Toast.LENGTH_SHORT).show();
         } else {  //如果点击的是父类
             if (treePoint.isExpand()) {
                 for (TreePoint tempPoint : pointList) {
@@ -298,7 +301,8 @@ public class TreeAdapter extends BaseAdapter {
     class ViewHolder {
         TextView text;
         ImageView icon;
-        ImageButton ib_select;
+//        ImageButton ib_select;
+//        ImageView potato_icon;
     }
 
 }

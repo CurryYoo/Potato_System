@@ -27,7 +27,8 @@
             android:id="@+id/branch_num_of_ten_plant1"
             android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number" />
 
         <View
             android:layout_width="match_parent"
@@ -41,7 +42,8 @@
             android:id="@+id/branch_num_of_ten_plant3"
             android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number" />
 
         <View
             android:layout_width="match_parent"
@@ -55,7 +57,8 @@
             android:id="@+id/branch_num_of_ten_plant5"
             android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number" />
 
         <View
             android:layout_width="match_parent"
@@ -69,7 +72,8 @@
             android:id="@+id/branch_num_of_ten_plant7"
             android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number"/>
 
         <View
             android:layout_width="match_parent"
@@ -82,7 +86,8 @@
             android:id="@+id/branch_num_of_ten_plant9"
             android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number" />
 
         <View
             android:layout_width="match_parent"
@@ -108,7 +113,8 @@
             <EditText
                 android:id="@+id/average_branch_num"
                 style="@style/style_item_basicinfo_edittext"
-                android:layout_width="150dp"/>
+                android:layout_width="150dp"
+                android:inputType="number"/>
 
             <View
                 android:layout_width="match_parent"

@@ -38,6 +38,7 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kerne.potato.MainActivity;
 import com.example.kerne.potato.R;
 
 import java.io.File;
@@ -901,12 +902,6 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 //            case R.id.search:
 //                Toast.makeText(this, "Search item selected", Toast.LENGTH_SHORT).show();
 //                break;
-            case android.R.id.home:
-                this.finish();
-                break;
-//                Intent intent = new Intent(this, MainActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
             case R.id.save_off:
                 final AlertDialog.Builder saveDialog = new AlertDialog.Builder(SaveDataActivity.this);
 //                saveDialog.setIcon();
@@ -925,6 +920,10 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                     }
                 });
                 saveDialog.show();
+                break;
+            case R.id.back_home:
+                Intent intent=new Intent(this, MainActivity.class);
+                startActivity(intent);
                 break;
             default:
         }

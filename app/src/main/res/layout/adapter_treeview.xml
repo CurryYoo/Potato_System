@@ -6,8 +6,8 @@
     android:paddingRight="10dp"
     android:paddingLeft="10dp"
     android:descendantFocusability="blocksDescendants"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp">
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp">
 
     <ImageView
         android:id="@+id/icon"
@@ -15,7 +15,13 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         />
-
+    <!--<ImageView-->
+        <!--android:id="@+id/potato_icon"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:layout_toRightOf="@id/icon"-->
+        <!--android:src="@drawable/potato"-->
+        <!--android:visibility="gone"/>-->
     <TextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
@@ -25,7 +31,7 @@
         android:gravity="center_vertical"
         android:text="123"
         android:textColor="#ff595c61"
-        android:textSize="13sp" />
+        android:textSize="15sp" />
 
     <!--<ImageButton-->
         <!--android:id="@+id/ib_select"-->
