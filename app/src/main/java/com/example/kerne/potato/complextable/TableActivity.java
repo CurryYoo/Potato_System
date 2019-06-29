@@ -14,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,7 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kerne.potato.R;
-import com.example.kerne.potato.SpeciesClickActivity;
 import com.example.kerne.potato.complextable.base.RefreshParams;
 import com.example.kerne.potato.complextable.base.adapter.AbsCommonAdapter;
 import com.example.kerne.potato.complextable.base.adapter.AbsViewHolder;
@@ -42,15 +40,9 @@ import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xmlpull.v1.XmlSerializer;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.Writer;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 public class TableActivity extends AppCompatActivity {
@@ -113,73 +105,75 @@ public class TableActivity extends AppCompatActivity {
         String farmlandId;
         farmlandId = getIntent().getStringExtra("farmlandId");
 
-        try {
-//            fields_json = new JSONObject(getIntent().getStringExtra("fields_json"));
-//            maxRows = fields_json.getInt("rows");
-//            maxColumns = fields_json.getInt("columns");
-//            ids = fields_json.getJSONArray("ids");
-
-            Cursor cursor = db.query("ExperimentField", null, "farmlandId=? and expType=?",
-                    new String[]{farmlandId, expType}, null, null, "moveX");
-            maxColumns = cursor.getCount();
-            if (maxColumns >0){
-                cursor.moveToFirst();
-                for (int i = 0; i < maxColumns; i++){
-                    jsonArray.put(i, cursor.getString(cursor.getColumnIndex("id")));
-                    int num = cursor.getInt(cursor.getColumnIndex("num"));
-                    rows.put(i, num);
-                    maxRows = (num > maxRows ? num : maxRows);
-                    cursor.moveToNext();
+        if (type.equals("common")) {
+            try {
+                Cursor cursor = db.query("ExperimentField", null, "farmlandId=? and expType=?",
+                        new String[]{farmlandId, expType}, null, null, "moveX");
+                maxColumns = cursor.getCount();
+                if (maxColumns >0){
+                    cursor.moveToFirst();
+                    for (int i = 0; i < maxColumns; i++){
+                        jsonArray.put(i, cursor.getString(cursor.getColumnIndex("id")));
+                        int num = cursor.getInt(cursor.getColumnIndex("num"));
+                        rows.put(i, num);
+                        maxRows = (num > maxRows ? num : maxRows);
+                        cursor.moveToNext();
+                    }
                 }
+                cursor.close();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            Cursor cursor = db.query("LocalSpecies", null, null, null, null, null, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    speciesNames.add(cursor.getString(cursor.getColumnIndex("name")));
+                } while (cursor.moveToNext());
+            }
+            else {
+                Toast.makeText(TableActivity.this, "species null", Toast.LENGTH_SHORT).show();
             }
             cursor.close();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
-        Cursor cursor = db.query("LocalSpecies", null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
-            do {
-                speciesNames.add(cursor.getString(cursor.getColumnIndex("name")));
-            } while (cursor.moveToNext());
-        }
-        else {
-            Toast.makeText(TableActivity.this, "species null", Toast.LENGTH_SHORT).show();
-        }
-        cursor.close();
+            str = new String[maxRows][maxColumns];
 
-        str = new String[maxRows][maxColumns];
-
-        String sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
-                "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
-                "' and ExperimentField.farmlandId='" + farmlandId + "' order by ExperimentField.moveX";
-        Cursor cursor0 = db.rawQuery(sql, null);
-        if (cursor0.moveToFirst()) {
-            String fieldId = "";
-            int x = 0, y = 0;
-            int columns = 0;
-            fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
-            do {
-                if (!fieldId.equals(cursor0.getString(cursor0.getColumnIndex("id")))) {
-                    Log.d("columns,fieldId,id", columns + "," + fieldId + "," + cursor0.getString(cursor0.getColumnIndex("id")));
-                    columns++;
-                    fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
-                }
-                x = cursor0.getInt(cursor0.getColumnIndex("x")) + columns * 1 - 1; //从0开始
-                y = cursor0.getInt(cursor0.getColumnIndex("y")) - 1; //从0开始
-                str[y][x] = cursor0.getString(cursor0.getColumnIndex("speciesId"));
-                Log.d("x,y,str", x + "," + y + "," + str[y][x]);
-            } while (cursor0.moveToNext());
-        }
-        else {
+            String sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
+                    "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
+                    "' and ExperimentField.farmlandId='" + farmlandId + "' order by ExperimentField.moveX";
+            Cursor cursor0 = db.rawQuery(sql, null);
+            if (cursor0.moveToFirst()) {
+                String fieldId = "";
+                int x = 0, y = 0;
+                int columns = 0;
+                fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
+                do {
+                    if (!fieldId.equals(cursor0.getString(cursor0.getColumnIndex("id")))) {
+                        Log.d("columns,fieldId,id", columns + "," + fieldId + "," + cursor0.getString(cursor0.getColumnIndex("id")));
+                        columns++;
+                        fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
+                    }
+                    x = cursor0.getInt(cursor0.getColumnIndex("x")) + columns * 1 - 1; //从0开始
+                    y = cursor0.getInt(cursor0.getColumnIndex("y")) - 1; //从0开始
+                    str[y][x] = cursor0.getString(cursor0.getColumnIndex("speciesId"));
+                    Log.d("x,y,str", x + "," + y + "," + str[y][x]);
+                } while (cursor0.moveToNext());
+            }
+            else {
 //            List<ContentValues> contentValuesList = assembleData(str, STATUS_INIT);
 //            for(int i = 0; i < maxColumns; i++){
 //                db.insert("SpeciesSequence", null, contentValuesList.get(i));
 //            }
 //            Log.d("str_", "111");
 //            Toast.makeText(TableActivity.this, "创建成功", Toast.LENGTH_SHORT).show();
+            }
+            cursor0.close();
         }
-        cursor0.close();
+        else {
+            maxColumns = 2;
+            maxRows = 10;
+            str = new String[maxRows][maxColumns];
+        }
 
 //        Cursor cursor = db.query("SpeciesSequence", null, "fieldId=?",
 //                new String[]{fieldId}, null, null, "id");
@@ -697,6 +691,11 @@ public class TableActivity extends AppCompatActivity {
                 Toast.makeText(mContext, "请求json失败",Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
 }
