@@ -902,6 +902,12 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 //            case R.id.search:
 //                Toast.makeText(this, "Search item selected", Toast.LENGTH_SHORT).show();
 //                break;
+            case android.R.id.home:
+                this.finish();
+                break;
+//                Intent intent = new Intent(this, MainActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
             case R.id.save_off:
                 final AlertDialog.Builder saveDialog = new AlertDialog.Builder(SaveDataActivity.this);
 //                saveDialog.setIcon();
