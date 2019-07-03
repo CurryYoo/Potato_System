@@ -26,6 +26,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kerne.potato.MainActivity;
 import com.example.kerne.potato.R;
 import com.example.kerne.potato.complextable.base.RefreshParams;
 import com.example.kerne.potato.complextable.base.adapter.AbsCommonAdapter;
@@ -270,6 +271,10 @@ public class TableActivity extends AppCompatActivity {
                 Toast.makeText(TableActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
                 editor.putBoolean("update_location_data",true);
                 editor.apply();
+                break;
+            case R.id.back_home_seq:
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
                 break;
             default:
                 break;
