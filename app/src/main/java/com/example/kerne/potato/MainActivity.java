@@ -507,7 +507,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         qBadgeView_location = new QBadgeView(this);
         qBadgeView_pick = new QBadgeView(this);
-
+        
+        if (sp.getBoolean("update_pick_data", false)) {
+            badge_pick = new QBadgeView(this).bindTarget(btn_pick).setBadgeText("");
+        }
+        if (sp.getBoolean("update_location_data", false)) {
+            badge_location = new QBadgeView(this).bindTarget(btn_location).setBadgeText("");
+        }
         dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
 
 
