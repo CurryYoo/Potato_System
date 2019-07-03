@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -19,6 +20,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
+import com.example.kerne.potato.temporarystorage.Util;
 import com.hb.dialog.myDialog.MyAlertInputDialog;
 
 import org.json.JSONArray;
@@ -42,6 +44,7 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
 
     private String bigfarmId = null;
     private String img;
+    private String uri;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +55,7 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
 
         bigfarmId = getIntent().getStringExtra("bigfarmId");
         img = getIntent().getStringExtra("img");
+        uri = getIntent().getStringExtra("uri");
 
         initData();
 
@@ -62,7 +66,7 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
     public boolean onCreateOptionsMenu(Menu menu) {
         // 为ActionBar扩展菜单项
         MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.actions, menu);
+        inflater.inflate(R.menu.map, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -75,6 +79,9 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
 //                Intent intent = new Intent(this, MainActivity.class);
 //                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                startActivity(intent);
+            case R.id.map_bigfarm:
+                Util.watchLargePhoto(GeneralClickActivity.this, Uri.parse(uri));
+                break;
             default:
         }
         return true;

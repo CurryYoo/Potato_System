@@ -103,7 +103,9 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "name text,"
             + "description text,"
             + "img text,"
-            + "year integer)";
+            + "year integer,"
+            + "uri text"
+            + ")";
 
     public static final String CREATE_FARMLIST = "create table FarmList ("
             + "farmlandId text primary key,"

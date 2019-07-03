@@ -31,6 +31,7 @@ public class BigfarmClickAdapter extends RecyclerView.Adapter<BigfarmClickAdapte
     private String name;
     private String img;
     private int year;
+    private String uri;
 
     private String userRole;
 
@@ -82,6 +83,7 @@ public class BigfarmClickAdapter extends RecyclerView.Adapter<BigfarmClickAdapte
                     bigfarmId = jsonObject.getString("bigfarmId");
                     img = jsonObject.getString("img");
                     year = jsonObject.getInt("year");
+                    uri = jsonObject.getString("uri");
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -90,6 +92,7 @@ public class BigfarmClickAdapter extends RecyclerView.Adapter<BigfarmClickAdapte
                 intent.putExtra("bigfarmId", bigfarmId);
                 intent.putExtra("img", img);
                 intent.putExtra("year", year);
+                intent.putExtra("uri", uri);
                 mContext.startActivity(intent);
 
 //                //弹出输入年份的对话框

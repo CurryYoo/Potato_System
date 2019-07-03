@@ -1,6 +1,7 @@
 package com.example.kerne.potato;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -17,13 +18,17 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.okhttp.OkHttpClient;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,20 +39,26 @@ import java.util.Map;
  */
 
 public class HttpRequest {
-    private static String url = "http://120.78.130.251:9526/"; //数据库ip
-    private static String picUrl = "http://120.78.130.251:9527/"; //图片服务器ip
+    private static final String url = "http://120.78.130.251:9526/"; //数据库ip
+    private static final String picUrl = "http://120.78.130.251:9527/"; //上传图片ip
+    public static final String serverUrl = "http://cxk.nicesite.vip/"; //图片服务器url
     private static RequestQueue requestQueue;
 
-    public static void HttpRequest_bigfarm(final String name, Context context, final HttpCallback callback) {
+    public static void HttpRequest_bigfarm(final String name, final File cache, Context context, final HttpCallback callback) {
         requestQueue = Volley.newRequestQueue(context);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "getAllBigfarm", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("Bigfarm_Response", response);
+
                 try {
-                    callback.onSuccess(new JSONObject(response));
-                } catch (JSONException e){
+                    JSONObject jsonObject = new JSONObject(response);
+//                    JSONArray rows = jsonObject.getJSONArray("rows");
+//                    Uri uri = getImageURI(serverUrl + jsonObject.getString("img"), cache);
+//                    jsonObject.put("uri", uri);
+                    callback.onSuccess(jsonObject);
+                } catch (Exception e){
                     e.printStackTrace();
                 }
             }
@@ -83,6 +94,45 @@ public class HttpRequest {
 //        });
 
         requestQueue.add(stringRequest);
+    }
+
+    public static Uri getImageURI(String path, File cache) throws Exception {
+        String name = path.substring(path.lastIndexOf("."));
+        File file = new File(cache, name);
+        // 如果图片存在本地缓存目录，则不去服务器下载
+        if (file.exists()) {
+            return Uri.fromFile(file);//Uri.fromFile(path)这个方法能得到文件的URI
+        } else {
+            // 从网络上获取图片
+            java.net.URL url = new URL(path);
+//            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//            conn.setConnectTimeout(5000);
+//            conn.setRequestMethod("GET");
+//            conn.setDoInput(true);
+
+            OkHttpClient okHttpClient = new OkHttpClient();
+            com.squareup.okhttp.Request request = new com.squareup.okhttp.Request.Builder()
+                    .url(url)
+                    .build();
+            com.squareup.okhttp.Response response = okHttpClient.newCall(request).execute();
+
+            if (response.code() == 200) {
+
+//                InputStream is = conn.getInputStream();
+                InputStream is = response.body().byteStream();
+                FileOutputStream fos = new FileOutputStream(file);
+                byte[] buffer = new byte[1024];
+                int len = 0;
+                while ((len = is.read(buffer)) != -1) {
+                    fos.write(buffer, 0, len);
+                }
+                is.close();
+                fos.close();
+                // 返回一个URI对象
+                return Uri.fromFile(file);
+            }
+        }
+        return null;
     }
 
     //获取试验田列表

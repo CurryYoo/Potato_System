@@ -81,6 +81,7 @@ public class BigfarmClickActivity extends AppCompatActivity implements BigfarmCl
                     jsonObject0.put("description", cursor.getString(cursor.getColumnIndex("description")));
                     jsonObject0.put("img", cursor.getString(cursor.getColumnIndex("img")));
                     jsonObject0.put("year", cursor.getInt(cursor.getColumnIndex("year")));
+                    jsonObject0.put("uri", cursor.getString(cursor.getColumnIndex("uri")));
 
 //                    jsonObject0.put("userRole", userRole);
                     mList.add(jsonObject0);
