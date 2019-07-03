@@ -27,6 +27,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String URL = "http://10.0.2.2:9529";
@@ -65,6 +68,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int uploadSuccess_Num = 0;
 
     private String Fid[] = new String[5000];
+
+
+    private List<JSONObject> mBigFarmList = new ArrayList<>();
 
     private Handler uiHandler = new Handler(){
         @Override
@@ -776,8 +782,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btn_mutlilevel:
-                Intent intent_mutlilevel=new Intent(MainActivity.this,MultiLevelActivity.class);
+                //获取服务器中数据
+                SpeciesDBHelper db_Helper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
+                SQLiteDatabase db = db_Helper.getReadableDatabase();
+
+                //获取大田信息
+                Cursor cursor = db.query("BigfarmList", null, null, null, null, null, null);
+                if (cursor.moveToFirst()) {
+                    do {
+                        JSONObject jsonObject0 = new JSONObject();
+                        try {
+                            jsonObject0.put("bigfarmId", cursor.getString(cursor.getColumnIndex("bigfarmId")));
+                            jsonObject0.put("name", cursor.getString(cursor.getColumnIndex("name")));
+                            jsonObject0.put("description", cursor.getString(cursor.getColumnIndex("description")));
+                            jsonObject0.put("img", cursor.getString(cursor.getColumnIndex("img")));
+                            jsonObject0.put("year", cursor.getInt(cursor.getColumnIndex("year")));
+
+//                    jsonObject0.put("userRole", userRole);
+                            mBigFarmList.add(jsonObject0);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.e("bigfarmId_error", cursor.getString(cursor.getColumnIndex("bigfarmId")));
+                        }
+                    } while (cursor.moveToNext());
+                } else {
+                    Toast.makeText(MainActivity.this, "BigfarmList null", Toast.LENGTH_SHORT).show();
+                }
+                cursor.close();
+
+                db.close();
+                db_Helper.close();
+                if(mBigFarmList.size()==0){
+                    Toast.makeText(MainActivity.this, "数据为空，请下载数据后重试！", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                Intent intent_mutlilevel = new Intent(MainActivity.this, MultiLevelActivity.class);
                 startActivity(intent_mutlilevel);
+            }
                 break;
             case R.id.btn_data:
                 final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(MainActivity.this).builder()
