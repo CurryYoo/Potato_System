@@ -18,10 +18,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="1-品种ID" />
 
-        <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+        <View style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/edt_species_id"
@@ -31,9 +28,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,9 +42,7 @@
             android:text="2-实验类型" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/edt_experiment_type"
@@ -58,9 +51,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -76,9 +67,7 @@
             android:text="2-播种期" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/sowing_period_input"
@@ -89,9 +78,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -108,9 +95,7 @@
             android:text="3-出苗期" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/emergence_period"
@@ -121,9 +106,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -137,9 +120,7 @@
             android:text="4-出苗率(%)" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/edt_rate_of_emergence"
@@ -149,9 +130,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -167,9 +146,7 @@
             android:text="5-现蕾期" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/squaring_period"
@@ -180,9 +157,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -198,9 +173,7 @@
             android:text="6-开花期" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/flowering_period"
@@ -211,9 +184,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -227,9 +198,7 @@
             android:text="7-叶颜色" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <Spinner
             android:id="@+id/spn_colors"
@@ -264,9 +233,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -279,9 +246,7 @@
             android:text="8-花冠色" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <Spinner
             android:id="@+id/corolla_colors"
@@ -314,9 +279,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -329,9 +292,7 @@
             android:text="9-花繁茂性" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <Spinner
             android:id="@+id/plant_flourish"
@@ -363,9 +324,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -379,9 +338,7 @@
             android:text="10-茎色" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <Spinner
             android:id="@+id/stem_color"
@@ -413,9 +370,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -429,9 +384,7 @@
             android:text="11-天然结实性" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <Spinner
             android:id="@+id/natural_fecundity"
@@ -464,9 +417,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -482,9 +433,7 @@
             android:text="12-成熟期" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/mature_period"
@@ -495,9 +444,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
     <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -527,9 +474,7 @@
             android:text="13-生育日数" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/growing_days"
@@ -548,9 +493,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -564,9 +507,7 @@
             android:text="14-块茎整齐度" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <Spinner
             android:id="@+id/tuber_uniformity"
@@ -590,9 +531,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -606,9 +545,7 @@
             android:text="15-薯型" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <Spinner
             android:id="@+id/tuber_shape"
@@ -632,9 +569,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -648,9 +583,7 @@
             android:text="16-薯皮光滑度" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <Spinner
             android:id="@+id/potato_skin_smoothness"
@@ -674,9 +607,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -690,9 +621,7 @@
             android:text="17-芽眼深浅" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style"/>
 
         <Spinner
             android:id="@+id/eye"
@@ -716,9 +645,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -732,9 +659,7 @@
             android:text="18-皮色" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <Spinner
             android:id="@+id/skin_color"
@@ -758,9 +683,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -774,9 +697,7 @@
             android:text="19-肉色" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <Spinner
             android:id="@+id/flesh_color"
@@ -800,9 +721,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -816,9 +735,7 @@
             android:text="20-是否入选" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <RadioGroup
             android:id="@+id/whether_to_be_included"
@@ -845,9 +762,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -861,9 +776,7 @@
             android:text="21-备注" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/remark"
@@ -873,9 +786,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -889,9 +800,7 @@
             android:text="22-收获株数" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style"/>
 
         <EditText
             android:id="@+id/num_of_harvested_plants"
@@ -901,9 +810,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -918,9 +825,7 @@
             android:text="23-大中薯数" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/num_of_large_and_medium_potatoes"
@@ -930,9 +835,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -947,9 +850,7 @@
             android:text="24-大中薯重(0.00kg)" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/weight_of_large_and_medium_potatoes"
@@ -959,9 +860,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -976,9 +875,7 @@
             android:text="25-小薯数" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style"/>
 
         <EditText
             android:id="@+id/num_of_small_potatoes"
@@ -988,9 +885,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -1005,9 +900,7 @@
             android:text="26-小薯重(0.00kg)" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/weight_of_small_potatoes"
@@ -1017,9 +910,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -1034,9 +925,7 @@
             android:text="27-商品薯率(%)" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/rate_of_economic_potato"
@@ -1055,9 +944,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -1072,9 +959,7 @@
             android:text="28-小区产量1(0.00kg)" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/small_section_yield1"
@@ -1084,9 +969,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -1101,9 +984,7 @@
             android:text="29-小区产量2(0.00kg)" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style"/>
 
         <EditText
             android:id="@+id/small_section_yield2"
@@ -1113,9 +994,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -1130,9 +1009,7 @@
             android:text="30-小区产量3(0.00kg)" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/small_section_yield3"
@@ -1142,9 +1019,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -1159,9 +1034,7 @@
             android:text="31-亩产量(0.00kg)" />
 
         <View
-            android:layout_width="0.1dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_devider" />
+            style="@style/view_vertical_devider_style"/>
 
         <EditText
             android:id="@+id/per_mu_yield"
@@ -1180,7 +1053,5 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/actionsheet_gray" />
+        style="@style/view_divider_style"  />
 </LinearLayout>

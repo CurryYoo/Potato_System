@@ -31,10 +31,8 @@
             android:inputType="number"/>
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
             android:layout_marginStart="5dp"
-            android:background="@color/actionsheet_gray" />
+            style="@style/view_divider_style"  />
 
 
         <EditText
@@ -45,10 +43,8 @@
             android:inputType="number"/>
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:layout_marginStart="5dp"
-            android:background="@color/actionsheet_gray" />
+            style="@style/view_divider_style"
+            android:layout_marginStart="5dp" />
 
 
         <EditText
@@ -59,10 +55,8 @@
             android:inputType="number" />
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:layout_marginStart="5dp"
-            android:background="@color/actionsheet_gray" />
+            style="@style/view_divider_style"
+            android:layout_marginStart="5dp"/>
 
 
         <EditText
@@ -73,10 +67,9 @@
             android:inputType="number"/>
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
+
             android:layout_marginStart="5dp"
-            android:background="@color/actionsheet_gray" />
+            style="@style/view_divider_style"  />
 
 
         <EditText
@@ -87,10 +80,8 @@
             android:inputType="number" />
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:layout_marginStart="5dp"
-            android:background="@color/actionsheet_gray" />
+            style="@style/view_divider_style"
+            android:layout_marginStart="5dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -107,10 +98,8 @@
             android:inputType="number" />
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:layout_marginStart="5dp"
-            android:background="@color/actionsheet_gray" />
+            style="@style/view_divider_style"
+            android:layout_marginStart="5dp" />
 
 
         <EditText
@@ -121,10 +110,8 @@
             android:inputType="number" />
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:layout_marginStart="5dp"
-            android:background="@color/actionsheet_gray" />
+            style="@style/view_divider_style"
+            android:layout_marginStart="5dp" />
 
 
         <EditText
@@ -135,10 +122,8 @@
             android:inputType="number" />
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:layout_marginStart="5dp"
-            android:background="@color/actionsheet_gray" />
+            style="@style/view_divider_style"
+            android:layout_marginStart="5dp" />
 
 
         <EditText
@@ -149,10 +134,8 @@
             android:inputType="number"/>
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:layout_marginStart="5dp"
-            android:background="@color/actionsheet_gray" />
+            style="@style/view_divider_style"
+            android:layout_marginStart="5dp" />
 
 
         <EditText
@@ -163,10 +146,8 @@
             android:inputType="number" />
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:layout_marginStart="5dp"
-            android:background="@color/actionsheet_gray" />
+            style="@style/view_divider_style"
+            android:layout_marginStart="5dp" />
     </LinearLayout>
 
 </LinearLayout>
