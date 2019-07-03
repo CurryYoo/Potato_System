@@ -169,10 +169,10 @@ public class TreeAdapter extends BaseAdapter {
         int level = TreeUtils.getLevel(tempPoint, pointMap);
         holder.icon.setPadding(25 * level, holder.icon.getPaddingTop(), 0, holder.icon.getPaddingBottom());
         if ("0".equals(tempPoint.getISLEAF())) {  //如果为父节点
-            if (!tempPoint.isExpand()) {    //不展开显示加号
+            if (!tempPoint.isExpand()) {    //不展开,显示加号
                 holder.icon.setVisibility(View.VISIBLE);
                 holder.icon.setImageResource(R.drawable.outline_list_collapse);
-            } else {                        //展开显示减号
+            } else {                        //展开,显示减号
                 holder.icon.setVisibility(View.VISIBLE);
                 holder.icon.setImageResource(R.drawable.outline_list_expand);
             }

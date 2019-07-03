@@ -1,5 +1,6 @@
 package com.example.kerne.potato;
 
+import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -42,12 +43,11 @@ public class MultiLevelActivity extends AppCompatActivity {
     private List<JSONObject> mFieldList = new ArrayList<>();
     private List<JSONObject> mSpeciesList = new ArrayList<>();
     private static final int COMPLETED = 0;
+    @SuppressLint("HandlerLeak")
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg){
-            if (msg.what == COMPLETED) {
-                updateData();
-            }
+            if (msg.what == COMPLETED) adapter.notifyDataSetChanged();
         }
     };
     @Override
@@ -230,7 +230,7 @@ public class MultiLevelActivity extends AppCompatActivity {
                                 }
                                 if (mSpeciesList.get(l).getString("fieldId").equals(mFieldList.get(k).getString("id"))) {
                                     id++;
-                                    TreePoint treePoint = new TreePoint("" + id, "" + mSpeciesList.get(l).getString("speciesId"), "" + parentId4, "1", order_k);
+                                    TreePoint treePoint = new TreePoint("" + id, "" + mSpeciesList.get(l).getString("speciesId"), "" + parentId4, "1", order_k++);
                                     mSpeciesList.get(l).put("expType", mFieldList.get(k).getString("expType"));
                                     treePoint.setJsonObject(mSpeciesList.get(l));
                                     pointList.add(treePoint);
@@ -241,10 +241,10 @@ public class MultiLevelActivity extends AppCompatActivity {
                 }
             }
         }
-//        //打乱集合中的数据
-//        Collections.shuffle(pointList);
-//        //对集合中的数据重新排序
 
+        for (TreePoint treePoint : pointList) {
+            pointMap.put(treePoint.getID(), treePoint);
+        }
     }
 
 
@@ -283,46 +283,6 @@ public class MultiLevelActivity extends AppCompatActivity {
         adapter.setKeyword(s.toString());
     }
 
-    //对数据排序 深度优先
-    private void updateData() {
-        for (TreePoint treePoint : pointList) {
-            pointMap.put(treePoint.getID(), treePoint);
-        }
-        /*数据排序易产生bug，在此删除*/
-//        Collections.sort(pointList, new Comparator<TreePoint>() {
-//            @Override
-//            public int compare(TreePoint lhs, TreePoint rhs) {
-//                int llevel = TreeUtils.getLevel(lhs, pointMap);
-//                int rlevel = TreeUtils.getLevel(rhs, pointMap);
-//                if (llevel == rlevel) {
-//                    if (lhs.getPARENTID().equals(rhs.getPARENTID())) {  //左边小
-//                        return lhs.getDISPLAY_ORDER() > rhs.getDISPLAY_ORDER() ? 1 : -1;
-//                    } else {  //如果父辈id不相等
-//                        //同一级别，不同父辈
-//                        TreePoint ltreePoint = TreeUtils.getTreePoint(lhs.getPARENTID(), pointMap);
-//                        TreePoint rtreePoint = TreeUtils.getTreePoint(rhs.getPARENTID(), pointMap);
-//                        return compare(ltreePoint, rtreePoint);  //父辈
-//                    }
-//                } else {  //不同级别
-//                    if (llevel > rlevel) {   //左边级别大       左边小
-//                        if (lhs.getPARENTID().equals(rhs.getID())) {
-//                            return 1;
-//                        } else {
-//                            TreePoint lreasonTreePoint = TreeUtils.getTreePoint(lhs.getPARENTID(), pointMap);
-//                            return compare(lreasonTreePoint, rhs);
-//                        }
-//                    } else {   //右边级别大   右边小
-//                        if (rhs.getPARENTID().equals(lhs.getID())) {
-//                            return -1;
-//                        }
-//                        TreePoint rreasonTreePoint = TreeUtils.getTreePoint(rhs.getPARENTID(), pointMap);
-//                        return compare(lhs, rreasonTreePoint);
-//                    }
-//                }
-//            }
-//        });
-        adapter.notifyDataSetChanged();
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -330,9 +290,6 @@ public class MultiLevelActivity extends AppCompatActivity {
             case android.R.id.home:
                 this.finish();
                 break;
-//                Intent intent = new Intent(this, MainActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
             default:
         }
         return true;
