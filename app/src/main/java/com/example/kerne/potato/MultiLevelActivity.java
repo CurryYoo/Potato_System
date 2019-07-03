@@ -3,7 +3,9 @@ package com.example.kerne.potato;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -39,8 +41,15 @@ public class MultiLevelActivity extends AppCompatActivity {
     private List<JSONObject> mFarmList = new ArrayList<>();
     private List<JSONObject> mFieldList = new ArrayList<>();
     private List<JSONObject> mSpeciesList = new ArrayList<>();
-
-
+    private static final int COMPLETED = 0;
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg){
+            if (msg.what == COMPLETED) {
+                updateData();
+            }
+        }
+    };
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,11 +75,12 @@ public class MultiLevelActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                Message msg = new Message();
+                msg.what = COMPLETED;
+                handler.sendMessage(msg);
                 Looper.loop();
             }
         }).start();
-
-
     }
 
     /*获取数据*/
@@ -234,7 +244,7 @@ public class MultiLevelActivity extends AppCompatActivity {
 //        //打乱集合中的数据
 //        Collections.shuffle(pointList);
 //        //对集合中的数据重新排序
-        updateData();
+
     }
 
 

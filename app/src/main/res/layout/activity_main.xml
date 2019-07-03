@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
 
     <!--    <Button
             android:id="@+id/commit_data"
@@ -26,7 +27,8 @@
         android:paddingEnd="@dimen/dp_20"
         android:paddingTop="@dimen/dp_10"
         android:paddingBottom="@dimen/dp_10"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:background="@color/white">
 
         <LinearLayout
             android:id="@+id/btn_download"
