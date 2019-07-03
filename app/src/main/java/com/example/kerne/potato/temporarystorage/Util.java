@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.kerne.potato.R;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.io.FileNotFoundException;
 import java.text.DecimalFormat;
@@ -46,7 +47,26 @@ public class Util {
             }
         });
     }
-
+    //查看网络大图
+    public static void watchOnlineLargePhoto(Context context, Uri imageUri) {
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View imgLargeView = layoutInflater.inflate(R.layout.dialog_watch_online_big_photo, null);
+        final AlertDialog alertDialogShowLargeImage = new AlertDialog.Builder(context).setTitle("点击可关闭").create();
+        //获取ImageView
+        SimpleDraweeView imvLargePhoto = imgLargeView.findViewById(R.id.imv_online_large_photo);
+        //设置图片到ImageView
+        imvLargePhoto.setImageURI(imageUri);
+        //定义dialog
+        alertDialogShowLargeImage.setView(imgLargeView);
+        alertDialogShowLargeImage.show();
+        //点击大图关闭dialog
+        imgLargeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialogShowLargeImage.cancel();
+            }
+        });
+    }
     //选择日期
     public static void showDatePickerDialog(Context context, final EditText editText) {
         Calendar calendar = Calendar.getInstance();

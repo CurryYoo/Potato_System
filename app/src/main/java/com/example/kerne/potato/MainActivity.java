@@ -3,29 +3,22 @@ package com.example.kerne.potato;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.os.Environment;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
-import com.example.kerne.potato.temporarystorage.Util;
 import com.facebook.stetho.Stetho;
-import com.google.gson.Gson;
 import com.hb.dialog.myDialog.MyAlertInputDialog;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -35,14 +28,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
-import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import q.rorbin.badgeview.Badge;
+import q.rorbin.badgeview.QBadgeView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -53,9 +48,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     LinearLayout btn_download;
     LinearLayout btn_data;
     LinearLayout btn_mutlilevel;
-//    Button btn_farmland;
-//    Button btn_shot;
-//    Button btn_field;
+    LinearLayout btn_location;
+    LinearLayout btn_pick;
+
+    QBadgeView qBadgeView_location;
+    QBadgeView qBadgeView_pick;
+    Badge badge_location;
+    Badge badge_pick;
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
 
     Button button;
 
@@ -93,17 +94,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //避免内存泄漏
     private MyHandler myHandler = new MyHandler(this);
+
     private static class MyHandler extends Handler {
         private WeakReference<Context> reference;
+
         private MyHandler(Context context) {
             reference = new WeakReference<>(context);
         }
+
         @Override
         public void handleMessage(Message msg) {
             MainActivity activity = (MainActivity) reference.get();
             if (activity != null) {
                 //TODO
-                switch (msg.what){
+                switch (msg.what) {
                     case BIGFARMLIST_OK:
                         downloadSuccess_Num++;
                         Log.d("num0", "" + downloadSuccess_Num);
@@ -121,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Log.d("num3", "" + downloadSuccess_Num);
                         break;
                 }
-                if(downloadSuccess_Num == request_Num){
+                if (downloadSuccess_Num == request_Num) {
                     Log.d("download" + downloadSuccess_Num, "ok");
                     Toast.makeText(activity.getApplicationContext(), "下载成功!", Toast.LENGTH_SHORT).show();
                     downloadSuccess_Num = 0;
@@ -130,56 +134,350 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-//    private Handler uiHandler = new Handler(){
-//        @Override
-//        public void handleMessage(Message msg){
-//            switch (msg.what){
-//                case BIGFARMLIST_OK:
-//                    downloadSuccess_Num++;
-//                    Log.d("num0", "" + downloadSuccess_Num);
-//
-//                    if(downloadSuccess_Num == request_Num){
-//                        Log.d("download0", "ok");
-//                        Toast.makeText(MainActivity.this, "下载成功!", Toast.LENGTH_SHORT).show();
-//                        downloadSuccess_Num = 0;
-//                    }
-//                    break;
-//                case FARMLIST_OK:
-//                    downloadSuccess_Num++;
-//                    Log.d("num1", "" + downloadSuccess_Num);
-//
-//                    if(downloadSuccess_Num == request_Num){
-//                        Log.d("download1", "ok");
-//                        Toast.makeText(MainActivity.this, "下载成功!", Toast.LENGTH_SHORT).show();
-//                        downloadSuccess_Num = 0;
-//                    }
-//                    break;
-//                case EXPERIMENTFIELD_OK:
-//                    downloadSuccess_Num++;
-//                    Log.d("num2", "" + downloadSuccess_Num);
-//                    if(downloadSuccess_Num == request_Num){
-//                        Log.d("download2", "ok");
-//                        Toast.makeText(MainActivity.this, "下载成功!", Toast.LENGTH_SHORT).show();
-//                        downloadSuccess_Num = 0;
-//                    }
-//                    break;
-//                case SPECIESLIST_OK:
-//                    downloadSuccess_Num++;
-//                    Log.d("num3", "" + downloadSuccess_Num);
-//                    if(downloadSuccess_Num == request_Num){
-//                        Log.d("download3", "ok");
-//                        Toast.makeText(MainActivity.this, "下载成功!", Toast.LENGTH_LONG).show();
-//                        downloadSuccess_Num = 0;
-//                    }
-//                    break;
-//            }
-//        }
-//    };
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.update_location_data:
+                    editor.putBoolean("update_location_data", false);
+                    editor.apply();
+                    if(badge_location!=null){
+                        badge_location.hide(false);
+                    }
+                    userRole = UserRole.getUserRole();
+                    if (!userRole.equals("farmer")) {
+                        JSONArray jsonArray = new JSONArray();
+                        sqLiteDatabase = dbHelper.getReadableDatabase();
+                        Cursor cursor0 = sqLiteDatabase.query("SpeciesList", null, null, null, null, null, null);
+                        if (cursor0.moveToFirst()) {
+                            do {
+                                String blockId = cursor0.getString(cursor0.getColumnIndex("blockId"));
+                                String fieldId = cursor0.getString(cursor0.getColumnIndex("fieldId"));
+                                String speciesId = cursor0.getString(cursor0.getColumnIndex("speciesId"));
+                                int x = cursor0.getInt(cursor0.getColumnIndex("x"));
+                                int y = cursor0.getInt(cursor0.getColumnIndex("y"));
+                                JSONObject jsonObject0 = new JSONObject();
+                                try {
+                                    jsonObject0.put("id", blockId);
+                                    jsonObject0.put("fieldId", fieldId);
+                                    jsonObject0.put("speciesId", speciesId);
+                                    jsonObject0.put("x", x);
+                                    jsonObject0.put("y", y);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                jsonArray.put(jsonObject0);
+
+                                Log.d("json_SpeciesList", jsonObject0.toString());
+
+                            } while (cursor0.moveToNext());
+                            HttpRequest.HttpRequest_SpeciesList(jsonArray, MainActivity.this, new HttpRequest.HttpCallback() {
+                                @Override
+                                public void onSuccess(JSONObject result) {
+//                            Log.d("Response_SpeciesList", result.toString());
+                                }
+                            });
+                            Toast.makeText(MainActivity.this, "上传成功!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(MainActivity.this, "尚未填写数据!", Toast.LENGTH_SHORT).show();
+                        }
+                        cursor0.close();
+                    } else {
+                        Toast.makeText(MainActivity.this, "对不起，您没有该权限！请登录有权限的账号！", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivityForResult(intent, 1);
+                    }
+
+                    break;
+                case R.id.update_pick_data:
+                    //将暂存的数据从数据库取出并提交到远程服务器
+
+                    editor.putBoolean("update_pick_data", false);
+                    editor.apply();
+                    if(badge_pick!=null){
+                        badge_pick.hide(false);
+                    }
+                    userRole = UserRole.getUserRole();
+                    if (!userRole.equals("farmer")) {
+                        sqLiteDatabase = dbHelper.getReadableDatabase();
+                        String sql = "select SpeciesTable.*, LocalSpecies.* from SpeciesTable, LocalSpecies " +
+                                "where SpeciesTable.speciesId=LocalSpecies.name";
+                        final Cursor cursor = sqLiteDatabase.rawQuery(sql, null);
+//                    final Cursor cursor = sqLiteDatabase.query("SpeciesTable", null, null, null, null, null, null);
+
+                        if (cursor.moveToFirst()) {
+                            do {
+                                final String speciesId = cursor.getString(cursor.getColumnIndex("speciesid"));
+                                final String name = cursor.getString(cursor.getColumnIndex("name")); //++++++++++++++
+                                final String blockId = cursor.getString(cursor.getColumnIndex("blockId")); //+++++++++++++
+                                String experimentType = cursor.getString(cursor.getColumnIndex("experimentType"));
+                                String plantingDate = cursor.getString(cursor.getColumnIndex("plantingDate"));
+                                String emergenceDate = cursor.getString(cursor.getColumnIndex("emergenceDate"));
+                                int sproutRate = cursor.getInt(cursor.getColumnIndex("sproutRate"));
+                                String squaringStage = cursor.getString(cursor.getColumnIndex("squaringStage"));
+                                String blooming = cursor.getString(cursor.getColumnIndex("blooming"));
+                                String leafColour = cursor.getString(cursor.getColumnIndex("leafColour"));
+                                String corollaColour = cursor.getString(cursor.getColumnIndex("corollaColour"));
+                                String flowering = cursor.getString(cursor.getColumnIndex("flowering"));
+                                String stemColour = cursor.getString(cursor.getColumnIndex("stemColour"));
+                                String openpollinated = cursor.getString(cursor.getColumnIndex("openpollinated"));
+                                String maturingStage = cursor.getString(cursor.getColumnIndex("maturingStage"));
+                                int growingPeriod = cursor.getInt(cursor.getColumnIndex("growingPeriod"));
+                                String uniformityOfTuberSize = cursor.getString(cursor.getColumnIndex("uniformityOfTuberSize"));
+                                String tuberShape = cursor.getString(cursor.getColumnIndex("tuberShape"));
+                                String skinSmoothness = cursor.getString(cursor.getColumnIndex("skinSmoothness"));
+                                String eyeDepth = cursor.getString(cursor.getColumnIndex("eyeDepth"));
+                                String skinColour = cursor.getString(cursor.getColumnIndex("skinColour"));
+                                String fleshColour = cursor.getString(cursor.getColumnIndex("fleshColour"));
+                                String isChoozen = cursor.getString(cursor.getColumnIndex("isChoozen"));
+                                final String remark = cursor.getString(cursor.getColumnIndex("remark"));
+                                int harvestNum = cursor.getInt(cursor.getColumnIndex("harvestNum"));
+                                int lmNum = cursor.getInt(cursor.getColumnIndex("lmNum"));
+                                int lmWeight = cursor.getInt(cursor.getColumnIndex("lmWeight"));
+                                int sNum = cursor.getInt(cursor.getColumnIndex("sNum"));
+                                int sWeight = cursor.getInt(cursor.getColumnIndex("sWeight"));
+                                float commercialRate = cursor.getFloat(cursor.getColumnIndex("commercialRate"));
+                                float plotYield1 = cursor.getFloat(cursor.getColumnIndex("plotYield1"));
+                                float plotYield2 = cursor.getFloat(cursor.getColumnIndex("plotYield2"));
+                                float plotYield3 = cursor.getFloat(cursor.getColumnIndex("plotYield3"));
+                                float acreYield = cursor.getFloat(cursor.getColumnIndex("acreYield"));
+                                float bigPlantHeight1 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight1"));
+                                float bigPlantHeight2 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight2"));
+                                float bigPlantHeight3 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight3"));
+                                float bigPlantHeight4 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight4"));
+                                float bigPlantHeight5 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight5"));
+                                float bigPlantHeight6 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight6"));
+                                float bigPlantHeight7 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight7"));
+                                float bigPlantHeight8 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight8"));
+                                float bigPlantHeight9 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight9"));
+                                float bigPlantHeight10 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight10"));
+                                float plantHeightAvg = cursor.getFloat(cursor.getColumnIndex("plantHeightAvg"));
+                                int bigBranchNumber1 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber1"));
+                                int bigBranchNumber2 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber2"));
+                                int bigBranchNumber3 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber3"));
+                                int bigBranchNumber4 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber4"));
+                                int bigBranchNumber5 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber5"));
+                                int bigBranchNumber6 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber6"));
+                                int bigBranchNumber7 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber7"));
+                                int bigBranchNumber8 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber8"));
+                                int bigBranchNumber9 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber9"));
+                                int bigBranchNumber10 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber10"));
+                                float branchNumberAvg = cursor.getFloat(cursor.getColumnIndex("branchNumberAvg"));
+                                float bigYield1 = cursor.getFloat(cursor.getColumnIndex("bigYield1"));
+                                float bigYield2 = cursor.getFloat(cursor.getColumnIndex("bigYield2"));
+                                float bigYield3 = cursor.getFloat(cursor.getColumnIndex("bigYield3"));
+                                float bigYield4 = cursor.getFloat(cursor.getColumnIndex("bigYield4"));
+                                float bigYield5 = cursor.getFloat(cursor.getColumnIndex("bigYield5"));
+                                float bigYield6 = cursor.getFloat(cursor.getColumnIndex("bigYield6"));
+                                float bigYield7 = cursor.getFloat(cursor.getColumnIndex("bigYield7"));
+                                float bigYield8 = cursor.getFloat(cursor.getColumnIndex("bigYield8"));
+                                float bigYield9 = cursor.getFloat(cursor.getColumnIndex("bigYield9"));
+                                float bigYield10 = cursor.getFloat(cursor.getColumnIndex("bigYield10"));
+                                float smalYield1 = cursor.getFloat(cursor.getColumnIndex("smalYield1"));
+                                float smalYield2 = cursor.getFloat(cursor.getColumnIndex("smalYield2"));
+                                float smalYield3 = cursor.getFloat(cursor.getColumnIndex("smalYield3"));
+                                float smalYield4 = cursor.getFloat(cursor.getColumnIndex("smalYield4"));
+                                float smalYield5 = cursor.getFloat(cursor.getColumnIndex("smalYield5"));
+                                float smalYield6 = cursor.getFloat(cursor.getColumnIndex("smalYield6"));
+                                float smalYield7 = cursor.getFloat(cursor.getColumnIndex("smalYield7"));
+                                float smalYield8 = cursor.getFloat(cursor.getColumnIndex("smalYield8"));
+                                float smalYield9 = cursor.getFloat(cursor.getColumnIndex("smalYield9"));
+                                float smalYield10 = cursor.getFloat(cursor.getColumnIndex("smalYield10"));
+                                img1 = cursor.getString(cursor.getColumnIndex("img1"));
+                                img2 = cursor.getString(cursor.getColumnIndex("img2"));
+                                img3 = cursor.getString(cursor.getColumnIndex("img3"));
+                                img4 = cursor.getString(cursor.getColumnIndex("img4"));
+                                img5 = cursor.getString(cursor.getColumnIndex("img5"));
+
+                                final JSONObject jsonObject = new JSONObject();
+                                JSONObject jsonObject_common = new JSONObject();
+                                JSONObject jsonObject_local = new JSONObject();
+                                try {
+                                    jsonObject_common.put("plantingDate", plantingDate);
+                                    jsonObject_common.put("emergenceDate", emergenceDate);
+                                    jsonObject_common.put("sproutRate", sproutRate);
+                                    jsonObject_common.put("squaringStage", squaringStage);
+                                    jsonObject_common.put("blooming", blooming);
+//                                jsonObject.put("leafColour", leafColour);
+//                                jsonObject.put("corollaColour", corollaColour);
+//                                jsonObject.put("flowering", flowering);
+//                                jsonObject.put("stemColour", stemColour);
+//                                jsonObject.put("openpollinated", openpollinated);
+                                    jsonObject_common.put("maturingStage", maturingStage);
+                                    jsonObject_common.put("growingPeriod", growingPeriod);
+//                                jsonObject.put("uniformityOfTuberSize", uniformityOfTuberSize);
+//                                jsonObject.put("tuberShape", tuberShape);
+//                                jsonObject.put("skinSmoothness", skinSmoothness);
+//                                jsonObject.put("eyeDepth", eyeDepth);
+//                                jsonObject.put("skinColour", skinColour);
+//                                jsonObject.put("fleshColour", fleshColour);
+//                                if (isChoozen.equals("yes")) {
+//                                    jsonObject.put("isChoozen", 1);
+//                                } else {
+//                                    jsonObject.put("isChoozen", 0);
+//                                }
+                                    jsonObject_common.put("remark", remark);
+                                    jsonObject_common.put("harvestNum", harvestNum);
+                                    jsonObject_common.put("lmNum", lmNum);
+                                    jsonObject_common.put("lmWeight", lmWeight);
+                                    jsonObject_common.put("sNum", sNum);
+                                    jsonObject_common.put("sWeight", sWeight);
+                                    jsonObject_common.put("commercialRate", commercialRate);
+                                    jsonObject_common.put("plotYield1", plotYield1);
+                                    jsonObject_common.put("plotYield2", plotYield2);
+                                    jsonObject_common.put("plotYield3", plotYield3);
+                                    jsonObject_common.put("acreYield", acreYield);
+                                    jsonObject_common.put("bigPlantHeight1", bigPlantHeight1);
+                                    jsonObject_common.put("bigPlantHeight2", bigPlantHeight2);
+                                    jsonObject_common.put("bigPlantHeight3", bigPlantHeight3);
+                                    jsonObject_common.put("bigPlantHeight4", bigPlantHeight4);
+                                    jsonObject_common.put("bigPlantHeight5", bigPlantHeight5);
+                                    jsonObject_common.put("bigPlantHeight6", bigPlantHeight6);
+                                    jsonObject_common.put("bigPlantHeight7", bigPlantHeight7);
+                                    jsonObject_common.put("bigPlantHeight8", bigPlantHeight8);
+                                    jsonObject_common.put("bigPlantHeight9", bigPlantHeight9);
+                                    jsonObject_common.put("bigPlantHeight10", bigPlantHeight10);
+                                    jsonObject_common.put("plantHeightAvg", plantHeightAvg);
+                                    jsonObject_common.put("bigBranchNumber1", bigBranchNumber1);
+                                    jsonObject_common.put("bigBranchNumber2", bigBranchNumber2);
+                                    jsonObject_common.put("bigBranchNumber3", bigBranchNumber3);
+                                    jsonObject_common.put("bigBranchNumber4", bigBranchNumber4);
+                                    jsonObject_common.put("bigBranchNumber5", bigBranchNumber5);
+                                    jsonObject_common.put("bigBranchNumber6", bigBranchNumber6);
+                                    jsonObject_common.put("bigBranchNumber7", bigBranchNumber7);
+                                    jsonObject_common.put("bigBranchNumber8", bigBranchNumber8);
+                                    jsonObject_common.put("bigBranchNumber9", bigBranchNumber9);
+                                    jsonObject_common.put("bigBranchNumber10", bigBranchNumber10);
+                                    jsonObject_common.put("branchNumberAvg", branchNumberAvg);
+                                    jsonObject_common.put("bigYield1", bigYield1);
+                                    jsonObject_common.put("bigYield2", bigYield2);
+                                    jsonObject_common.put("bigYield3", bigYield3);
+                                    jsonObject_common.put("bigYield4", bigYield4);
+                                    jsonObject_common.put("bigYield5", bigYield5);
+                                    jsonObject_common.put("bigYield6", bigYield6);
+                                    jsonObject_common.put("bigYield7", bigYield7);
+                                    jsonObject_common.put("bigYield8", bigYield8);
+                                    jsonObject_common.put("bigYield9", bigYield9);
+                                    jsonObject_common.put("bigYield10", bigYield10);
+                                    jsonObject_common.put("smalYield1", smalYield1);
+                                    jsonObject_common.put("smalYield2", smalYield2);
+                                    jsonObject_common.put("smalYield3", smalYield3);
+                                    jsonObject_common.put("smalYield4", smalYield4);
+                                    jsonObject_common.put("smalYield5", smalYield5);
+                                    jsonObject_common.put("smalYield6", smalYield6);
+                                    jsonObject_common.put("smalYield7", smalYield7);
+                                    jsonObject_common.put("smalYield8", smalYield8);
+                                    jsonObject_common.put("smalYield9", smalYield9);
+                                    jsonObject_common.put("smalYield10", smalYield10);
+                                    jsonObject_common.put("speciesId", speciesId);
+                                    jsonObject_common.put("testId", blockId);
+                                    jsonObject_common.put("experimentType", experimentType);
+
+                                    jsonObject_local.put("corollaColour", corollaColour);
+                                    jsonObject_local.put("eyeDepth", eyeDepth);
+                                    jsonObject_local.put("fleshColour", fleshColour);
+                                    jsonObject_local.put("flowering", flowering);
+//                                jsonObject_local.put("img1", img1);
+//                                jsonObject_local.put("img2", img2);
+//                                jsonObject_local.put("img3", img3);
+//                                jsonObject_local.put("img4", img4);
+//                                jsonObject_local.put("img5", img5);
+                                    if (isChoozen.equals("yes")) {
+                                        jsonObject_local.put("isChoozen", 1);
+                                    } else {
+                                        jsonObject_local.put("isChoozen", 0);
+                                    }
+                                    jsonObject_local.put("leafColour", leafColour);
+                                    jsonObject_local.put("openpollinated", openpollinated);
+                                    jsonObject_local.put("skinColour", skinColour);
+                                    jsonObject_local.put("skinSmoothness", skinSmoothness);
+                                    jsonObject_local.put("name", name);
+                                    jsonObject_local.put("speciesId", speciesId);
+                                    jsonObject_local.put("stemColour", stemColour);
+                                    jsonObject_local.put("tuberShape", tuberShape);
+                                    jsonObject_local.put("uniformityOfTuberSize", uniformityOfTuberSize);
+
+                                    jsonObject.put("commontest", jsonObject_common);
+                                    jsonObject.put("localSpecies", jsonObject_local);
+
+                                    Log.d("testJson", jsonObject.toString());
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                                new Thread() {
+                                    @Override
+                                    public void run() {
+                                        HttpRequest.HttpRequest_SpeciesData(jsonObject, MainActivity.this, new HttpRequest.HttpCallback() {
+                                            @Override
+                                            public void onSuccess(JSONObject result) {
+                                                Log.d("response_update", result.toString());
+                                            }
+                                        });
+                                        if (img1 != null)
+                                            HttpRequest.doUploadTest(img1, speciesId, "1", MainActivity.this, new HttpRequest.HttpCallback_Str() {
+                                                @Override
+                                                public void onSuccess(String result) {
+                                                    Log.d("response_pic1", result);
+                                                }
+                                            });
+                                        if (img2 != null)
+                                            HttpRequest.doUploadTest(img2, speciesId, "2", MainActivity.this, new HttpRequest.HttpCallback_Str() {
+                                                @Override
+                                                public void onSuccess(String result) {
+                                                    Log.d("response_pic2", result);
+                                                }
+                                            });
+                                        if (img3 != null)
+                                            HttpRequest.doUploadTest(img3, speciesId, "3", MainActivity.this, new HttpRequest.HttpCallback_Str() {
+                                                @Override
+                                                public void onSuccess(String result) {
+                                                    Log.d("response_pic3", result);
+                                                }
+                                            });
+                                        if (img4 != null)
+                                            HttpRequest.doUploadTest(img4, speciesId, "4", MainActivity.this, new HttpRequest.HttpCallback_Str() {
+                                                @Override
+                                                public void onSuccess(String result) {
+                                                    Log.d("response_pic4", result);
+                                                }
+                                            });
+                                        if (img5 != null)
+                                            HttpRequest.doUploadTest(img5, speciesId, "5", MainActivity.this, new HttpRequest.HttpCallback_Str() {
+                                                @Override
+                                                public void onSuccess(String result) {
+                                                    Log.d("response_pic5", result);
+                                                }
+                                            });
+                                        //sqLiteDatabase.delete("SpeciesTable", null, null);
+                                    }
+                                }.start();
+
+                            } while (cursor.moveToNext());
+                            Toast.makeText(MainActivity.this, "数据上传成功！", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(MainActivity.this, "尚未采集数据!", Toast.LENGTH_SHORT).show();
+                        }
+                        cursor.close();
+                    } else {
+                        Toast.makeText(MainActivity.this, "对不起，您没有该权限！请登录有权限的账号！", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivityForResult(intent, 1);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("MainActivity", "hello main");
         super.onCreate(savedInstanceState);
+        sp = getSharedPreferences("update_flag", Context.MODE_PRIVATE);
+        editor = sp.edit();
 
         //获取用户角色
 //        userRole = getIntent().getStringExtra("userRole");
@@ -194,13 +492,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_general = findViewById(R.id.btn_general);
         btn_general.setOnClickListener(this);
 
-        btn_mutlilevel=findViewById(R.id.btn_mutlilevel);
+        btn_mutlilevel = findViewById(R.id.btn_mutlilevel);
         btn_mutlilevel.setOnClickListener(this);
 
         btn_data = findViewById(R.id.btn_data);
         btn_data.setOnClickListener(this);
 
+        btn_location = findViewById(R.id.update_location_data);
+        btn_location.setOnClickListener(onClickListener);
+
+        btn_pick = findViewById(R.id.update_pick_data);
+        btn_pick.setOnClickListener(onClickListener);
+
+        qBadgeView_location = new QBadgeView(this);
+        qBadgeView_pick = new QBadgeView(this);
+
         dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
+
+
+//                View view = findViewById(R.id.list_commit);
+//                new QBadgeView(getBaseContext()).bindTarget(view)
+//                        .setBadgeText("");
+
 
 //        btn_farmland = (Button)findViewById(R.id.btn_farmland);
 //        btn_farmland.setOnClickListener(this);
@@ -269,364 +582,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }*/
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-//        userRole = UserRole.getUserRole();
-//        Log.d("MainActivity", userRole);
-//        if (userRole.equals("farmer")) {
-//            return super.onCreateOptionsMenu(menu);
-//        } else {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-//        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-//            case R.id.save_offline:
-//                Intent intent = new Intent(MainActivity.this, SaveDataActivity.class);
-//                startActivity(intent);
-//                break;
-            case R.id.list_commit:
-                userRole = UserRole.getUserRole();
-                if (!userRole.equals("farmer")) {
-                    JSONArray jsonArray = new JSONArray();
-                    sqLiteDatabase = dbHelper.getReadableDatabase();
-                    Cursor cursor0 = sqLiteDatabase.query("SpeciesList", null, null, null, null, null, null);
-                    if (cursor0.moveToFirst()) {
-                        do {
-                            String blockId = cursor0.getString(cursor0.getColumnIndex("blockId"));
-                            String fieldId = cursor0.getString(cursor0.getColumnIndex("fieldId"));
-                            String speciesId = cursor0.getString(cursor0.getColumnIndex("speciesId"));
-                            int x = cursor0.getInt(cursor0.getColumnIndex("x"));
-                            int y = cursor0.getInt(cursor0.getColumnIndex("y"));
-                            JSONObject jsonObject0 = new JSONObject();
-                            try {
-                                jsonObject0.put("id", blockId);
-                                jsonObject0.put("fieldId", fieldId);
-                                jsonObject0.put("speciesId", speciesId);
-                                jsonObject0.put("x", x);
-                                jsonObject0.put("y", y);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            jsonArray.put(jsonObject0);
-
-                            Log.d("json_SpeciesList", jsonObject0.toString());
-
-                        } while (cursor0.moveToNext());
-                        HttpRequest.HttpRequest_SpeciesList(jsonArray, MainActivity.this, new HttpRequest.HttpCallback() {
-                            @Override
-                            public void onSuccess(JSONObject result) {
-//                            Log.d("Response_SpeciesList", result.toString());
-                            }
-                        });
-                        Toast.makeText(MainActivity.this, "上传成功!", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        Toast.makeText(MainActivity.this, "尚未填写数据!", Toast.LENGTH_SHORT).show();
-                    }
-                    cursor0.close();
-                }
-                else {
-                    Toast.makeText(MainActivity.this, "对不起，您没有该权限！请登录有权限的账号！", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                    startActivityForResult(intent, 1);
-                }
-
-                break;
-            case R.id.commit:
-                //将暂存的数据从数据库取出并提交到远程服务器
-                userRole = UserRole.getUserRole();
-                if (!userRole.equals("farmer")) {
-                    sqLiteDatabase = dbHelper.getReadableDatabase();
-                    String sql = "select SpeciesTable.*, LocalSpecies.* from SpeciesTable, LocalSpecies " +
-                            "where SpeciesTable.speciesId=LocalSpecies.name";
-                    final Cursor cursor = sqLiteDatabase.rawQuery(sql, null);
-//                    final Cursor cursor = sqLiteDatabase.query("SpeciesTable", null, null, null, null, null, null);
-
-                    if (cursor.moveToFirst()) {
-                        do {
-                            final String speciesId = cursor.getString(cursor.getColumnIndex("speciesid"));
-                            final String name = cursor.getString(cursor.getColumnIndex("name")); //++++++++++++++
-                            final String blockId = cursor.getString(cursor.getColumnIndex("blockId")); //+++++++++++++
-                            String experimentType = cursor.getString(cursor.getColumnIndex("experimentType"));
-                            String plantingDate = cursor.getString(cursor.getColumnIndex("plantingDate"));
-                            String emergenceDate = cursor.getString(cursor.getColumnIndex("emergenceDate"));
-                            int sproutRate = cursor.getInt(cursor.getColumnIndex("sproutRate"));
-                            String squaringStage = cursor.getString(cursor.getColumnIndex("squaringStage"));
-                            String blooming = cursor.getString(cursor.getColumnIndex("blooming"));
-                            String leafColour = cursor.getString(cursor.getColumnIndex("leafColour"));
-                            String corollaColour = cursor.getString(cursor.getColumnIndex("corollaColour"));
-                            String flowering = cursor.getString(cursor.getColumnIndex("flowering"));
-                            String stemColour = cursor.getString(cursor.getColumnIndex("stemColour"));
-                            String openpollinated = cursor.getString(cursor.getColumnIndex("openpollinated"));
-                            String maturingStage = cursor.getString(cursor.getColumnIndex("maturingStage"));
-                            int growingPeriod = cursor.getInt(cursor.getColumnIndex("growingPeriod"));
-                            String uniformityOfTuberSize = cursor.getString(cursor.getColumnIndex("uniformityOfTuberSize"));
-                            String tuberShape = cursor.getString(cursor.getColumnIndex("tuberShape"));
-                            String skinSmoothness = cursor.getString(cursor.getColumnIndex("skinSmoothness"));
-                            String eyeDepth = cursor.getString(cursor.getColumnIndex("eyeDepth"));
-                            String skinColour = cursor.getString(cursor.getColumnIndex("skinColour"));
-                            String fleshColour = cursor.getString(cursor.getColumnIndex("fleshColour"));
-                            String isChoozen = cursor.getString(cursor.getColumnIndex("isChoozen"));
-                            final String remark = cursor.getString(cursor.getColumnIndex("remark"));
-                            int harvestNum = cursor.getInt(cursor.getColumnIndex("harvestNum"));
-                            int lmNum = cursor.getInt(cursor.getColumnIndex("lmNum"));
-                            int lmWeight = cursor.getInt(cursor.getColumnIndex("lmWeight"));
-                            int sNum = cursor.getInt(cursor.getColumnIndex("sNum"));
-                            int sWeight = cursor.getInt(cursor.getColumnIndex("sWeight"));
-                            float commercialRate = cursor.getFloat(cursor.getColumnIndex("commercialRate"));
-                            float plotYield1 = cursor.getFloat(cursor.getColumnIndex("plotYield1"));
-                            float plotYield2 = cursor.getFloat(cursor.getColumnIndex("plotYield2"));
-                            float plotYield3 = cursor.getFloat(cursor.getColumnIndex("plotYield3"));
-                            float acreYield = cursor.getFloat(cursor.getColumnIndex("acreYield"));
-                            float bigPlantHeight1 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight1"));
-                            float bigPlantHeight2 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight2"));
-                            float bigPlantHeight3 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight3"));
-                            float bigPlantHeight4 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight4"));
-                            float bigPlantHeight5 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight5"));
-                            float bigPlantHeight6 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight6"));
-                            float bigPlantHeight7 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight7"));
-                            float bigPlantHeight8 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight8"));
-                            float bigPlantHeight9 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight9"));
-                            float bigPlantHeight10 = cursor.getFloat(cursor.getColumnIndex("bigPlantHeight10"));
-                            float plantHeightAvg = cursor.getFloat(cursor.getColumnIndex("plantHeightAvg"));
-                            int bigBranchNumber1 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber1"));
-                            int bigBranchNumber2 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber2"));
-                            int bigBranchNumber3 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber3"));
-                            int bigBranchNumber4 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber4"));
-                            int bigBranchNumber5 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber5"));
-                            int bigBranchNumber6 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber6"));
-                            int bigBranchNumber7 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber7"));
-                            int bigBranchNumber8 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber8"));
-                            int bigBranchNumber9 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber9"));
-                            int bigBranchNumber10 = cursor.getInt(cursor.getColumnIndex("bigBranchNumber10"));
-                            float branchNumberAvg = cursor.getFloat(cursor.getColumnIndex("branchNumberAvg"));
-                            float bigYield1 = cursor.getFloat(cursor.getColumnIndex("bigYield1"));
-                            float bigYield2 = cursor.getFloat(cursor.getColumnIndex("bigYield2"));
-                            float bigYield3 = cursor.getFloat(cursor.getColumnIndex("bigYield3"));
-                            float bigYield4 = cursor.getFloat(cursor.getColumnIndex("bigYield4"));
-                            float bigYield5 = cursor.getFloat(cursor.getColumnIndex("bigYield5"));
-                            float bigYield6 = cursor.getFloat(cursor.getColumnIndex("bigYield6"));
-                            float bigYield7 = cursor.getFloat(cursor.getColumnIndex("bigYield7"));
-                            float bigYield8 = cursor.getFloat(cursor.getColumnIndex("bigYield8"));
-                            float bigYield9 = cursor.getFloat(cursor.getColumnIndex("bigYield9"));
-                            float bigYield10 = cursor.getFloat(cursor.getColumnIndex("bigYield10"));
-                            float smalYield1 = cursor.getFloat(cursor.getColumnIndex("smalYield1"));
-                            float smalYield2 = cursor.getFloat(cursor.getColumnIndex("smalYield2"));
-                            float smalYield3 = cursor.getFloat(cursor.getColumnIndex("smalYield3"));
-                            float smalYield4 = cursor.getFloat(cursor.getColumnIndex("smalYield4"));
-                            float smalYield5 = cursor.getFloat(cursor.getColumnIndex("smalYield5"));
-                            float smalYield6 = cursor.getFloat(cursor.getColumnIndex("smalYield6"));
-                            float smalYield7 = cursor.getFloat(cursor.getColumnIndex("smalYield7"));
-                            float smalYield8 = cursor.getFloat(cursor.getColumnIndex("smalYield8"));
-                            float smalYield9 = cursor.getFloat(cursor.getColumnIndex("smalYield9"));
-                            float smalYield10 = cursor.getFloat(cursor.getColumnIndex("smalYield10"));
-                            img1 = cursor.getString(cursor.getColumnIndex("img1"));
-                            img2 = cursor.getString(cursor.getColumnIndex("img2"));
-                            img3 = cursor.getString(cursor.getColumnIndex("img3"));
-                            img4 = cursor.getString(cursor.getColumnIndex("img4"));
-                            img5 = cursor.getString(cursor.getColumnIndex("img5"));
-
-                            final JSONObject jsonObject = new JSONObject();
-                            JSONObject jsonObject_common = new JSONObject();
-                            JSONObject jsonObject_local = new JSONObject();
-                            try {
-                                jsonObject_common.put("plantingDate", plantingDate);
-                                jsonObject_common.put("emergenceDate", emergenceDate);
-                                jsonObject_common.put("sproutRate", sproutRate);
-                                jsonObject_common.put("squaringStage", squaringStage);
-                                jsonObject_common.put("blooming", blooming);
-//                                jsonObject.put("leafColour", leafColour);
-//                                jsonObject.put("corollaColour", corollaColour);
-//                                jsonObject.put("flowering", flowering);
-//                                jsonObject.put("stemColour", stemColour);
-//                                jsonObject.put("openpollinated", openpollinated);
-                                jsonObject_common.put("maturingStage", maturingStage);
-                                jsonObject_common.put("growingPeriod", growingPeriod);
-//                                jsonObject.put("uniformityOfTuberSize", uniformityOfTuberSize);
-//                                jsonObject.put("tuberShape", tuberShape);
-//                                jsonObject.put("skinSmoothness", skinSmoothness);
-//                                jsonObject.put("eyeDepth", eyeDepth);
-//                                jsonObject.put("skinColour", skinColour);
-//                                jsonObject.put("fleshColour", fleshColour);
-//                                if (isChoozen.equals("yes")) {
-//                                    jsonObject.put("isChoozen", 1);
-//                                } else {
-//                                    jsonObject.put("isChoozen", 0);
-//                                }
-                                jsonObject_common.put("remark", remark);
-                                jsonObject_common.put("harvestNum", harvestNum);
-                                jsonObject_common.put("lmNum", lmNum);
-                                jsonObject_common.put("lmWeight", lmWeight);
-                                jsonObject_common.put("sNum", sNum);
-                                jsonObject_common.put("sWeight", sWeight);
-                                jsonObject_common.put("commercialRate", commercialRate);
-                                jsonObject_common.put("plotYield1", plotYield1);
-                                jsonObject_common.put("plotYield2", plotYield2);
-                                jsonObject_common.put("plotYield3", plotYield3);
-                                jsonObject_common.put("acreYield", acreYield);
-                                jsonObject_common.put("bigPlantHeight1", bigPlantHeight1);
-                                jsonObject_common.put("bigPlantHeight2", bigPlantHeight2);
-                                jsonObject_common.put("bigPlantHeight3", bigPlantHeight3);
-                                jsonObject_common.put("bigPlantHeight4", bigPlantHeight4);
-                                jsonObject_common.put("bigPlantHeight5", bigPlantHeight5);
-                                jsonObject_common.put("bigPlantHeight6", bigPlantHeight6);
-                                jsonObject_common.put("bigPlantHeight7", bigPlantHeight7);
-                                jsonObject_common.put("bigPlantHeight8", bigPlantHeight8);
-                                jsonObject_common.put("bigPlantHeight9", bigPlantHeight9);
-                                jsonObject_common.put("bigPlantHeight10", bigPlantHeight10);
-                                jsonObject_common.put("plantHeightAvg", plantHeightAvg);
-                                jsonObject_common.put("bigBranchNumber1", bigBranchNumber1);
-                                jsonObject_common.put("bigBranchNumber2", bigBranchNumber2);
-                                jsonObject_common.put("bigBranchNumber3", bigBranchNumber3);
-                                jsonObject_common.put("bigBranchNumber4", bigBranchNumber4);
-                                jsonObject_common.put("bigBranchNumber5", bigBranchNumber5);
-                                jsonObject_common.put("bigBranchNumber6", bigBranchNumber6);
-                                jsonObject_common.put("bigBranchNumber7", bigBranchNumber7);
-                                jsonObject_common.put("bigBranchNumber8", bigBranchNumber8);
-                                jsonObject_common.put("bigBranchNumber9", bigBranchNumber9);
-                                jsonObject_common.put("bigBranchNumber10", bigBranchNumber10);
-                                jsonObject_common.put("branchNumberAvg", branchNumberAvg);
-                                jsonObject_common.put("bigYield1", bigYield1);
-                                jsonObject_common.put("bigYield2", bigYield2);
-                                jsonObject_common.put("bigYield3", bigYield3);
-                                jsonObject_common.put("bigYield4", bigYield4);
-                                jsonObject_common.put("bigYield5", bigYield5);
-                                jsonObject_common.put("bigYield6", bigYield6);
-                                jsonObject_common.put("bigYield7", bigYield7);
-                                jsonObject_common.put("bigYield8", bigYield8);
-                                jsonObject_common.put("bigYield9", bigYield9);
-                                jsonObject_common.put("bigYield10", bigYield10);
-                                jsonObject_common.put("smalYield1", smalYield1);
-                                jsonObject_common.put("smalYield2", smalYield2);
-                                jsonObject_common.put("smalYield3", smalYield3);
-                                jsonObject_common.put("smalYield4", smalYield4);
-                                jsonObject_common.put("smalYield5", smalYield5);
-                                jsonObject_common.put("smalYield6", smalYield6);
-                                jsonObject_common.put("smalYield7", smalYield7);
-                                jsonObject_common.put("smalYield8", smalYield8);
-                                jsonObject_common.put("smalYield9", smalYield9);
-                                jsonObject_common.put("smalYield10", smalYield10);
-                                jsonObject_common.put("speciesId", speciesId);
-                                jsonObject_common.put("testId", blockId);
-                                jsonObject_common.put("experimentType", experimentType);
-
-                                jsonObject_local.put("corollaColour", corollaColour);
-                                jsonObject_local.put("eyeDepth", eyeDepth);
-                                jsonObject_local.put("fleshColour", fleshColour);
-                                jsonObject_local.put("flowering", flowering);
-//                                jsonObject_local.put("img1", img1);
-//                                jsonObject_local.put("img2", img2);
-//                                jsonObject_local.put("img3", img3);
-//                                jsonObject_local.put("img4", img4);
-//                                jsonObject_local.put("img5", img5);
-                                if (isChoozen.equals("yes")) {
-                                    jsonObject_local.put("isChoozen", 1);
-                                } else {
-                                    jsonObject_local.put("isChoozen", 0);
-                                }
-                                jsonObject_local.put("leafColour", leafColour);
-                                jsonObject_local.put("openpollinated", openpollinated);
-                                jsonObject_local.put("skinColour", skinColour);
-                                jsonObject_local.put("skinSmoothness", skinSmoothness);
-                                jsonObject_local.put("name", name);
-                                jsonObject_local.put("speciesId", speciesId);
-                                jsonObject_local.put("stemColour", stemColour);
-                                jsonObject_local.put("tuberShape", tuberShape);
-                                jsonObject_local.put("uniformityOfTuberSize", uniformityOfTuberSize);
-
-                                jsonObject.put("commontest", jsonObject_common);
-                                jsonObject.put("localSpecies", jsonObject_local);
-
-                                Log.d("testJson", jsonObject.toString());
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                            new Thread() {
-                                @Override
-                                public void run() {
-                                    HttpRequest.HttpRequest_SpeciesData(jsonObject, MainActivity.this, new HttpRequest.HttpCallback() {
-                                        @Override
-                                        public void onSuccess(JSONObject result) {
-                                            Log.d("response_update", result.toString());
-                                        }
-                                    });
-                                    if(img1 != null)
-                                        HttpRequest.doUploadTest(img1, speciesId, "1", MainActivity.this, new HttpRequest.HttpCallback_Str() {
-                                            @Override
-                                            public void onSuccess(String result) {
-                                                Log.d("response_pic1", result);
-                                            }
-                                        });
-                                    if(img2 != null)
-                                        HttpRequest.doUploadTest(img2, speciesId, "2", MainActivity.this, new HttpRequest.HttpCallback_Str() {
-                                            @Override
-                                            public void onSuccess(String result) {
-                                                Log.d("response_pic2", result);
-                                            }
-                                        });
-                                    if(img3 != null)
-                                        HttpRequest.doUploadTest(img3, speciesId, "3", MainActivity.this, new HttpRequest.HttpCallback_Str() {
-                                            @Override
-                                            public void onSuccess(String result) {
-                                                Log.d("response_pic3", result);
-                                            }
-                                        });
-                                    if(img4 != null)
-                                        HttpRequest.doUploadTest(img4, speciesId, "4", MainActivity.this, new HttpRequest.HttpCallback_Str() {
-                                            @Override
-                                            public void onSuccess(String result) {
-                                                Log.d("response_pic4", result);
-                                            }
-                                        });
-                                    if(img5 != null)
-                                        HttpRequest.doUploadTest(img5, speciesId, "5", MainActivity.this, new HttpRequest.HttpCallback_Str() {
-                                            @Override
-                                            public void onSuccess(String result) {
-                                                Log.d("response_pic5", result);
-                                            }
-                                        });
-                                    //sqLiteDatabase.delete("SpeciesTable", null, null);
-                                }
-                            }.start();
-
-                        } while (cursor.moveToNext());
-                        Toast.makeText(MainActivity.this, "数据上传成功！", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        Toast.makeText(MainActivity.this, "尚未采集数据!", Toast.LENGTH_SHORT).show();
-                    }
-                    cursor.close();
-                } else {
-                    Toast.makeText(MainActivity.this, "对不起，您没有该权限！请登录有权限的账号！", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                    startActivityForResult(intent, 1);
-                }
-                break;
-            default:
+    protected void onResume() {
+        super.onResume();
+        if (sp.getBoolean("update_pick_data", false)) {
+            badge_pick = new QBadgeView(this).bindTarget(btn_pick).setBadgeText("");
         }
-        return true;
+        if (sp.getBoolean("update_location_data", false)) {
+            badge_location = new QBadgeView(this).bindTarget(btn_location).setBadgeText("");
+        }
     }
-
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
-//            webView.goBack();
-//            return true;
-//        }
-//        return super.onKeyDown(keyCode, event);
-//    }
 
     @Override
     public void onClick(View v) {
@@ -651,7 +616,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     int total = result.getInt("total");
                                     JSONObject jsonObject0 = new JSONObject();
                                     ContentValues contentValues = new ContentValues();
-                                    for (int i = 0; i < total; i++){
+                                    for (int i = 0; i < total; i++) {
                                         jsonObject0 = rows.getJSONObject(i);
 
                                         contentValues.put("bigfarmId", jsonObject0.getString("id"));
@@ -670,7 +635,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         contentValues.clear();
                                     }
 
-                                } catch (Exception e){
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
@@ -694,21 +659,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     rows = result.getJSONArray("rows");
                                     int total = result.getInt("total");
                                     JSONObject jsonObject0;
-                                    for(int i = 0; i < total; i++){
+                                    for (int i = 0; i < total; i++) {
                                         jsonObject0 = rows.getJSONObject(i);
                                         ContentValues contentValues = new ContentValues();
                                         contentValues.put("farmlandId", jsonObject0.getString("farmlandId"));
-                                        if(jsonObject0.getBoolean("deleted")){
+                                        if (jsonObject0.getBoolean("deleted")) {
                                             contentValues.put("deleted", "true");
-                                        }
-                                        else{
+                                        } else {
                                             contentValues.put("deleted", "false");
                                         }
                                         contentValues.put("name", jsonObject0.getString("name"));
-                                        if(jsonObject0.get("length") != null){
+                                        if (jsonObject0.get("length") != null) {
                                             contentValues.put("length", jsonObject0.getInt("length"));
                                         }
-                                        if(jsonObject0.get("width") != null){
+                                        if (jsonObject0.get("width") != null) {
                                             contentValues.put("width", jsonObject0.getInt("width"));
                                         }
                                         contentValues.put("type", jsonObject0.getString("type"));
@@ -741,42 +705,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     int total = result.getInt("total");
                                     ContentValues contentValues = new ContentValues();
                                     JSONObject jsonObject0;
-                                    for(int i = 0; i < total; i++){
+                                    for (int i = 0; i < total; i++) {
                                         jsonObject0 = rows.getJSONObject(i);
 
                                         contentValues.put("id", jsonObject0.getString("id"));
                                         contentValues.put("name", jsonObject0.getString("name"));
-                                        if(jsonObject0.getBoolean("deleted")){
+                                        if (jsonObject0.getBoolean("deleted")) {
                                             contentValues.put("deleted", "true");
-                                        }
-                                        else{
+                                        } else {
                                             contentValues.put("deleted", "false");
                                         }
                                         contentValues.put("expType", jsonObject0.getString("expType"));
-                                        if(jsonObject0.get("moveX") != null){
-                                            if(!jsonObject0.getString("moveX").equals("null")){
+                                        if (jsonObject0.get("moveX") != null) {
+                                            if (!jsonObject0.getString("moveX").equals("null")) {
                                                 contentValues.put("moveX", jsonObject0.getInt("moveX"));
                                             }
                                         }
-                                        if(jsonObject0.get("moveY") != null){
-                                            if(!jsonObject0.getString("moveY").equals("null")){
+                                        if (jsonObject0.get("moveY") != null) {
+                                            if (!jsonObject0.getString("moveY").equals("null")) {
                                                 contentValues.put("moveY", jsonObject0.getInt("moveY"));
                                             }
                                         }
-                                        if(jsonObject0.get("moveX1") != null){
-                                            if(!jsonObject0.getString("moveX1").equals("null")){
+                                        if (jsonObject0.get("moveX1") != null) {
+                                            if (!jsonObject0.getString("moveX1").equals("null")) {
                                                 contentValues.put("moveX1", jsonObject0.getInt("moveX1"));
                                             }
                                         }
-                                        if(jsonObject0.get("moveY1") != null){
-                                            if(!jsonObject0.getString("moveY1").equals("null")){
+                                        if (jsonObject0.get("moveY1") != null) {
+                                            if (!jsonObject0.getString("moveY1").equals("null")) {
                                                 contentValues.put("moveY1", jsonObject0.getInt("moveY1"));
                                             }
                                         }
                                         contentValues.put("num", jsonObject0.getString("num"));
                                         contentValues.put("color", jsonObject0.getString("color"));
                                         contentValues.put("farmlandId", jsonObject0.getString("farmlandId"));
-                                        if(jsonObject0.get("rows") != null){
+                                        if (jsonObject0.get("rows") != null) {
                                             contentValues.put("rows", jsonObject0.getInt("rows"));
                                         }
                                         contentValues.put("speciesList", jsonObject0.getString("speciesList"));
@@ -810,20 +773,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     int total = result.getInt("total");
                                     ContentValues contentValues = new ContentValues();
                                     JSONObject jsonObject0;
-                                    for(int i = 0; i < total; i++){
+                                    for (int i = 0; i < total; i++) {
                                         jsonObject0 = rows.getJSONObject(i);
 
                                         contentValues.put("blockId", jsonObject0.getString("id"));
                                         contentValues.put("fieldId", jsonObject0.getString("fieldId"));
                                         contentValues.put("speciesId", jsonObject0.getString("speciesId"));
 
-                                        if(jsonObject0.get("x") != null){
-                                            if(!jsonObject0.getString("x").equals("null")){
+                                        if (jsonObject0.get("x") != null) {
+                                            if (!jsonObject0.getString("x").equals("null")) {
                                                 contentValues.put("x", jsonObject0.getInt("x"));
                                             }
                                         }
-                                        if(jsonObject0.get("y") != null){
-                                            if(!jsonObject0.getString("y").equals("null")){
+                                        if (jsonObject0.get("y") != null) {
+                                            if (!jsonObject0.getString("y").equals("null")) {
                                                 contentValues.put("y", jsonObject0.getInt("y"));
                                             }
                                         }
@@ -856,7 +819,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     int total = result.getInt("total");
                                     ContentValues contentValues = new ContentValues();
                                     JSONObject jsonObject0;
-                                    for(int i = 0; i < total; i++){
+                                    for (int i = 0; i < total; i++) {
                                         jsonObject0 = rows.getJSONObject(i);
                                         contentValues.put("speciesid", jsonObject0.getString("speciesId"));
                                         contentValues.put("name", jsonObject0.getString("name"));
@@ -911,13 +874,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 db.close();
                 db_Helper.close();
-                if(mBigFarmList.size()==0){
+                if (mBigFarmList.size() == 0) {
                     Toast.makeText(MainActivity.this, "数据为空，请下载数据后重试！", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent_mutlilevel = new Intent(MainActivity.this, MultiLevelActivity.class);
+                    startActivity(intent_mutlilevel);
                 }
-                else{
-                Intent intent_mutlilevel = new Intent(MainActivity.this, MultiLevelActivity.class);
-                startActivity(intent_mutlilevel);
-            }
                 break;
             case R.id.btn_data:
                 final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(MainActivity.this).builder()
@@ -950,18 +912,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent = new Intent(MainActivity.this, SaveDataActivity.class);
                 startActivity(intent);
                 break;*/
-
             default:
-                 break;
+                break;
         }
     }
 
-    public void updateSqlite(String table_name, String column_name, ContentValues contentValues){
+    public void updateSqlite(String table_name, String column_name, ContentValues contentValues) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 //        db.delete(table_name, null, null);
         Cursor cursor = db.query(table_name, new String[]{column_name}, null, null, null, null, null);
-        if(cursor != null && cursor.moveToFirst()){
+        if (cursor != null && cursor.moveToFirst()) {
             boolean isExist = false;
             do {
                 if (contentValues.getAsString(column_name).equals(cursor.getString(0))) {
@@ -974,8 +935,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
 //            db.insert(table_name, null, contentValues);
-        }
-        else {
+        } else {
             Log.d("updateSqlite", "CursorNull");
             db.insert(table_name, null, contentValues);
         }
@@ -1026,10 +986,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        switch (requestCode){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
             case 1:
-                if(resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
 //                    userRole = data.getStringExtra("userRole");
 //                    Log.d("userRole", userRole);
                 }

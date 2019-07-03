@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" android:launchMode="singleTask">
+        <activity android:name=".SplashActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,6 +26,7 @@
         <activity android:name=".temporarystorage.SaveDataActivity" />
         <activity android:name=".SpeciesClickActivity" />
         <activity android:name=".MultiLevelActivity"/>
+        <activity android:name=".MainActivity" android:launchMode="singleTask"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

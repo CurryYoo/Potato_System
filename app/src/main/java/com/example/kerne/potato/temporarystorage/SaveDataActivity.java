@@ -2,8 +2,10 @@ package com.example.kerne.potato.temporarystorage;
 
 import android.Manifest;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,6 +13,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -19,7 +23,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,7 +51,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-import javax.xml.parsers.SAXParser;
+import q.rorbin.badgeview.QBadgeView;
 
 import static com.example.kerne.potato.temporarystorage.RealPath.getRealPathFromUri;
 import static com.example.kerne.potato.temporarystorage.Util.getAverage;
@@ -71,7 +74,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     private String speciesId;
     private String expType;
     EditText edtSpeciesID = null;
-//    private String commitId = "initial id";
+    //    private String commitId = "initial id";
     //实验类型
     EditText edtExperimentType = null;
     EditText edtSowingPeriodInput = null;
@@ -133,9 +136,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     private EditText edtBranchNumOfBigPotato8 = null;
     private EditText edtBranchNumOfBigPotato9 = null;
     private EditText edtBranchNumOfBigPotato10 = null;
-//    大薯平均分支数，也就是平均分支数
+    //    大薯平均分支数，也就是平均分支数
     private EditText edtAverageBranchNumOfBigPotato = null;
-//    大薯十株测产
+    //    大薯十株测产
     private EditText edtYieldMonitoringOfBigPotato1 = null;
     private EditText edtYieldMonitoringOfBigPotato2 = null;
     private EditText edtYieldMonitoringOfBigPotato3 = null;
@@ -224,6 +227,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     private SpeciesDBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
 
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
+
     //下拉按键
     private TextView down = null;
 
@@ -233,6 +239,8 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         //在Action bar显示返回键
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_commit);
+        sp = getSharedPreferences("update_flag", Context.MODE_PRIVATE);
+        editor = sp.edit();
 
         LinearLayout mLinearLayout = (LinearLayout) findViewById(R.id.mianliner);
         View view_basic = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_basicinfo, null);
@@ -526,7 +534,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         //如果品种信息不存在，进行初始化
         //如果品种信息存在，进行展示
         Cursor cursor = sqLiteDatabase.query("SpeciesTable", null, "speciesId" + "=?" + " and  "
-                    + "blockId" + "=?", new String[]{speciesId, blockId},null,null,null);
+                + "blockId" + "=?", new String[]{speciesId, blockId}, null, null, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             for (int i = 0; i < cursor.getCount(); i++) {
@@ -547,52 +555,52 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 edtFloweringPeriod.setText(blooming);
                 //叶颜色
                 String leafColour = cursor.getString(8);
-                Log.d(TAG, "onCreate: "+"leafColour:"+leafColour);
-                SpinnerAdapter leafColourAdapter= spnLeafColor.getAdapter();
+                Log.d(TAG, "onCreate: " + "leafColour:" + leafColour);
+                SpinnerAdapter leafColourAdapter = spnLeafColor.getAdapter();
 //                int k= apsAdapter.getCount();
-                for(int j=0;j<leafColourAdapter.getCount();j++){
-                    if(leafColour.equals(leafColourAdapter.getItem(j).toString())){
-                        spnLeafColor.setSelection(j,true);
+                for (int j = 0; j < leafColourAdapter.getCount(); j++) {
+                    if (leafColour.equals(leafColourAdapter.getItem(j).toString())) {
+                        spnLeafColor.setSelection(j, true);
                         break;
                     }
                 }
                 //花冠色
                 String corollaColour = cursor.getString(9);
-                SpinnerAdapter corollaColourAdapter= spnCorollaColors.getAdapter();
-                Log.d(TAG, "onCreate: "+"corollaColour:"+corollaColour);
-                for(int j=0;j<corollaColourAdapter.getCount();j++){
-                    if(corollaColour.equals(corollaColourAdapter.getItem(j).toString())){
-                        spnCorollaColors.setSelection(j,true);
+                SpinnerAdapter corollaColourAdapter = spnCorollaColors.getAdapter();
+                Log.d(TAG, "onCreate: " + "corollaColour:" + corollaColour);
+                for (int j = 0; j < corollaColourAdapter.getCount(); j++) {
+                    if (corollaColour.equals(corollaColourAdapter.getItem(j).toString())) {
+                        spnCorollaColors.setSelection(j, true);
                         break;
                     }
                 }
                 //花繁茂性
                 String flowering = cursor.getString(10);
-                SpinnerAdapter floweringAdapter= spnPlantFlourish.getAdapter();
+                SpinnerAdapter floweringAdapter = spnPlantFlourish.getAdapter();
 //                Log.d(TAG, "onCreate: "+"corollaColour:"+corollaColour);
-                for(int j=0;j<floweringAdapter.getCount();j++){
-                    if(flowering.equals(floweringAdapter.getItem(j).toString())){
-                        spnPlantFlourish.setSelection(j,true);
+                for (int j = 0; j < floweringAdapter.getCount(); j++) {
+                    if (flowering.equals(floweringAdapter.getItem(j).toString())) {
+                        spnPlantFlourish.setSelection(j, true);
                         break;
                     }
                 }
                 //茎色
                 String stemColour = cursor.getString(11);
-                SpinnerAdapter stemColourAdapter= spnStemColor.getAdapter();
+                SpinnerAdapter stemColourAdapter = spnStemColor.getAdapter();
 //                Log.d(TAG, "onCreate: "+"corollaColour:"+corollaColour);
-                for(int j=0;j<stemColourAdapter.getCount();j++){
-                    if(stemColour.equals(stemColourAdapter.getItem(j).toString())){
-                        spnStemColor.setSelection(j,true);
+                for (int j = 0; j < stemColourAdapter.getCount(); j++) {
+                    if (stemColour.equals(stemColourAdapter.getItem(j).toString())) {
+                        spnStemColor.setSelection(j, true);
                         break;
                     }
                 }
                 //天然结实性
                 String openpollinated = cursor.getString(12);
-                SpinnerAdapter openpollinatedAdapter= spnNaturalFecundity.getAdapter();
+                SpinnerAdapter openpollinatedAdapter = spnNaturalFecundity.getAdapter();
 //                Log.d(TAG, "onCreate: "+"corollaColour:"+corollaColour);
-                for(int j=0;j<openpollinatedAdapter.getCount();j++){
-                    if(openpollinated.equals(openpollinatedAdapter.getItem(j).toString())){
-                        spnNaturalFecundity.setSelection(j,true);
+                for (int j = 0; j < openpollinatedAdapter.getCount(); j++) {
+                    if (openpollinated.equals(openpollinatedAdapter.getItem(j).toString())) {
+                        spnNaturalFecundity.setSelection(j, true);
                         break;
                     }
                 }
@@ -606,61 +614,61 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 edtGrowingDays.setText(String.valueOf(growingPeriod));
                 //块茎整齐度
                 String uniformityOfTuberSize = cursor.getString(15);
-                SpinnerAdapter uniformityOfTuberSizeAdapter= spnTuberUniformity.getAdapter();
+                SpinnerAdapter uniformityOfTuberSizeAdapter = spnTuberUniformity.getAdapter();
 //                Log.d(TAG, "onCreate: "+"corollaColour:"+corollaColour);
-                for(int j=0;j<uniformityOfTuberSizeAdapter.getCount();j++){
-                    if(uniformityOfTuberSize.equals(uniformityOfTuberSizeAdapter.getItem(j).toString())){
-                        spnTuberUniformity.setSelection(j,true);
+                for (int j = 0; j < uniformityOfTuberSizeAdapter.getCount(); j++) {
+                    if (uniformityOfTuberSize.equals(uniformityOfTuberSizeAdapter.getItem(j).toString())) {
+                        spnTuberUniformity.setSelection(j, true);
                         break;
                     }
                 }
                 //薯型
                 String tuberShape = cursor.getString(16);
-                SpinnerAdapter tuberShapeAdapter= spnTuberShape.getAdapter();
+                SpinnerAdapter tuberShapeAdapter = spnTuberShape.getAdapter();
 //                Log.d(TAG, "onCreate: "+"corollaColour:"+corollaColour);
-                for(int j=0;j<tuberShapeAdapter.getCount();j++){
-                    if(tuberShape.equals(tuberShapeAdapter.getItem(j).toString())){
-                        spnTuberShape.setSelection(j,true);
+                for (int j = 0; j < tuberShapeAdapter.getCount(); j++) {
+                    if (tuberShape.equals(tuberShapeAdapter.getItem(j).toString())) {
+                        spnTuberShape.setSelection(j, true);
                         break;
                     }
                 }
                 //薯皮光滑度
                 String skinSmoothness = cursor.getString(17);
-                SpinnerAdapter skinSmoothnessAdapter= spnPotatoSkinSmoothness.getAdapter();
+                SpinnerAdapter skinSmoothnessAdapter = spnPotatoSkinSmoothness.getAdapter();
 //                Log.d(TAG, "onCreate: "+"corollaColour:"+corollaColour);
-                for(int j=0;j<skinSmoothnessAdapter.getCount();j++){
-                    if(skinSmoothness.equals(skinSmoothnessAdapter.getItem(j).toString())){
-                        spnPotatoSkinSmoothness.setSelection(j,true);
+                for (int j = 0; j < skinSmoothnessAdapter.getCount(); j++) {
+                    if (skinSmoothness.equals(skinSmoothnessAdapter.getItem(j).toString())) {
+                        spnPotatoSkinSmoothness.setSelection(j, true);
                         break;
                     }
                 }
                 //芽眼深浅
                 String eyeDepth = cursor.getString(18);
-                SpinnerAdapter eyeDepthAdapter= spnEye.getAdapter();
+                SpinnerAdapter eyeDepthAdapter = spnEye.getAdapter();
 //                Log.d(TAG, "onCreate: "+"corollaColour:"+corollaColour);
-                for(int j=0;j<eyeDepthAdapter.getCount();j++){
-                    if(eyeDepth.equals(eyeDepthAdapter.getItem(j).toString())){
-                        spnEye.setSelection(j,true);
+                for (int j = 0; j < eyeDepthAdapter.getCount(); j++) {
+                    if (eyeDepth.equals(eyeDepthAdapter.getItem(j).toString())) {
+                        spnEye.setSelection(j, true);
                         break;
                     }
                 }
                 //皮色
                 String skinColour = cursor.getString(19);
-                SpinnerAdapter skinColourAdapter= spnSkinColor.getAdapter();
+                SpinnerAdapter skinColourAdapter = spnSkinColor.getAdapter();
 //                Log.d(TAG, "onCreate: "+"corollaColour:"+corollaColour);
-                for(int j=0;j<skinColourAdapter.getCount();j++){
-                    if(skinColour.equals(skinColourAdapter.getItem(j).toString())){
-                        spnSkinColor.setSelection(j,true);
+                for (int j = 0; j < skinColourAdapter.getCount(); j++) {
+                    if (skinColour.equals(skinColourAdapter.getItem(j).toString())) {
+                        spnSkinColor.setSelection(j, true);
                         break;
                     }
                 }
                 //肉色
                 String fleshColour = cursor.getString(20);
-                SpinnerAdapter fleshColourAdapter= spnFleshColor.getAdapter();
+                SpinnerAdapter fleshColourAdapter = spnFleshColor.getAdapter();
 //                Log.d(TAG, "onCreate: "+"corollaColour:"+corollaColour);
-                for(int j=0;j<fleshColourAdapter.getCount();j++){
-                    if(fleshColour.equals(fleshColourAdapter.getItem(j).toString())){
-                        spnFleshColor.setSelection(j,true);
+                for (int j = 0; j < fleshColourAdapter.getCount(); j++) {
+                    if (fleshColour.equals(fleshColourAdapter.getItem(j).toString())) {
+                        spnFleshColor.setSelection(j, true);
                         break;
                     }
                 }
@@ -804,30 +812,30 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
                     try {
                         bitmapColor = BitmapFactory.decodeStream(getContentResolver().openInputStream(Uri.parse(
-                                "content://com.example.kerne.potato.fileprovider/potato_images/"+pathColor.replace("/storage/emulated/0/",""))));
+                                "content://com.example.kerne.potato.fileprovider/potato_images/" + pathColor.replace("/storage/emulated/0/", ""))));
                     } catch (FileNotFoundException e) {
-                        Log.d(TAG, "onCreate: img"+"FileNotFoundException"+bitmapColor);
+                        Log.d(TAG, "onCreate: img" + "FileNotFoundException" + bitmapColor);
                         e.printStackTrace();
                     } catch (NullPointerException e) {
-                        Log.d(TAG, "onCreate: img"+"NullPointerException"+bitmapColor);
+                        Log.d(TAG, "onCreate: img" + "NullPointerException" + bitmapColor);
                         e.printStackTrace();
                     }
                     ivShowColor.setImageBitmap(bitmapColor);
                 }
                 //花冠色图片
                 pathCorollaColor = cursor.getString(76);
-                Log.d(TAG, "onCreate: "+ "imgCorollaColors:" + pathCorollaColor);
+                Log.d(TAG, "onCreate: " + "imgCorollaColors:" + pathCorollaColor);
                 if (pathCorollaColor != null) {
                     Bitmap bitmapCorollaColors = null;
                     try {
                         bitmapCorollaColors = BitmapFactory.decodeStream(getContentResolver().openInputStream(Uri.parse(
                                 "content://com.example.kerne.potato.fileprovider/potato_images/"
-                                        +pathCorollaColor.replace("/storage/emulated/0/",""))));
+                                        + pathCorollaColor.replace("/storage/emulated/0/", ""))));
                     } catch (FileNotFoundException e) {
-                        Log.d(TAG, "onCreate: img"+"FileNotFoundException"+bitmapCorollaColors);
+                        Log.d(TAG, "onCreate: img" + "FileNotFoundException" + bitmapCorollaColors);
                         e.printStackTrace();
                     } catch (NullPointerException e) {
-                        Log.d(TAG, "onCreate: img"+"NullPointerException"+bitmapCorollaColors);
+                        Log.d(TAG, "onCreate: img" + "NullPointerException" + bitmapCorollaColors);
                         e.printStackTrace();
                     }
                     ivShowCorollaColor.setImageBitmap(bitmapCorollaColors);
@@ -839,7 +847,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                     try {
                         bitmapPlantFlourish = BitmapFactory.decodeStream(getContentResolver().openInputStream(Uri.parse(
                                 "content://com.example.kerne.potato.fileprovider/potato_images/"
-                                        +pathPlantFlourish.replace("/storage/emulated/0/",""))));
+                                        + pathPlantFlourish.replace("/storage/emulated/0/", ""))));
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (NullPointerException e) {
@@ -854,7 +862,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                     try {
                         bitmapStemColors = BitmapFactory.decodeStream(getContentResolver().openInputStream(Uri.parse(
                                 "content://com.example.kerne.potato.fileprovider/potato_images/"
-                                        +pathStemColors.replace("/storage/emulated/0/",""))));
+                                        + pathStemColors.replace("/storage/emulated/0/", ""))));
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (NullPointerException e) {
@@ -869,7 +877,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                     try {
                         bitmapNaturalFecundity = BitmapFactory.decodeStream(getContentResolver().openInputStream(Uri.parse(
                                 "content://com.example.kerne.potato.fileprovider/potato_images/"
-                                        +pathNaturalFecundity.replace("/storage/emulated/0/",""))));
+                                        + pathNaturalFecundity.replace("/storage/emulated/0/", ""))));
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (NullPointerException e) {
@@ -881,7 +889,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 Log.d("SaveDataActivity", "onCreate: haha" + cursor);
                 cursor.moveToNext();
             }
-        }else {
+        } else {
             Log.d("SaveDataActivity", "onCreate: cursor<=0" + cursor);
             savaDataLocally();
         }
@@ -917,6 +925,8 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         updateDataLocally();
+                        editor.putBoolean("update_pick_data",true);
+                        editor.apply();
                     }
                 });
                 saveDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -928,7 +938,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 saveDialog.show();
                 break;
             case R.id.back_home:
-                Intent intent=new Intent(this, MainActivity.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 break;
             default:
@@ -968,7 +978,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 if (Build.VERSION.SDK_INT >= 24) {
                     imageUriColor = FileProvider.getUriForFile(SaveDataActivity.this,
                             "com.example.kerne.potato.fileprovider", outputImage);
-                    Log.d(TAG, "onClick: img"+imageUriColor);
+                    Log.d(TAG, "onClick: img" + imageUriColor);
                 } else {
                     imageUriColor = Uri.fromFile(outputImage);
                 }
@@ -984,7 +994,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //叶颜色查看大图
             case R.id.imv_colors:
-                watchLargePhoto(this,imageUriColor);
+                watchLargePhoto(this, imageUriColor);
                 break;
             //花冠色拍照并显示
             case R.id.imb_corolla_colors:
@@ -994,7 +1004,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 try {
                     outputImageCorollaColors.createNewFile();
                     pathCorollaColor = outputImageCorollaColors.getAbsolutePath();
-                    Log.d(TAG, "onClick: img "+"corolla" + pathCorollaColor);
+                    Log.d(TAG, "onClick: img " + "corolla" + pathCorollaColor);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -1029,7 +1039,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //花繁茂性查看大图
             case R.id.imv_plant_flourish:
-                watchLargePhoto(this,imageUriPlantFlourish);
+                watchLargePhoto(this, imageUriPlantFlourish);
                 break;
             //从相册选择花繁茂性照片
             case R.id.btn_select_from_album_plant_flourish:
@@ -1075,7 +1085,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //天然结实性查看大图
             case R.id.imv_natural_fecundity:
-                watchLargePhoto(this,imageUriNaturalFecundity);
+                watchLargePhoto(this, imageUriNaturalFecundity);
                 break;
             //从相册选择天然结实性照片
             case R.id.btn_select_from_album_natural_fecundity:
@@ -1222,9 +1232,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //计算商品薯率
             case R.id.btn_compute_rate_of_economic_potato:
-                float edtFloatNumOfLargeAndMediumPotatoesContent = Float.parseFloat(edtNumOfLargeAndMediumPotatoes.getText().toString().isEmpty()?"0":
+                float edtFloatNumOfLargeAndMediumPotatoesContent = Float.parseFloat(edtNumOfLargeAndMediumPotatoes.getText().toString().isEmpty() ? "0" :
                         edtNumOfLargeAndMediumPotatoes.getText().toString());
-                float edtFloatNumOfSmallPotatoesContent = Float.parseFloat(edtNumOfSmallPotatoes.getText().toString().isEmpty()?"0":
+                float edtFloatNumOfSmallPotatoesContent = Float.parseFloat(edtNumOfSmallPotatoes.getText().toString().isEmpty() ? "0" :
                         edtNumOfSmallPotatoes.getText().toString());
                 float rateOfEconomicPotato = edtFloatNumOfLargeAndMediumPotatoesContent / (edtFloatNumOfLargeAndMediumPotatoesContent + edtFloatNumOfSmallPotatoesContent) * 100;
 //                edtRateOfEconomicPotato.setText(decimalFormat.format(rateOfEconomicPotato));
@@ -1376,7 +1386,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 default:
                     checkedRadioButtonContent = true;
             }
-            contentValues.put("isChoozen",  checkedRadioButtonContent);
+            contentValues.put("isChoozen", checkedRadioButtonContent);
             //备注
             contentValues.put("remark", edtRemark.getText().toString());
             //收获株数
@@ -1529,7 +1539,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
             contentValues.put("img5", pathNaturalFecundity);
 
         } catch (NumberFormatException e) {
-            Toast.makeText(this,"请检查输入数据的格式是否正确！",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "请检查输入数据的格式是否正确！", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         return contentValues;
@@ -1553,55 +1563,55 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         switch (requestCode) {
             //叶颜色显示照片
             case TAKE_PHOTO_COLOR:
-                onResultOfPhoto(resultCode,imageUriColor, ivShowColor);
+                onResultOfPhoto(resultCode, imageUriColor, ivShowColor);
                 break;
             //花冠色显示照片
             case TAKE_PHOTO_COROLLA_COLOR:
-                onResultOfPhoto(resultCode,imageUriCorollaColor, ivShowCorollaColor);
+                onResultOfPhoto(resultCode, imageUriCorollaColor, ivShowCorollaColor);
                 break;
             //花繁茂性显示照片
             case TAKE_PHOTO_PLANT_FLOURISH:
-                onResultOfPhoto(resultCode,imageUriPlantFlourish, ivShowPlantFlourish);
+                onResultOfPhoto(resultCode, imageUriPlantFlourish, ivShowPlantFlourish);
                 break;
             //茎色显示照片
             case TAKE_PHOTO_STEM_COLORS:
-                onResultOfPhoto(resultCode,imageUriStemColors, ivShowStemColors);
+                onResultOfPhoto(resultCode, imageUriStemColors, ivShowStemColors);
                 break;
             //天然结实性显示照片
             case TAKE_PHOTO_NATURAL_FECUNDITY:
-                onResultOfPhoto(resultCode,imageUriNaturalFecundity, ivShowNaturalFecundity);
+                onResultOfPhoto(resultCode, imageUriNaturalFecundity, ivShowNaturalFecundity);
                 break;
             //块茎整齐度显示照片
             case TAKE_PHOTO_TUBER_UNIFORMITY:
-                onResultOfPhoto(resultCode,imageUriTuberUniformity, ivShowTuberUniformity);
+                onResultOfPhoto(resultCode, imageUriTuberUniformity, ivShowTuberUniformity);
                 break;
             //薯型显示照片
             case TAKE_PHOTO_TUBER_SHAPE:
-                onResultOfPhoto(resultCode,imageUriTuberShape, ivShowTuberShape);
+                onResultOfPhoto(resultCode, imageUriTuberShape, ivShowTuberShape);
                 break;
             //薯皮光滑度显示照片
             case TAKE_PHOTO_POTATO_SKIN_SMOOTHNESS:
-                onResultOfPhoto(resultCode,imageUriPotatoSkinSmoothness, ivShowPotatoSkinSmoothness);
+                onResultOfPhoto(resultCode, imageUriPotatoSkinSmoothness, ivShowPotatoSkinSmoothness);
                 break;
             //芽眼深浅显示照片
             case TAKE_PHOTO_EYE:
-                onResultOfPhoto(resultCode,imageUriEye, ivShowEye);
+                onResultOfPhoto(resultCode, imageUriEye, ivShowEye);
                 break;
             //皮色显示照片
             case TAKE_PHOTO_SKIN_COLOR:
-                onResultOfPhoto(resultCode,imageUriSkinColor, ivShowSkinColor);
+                onResultOfPhoto(resultCode, imageUriSkinColor, ivShowSkinColor);
                 break;
             //肉色显示照片
             case TAKE_PHOTO_FLESH_COLOR:
-                onResultOfPhoto(resultCode,imageUriFleshColor, ivShowFleshColor);
+                onResultOfPhoto(resultCode, imageUriFleshColor, ivShowFleshColor);
                 break;
             //从相册选择叶颜色图片
             case SELECT_PHOTO_COLOR:
-                if(data != null){
+                if (data != null) {
                     imageUriColor = data.getData();
                     pathColor = getRealPathFromUri(SaveDataActivity.this, imageUriColor);
                     //Log.d("Uriiiii2", imageUriColor + " || " + pathColor);
-                    if(imageUriColor!=null) {
+                    if (imageUriColor != null) {
                         Bitmap bit = null;
                         try {
                             bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUriColor));
@@ -1615,10 +1625,10 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //从相册选择花冠色图片
             case SELECT_PHOTO_COROLLA_COLORS:
-                if(data != null){
+                if (data != null) {
                     imageUriCorollaColor = data.getData();
                     pathCorollaColor = getRealPathFromUri(SaveDataActivity.this, imageUriCorollaColor);
-                    if(imageUriCorollaColor!=null) {
+                    if (imageUriCorollaColor != null) {
                         Bitmap bit = null;
                         try {
                             bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUriCorollaColor));
@@ -1632,10 +1642,10 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //从相册选择花繁茂性图片
             case SELECT_PHOTO_PLANT_FLOURISH:
-                if(data != null){
+                if (data != null) {
                     imageUriPlantFlourish = data.getData();
                     pathPlantFlourish = getRealPathFromUri(SaveDataActivity.this, imageUriPlantFlourish);
-                    if(imageUriPlantFlourish!=null) {
+                    if (imageUriPlantFlourish != null) {
                         Bitmap bit = null;
                         try {
                             bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUriPlantFlourish));
@@ -1649,10 +1659,10 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //从相册选择茎色图片
             case SELECT_PHOTO_STEM_COLOR:
-                if(data != null){
+                if (data != null) {
                     imageUriStemColors = data.getData();
                     pathStemColors = getRealPathFromUri(SaveDataActivity.this, imageUriStemColors);
-                    if(imageUriStemColors!=null) {
+                    if (imageUriStemColors != null) {
                         Bitmap bit = null;
                         try {
                             bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUriStemColors));
@@ -1666,10 +1676,10 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //从相册选择天然结实性图片
             case SELECT_PHOTO_NATURAL_FECUNDITY:
-                if(data != null){
+                if (data != null) {
                     imageUriNaturalFecundity = data.getData();
                     pathNaturalFecundity = getRealPathFromUri(SaveDataActivity.this, imageUriNaturalFecundity);
-                    if(imageUriNaturalFecundity!=null) {
+                    if (imageUriNaturalFecundity != null) {
                         Bitmap bit = null;
                         try {
                             bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUriNaturalFecundity));
@@ -1686,7 +1696,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void onResultOfPhoto(int resultCode,Uri imageUri,ImageView ivShowPicture) {
+    private void onResultOfPhoto(int resultCode, Uri imageUri, ImageView ivShowPicture) {
         if (resultCode == RESULT_OK) {
             //在应用中显示图片
             Bitmap bitmap = null;
