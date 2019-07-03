@@ -39,7 +39,7 @@ import java.util.Map;
  */
 
 public class HttpRequest {
-    private static final String url = "http://120.78.130.251:9526/"; //数据库ip
+    private static final String url = "http://120.78.130.251:9527/"; //数据库ip
     private static final String picUrl = "http://120.78.130.251:9527/"; //上传图片ip
     public static final String serverUrl = "http://cxk.nicesite.vip/"; //图片服务器url
     private static RequestQueue requestQueue;
@@ -47,7 +47,7 @@ public class HttpRequest {
     public static void HttpRequest_bigfarm(final String name, final File cache, Context context, final HttpCallback callback) {
         requestQueue = Volley.newRequestQueue(context);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "getAllBigfarm", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "bigfarm/getAllBigfarm", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("Bigfarm_Response", response);

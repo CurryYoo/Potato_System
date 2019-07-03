@@ -127,6 +127,7 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
         SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
+        //获取棚外区域
         Cursor cursor = db.query("FarmList", null, "bigfarmId=?", new String[]{bigfarmId}, null, null, null);
         if(cursor.moveToFirst()){
             do {
@@ -150,6 +151,32 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
         else {
             Toast.makeText(GeneralClickActivity.this, "FarmList null", Toast.LENGTH_SHORT).show();
         }
+
+        //获取大棚区域
+        cursor = db.query("ExperimentField", null, "farmlandId=?", new String[]{bigfarmId}, null, null, null);
+        if(cursor.moveToFirst()){
+            do {
+                JSONObject jsonObject0 = new JSONObject();
+                try {
+                    jsonObject0.put("id", cursor.getString(cursor.getColumnIndex("fieldId")));
+                    jsonObject0.put("name", cursor.getString(cursor.getColumnIndex("name")));
+                    jsonObject0.put("expType", cursor.getString(cursor.getColumnIndex("expType")));
+                    jsonObject0.put("num", cursor.getInt(cursor.getColumnIndex("num")));
+                    jsonObject0.put("farmlandId", cursor.getString(cursor.getColumnIndex("farmlandId")));
+                    jsonObject0.put("rows", cursor.getInt(cursor.getColumnIndex("rows")));
+                    jsonObject0.put("type", "greenhouse");
+//                    jsonObject0.put("userRole", userRole);
+                    mList.add(jsonObject0);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e("greenhouse_error", cursor.getString(cursor.getColumnIndex("farmlandId")));
+                }
+            } while (cursor.moveToNext());
+        }
+        else {
+            Toast.makeText(GeneralClickActivity.this, "FarmList null", Toast.LENGTH_SHORT).show();
+        }
+
         cursor.close();
         db.close();
         dbHelper.close();

@@ -43,10 +43,19 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
 
     private String farmlandId;
     private String name;
+
+    //棚外特有属性
     private int length;
     private int width;
+
     private String type;
     private String year;
+
+    //棚内特有属性
+    private String expType;
+    private String fieldId;
+    private int num;
+    private int rows;
 
     private String userRole;
 
@@ -100,6 +109,11 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                     length = jsonObject.getInt("length");
                     width = jsonObject.getInt("width");
                     type = jsonObject.getString("type");
+
+                    expType = jsonObject.getString("expType");
+                    fieldId = jsonObject.getString("fieldId");
+                    num = jsonObject.getInt("num");
+                    rows = jsonObject.getInt("rows");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -107,13 +121,17 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                 Intent intent = new Intent();
                 if (type.equals("common")){
                     intent = new Intent(mContext, GeneralActivity.class);
+                    intent.putExtra("length", length);
+                    intent.putExtra("width", width);
                 }
-                else {
+                else if (type.equals("greenhoue")) {
                     intent = new Intent(mContext, TableActivity.class);
+                    intent.putExtra("expType", expType);
+                    intent.putExtra("fieldId", fieldId);
+                    intent.putExtra("num", num);
+                    intent.putExtra("rows", rows);
                 }
                 intent.putExtra("farmlandId", farmlandId);
-                intent.putExtra("length", length);
-                intent.putExtra("width", width);
                 intent.putExtra("type", type);
                 mContext.startActivity(intent);
 
