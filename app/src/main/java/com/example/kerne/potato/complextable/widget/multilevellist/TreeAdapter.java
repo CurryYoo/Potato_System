@@ -22,6 +22,7 @@ import com.example.kerne.potato.temporarystorage.SaveDataActivity;
 import org.json.JSONException;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -109,6 +110,14 @@ public class TreeAdapter extends BaseAdapter {
                 }
             }
         }
+
+//        Iterator<TreePoint> iterator=pointList.iterator();
+//        while (iterator.hasNext()){
+//            TreePoint treePoint=iterator.next();
+//            if(treePoint.getISLEAF().equals("0")){
+//                iterator.remove();
+//            }
+//        }
         return count;
     }
 

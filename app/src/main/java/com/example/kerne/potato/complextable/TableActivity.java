@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -86,12 +87,15 @@ public class TableActivity extends AppCompatActivity {
 
     private SpeciesDBHelper dbHelper;
     private SQLiteDatabase db;
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.table_layout);
-
+        sp = getSharedPreferences("update_flag", Context.MODE_PRIVATE);
+        editor = sp.edit();
         //在Action bar显示返回键
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -238,7 +242,7 @@ public class TableActivity extends AppCompatActivity {
             case R.id.save_off_seq:
                 //保存操作 sqlite
                 List<ContentValues> contentValuesList = assembleData(str, STATUS_UPDATE);
-                Log.d("contentvaluesList", contentValuesList.toString());
+                Log.d("CheatGZ", contentValuesList.toString());
 //                db.delete("SpeciesList", "fieldId=?", new String[]{fieldId});
                 try {
                     int lastRows = 0;
@@ -264,6 +268,8 @@ public class TableActivity extends AppCompatActivity {
 //                }
                 Log.d("str_content", contentValuesList.get(0).getAsString("ContentofColumn") + "");
                 Toast.makeText(TableActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+                editor.putBoolean("update_location_data",true);
+                editor.apply();
                 break;
             default:
                 break;

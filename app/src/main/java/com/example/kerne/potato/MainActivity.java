@@ -139,6 +139,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.update_location_data:
+                    editor.putBoolean("update_location_data", false);
+                    editor.apply();
+                    if(badge_location!=null){
+                        badge_location.hide(false);
+                    }
                     userRole = UserRole.getUserRole();
                     if (!userRole.equals("farmer")) {
                         JSONArray jsonArray = new JSONArray();
@@ -186,10 +191,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case R.id.update_pick_data:
                     //将暂存的数据从数据库取出并提交到远程服务器
+
                     editor.putBoolean("update_pick_data", false);
                     editor.apply();
                     if(badge_pick!=null){
-                        badge_pick.hide(true);
+                        badge_pick.hide(false);
                     }
                     userRole = UserRole.getUserRole();
                     if (!userRole.equals("farmer")) {
@@ -581,6 +587,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         if (sp.getBoolean("update_pick_data", false)) {
             badge_pick = new QBadgeView(this).bindTarget(btn_pick).setBadgeText("");
+        }
+        if (sp.getBoolean("update_location_data", false)) {
+            badge_location = new QBadgeView(this).bindTarget(btn_location).setBadgeText("");
         }
     }
 
