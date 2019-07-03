@@ -2,8 +2,10 @@ package com.example.kerne.potato.temporarystorage;
 
 import android.Manifest;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -225,6 +227,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     private SpeciesDBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
 
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
+
     //下拉按键
     private TextView down = null;
 
@@ -234,6 +239,8 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         //在Action bar显示返回键
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_commit);
+        sp = getSharedPreferences("update_flag", Context.MODE_PRIVATE);
+        editor = sp.edit();
 
         LinearLayout mLinearLayout = (LinearLayout) findViewById(R.id.mianliner);
         View view_basic = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_basicinfo, null);
@@ -918,6 +925,8 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         updateDataLocally();
+                        editor.putBoolean("update_pick_data",true);
+                        editor.apply();
                     }
                 });
                 saveDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
