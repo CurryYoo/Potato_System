@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
 import com.example.kerne.potato.temporarystorage.Util;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.hb.dialog.myDialog.MyAlertInputDialog;
 
 import org.json.JSONArray;
@@ -49,6 +50,7 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fresco.initialize(this);
         //在Action bar显示返回键
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.general_click_activity);
@@ -56,7 +58,6 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
         bigfarmId = getIntent().getStringExtra("bigfarmId");
         img = getIntent().getStringExtra("img");
         uri = getIntent().getStringExtra("uri");
-
         initData();
 
         //initView();
@@ -80,7 +81,7 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
 //                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                startActivity(intent);
             case R.id.map_bigfarm:
-                Util.watchLargePhoto(GeneralClickActivity.this, Uri.parse(uri));
+                Util.watchOnlineLargePhoto(GeneralClickActivity.this, Uri.parse(uri));
                 break;
             default:
         }
