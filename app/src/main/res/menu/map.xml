@@ -2,8 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/map_color"
-        android:title="颜色对应" />
+        android:id="@+id/map_bigfarm"
+        android:title="地图" />
 
     <!--<item-->
         <!--android:id="@+id/commit"-->
