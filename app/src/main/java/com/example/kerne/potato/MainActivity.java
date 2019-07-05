@@ -146,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     userRole = UserRole.getUserRole();
                     if (!userRole.equals("farmer")) {
+
                         JSONArray jsonArray = new JSONArray();
                         sqLiteDatabase = dbHelper.getReadableDatabase();
                         Cursor cursor0 = sqLiteDatabase.query("SpeciesList", null, null, null, null, null, null);
@@ -191,7 +192,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case R.id.update_pick_data:
                     //将暂存的数据从数据库取出并提交到远程服务器
-
                     editor.putBoolean("update_pick_data", false);
                     editor.apply();
                     if(badge_pick!=null){
@@ -199,6 +199,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     userRole = UserRole.getUserRole();
                     if (!userRole.equals("farmer")) {
+
                         sqLiteDatabase = dbHelper.getReadableDatabase();
                         String sql = "select SpeciesTable.*, LocalSpecies.* from SpeciesTable, LocalSpecies " +
                                 "where SpeciesTable.speciesId=LocalSpecies.name";
@@ -461,7 +462,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                         cursor.close();
                     } else {
-                        Toast.makeText(MainActivity.this, "对不起，您没有该权限！请登录有权限的账号！", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "对不起，您没有该权限！请登录有权限的账号！", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivityForResult(intent, 1);
                     }
@@ -506,7 +507,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         qBadgeView_location = new QBadgeView(this);
         qBadgeView_pick = new QBadgeView(this);
-
+        
+        if (sp.getBoolean("update_pick_data", false)) {
+            badge_pick = new QBadgeView(this).bindTarget(btn_pick).setBadgeText("");
+        }
+        if (sp.getBoolean("update_location_data", false)) {
+            badge_location = new QBadgeView(this).bindTarget(btn_location).setBadgeText("");
+        }
         dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
 
 
