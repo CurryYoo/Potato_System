@@ -159,7 +159,7 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
             do {
                 JSONObject jsonObject0 = new JSONObject();
                 try {
-                    jsonObject0.put("id", cursor.getString(cursor.getColumnIndex("fieldId")));
+                    jsonObject0.put("fieldId", cursor.getString(cursor.getColumnIndex("id")));
                     jsonObject0.put("name", cursor.getString(cursor.getColumnIndex("name")));
                     jsonObject0.put("expType", cursor.getString(cursor.getColumnIndex("expType")));
                     jsonObject0.put("num", cursor.getInt(cursor.getColumnIndex("num")));
@@ -167,6 +167,7 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
                     jsonObject0.put("rows", cursor.getInt(cursor.getColumnIndex("rows")));
                     jsonObject0.put("type", "greenhouse");
 //                    jsonObject0.put("userRole", userRole);
+                    Log.d("pengnei1", jsonObject0.toString());
                     mList.add(jsonObject0);
                 } catch (JSONException e) {
                     e.printStackTrace();

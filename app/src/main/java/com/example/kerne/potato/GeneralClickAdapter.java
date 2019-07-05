@@ -25,6 +25,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
+import static com.example.kerne.potato.complextable.TableActivity.STATUS_EDIT;
+import static com.example.kerne.potato.complextable.TableActivity.STATUS_READ;
+
 /**
  * Item 点击对应的 Adapter
  *
@@ -87,8 +90,6 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
         try {
             farmlandId = jsonObject.getString("farmlandId");
             name = jsonObject.getString("name");
-            length = jsonObject.getInt("length");
-            width = jsonObject.getInt("width");
             type = jsonObject.getString("type");
 //            userRole = jsonObject.getString("userRole");
             holder.tvNum.setText("实验田序号：" + farmlandId);
@@ -106,34 +107,71 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                 //builder.setIcon(R.drawable.ic_launcher_background);
                 try {
                     farmlandId = jsonObject.getString("farmlandId");
-                    length = jsonObject.getInt("length");
-                    width = jsonObject.getInt("width");
                     type = jsonObject.getString("type");
 
                     expType = jsonObject.getString("expType");
                     fieldId = jsonObject.getString("fieldId");
                     num = jsonObject.getInt("num");
                     rows = jsonObject.getInt("rows");
+                    Log.d("pengnei2", num + "," + rows);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
                 Intent intent = new Intent();
                 if (type.equals("common")){
+                    try {
+                        length = jsonObject.getInt("length");
+                        width = jsonObject.getInt("width");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                     intent = new Intent(mContext, GeneralActivity.class);
                     intent.putExtra("length", length);
                     intent.putExtra("width", width);
+                    intent.putExtra("farmlandId", farmlandId);
+                    intent.putExtra("type", type);
+                    mContext.startActivity(intent);
                 }
-                else if (type.equals("greenhoue")) {
+                else if (type.equals("greenhouse")) {
                     intent = new Intent(mContext, TableActivity.class);
-                    intent.putExtra("expType", expType);
-                    intent.putExtra("fieldId", fieldId);
-                    intent.putExtra("num", num);
-                    intent.putExtra("rows", rows);
+                    final int[] status = new int[1];
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setTitle("选择一个操作");
+                    // 指定下拉列表的显示数据
+                    final String[] options = {"品种规划", "查看品种规划详情"};
+                    // 设置一个下拉的列表选择项
+                    final Intent finalIntent = intent;
+                    builder.setItems(options, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if(which == 0){    // 点击第一个操作"品种规划"时
+//                                intent = new Intent(mContext, TableActivity.class);
+                                finalIntent.putExtra("status", STATUS_EDIT);
+                                finalIntent.putExtra("expType", expType);
+                                finalIntent.putExtra("fieldId", fieldId);
+                                finalIntent.putExtra("num", num);
+                                finalIntent.putExtra("rows", rows);
+                                finalIntent.putExtra("farmlandId", farmlandId);
+                                finalIntent.putExtra("type", type);
+                                mContext.startActivity(finalIntent);
+//                                        intent.putExtra("userRole", userRole);
+                            }
+                            else {   // 点击第二个操作"查看品种规划详情"时
+                                finalIntent.putExtra("status", STATUS_READ);
+                                finalIntent.putExtra("expType", expType);
+                                finalIntent.putExtra("fieldId", fieldId);
+                                finalIntent.putExtra("num", num);
+                                finalIntent.putExtra("rows", rows);
+                                finalIntent.putExtra("farmlandId", farmlandId);
+                                finalIntent.putExtra("type", type);
+                                mContext.startActivity(finalIntent);
+                            }
+                        }
+                    });
+                    builder.show();
                 }
-                intent.putExtra("farmlandId", farmlandId);
-                intent.putExtra("type", type);
-                mContext.startActivity(intent);
 
 //                //弹出输入年份的对话框
 //                final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(mContext).builder()

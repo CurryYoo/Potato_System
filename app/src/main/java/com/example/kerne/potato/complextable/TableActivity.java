@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -37,6 +38,7 @@ import com.example.kerne.potato.complextable.widget.SyncHorizontalScrollView;
 import com.example.kerne.potato.complextable.widget.pullrefresh.AbPullToRefreshView;
 import com.example.kerne.potato.temporarystorage.SaveDataActivity;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
+import com.hb.dialog.myDialog.MyAlertInputDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,6 +79,7 @@ public class TableActivity extends AppCompatActivity {
     private String fieldId;
     private String expType;
     private String type;
+    private int column;
     private JSONArray rows = new JSONArray();
     private JSONArray jsonArray = new JSONArray();
 
@@ -124,6 +127,7 @@ public class TableActivity extends AppCompatActivity {
                         int num = cursor.getInt(cursor.getColumnIndex("num"));
                         rows.put(i, num);
                         maxRows = (num > maxRows ? num : maxRows);
+                        column = 1;
                         cursor.moveToNext();
                     }
                 }
@@ -134,13 +138,16 @@ public class TableActivity extends AppCompatActivity {
             str = new String[maxRows][maxColumns];
         }
         else {
-            maxRows = getIntent().getIntExtra("num", 0);
+            column = getIntent().getIntExtra("rows", 2);
+            maxRows = getIntent().getIntExtra("num", 0) / column;
             maxColumns = getIntent().getIntExtra("rows", 0);
+            Log.d("num,rows", maxRows + "," + maxColumns);
             str = new String[maxRows][maxColumns];
 
             try {
                 jsonArray.put(0, fieldId);
                 rows.put(0, maxRows);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -172,7 +179,7 @@ public class TableActivity extends AppCompatActivity {
                     columns++;
                     fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
                 }
-                x = cursor0.getInt(cursor0.getColumnIndex("x")) + columns * 1 - 1; //从0开始
+                x = cursor0.getInt(cursor0.getColumnIndex("x")) + columns * column - 1; //从0开始
                 y = cursor0.getInt(cursor0.getColumnIndex("y")) - 1; //从0开始
                 str[y][x] = cursor0.getString(cursor0.getColumnIndex("speciesId"));
                 Log.d("x,y,str", x + "," + y + "," + str[y][x]);
@@ -257,16 +264,17 @@ public class TableActivity extends AppCompatActivity {
 //                db.delete("SpeciesList", "fieldId=?", new String[]{fieldId});
                 try {
                     int lastRows = 0; //把之前列的行数叠加起来，确定contentvalueslist中的位置
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        int rows_num = rows.getInt(i);
+                    for (int i = 0; i < jsonArray.length() * column; i++) {
+                        int rows_num = rows.getInt(i / column);
                         if (i > 0) {
-                            lastRows += rows.getInt(i - 1);
+                            lastRows += rows.getInt((i - 1) / column);
                         }
 
                         for (int j = 0; j < rows_num; j++) {
                             int id = lastRows + j;
                             db.update("SpeciesList", contentValuesList.get(id), "fieldId=? and x=? and y=?",
                                     new String[]{contentValuesList.get(id).getAsString("fieldId"), contentValuesList.get(id).getAsString("x"), contentValuesList.get(id).getAsString("y")});
+                            Log.d("fieldId,x,y", contentValuesList.get(id).getAsString("fieldId") + ","+ contentValuesList.get(id).getAsString("x") + "," + contentValuesList.get(id).getAsString("y"));
                         }
                     }
                 } catch (JSONException e) {
@@ -295,13 +303,14 @@ public class TableActivity extends AppCompatActivity {
         Log.d("str_save", str[0][0] + "");
         List<ContentValues> contentValuesList = new ArrayList<>();
         try {
-            for (int i = 0; i < jsonArray.length(); i++) {
-                int rows_num = rows.getInt(i);
+            for (int i = 0; i < jsonArray.length() * column; i++) {
+                int rows_num = rows.getInt(i / column);
                 for (int j = 0; j < rows_num; j++) {
                     ContentValues contentValues = new ContentValues();
-                    contentValues.put("fieldId", jsonArray.getString(i));
+                    contentValues.put("fieldId", jsonArray.getString(i / column));
                     contentValues.put("speciesId", str[j][i]);
-                    contentValues.put("x", 1);
+
+                    contentValues.put("x", i % column + 1);
                     contentValues.put("y", j + 1);
                     Log.d("contentValues", contentValues.toString());
                     contentValuesList.add(contentValues);
@@ -489,12 +498,13 @@ public class TableActivity extends AppCompatActivity {
                             if(status == STATUS_EDIT){
                                 final EditText editText = new EditText(TableActivity.this);
                                 editText.setGravity(Gravity.CENTER); //文字居中
-                                AlertDialog.Builder inputDialog = new AlertDialog.Builder(TableActivity.this);
-                                inputDialog.setTitle(finalI+1 + "-" + pos+1 + ":请输入品种编号").setView(editText);
-                                inputDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(TableActivity.this).builder()
+                                        .setTitle("请输入品种编号")
+                                        .setEditText("");
+                                myAlertInputDialog.setPositiveButton("确认", new View.OnClickListener() {
                                     @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        String species = editText.getText().toString();
+                                    public void onClick(View v) {
+                                        String species = myAlertInputDialog.getResult();
                                         boolean isExist = false;
                                         for (int j = 0; j < speciesNames.size(); j++) {
                                             if (species.equals(speciesNames.get(j))) {
@@ -509,8 +519,39 @@ public class TableActivity extends AppCompatActivity {
                                         else {
                                             Toast.makeText(TableActivity.this, "该品种不存在", Toast.LENGTH_SHORT).show();
                                         }
+                                        myAlertInputDialog.dismiss();
                                     }
-                                }).show();
+                                }).setNegativeButton("取消", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        //showMsg("取消");
+                                        myAlertInputDialog.dismiss();
+                                    }
+                                });
+                                myAlertInputDialog.show();
+
+//                                AlertDialog.Builder inputDialog = new AlertDialog.Builder(TableActivity.this);
+//                                inputDialog.setTitle(finalI+1 + "-" + pos+1 + ":请输入品种编号").setView(editText);
+//                                inputDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(DialogInterface dialog, int which) {
+//                                        String species = editText.getText().toString();
+//                                        boolean isExist = false;
+//                                        for (int j = 0; j < speciesNames.size(); j++) {
+//                                            if (species.equals(speciesNames.get(j))) {
+//                                                isExist = true;
+//                                            }
+//                                        }
+//                                        if (isExist) {
+//                                            tv.setText(species);
+//                                            str[pos][finalI] = species;
+//                                            Toast.makeText(TableActivity.this, species, Toast.LENGTH_SHORT).show();
+//                                        }
+//                                        else {
+//                                            Toast.makeText(TableActivity.this, "该品种不存在", Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    }
+//                                }).show();
                             }
                             else if(status == STATUS_READ) {
                                 String blockId = null;
