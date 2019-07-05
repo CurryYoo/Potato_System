@@ -112,6 +112,7 @@ public class TableActivity extends AppCompatActivity {
         type = getIntent().getStringExtra("type");
         String farmlandId;
         farmlandId = getIntent().getStringExtra("farmlandId");
+        Log.d("farmlandId", farmlandId);
 
         if (type.equals("common")) {
             try {
@@ -160,9 +161,18 @@ public class TableActivity extends AppCompatActivity {
         }
         cursor.close();
 
-        String sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
-                "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
-                "' and ExperimentField.farmlandId='" + farmlandId + "' order by ExperimentField.moveX";
+        String sql;
+        if (type.equals("common")) {
+            sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
+                    "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
+                    "' and ExperimentField.farmlandId='" + farmlandId + "' order by ExperimentField.moveX";
+        }
+        else {
+            sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
+                    "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
+                    "' and ExperimentField.id='" + fieldId + "' order by ExperimentField.moveX";
+        }
+
         Cursor cursor0 = db.rawQuery(sql, null);
         if (cursor0.moveToFirst()) {
             String fieldId = "";
@@ -175,10 +185,12 @@ public class TableActivity extends AppCompatActivity {
                     columns++;
                     fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
                 }
+                Log.d("x,y", x + "," + y + "," + columns + "," + column);
                 x = cursor0.getInt(cursor0.getColumnIndex("x")) + columns * column - 1; //从0开始
                 y = cursor0.getInt(cursor0.getColumnIndex("y")) - 1; //从0开始
+
                 str[y][x] = cursor0.getString(cursor0.getColumnIndex("speciesId"));
-                Log.d("x,y,str", x + "," + y + "," + str[y][x]);
+//                Log.d("x,y,str", x + "," + y + "," + str[y][x]);
             } while (cursor0.moveToNext());
         } else {
 //            List<ContentValues> contentValuesList = assembleData(str, STATUS_INIT);
