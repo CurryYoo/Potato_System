@@ -23,7 +23,8 @@
         <EditText
             android:id="@+id/edt_species_id"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="match_parent"/>
+            android:layout_width="match_parent"
+            android:focusable="false"/>
         <!--android:hint="每次提交请输入不同的数字"-->
     </LinearLayout>
 
@@ -47,7 +48,8 @@
         <EditText
             android:id="@+id/edt_experiment_type"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="match_parent" />
+            android:layout_width="match_parent"
+            android:focusable="false"/>
     </LinearLayout>
 
     <View

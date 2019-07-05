@@ -21,12 +21,24 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".GeneralActivity" />
-        <activity android:name=".GeneralClickActivity" />
-        <activity android:name=".temporarystorage.SaveDataActivity" />
+        <activity
+            android:name=".GeneralActivity"
+            android:label="种植图"/>
+        <activity
+            android:name=".GeneralClickActivity"
+            android:label="试验田" />
+        <activity
+            android:name=".temporarystorage.SaveDataActivity"
+            android:label="采集数据"/>
         <activity android:name=".SpeciesClickActivity" />
-        <activity android:name=".MultiLevelActivity"/>
-        <activity android:name=".MainActivity" android:launchMode="singleTask"/>
+        <activity
+            android:name=".MultiLevelActivity"
+            android:label="实验田列表"/>
+        <activity
+            android:name=".MainActivity"
+            android:label="首页"
+            android:launchMode="singleTask"
+            />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -38,10 +50,16 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".SpeciesListActivity" />
+        <activity
+            android:name=".SpeciesListActivity"
+            android:label="品种搜索"/>
         <activity android:name=".TestActivity" />
-        <activity android:name=".complextable.TableActivity" />
-        <activity android:name=".BigfarmClickActivity"></activity>
+        <activity
+            android:name=".complextable.TableActivity"
+            android:label="品种种植"/>
+        <activity
+            android:name=".BigfarmClickActivity"
+            android:label="试验基地"></activity>
     </application>
 
 </manifest>
