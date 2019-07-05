@@ -271,68 +271,75 @@ public class GeneralActivity extends AppCompatActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
-                            AlertDialog.Builder builder = new AlertDialog.Builder(GeneralActivity.this);
-                            builder.setTitle("选择一个操作");
-                            // 指定下拉列表的显示数据
-                            final String[] options = {"品种规划", "查看品种规划详情"};
-                            // 设置一个下拉的列表选择项
                             final int finalI = i;
-                            builder.setItems(options, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    String fieldId = null, expType = null;
-//                                    int columns = 0, rows = 0;
-//                                    JSONObject jsonObject = new JSONObject();
-//                                    JSONArray jsonArray = new JSONArray();
-                                    try {
-                                        fieldId = mList.get(finalI).getString("id");
-                                        expType = mList.get(finalI).getString("expType");
-//                                        Cursor cursor = db.query("ExperimentField", null, "farmlandId=? and expType=?",
-//                                                new String[]{farmlandId, expType}, null, null, null);
-//                                        columns = cursor.getCount();
-//                                        if (columns >0){
-//                                            cursor.moveToFirst();
-//                                            for (int i = 0; i < columns; i++){
-//                                                jsonArray.put(i, cursor.getString(cursor.getColumnIndex("id")));
-//                                                int num = cursor.getInt(cursor.getColumnIndex("num"));
-//                                                rows = (num > rows ? num : rows);
-//                                                cursor.moveToNext();
-//                                            }
-//                                        }
-//                                        jsonObject.put("columns", columns);
-//                                        jsonObject.put("rows", rows);
-//                                        jsonObject.put("ids", jsonArray);
-//                                        cursor.close();
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    if(which == 0){    // 点击第一个操作"品种规划"时
-                                        Intent intent = new Intent(GeneralActivity.this, TableActivity.class);
-                                        intent.putExtra("status", STATUS_EDIT);
+                            String fieldId = null, expType = null;
+                            try {
+                                fieldId = mList.get(finalI).getString("id");
+                                expType = mList.get(finalI).getString("expType");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            Intent intent = new Intent(GeneralActivity.this, TableActivity.class);
 //                                        intent.putExtra("fields_json", jsonObject.toString());
-                                        intent.putExtra("fieldId", fieldId);
-                                        intent.putExtra("expType", expType);
-                                        intent.putExtra("farmlandId", farmlandId);
-                                        intent.putExtra("type", type);
+                            intent.putExtra("fieldId", fieldId);
+                            intent.putExtra("expType", expType);
+                            intent.putExtra("farmlandId", farmlandId);
+                            intent.putExtra("type", type);
 //                                        intent.putExtra("userRole", userRole);
-                                        startActivity(intent);
-                                    }
-                                    else {   // 点击第二个操作"查看品种规划详情"时
-                                        Intent intent = new Intent(GeneralActivity.this, TableActivity.class);
-                                        intent.putExtra("status", STATUS_READ);
-//                                        intent.putExtra("fields_json", jsonObject.toString());
-                                        intent.putExtra("fieldId", fieldId);
-                                        intent.putExtra("expType", expType);
-                                        intent.putExtra("farmlandId", farmlandId);
-                                        intent.putExtra("type", type);
-//                                        intent.putExtra("userRole", userRole);
-                                        startActivity(intent);
-//                                        Toast.makeText(mContext, "删除farmlandId " + farmlandId, Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                            builder.show();
+                            startActivity(intent);
+//
+//                            AlertDialog.Builder builder = new AlertDialog.Builder(GeneralActivity.this);
+//                            builder.setTitle("选择一个操作");
+//                            // 指定下拉列表的显示数据
+//                            final String[] options = {"品种规划", "查看品种规划详情"};
+//                            // 设置一个下拉的列表选择项
+//
+//                            builder.setItems(options, new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    String fieldId = null, expType = null;
+////                                    int columns = 0, rows = 0;
+////                                    JSONObject jsonObject = new JSONObject();
+////                                    JSONArray jsonArray = new JSONArray();
+//                                    try {
+//                                        fieldId = mList.get(finalI).getString("id");
+//                                        expType = mList.get(finalI).getString("expType");
+////                                        Cursor cursor = db.query("ExperimentField", null, "farmlandId=? and expType=?",
+////                                                new String[]{farmlandId, expType}, null, null, null);
+////                                        columns = cursor.getCount();
+////                                        if (columns >0){
+////                                            cursor.moveToFirst();
+////                                            for (int i = 0; i < columns; i++){
+////                                                jsonArray.put(i, cursor.getString(cursor.getColumnIndex("id")));
+////                                                int num = cursor.getInt(cursor.getColumnIndex("num"));
+////                                                rows = (num > rows ? num : rows);
+////                                                cursor.moveToNext();
+////                                            }
+////                                        }
+////                                        jsonObject.put("columns", columns);
+////                                        jsonObject.put("rows", rows);
+////                                        jsonObject.put("ids", jsonArray);
+////                                        cursor.close();
+//                                    } catch (JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
+////                                    if(which == 0){    // 点击第一个操作"品种规划"时
+////                                        Intent intent = new Intent(GeneralActivity.this, TableActivity.class);
+//////                                        intent.putExtra("fields_json", jsonObject.toString());
+////                                        intent.putExtra("fieldId", fieldId);
+////                                        intent.putExtra("expType", expType);
+////                                        intent.putExtra("farmlandId", farmlandId);
+////                                        intent.putExtra("type", type);
+//////                                        intent.putExtra("userRole", userRole);
+////                                        startActivity(intent);
+////                                    }
+////                                    else {   // 点击第二个操作"查看品种规划详情"时
+//
+////                                        Toast.makeText(mContext, "删除farmlandId " + farmlandId, Toast.LENGTH_SHORT).show();
+////                                    }
+//                                }
+//                            });
+//                            builder.show();
 
                         }
                     }

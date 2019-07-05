@@ -2,7 +2,6 @@ package com.example.kerne.potato.complextable;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -10,7 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
@@ -19,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -75,7 +72,7 @@ public class TableActivity extends AppCompatActivity {
     public static final int STATUS_READ = 1;
     public static final int STATUS_INIT = 2;
     public static final int STATUS_UPDATE = 3;
-    private int status = STATUS_EDIT;
+    private int status = STATUS_READ;
     private JSONObject fields_json;
     private String fieldId;
     private String expType;
@@ -96,6 +93,7 @@ public class TableActivity extends AppCompatActivity {
     private SQLiteDatabase db;
     SharedPreferences sp;
     SharedPreferences.Editor editor;
+    private MenuItem editItem;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -109,7 +107,6 @@ public class TableActivity extends AppCompatActivity {
         dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
         db = dbHelper.getWritableDatabase();
 
-        status = getIntent().getIntExtra("status", STATUS_EDIT);
         fieldId = getIntent().getStringExtra("fieldId");
         expType = getIntent().getStringExtra("expType");
         type = getIntent().getStringExtra("type");
@@ -137,8 +134,7 @@ public class TableActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             str = new String[maxRows][maxColumns];
-        }
-        else {
+        } else {
             column = getIntent().getIntExtra("rows", 2);
             maxRows = getIntent().getIntExtra("num", 0) / column;
             maxColumns = getIntent().getIntExtra("rows", 0);
@@ -159,8 +155,7 @@ public class TableActivity extends AppCompatActivity {
             do {
                 speciesNames.add(cursor.getString(cursor.getColumnIndex("name")));
             } while (cursor.moveToNext());
-        }
-        else {
+        } else {
             Toast.makeText(TableActivity.this, "species null", Toast.LENGTH_SHORT).show();
         }
         cursor.close();
@@ -185,8 +180,7 @@ public class TableActivity extends AppCompatActivity {
                 str[y][x] = cursor0.getString(cursor0.getColumnIndex("speciesId"));
                 Log.d("x,y,str", x + "," + y + "," + str[y][x]);
             } while (cursor0.moveToNext());
-        }
-        else {
+        } else {
 //            List<ContentValues> contentValuesList = assembleData(str, STATUS_INIT);
 //            for(int i = 0; i < maxColumns; i++){
 //                db.insert("SpeciesSequence", null, contentValuesList.get(i));
@@ -236,19 +230,16 @@ public class TableActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // 为ActionBar扩展菜单项
-        if (status == STATUS_EDIT) {
-            MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.sequence, menu);
-            return super.onCreateOptionsMenu(menu);
-        }
-        else {
-            return super.onCreateOptionsMenu(menu);
-        }
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.sequence, menu);
+        editItem = menu.findItem(R.id.save_off_seq);
+        return super.onCreateOptionsMenu(menu);
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
                 break;
@@ -258,38 +249,55 @@ public class TableActivity extends AppCompatActivity {
 //                startActivity(intent);
 //                break;
             case R.id.save_off_seq:
-                //保存操作 sqlite
-                List<ContentValues> contentValuesList = assembleData(str);
-                Log.d("contentvaluesList", contentValuesList.toString());
+                if (status == STATUS_READ) {
+                    status = STATUS_EDIT;
+                    if(editItem!=null){
+                        editItem.setIcon(R.drawable.ic_menu_save);
+                        editItem.setTitle("保存");
+                    }
+                    this.setTitle("品种规划");
+                    Toast.makeText(this, "进入品种规划", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    //保存操作 sqlite
+                    List<ContentValues> contentValuesList = assembleData(str);
+                    Log.d("contentvaluesList", contentValuesList.toString());
 
 //                db.delete("SpeciesList", "fieldId=?", new String[]{fieldId});
-                try {
-                    int lastRows = 0; //把之前列的行数叠加起来，确定contentvalueslist中的位置
-                    for (int i = 0; i < jsonArray.length() * column; i++) {
-                        int rows_num = rows.getInt(i / column);
-                        if (i > 0) {
-                            lastRows += rows.getInt((i - 1) / column);
-                        }
+                    try {
+                        int lastRows = 0; //把之前列的行数叠加起来，确定contentvalueslist中的位置
+                        for (int i = 0; i < jsonArray.length() * column; i++) {
+                            int rows_num = rows.getInt(i / column);
+                            if (i > 0) {
+                                lastRows += rows.getInt((i - 1) / column);
+                            }
 
-                        for (int j = 0; j < rows_num; j++) {
-                            int id = lastRows + j;
-                            db.update("SpeciesList", contentValuesList.get(id), "fieldId=? and x=? and y=?",
-                                    new String[]{contentValuesList.get(id).getAsString("fieldId"), contentValuesList.get(id).getAsString("x"), contentValuesList.get(id).getAsString("y")});
-                            Log.d("fieldId,x,y", contentValuesList.get(id).getAsString("fieldId") + ","+ contentValuesList.get(id).getAsString("x") + "," + contentValuesList.get(id).getAsString("y"));
+                            for (int j = 0; j < rows_num; j++) {
+                                int id = lastRows + j;
+                                db.update("SpeciesList", contentValuesList.get(id), "fieldId=? and x=? and y=?",
+                                        new String[]{contentValuesList.get(id).getAsString("fieldId"), contentValuesList.get(id).getAsString("x"), contentValuesList.get(id).getAsString("y")});
+                                Log.d("fieldId,x,y", contentValuesList.get(id).getAsString("fieldId") + "," + contentValuesList.get(id).getAsString("x") + "," + contentValuesList.get(id).getAsString("y"));
+                            }
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
 //                for(int i = 0; i < maxRows; i++){
 //                    db.update("SpeciesList", contentValuesList.get(i), "fieldId=? and x=? and y=?", new String[]{fieldId, contentValuesList.get(i).getAsString("x"), contentValuesList.get(i).getAsString("y")});
 ////                    db.insert("SpeciesList", null, contentValuesList.get(i));
 //                }
-                Log.d("str_content", contentValuesList.get(0).getAsString("ContentofColumn") + "");
-                Toast.makeText(TableActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
-                editor.putBoolean("update_location_data",true);
-                editor.apply();
+                    Log.d("str_content", contentValuesList.get(0).getAsString("ContentofColumn") + "");
+                    status = STATUS_READ;
+                    if(editItem!=null){
+                        editItem.setIcon(R.drawable.ic_menu_edit);
+                        editItem.setTitle("品种规划");
+                    }
+                    this.setTitle("品种种植");
+                    Toast.makeText(TableActivity.this, "保存成功，退出品种规划", Toast.LENGTH_SHORT).show();
+                    editor.putBoolean("update_location_data", true);
+                    editor.apply();
+                }
                 break;
             case R.id.back_home_seq:
                 Intent intent = new Intent(this, MainActivity.class);
@@ -304,7 +312,7 @@ public class TableActivity extends AppCompatActivity {
     }
 
     //组装数据
-    private List<ContentValues> assembleData(String[][] str){
+    private List<ContentValues> assembleData(String[][] str) {
         Log.d("str_save", str[0][0] + "");
         List<ContentValues> contentValuesList = new ArrayList<>();
         try {
@@ -493,14 +501,14 @@ public class TableActivity extends AppCompatActivity {
 //                tv_table_content_right_item13.setText(item.getText13());
 //                tv_table_content_right_item14.setText(item.getText14());
 
-                for(int i = 0; i < maxColumns; i++){
+                for (int i = 0; i < maxColumns; i++) {
                     final int finalI = i;
                     final TextView tv = textViews.get(i);
                     tv.setText(item.getText(i));
                     tv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if(status == STATUS_EDIT){
+                            if (status == STATUS_EDIT) {
                                 final EditText editText = new EditText(TableActivity.this);
                                 editText.setGravity(Gravity.CENTER); //文字居中
                                 final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(TableActivity.this).builder()
@@ -520,8 +528,7 @@ public class TableActivity extends AppCompatActivity {
                                             tv.setText(species);
                                             str[pos][finalI] = species;
                                             Toast.makeText(TableActivity.this, species, Toast.LENGTH_SHORT).show();
-                                        }
-                                        else {
+                                        } else {
                                             Toast.makeText(TableActivity.this, "该品种不存在", Toast.LENGTH_SHORT).show();
                                         }
                                         myAlertInputDialog.dismiss();
@@ -557,31 +564,28 @@ public class TableActivity extends AppCompatActivity {
 //                                        }
 //                                    }
 //                                }).show();
-                            }
-                            else if(status == STATUS_READ) {
+                            } else if (status == STATUS_READ) {
                                 String blockId = null;
                                 String speciesId = tv.getText().toString();
                                 Cursor c = db.query("SpeciesList", null, "speciesId=? and fieldId=?",
                                         new String[]{speciesId, fieldId}, null, null, null);
-                                if(c.moveToFirst()){
+                                if (c.moveToFirst()) {
                                     blockId = c.getString(c.getColumnIndex("blockId"));
                                 }
 
                                 Intent intent = new Intent(TableActivity.this, SaveDataActivity.class);
                                 intent.putExtra("speciesId", speciesId);
                                 intent.putExtra("expType", expType);
-                                if(blockId != null){
+                                if (blockId != null) {
                                     intent.putExtra("blockId", blockId);
-                                }
-                                else {
+                                } else {
                                     intent.putExtra("blockId", "test");
                                 }
 
                                 startActivity(intent);
                                 Toast.makeText(TableActivity.this, "点击的品种编号：" + tv.getText(), Toast.LENGTH_SHORT).show();
                                 c.close();
-                            }
-                            else {
+                            } else {
                                 Toast.makeText(TableActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -676,15 +680,15 @@ public class TableActivity extends AppCompatActivity {
 //        });
     }
 
-    public void setData(){
+    public void setData() {
         doGetDatas(0, RefreshParams.REFRESH_DATA);
     }
 
     //模拟网络请求
     public void doGetDatas(int pageno, int state) {
         List<OnlineSaleBean> onlineSaleBeanList = new ArrayList<>();
-        for(int i = 0 + pageno * maxRows; i < maxRows * (pageno + 1); i++){
-            onlineSaleBeanList.add(new OnlineSaleBean("品种行"+ (i + 1)));
+        for (int i = 0 + pageno * maxRows; i < maxRows * (pageno + 1); i++) {
+            onlineSaleBeanList.add(new OnlineSaleBean("品种行" + (i + 1)));
         }
 //        if(state == RefreshParams.REFRESH_DATA){
 //            pulltorefreshview.onHeaderRefreshFinish();
@@ -703,11 +707,10 @@ public class TableActivity extends AppCompatActivity {
                 tableMode.setOrgCode(onlineSaleBean.getOrgCode());
                 tableMode.setLeftTitle(onlineSaleBean.getCompanyName());
 
-                for(int j = 0; j < maxColumns; j++){
-                    if(str[i][j] == null){
+                for (int j = 0; j < maxColumns; j++) {
+                    if (str[i][j] == null) {
                         tableMode.setText("", j);
-                    }
-                    else {
+                    } else {
                         tableMode.setText(str[i][j], j);
                     }
                 }
@@ -751,7 +754,7 @@ public class TableActivity extends AppCompatActivity {
                 //显示数据为空的视图
                 //                mEmpty.setShowErrorAndPic(getString(R.string.empty_null), 0);
             } else if (type == RefreshParams.LOAD_DATA) {
-                Toast.makeText(mContext, "请求json失败",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "请求json失败", Toast.LENGTH_SHORT).show();
             }
         }
     }
