@@ -101,15 +101,24 @@ public class TreeAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         int count = 0;
-        for (TreePoint tempPoint : pointList) {
-            if ("0".equals(tempPoint.getPARENTID())) {
+        for (int i=0;i<pointList.size();i++) {
+            if ("0".equals(pointList.get(i).getPARENTID())) {
                 count++;
             } else {
-                if (getItemIsExpand(tempPoint.getPARENTID())) {
+                if (getItemIsExpand(pointList.get(i).getPARENTID())) {
                     count++;
                 }
             }
         }
+//        for (TreePoint tempPoint : pointList) {
+//            if ("0".equals(tempPoint.getPARENTID())) {
+//                count++;
+//            } else {
+//                if (getItemIsExpand(tempPoint.getPARENTID())) {
+//                    count++;
+//                }
+//            }
+//        }
 
 //        Iterator<TreePoint> iterator=pointList.iterator();
 //        while (iterator.hasNext()){

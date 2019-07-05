@@ -3,18 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/map_bigfarm"
-        android:icon="@drawable/ic_menu_map"
-        android:title="地图"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/back_home"
         android:icon="@drawable/ic_menu_home"
         android:title="首页"
         app:showAsAction="always" />
-
-    <!--<item-->
-    <!--android:id="@+id/commit"-->
-    <!--android:title="提交"/>-->
 </menu>

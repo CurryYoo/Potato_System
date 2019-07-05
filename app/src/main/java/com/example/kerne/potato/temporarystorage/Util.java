@@ -3,28 +3,28 @@ package com.example.kerne.potato.temporarystorage;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.kerne.potato.R;
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
+import com.facebook.drawee.controller.BaseControllerListener;
+import com.facebook.imagepipeline.image.ImageInfo;
 
-import java.io.FileNotFoundException;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import static android.app.Activity.RESULT_OK;
+import me.relex.photodraweeview.OnPhotoTapListener;
+import me.relex.photodraweeview.PhotoDraweeView;
 
 public class Util {
     //查看大图
@@ -47,26 +47,55 @@ public class Util {
             }
         });
     }
+
     //查看网络大图
     public static void watchOnlineLargePhoto(Context context, Uri imageUri) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View imgLargeView = layoutInflater.inflate(R.layout.dialog_watch_online_big_photo, null);
-        final AlertDialog alertDialogShowLargeImage = new AlertDialog.Builder(context).setTitle("点击可关闭").create();
+        imgLargeView.setFitsSystemWindows(true);
+        final AlertDialog alertDialogShowLargeImage = new AlertDialog.Builder(context)
+                .setCustomTitle(layoutInflater.inflate(R.layout.dialog_custom_title, null))
+                .create();
         //获取ImageView
-        SimpleDraweeView imvLargePhoto = imgLargeView.findViewById(R.id.imv_online_large_photo);
-        //设置图片到ImageView
-        imvLargePhoto.setImageURI(imageUri);
-        //定义dialog
+        final PhotoDraweeView imvLargePhoto = imgLargeView.findViewById(R.id.imv_online_large_photo);
         alertDialogShowLargeImage.setView(imgLargeView);
         alertDialogShowLargeImage.show();
-        //点击大图关闭dialog
-        imgLargeView.setOnClickListener(new View.OnClickListener() {
+        PipelineDraweeControllerBuilder controller = Fresco.newDraweeControllerBuilder();
+        controller.setUri(imageUri);//设置图片url
+        controller.setOldController(imvLargePhoto.getController());
+        controller.setControllerListener(new BaseControllerListener<ImageInfo>() {
             @Override
-            public void onClick(View v) {
+            public void onFinalImageSet(String id, ImageInfo imageInfo, Animatable animatable) {
+                super.onFinalImageSet(id, imageInfo, animatable);
+                if (imageInfo == null || imvLargePhoto == null) {
+                    return;
+                }
+                imvLargePhoto.update(imageInfo.getWidth(), imageInfo.getHeight());
+            }
+        });
+        imvLargePhoto.setController(controller.build());
+
+        imvLargePhoto.setOnPhotoTapListener(new OnPhotoTapListener() {
+            @Override
+            public void onPhotoTap(View view, float x, float y) {
                 alertDialogShowLargeImage.cancel();
             }
         });
+//        SimpleDraweeView imvLargePhoto = imgLargeView.findViewById(R.id.imv_online_large_photo);
+//        //设置图片到ImageView
+//        imvLargePhoto.setImageURI(imageUri);
+//        //定义dialog
+//        alertDialogShowLargeImage.setView(imgLargeView);
+//        alertDialogShowLargeImage.show();
+        //点击大图关闭dialog
+//        imgLargeView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                alertDialogShowLargeImage.cancel();
+//            }
+//        });
     }
+
     //选择日期
     public static void showDatePickerDialog(Context context, final EditText editText) {
         Calendar calendar = Calendar.getInstance();
@@ -98,7 +127,7 @@ public class Util {
 
     //计算生育日数
 
-    public static String getGrowingDays(Context context,String sowingDateStr, String matureDateStr) throws Exception {
+    public static String getGrowingDays(Context context, String sowingDateStr, String matureDateStr) throws Exception {
         //解析日期
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 

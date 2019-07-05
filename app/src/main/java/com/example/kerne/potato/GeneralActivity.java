@@ -360,6 +360,15 @@ public class GeneralActivity extends AppCompatActivity {
 //        return super.onCreateOptionsMenu(menu);
 //    }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // 为ActionBar扩展菜单项
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.base, menu);
+        return super.onCreateOptionsMenu(menu);
+
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -369,6 +378,10 @@ public class GeneralActivity extends AppCompatActivity {
 //                Intent intent = new Intent(this, MainActivity.class);
 //                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                startActivity(intent);
+            case R.id.back_home:
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
             default:
         }
         return true;
