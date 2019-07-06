@@ -264,7 +264,7 @@ public class TableActivity extends AppCompatActivity {
                 if (status == STATUS_READ) {
                     status = STATUS_EDIT;
                     if(editItem!=null){
-                        editItem.setIcon(R.drawable.ic_menu_save);
+                        editItem.setIcon(R.drawable.ic_menu_no_save);
                         editItem.setTitle("保存");
                     }
                     this.setTitle("品种规划");
@@ -302,7 +302,7 @@ public class TableActivity extends AppCompatActivity {
                     Log.d("str_content", contentValuesList.get(0).getAsString("ContentofColumn") + "");
                     status = STATUS_READ;
                     if(editItem!=null){
-                        editItem.setIcon(R.drawable.ic_menu_edit);
+                        editItem.setIcon(R.drawable.ic_menu_plan);
                         editItem.setTitle("品种规划");
                     }
                     this.setTitle("品种种植");

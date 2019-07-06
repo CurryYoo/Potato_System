@@ -8,7 +8,7 @@
     <!-- 保存按钮 -->
     <item
         android:id="@+id/save_off_seq"
-        android:icon="@drawable/ic_menu_edit"
+        android:icon="@drawable/ic_menu_plan"
         android:title="品种规划"
         app:showAsAction="always" />
     <!-- 主页按钮 -->

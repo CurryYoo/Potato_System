@@ -13,10 +13,6 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         SharedPreferences sp=getSharedPreferences("update_flag", Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor=sp.edit();
-//        editor.putBoolean("update_pick_data",false);
-//        editor.putBoolean("update_location_data",false);
-//        editor.apply();
         Intent intent=new Intent(SplashActivity.this,MainActivity.class);
         startActivity(intent);
         finish();
