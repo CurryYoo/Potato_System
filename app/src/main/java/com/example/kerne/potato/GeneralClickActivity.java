@@ -85,6 +85,7 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
                 startActivity(intent);
                 break;
             case R.id.map_bigfarm:
+                Log.d("uri", Uri.parse(uri).toString());
                 Util.watchOnlineLargePhoto(GeneralClickActivity.this, Uri.parse(uri));
                 break;
             default:

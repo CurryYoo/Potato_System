@@ -44,7 +44,7 @@ public class HttpRequest {
     public static final String serverUrl = "http://cxk.nicesite.vip/"; //图片服务器url
     private static RequestQueue requestQueue;
 
-    public static void HttpRequest_bigfarm(final String name, final File cache, Context context, final HttpCallback callback) {
+    public static void HttpRequest_bigfarm(final String name, Context context, final HttpCallback callback) {
         requestQueue = Volley.newRequestQueue(context);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "bigfarm/getAllBigfarm", new Response.Listener<String>() {

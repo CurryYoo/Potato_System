@@ -387,5 +387,12 @@ public class GeneralActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        uiHandler.removeCallbacksAndMessages(null);
+        db.close();
+        dbHelper.close();
+    }
 
 }

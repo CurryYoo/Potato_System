@@ -132,9 +132,9 @@ public class TreeAdapter extends BaseAdapter {
 
     //判断当前Id的tempPoint是否展开了
     private boolean getItemIsExpand(String ID) {
-        for (TreePoint tempPoint : pointList) {
-            if (ID.equals(tempPoint.getID())) {
-                return tempPoint.isExpand();
+        for (int i=0;i<pointList.size();i++) {
+            if (ID.equals(pointList.get(i).getID())) {
+                return pointList.get(i).isExpand();
             }
         }
         return false;

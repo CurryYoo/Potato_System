@@ -104,7 +104,9 @@
                 android:id="@+id/average_plant_height"
                 style="@style/style_item_basicinfo_edittext"
                 android:layout_width="150dp"
-                android:inputType="number"/>
+                android:inputType="number"
+                android:focusable="false"
+                android:textColor="@color/colorAccent"/>
 
             <View
                 style="@style/view_divider_style"

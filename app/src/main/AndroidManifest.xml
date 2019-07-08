@@ -61,7 +61,7 @@
             android:label="品种种植"/>
         <activity
             android:name=".BigfarmClickActivity"
-            android:label="试验基地"></activity>
+            android:label="试验基地"/>
     </application>
 
 </manifest>

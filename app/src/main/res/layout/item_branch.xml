@@ -104,7 +104,9 @@
                 android:id="@+id/average_branch_num"
                 style="@style/style_item_basicinfo_edittext"
                 android:layout_width="150dp"
-                android:inputType="number"/>
+                android:inputType="number"
+                android:focusable="false"
+                android:textColor="@color/colorAccent"/>
 
             <View
                 style="@style/view_divider_style"
@@ -126,7 +128,8 @@
             android:id="@+id/branch_num_of_ten_plant2"
             style="@style/style_item_basicinfo_edittext"
             android:layout_marginTop="@dimen/dp_20"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number"/>
 
         <View
             style="@style/view_divider_style"
@@ -137,7 +140,8 @@
             android:id="@+id/branch_num_of_ten_plant4"
             style="@style/style_item_basicinfo_edittext"
             android:layout_marginTop="@dimen/dp_20"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number"/>
 
         <View
             style="@style/view_divider_style"
@@ -148,7 +152,8 @@
             android:id="@+id/branch_num_of_ten_plant6"
             android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number"/>
 
         <View
             style="@style/view_divider_style"
@@ -160,7 +165,8 @@
             android:id="@+id/branch_num_of_ten_plant8"
             android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number"/>
 
         <View
             style="@style/view_divider_style"
@@ -172,7 +178,8 @@
             android:id="@+id/branch_num_of_ten_plant10"
             android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp" />
+            android:layout_width="150dp"
+            android:inputType="number"/>
 
         <View
             style="@style/view_divider_style"

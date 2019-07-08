@@ -66,10 +66,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String img4;
     String img5;
 
-    private File cache; //缓存图片的文件夹目录
-
     private SpeciesDBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
+    private SQLiteDatabase db;
 
     //用户角色字段
     String userRole = "farmer";
@@ -200,9 +199,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     userRole = UserRole.getUserRole();
                     if (!userRole.equals("farmer")) {
 
-                        sqLiteDatabase = dbHelper.getReadableDatabase();
                         String sql = "select SpeciesTable.*, LocalSpecies.* from SpeciesTable, LocalSpecies " +
                                 "where SpeciesTable.speciesId=LocalSpecies.name";
+                        sqLiteDatabase = dbHelper.getReadableDatabase();
                         final Cursor cursor = sqLiteDatabase.rawQuery(sql, null);
 //                    final Cursor cursor = sqLiteDatabase.query("SpeciesTable", null, null, null, null, null, null);
 
@@ -514,8 +513,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (sp.getBoolean("update_location_data", false)) {
             badge_location = new QBadgeView(this).bindTarget(btn_location).setBadgeText("");
         }
-        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
-
 
 //                View view = findViewById(R.id.list_commit);
 //                new QBadgeView(getBaseContext()).bindTarget(view)
@@ -535,58 +532,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //
 ///*        Button btnCommitData = (Button) findViewById(R.id.commit_data);
 //        btnCommitData.setOnClickListener(this);*/
-//        webView = (WebView) findViewById(R.id.web_view);
-//        WebSettings webSettings = webView.getSettings();
-//        webSettings.setJavaScriptEnabled(true);
-//        //自适应屏幕
-//        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-//        webSettings.setLoadWithOverviewMode(true);
-//        //支持缓存
-//        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
-//        //支持缩放
-//        webSettings.setSupportZoom(true);
-//        //支持扩大比例的缩放
-//        webSettings.setUseWideViewPort(true);
-////        webView.setWebViewClient(new WebViewClient());
-//
-//        WebViewClient webViewClient = new WebViewClient() {
-////            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-////            @Override
-////            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-////                final Uri uri = request.getUrl();
-////                return handlerUri(uri);
-//
-//            @Override
-//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                if(url == null) return false;
-//
-//                try {
-//                    if(url.startsWith("weixin://") //微信
-//                            || url.startsWith("alipays://") //支付宝
-//                            || url.startsWith("mailto://") //邮件
-//                            || url.startsWith("tel://")//电话
-//                            || url.startsWith("dianping://")//大众点评
-//                            || url.startsWith("baiduboxapp://")//大众点评
-//                            || url.startsWith("baiduboxlite://")//大众点评
-//                        //其他自定义的scheme
-//                            ) {
-//                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-//                        startActivity(intent);
-//                        return true;
-//                    }
-//                } catch (Exception e) { //防止crash (如果手机上没有安装处理某个scheme开头的url的APP, 会导致crash)
-//                    return true;//没有安装该app时，返回true，表示拦截自定义链接，但不跳转，避免弹出上面的错误页面
-//                }
-//
-//                //处理http和https开头的url
-//                webView.loadUrl(url);
-//                return true;
-//            }
-//        };
-//
-//        webView.setWebViewClient(webViewClient);
-//        webView.loadUrl(URL);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
+        db = dbHelper.getWritableDatabase();
     }
 
     @Override
@@ -607,17 +560,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(MainActivity.this, "开始下载数据……", Toast.LENGTH_SHORT).show();
 
 //                cache = new File(Environment.getExternalStorageDirectory(), "cache");
-                cache = new File(getExternalCacheDir(), "cache");
-                if (!cache.exists()) {
-                    cache.mkdirs();
-                }
 
-                HttpRequest.HttpRequest_bigfarm(null, cache, MainActivity.this, new HttpRequest.HttpCallback() {
+                HttpRequest.HttpRequest_bigfarm(null, MainActivity.this, new HttpRequest.HttpCallback() {
                     @Override
                     public void onSuccess(final JSONObject result) {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
+                                db.delete("BigfarmList", null, null);
+                                File cache = new File(getExternalCacheDir(), "cache"); //缓存图片的文件夹目录
+                                if (!cache.exists()) {
+                                    cache.mkdirs();
+                                }
                                 try {
                                     JSONArray rows = result.getJSONArray("rows");
                                     int total = result.getInt("total");
@@ -638,7 +592,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         Log.d("getImageURI", uri.toString());
                                         contentValues.put("uri", uri.toString());
 
-                                        updateSqlite("BigfarmList", "bigfarmId", contentValues);
+//                                        Log.d("db begin", "BigfarmList");
+                                        db.insert("BigfarmList", null, contentValues);
+//                                        Log.d("db end--", "BigfarmList");
+//                                        updateSqlite("BigfarmList", "bigfarmId", contentValues);
                                         contentValues.clear();
                                     }
 
@@ -661,6 +618,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
+                                db.delete("FarmList", null, null);
                                 try {
                                     JSONArray rows = new JSONArray();
                                     rows = result.getJSONArray("rows");
@@ -684,7 +642,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         }
                                         contentValues.put("type", jsonObject0.getString("type"));
                                         contentValues.put("bigfarmId", jsonObject0.getString("bigfarmId"));
-                                        updateSqlite("FarmList", "farmlandId", contentValues); //缓存数据到本地sqlite
+
+//                                        Log.d("db begin", "FarmList");
+                                        db.insert("FarmList", null, contentValues);
+//                                        Log.d("db end--", "FarmList");
+//                                        updateSqlite("FarmList", "farmlandId", contentValues); //缓存数据到本地sqlite
                                         contentValues.clear();
                                     }
 
@@ -707,6 +669,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
+                                db.delete("ExperimentField", null, null);
                                 try {
                                     JSONArray rows = result.getJSONArray("rows");
                                     int total = result.getInt("total");
@@ -750,7 +713,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                             contentValues.put("rows", jsonObject0.getInt("rows"));
                                         }
                                         contentValues.put("speciesList", jsonObject0.getString("speciesList"));
-                                        updateSqlite("ExperimentField", "id", contentValues); //缓存数据到本地sqlite
+
+//                                        Log.d("db begin", "ExperimentField");
+                                        db.insert("ExperimentField", null, contentValues);
+//                                        Log.d("db end--", "ExperimentField");
+//                                        updateSqlite("ExperimentField", "id", contentValues); //缓存数据到本地sqlite
                                         contentValues.clear();
                                     }
                                     //Log.d("GeneralJsonList", mList.toString());
@@ -775,6 +742,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
+                                db.delete("SpeciesList", null, null);
                                 try {
                                     JSONArray rows = result.getJSONArray("rows");
                                     int total = result.getInt("total");
@@ -797,7 +765,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                                 contentValues.put("y", jsonObject0.getInt("y"));
                                             }
                                         }
-                                        updateSqlite("SpeciesList", "blockId", contentValues); //缓存数据到本地sqlite
+
+//                                        Log.d("db begin", "SpeciesList");
+                                        db.insert("SpeciesList", null, contentValues);
+//                                        Log.d("db end--", "SpeciesList");
+//                                        updateSqlite("SpeciesList", "blockId", contentValues); //缓存数据到本地sqlite
                                         contentValues.clear();
                                     }
                                     //Log.d("GeneralJsonList", mList.toString());
@@ -821,6 +793,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
+                                db.delete("LocalSpecies", null, null);
                                 try {
                                     JSONArray rows = result.getJSONArray("rows");
                                     int total = result.getInt("total");
@@ -830,7 +803,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         jsonObject0 = rows.getJSONObject(i);
                                         contentValues.put("speciesid", jsonObject0.getString("speciesId"));
                                         contentValues.put("name", jsonObject0.getString("name"));
-                                        updateSqlite("LocalSpecies", "speciesid", contentValues); //缓存数据到本地sqlite
+
+//                                        Log.d("db begin", "LocalSpecies");
+                                        db.insert("LocalSpecies", null, contentValues);
+//                                        Log.d("db end--", "LocalSpecies");
+//                                        updateSqlite("LocalSpecies", "speciesid", contentValues); //缓存数据到本地sqlite
                                         contentValues.clear();
                                     }
                                 } catch (JSONException e) {
@@ -925,28 +902,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void updateSqlite(String table_name, String column_name, ContentValues contentValues) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+//        db = dbHelper.getWritableDatabase();
 
-//        db.delete(table_name, null, null);
-        Cursor cursor = db.query(table_name, new String[]{column_name}, null, null, null, null, null);
-        if (cursor != null && cursor.moveToFirst()) {
-            boolean isExist = false;
-            do {
-                if (contentValues.getAsString(column_name).equals(cursor.getString(0))) {
-                    db.update(table_name, contentValues, column_name + "=?", new String[]{cursor.getString(0)});
-                    isExist = true;
-                }
-            } while (cursor.moveToNext());
-            if (!isExist) {
-                db.insert(table_name, null, contentValues);
-            }
-
+        Log.d("db begin", table_name);
+        db.delete(table_name, null, null);
+        db.insert(table_name, null, contentValues);
+        Log.d("db end", table_name);
+//        Cursor cursor = db.query(table_name, new String[]{column_name}, null, null, null, null, null);
+//        if (cursor != null && cursor.moveToFirst()) {
+//            boolean isExist = false;
+//            do {
+//                if (contentValues.getAsString(column_name).equals(cursor.getString(0))) {
+//                    db.update(table_name, contentValues, column_name + "=?", new String[]{cursor.getString(0)});
+//                    isExist = true;
+//                }
+//            } while (cursor.moveToNext());
+//            if (!isExist) {
+//                db.insert(table_name, null, contentValues);
+//            }
+//
+////            db.insert(table_name, null, contentValues);
+//        } else {
+//            Log.d("updateSqlite", "CursorNull");
 //            db.insert(table_name, null, contentValues);
-        } else {
-            Log.d("updateSqlite", "CursorNull");
-            db.insert(table_name, null, contentValues);
-        }
-        cursor.close();
+//        }
+//        cursor.close();
 //        db.close();
     }
 
@@ -1009,6 +989,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        if (sqLiteDatabase != null) {
+            sqLiteDatabase.close();
+        }
+        if (db != null) {
+            db.close();
+        }
+//        dbHelper.close();
     }
 }

@@ -14,13 +14,14 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="1-品种ID" />
+            android:text="品种ID" />
 
         <View style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/edt_species_id"
             style="@style/style_item_basicinfo_edittext"
+            android:textColor="@color/colorAccent"
             android:layout_width="match_parent"
             android:focusable="false"/>
         <!--android:hint="每次提交请输入不同的数字"-->
@@ -38,7 +39,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="2-实验类型" />
+            android:text="1-实验类型" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -46,6 +47,7 @@
         <EditText
             android:id="@+id/edt_experiment_type"
             style="@style/style_item_basicinfo_edittext"
+            android:textColor="@color/colorAccent"
             android:layout_width="match_parent"
             android:focusable="false"/>
     </LinearLayout>
@@ -57,8 +59,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -73,7 +73,7 @@
             android:id="@+id/sowing_period_input"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
-            android:hint="双击输入"
+            android:hint="单击输入"
             android:inputType="none" />
     </LinearLayout>
 
@@ -85,8 +85,6 @@
         android:layout_height="wrap_content"
         android:layout_columnWeight="1"
         android:layout_marginTop="4dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -101,7 +99,7 @@
             android:id="@+id/emergence_period"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
-            android:hint="双击输入"
+            android:hint="单击输入"
             android:inputType="none" />
     </LinearLayout>
 
@@ -136,8 +134,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -152,7 +148,7 @@
             android:id="@+id/squaring_period"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
-            android:hint="双击输入"
+            android:hint="单击输入"
             android:inputType="none" />
     </LinearLayout>
 
@@ -163,8 +159,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -179,7 +173,7 @@
             android:id="@+id/flowering_period"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
-            android:hint="双击输入"
+            android:hint="单击输入"
             android:inputType="none" />
     </LinearLayout>
 
@@ -202,7 +196,7 @@
 
         <Spinner
             android:id="@+id/spn_colors"
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:entries="@array/colors"
@@ -250,7 +244,7 @@
 
         <Spinner
             android:id="@+id/corolla_colors"
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:entries="@array/corolla_colors"
@@ -296,7 +290,7 @@
 
         <Spinner
             android:id="@+id/plant_flourish"
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:entries="@array/plant_flourish"
@@ -342,7 +336,7 @@
 
         <Spinner
             android:id="@+id/stem_color"
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:entries="@array/stem_colors"
@@ -388,7 +382,7 @@
 
         <Spinner
             android:id="@+id/natural_fecundity"
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:entries="@array/natural_fecundity_arr"
@@ -423,8 +417,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -439,29 +431,13 @@
             android:id="@+id/mature_period"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
-            android:hint="双击输入"
+            android:hint="单击输入"
             android:inputType="none" />
     </LinearLayout>
 
     <View
         style="@style/view_divider_style"  />
-    <!--<LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="13-生育日数" />
-
-        <EditText
-            android:id="@+id/growing_days"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:gravity="center_horizontal" />
-    </LinearLayout>-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -479,9 +455,10 @@
         <EditText
             android:id="@+id/growing_days"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:focusable="false"
-            android:inputType="number"/>
+            android:inputType="number"
+            android:textColor="@color/colorAccent"/>
 
         <Button
             android:id="@+id/btn_compute_growing_days"
@@ -511,7 +488,7 @@
 
         <Spinner
             android:id="@+id/tuber_uniformity"
-            android:layout_width="120dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:entries="@array/tuber_uniformity_arr"
@@ -549,7 +526,7 @@
 
         <Spinner
             android:id="@+id/tuber_shape"
-            android:layout_width="120dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:entries="@array/potato_types"
@@ -587,7 +564,7 @@
 
         <Spinner
             android:id="@+id/potato_skin_smoothness"
-            android:layout_width="120dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:entries="@array/potato_skin_smoothness_arr"
@@ -625,7 +602,7 @@
 
         <Spinner
             android:id="@+id/eye"
-            android:layout_width="120dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:entries="@array/eye_arr"
@@ -663,7 +640,7 @@
 
         <Spinner
             android:id="@+id/skin_color"
-            android:layout_width="120dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:entries="@array/skin_colors"
@@ -701,7 +678,7 @@
 
         <Spinner
             android:id="@+id/flesh_color"
-            android:layout_width="120dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:entries="@array/flesh_colors"
@@ -813,7 +790,7 @@
         style="@style/view_divider_style" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:gravity="center_vertical"
@@ -838,7 +815,7 @@
         style="@style/view_divider_style"  />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:gravity="center_vertical"
@@ -863,7 +840,7 @@
         style="@style/view_divider_style"  />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:gravity="center_vertical"
@@ -888,7 +865,7 @@
         style="@style/view_divider_style"  />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:gravity="center_vertical"
@@ -932,7 +909,8 @@
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="100dp"
             android:focusable="false"
-            android:inputType="number"/>
+            android:inputType="number"
+            android:textColor="@color/colorAccent"/>
 
         <Button
             android:id="@+id/btn_compute_rate_of_economic_potato"
@@ -1041,7 +1019,8 @@
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="100dp"
             android:focusable="false"
-            android:inputType="number"/>
+            android:inputType="number"
+            android:textColor="@color/colorAccent"/>
 
         <Button
             android:id="@+id/btn_compute_average_per_mu_yield"

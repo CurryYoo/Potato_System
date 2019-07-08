@@ -109,11 +109,6 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                     farmlandId = jsonObject.getString("farmlandId");
                     type = jsonObject.getString("type");
 
-                    expType = jsonObject.getString("expType");
-                    fieldId = jsonObject.getString("fieldId");
-                    num = jsonObject.getInt("num");
-                    rows = jsonObject.getInt("rows");
-                    Log.d("pengnei2", num + "," + rows);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -142,6 +137,16 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
 //                    // 指定下拉列表的显示数据
 //                    final String[] options = {"品种规划", "查看品种规划详情"};
 //                    // 设置一个下拉的列表选择项
+                    try {
+                        expType = jsonObject.getString("expType");
+                        fieldId = jsonObject.getString("fieldId");
+                        num = jsonObject.getInt("num");
+                        rows = jsonObject.getInt("rows");
+                        Log.d("pengnei2", num + "," + rows);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                     final Intent finalIntent = intent;
                     finalIntent.putExtra("expType", expType);
                     finalIntent.putExtra("fieldId", fieldId);

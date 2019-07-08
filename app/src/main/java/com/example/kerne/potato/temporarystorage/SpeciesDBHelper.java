@@ -5,8 +5,23 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
+import com.example.kerne.potato.Species;
+
 public class SpeciesDBHelper extends SQLiteOpenHelper {
     private Context mContext = null;
+
+//    private static volatile SpeciesDBHelper sInstance = null;
+//
+//    public static SpeciesDBHelper getInstance() {
+//        if (sInstance == null) {
+//            synchronized (SpeciesDBHelper.class) {
+//                if (sInstance == null) {
+//                    sInstance = new SpeciesDBHelper();
+//                }
+//            }
+//        }
+//        return sInstance;
+//    }
 
     public static final String CREATE_SPECIES_TABLE = "create table SpeciesTable ("  //创建存储品种信息的表
 //            + "id text primary key, "  //id字段
