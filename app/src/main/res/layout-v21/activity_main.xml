@@ -80,7 +80,7 @@
                 android:layout_marginLeft="5dp"
                 android:paddingTop="@dimen/dp_3"
                 android:paddingBottom="@dimen/dp_3"
-                android:text="实验田"
+                android:text="实验田列表"
                 android:textColor="@color/colorGrey"
                 android:textStyle="bold" />
         </LinearLayout>
