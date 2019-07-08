@@ -42,8 +42,6 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //在Action bar显示返回键
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.species_list_activity);
 
         Intent intent = getIntent();

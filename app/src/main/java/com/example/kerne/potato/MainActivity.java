@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
@@ -36,6 +37,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import q.rorbin.badgeview.Badge;
 import q.rorbin.badgeview.QBadgeView;
 
@@ -65,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String img3;
     String img4;
     String img5;
+    @BindView(R.id.title_text)
+    TextView titleText;
 
     private SpeciesDBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
@@ -86,10 +91,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private List<JSONObject> mBigFarmList = new ArrayList<>();
 
-
-//    public class MyHandler extends Handler {
-//        private WeakReference<OnHandlerCallback> mActivity;
-//    }
 
     //避免内存泄漏
     private MyHandler myHandler = new MyHandler(this);
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case R.id.update_location_data:
                     editor.putBoolean("update_location_data", false);
                     editor.apply();
-                    if(badge_location!=null){
+                    if (badge_location != null) {
                         badge_location.hide(false);
                     }
                     userRole = UserRole.getUserRole();
@@ -193,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //将暂存的数据从数据库取出并提交到远程服务器
                     editor.putBoolean("update_pick_data", false);
                     editor.apply();
-                    if(badge_pick!=null){
+                    if (badge_pick != null) {
                         badge_pick.hide(false);
                     }
                     userRole = UserRole.getUserRole();
@@ -485,6 +486,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 //        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+        initToolBar();
 
         btn_download = findViewById(R.id.btn_download);
         btn_download.setOnClickListener(this);
@@ -533,6 +536,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 ///*        Button btnCommitData = (Button) findViewById(R.id.commit_data);
 //        btnCommitData.setOnClickListener(this);*/
 
+    }
+
+    private void initToolBar() {
+        titleText.setText("土豆种植规划");
     }
 
     @Override

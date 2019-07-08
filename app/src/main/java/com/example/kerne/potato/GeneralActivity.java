@@ -1,7 +1,6 @@
 package com.example.kerne.potato;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,10 +8,11 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,24 +21,34 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kerne.potato.complextable.TableActivity;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
-import com.hb.dialog.myDialog.MyAlertInputDialog;
+import com.example.kerne.potato.temporarystorage.Util;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.kerne.potato.complextable.TableActivity.STATUS_EDIT;
-import static com.example.kerne.potato.complextable.TableActivity.STATUS_READ;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class GeneralActivity extends AppCompatActivity {
 
+    @BindView(R.id.left_one_button)
+    ImageView leftOneButton;
+    @BindView(R.id.left_one_layout)
+    LinearLayout leftOneLayout;
+    @BindView(R.id.title_text)
+    TextView titleText;
+    @BindView(R.id.right_one_button)
+    ImageView rightOneButton;
+    @BindView(R.id.right_one_layout)
+    LinearLayout rightOneLayout;
     private LinearLayout layout;
     private ImageView iv_canvas;
     private Bitmap baseBitmap;
@@ -58,16 +68,17 @@ public class GeneralActivity extends AppCompatActivity {
     private List<JSONObject> mList = new ArrayList<>();
     private JSONObject jsonObject[] = new JSONObject[100];
 
-    private Handler uiHandler = new Handler(){
+    @SuppressLint("HandlerLeak")
+    private Handler uiHandler = new Handler() {
         @Override
-        public void handleMessage(Message msg){
-            switch (msg.what){
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
                 case 1:
-                    if(mList.size() != 0){
+                    if (mList.size() != 0) {
                         Log.d("Data-----", mList.get(0).toString());
                         flag = 1;
 
-                        final DrawView view=new DrawView(GeneralActivity.this, mList, length, width);
+                        final DrawView view = new DrawView(GeneralActivity.this, mList, length, width);
 
                         view.setMinimumHeight(500);
                         view.setMinimumWidth(300);
@@ -75,8 +86,7 @@ public class GeneralActivity extends AppCompatActivity {
                         view.invalidate();
                         layout.addView(view);
                         view.setOnTouchListener(touch);
-                    }
-                    else {
+                    } else {
                         Toast.makeText(GeneralActivity.this, "选择的实验田尚未规划种植图", Toast.LENGTH_SHORT).show();
                     }
 
@@ -85,12 +95,32 @@ public class GeneralActivity extends AppCompatActivity {
         }
     };
 
+
+    View.OnClickListener toolBarOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.left_one_layout:
+                    finish();
+                    break;
+                case R.id.right_one_layout:
+                    Intent intent = new Intent(GeneralActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //在Action bar显示返回键
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_general);
+        ButterKnife.bind(this);
+
+        initToolBar();
+
 
         //获取farmlandId、year
         farmlandId = getIntent().getStringExtra("farmlandId");
@@ -107,7 +137,7 @@ public class GeneralActivity extends AppCompatActivity {
 
         getData();
 
-        layout=(LinearLayout) findViewById(R.id.root);
+        layout = (LinearLayout) findViewById(R.id.root);
 //        final DrawView view=new DrawView(this);
 //
 //        view.setMinimumHeight(500);
@@ -129,6 +159,7 @@ public class GeneralActivity extends AppCompatActivity {
 //        layout.addView(view);
 //        view.setOnTouchListener(touch);
 
+        layout.setGravity(View.TEXT_ALIGNMENT_CENTER);
         paint = new Paint();
         paint.setStrokeWidth(5);
         paint.setColor(Color.RED);
@@ -148,13 +179,22 @@ public class GeneralActivity extends AppCompatActivity {
 //        textView.setText(intent.getStringExtra("option"));
 
     }
+    private void initToolBar() {
+        titleText.setText("种植图");
+        leftOneButton.setBackgroundResource(R.drawable.left_back);
+        rightOneButton.setBackgroundResource(R.drawable.ic_menu_home);
 
-    private void getData(){
+        leftOneLayout.setOnClickListener(toolBarOnClickListener);
+        rightOneLayout.setOnClickListener(toolBarOnClickListener);
+    }
+
+
+    private void getData() {
         //获取分块的坐标信息
         Cursor cursor = db.query("ExperimentField", null, "farmlandId=?", new String[]{farmlandId}, null, null, null);
 
 //        Cursor cursor = db.query("ExperimentField", null, "farmlandId=?", new String[]{farmlandId}, null, null, null);
-        if(cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
                 JSONObject jsonObject = new JSONObject();
                 try {
@@ -177,8 +217,7 @@ public class GeneralActivity extends AppCompatActivity {
                     Log.e("fieldId_error", cursor.getString(cursor.getColumnIndex("id")));
                 }
             } while (cursor.moveToNext());
-        }
-        else {
+        } else {
             Toast.makeText(GeneralActivity.this, "ExperimentField null", Toast.LENGTH_SHORT).show();
         }
         cursor.close();
@@ -264,10 +303,10 @@ public class GeneralActivity extends AppCompatActivity {
                     Y = event.getY();
                     Log.d("X,Y", X + "," + Y);
 
-                    for(int i = 0; i < mList.size(); i++){
-                        if(X > DrawView.coord[i][0] && X < DrawView.coord[i][2] && Y > DrawView.coord[i][1] && Y < DrawView.coord[i][3]){
+                    for (int i = 0; i < mList.size(); i++) {
+                        if (X > DrawView.coord[i][0] && X < DrawView.coord[i][2] && Y > DrawView.coord[i][1] && Y < DrawView.coord[i][3]) {
                             try {
-                                Toast.makeText(GeneralActivity.this, "点击了'"+ mList.get(i).getString("expType") +"'模块", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(GeneralActivity.this, "点击了'" + mList.get(i).getString("expType") + "'模块", Toast.LENGTH_SHORT).show();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -287,63 +326,8 @@ public class GeneralActivity extends AppCompatActivity {
                             intent.putExtra("type", type);
 //                                        intent.putExtra("userRole", userRole);
                             startActivity(intent);
-//
-//                            AlertDialog.Builder builder = new AlertDialog.Builder(GeneralActivity.this);
-//                            builder.setTitle("选择一个操作");
-//                            // 指定下拉列表的显示数据
-//                            final String[] options = {"品种规划", "查看品种规划详情"};
-//                            // 设置一个下拉的列表选择项
-//
-//                            builder.setItems(options, new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    String fieldId = null, expType = null;
-////                                    int columns = 0, rows = 0;
-////                                    JSONObject jsonObject = new JSONObject();
-////                                    JSONArray jsonArray = new JSONArray();
-//                                    try {
-//                                        fieldId = mList.get(finalI).getString("id");
-//                                        expType = mList.get(finalI).getString("expType");
-////                                        Cursor cursor = db.query("ExperimentField", null, "farmlandId=? and expType=?",
-////                                                new String[]{farmlandId, expType}, null, null, null);
-////                                        columns = cursor.getCount();
-////                                        if (columns >0){
-////                                            cursor.moveToFirst();
-////                                            for (int i = 0; i < columns; i++){
-////                                                jsonArray.put(i, cursor.getString(cursor.getColumnIndex("id")));
-////                                                int num = cursor.getInt(cursor.getColumnIndex("num"));
-////                                                rows = (num > rows ? num : rows);
-////                                                cursor.moveToNext();
-////                                            }
-////                                        }
-////                                        jsonObject.put("columns", columns);
-////                                        jsonObject.put("rows", rows);
-////                                        jsonObject.put("ids", jsonArray);
-////                                        cursor.close();
-//                                    } catch (JSONException e) {
-//                                        e.printStackTrace();
-//                                    }
-////                                    if(which == 0){    // 点击第一个操作"品种规划"时
-////                                        Intent intent = new Intent(GeneralActivity.this, TableActivity.class);
-//////                                        intent.putExtra("fields_json", jsonObject.toString());
-////                                        intent.putExtra("fieldId", fieldId);
-////                                        intent.putExtra("expType", expType);
-////                                        intent.putExtra("farmlandId", farmlandId);
-////                                        intent.putExtra("type", type);
-//////                                        intent.putExtra("userRole", userRole);
-////                                        startActivity(intent);
-////                                    }
-////                                    else {   // 点击第二个操作"查看品种规划详情"时
-//
-////                                        Toast.makeText(mContext, "删除farmlandId " + farmlandId, Toast.LENGTH_SHORT).show();
-////                                    }
-//                                }
-//                            });
-//                            builder.show();
-
                         }
                     }
-
                     break;
                 default:
                     break;
@@ -351,41 +335,6 @@ public class GeneralActivity extends AppCompatActivity {
             return true;
         }
     };
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // 为ActionBar扩展菜单项
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.map, menu);
-//        return super.onCreateOptionsMenu(menu);
-//    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // 为ActionBar扩展菜单项
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.base, menu);
-        return super.onCreateOptionsMenu(menu);
-
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                break;
-//                Intent intent = new Intent(this, MainActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-            case R.id.back_home:
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                break;
-            default:
-        }
-        return true;
-    }
 
     @Override
     protected void onDestroy() {

@@ -4,6 +4,22 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
+    <color name="primary">#03A9F4</color>
+    <color name="primary_dark">#0288D1</color>
+    <color name="primary_light">#B3E5FC</color>
+    <color name="accent">#4CAF50</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#BDBDBD</color>
+
+    <color name="colorGrey">#607D8B</color>
+    <color name="colorOrange">#ff3d00</color>
+    <color name="colorGreen">#00c853</color>
+    <color name="colorRed">#d50000</color>
+    <color name="colorBlue">#03A9F4</color>
+    <color name="colorPink">#ff4081</color>
+
     <!--ProgressWheel-->
     <color name="ProgressWheel_color">#489df3</color>
     <!-- 透明 -->

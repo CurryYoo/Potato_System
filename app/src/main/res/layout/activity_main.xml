@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white">
-
+    <include layout="@layout/tool_bar"
+        android:id="@+id/tool_bar"/>
     <!--    <Button
             android:id="@+id/commit_data"
             android:textAllCaps="false"

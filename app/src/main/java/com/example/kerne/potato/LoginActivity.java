@@ -2,16 +2,19 @@ package com.example.kerne.potato;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.okhttp.FormEncodingBuilder;
@@ -25,8 +28,17 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class LoginActivity extends AppCompatActivity {
 
+    @BindView(R.id.left_one_button)
+    ImageView leftOneButton;
+    @BindView(R.id.left_one_layout)
+    LinearLayout leftOneLayout;
+    @BindView(R.id.title_text)
+    TextView titleText;
     private SharedPreferences pref;
 
     private SharedPreferences.Editor editor;
@@ -44,15 +56,28 @@ public class LoginActivity extends AppCompatActivity {
     String userRole;
 
     public String result;
-
+    View.OnClickListener toolBarOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.left_one_layout:
+                    finish();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("LoginActivity", "hello");
         super.onCreate(savedInstanceState);
-        //在Action bar显示返回键
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
+
+        initToolBar();
+
         pref = PreferenceManager.getDefaultSharedPreferences(this);
         accountEdit = (EditText) findViewById(R.id.account);
         passwordEdit = (EditText) findViewById(R.id.password);
@@ -107,19 +132,27 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void initToolBar() {
+        titleText.setText("账号登录");
+        leftOneButton.setBackgroundResource(R.drawable.left_back);
+
+        leftOneLayout.setOnClickListener(toolBarOnClickListener);
+    }
+
+
     public void login(final String name, final String pwd) {
         new Thread(new Runnable() {//开启线程
             @Override
             public void run() {
-                RequestBody body =new FormEncodingBuilder()
-                        .add("name",name)   //提交参数电话和密码
-                        .add("password",pwd)
+                RequestBody body = new FormEncodingBuilder()
+                        .add("name", name)   //提交参数电话和密码
+                        .add("password", pwd)
                         .build();
                 Request request = new Request.Builder()
                         .url("http://120.78.130.251:9527/userV2/login")  //请求的地址
                         .post(body)
                         .build();
-                OkHttpClient client=new OkHttpClient();
+                OkHttpClient client = new OkHttpClient();
 
                 try {
                     Response response = client.newCall(request).execute();
@@ -135,10 +168,11 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
-    private void JX(String body){
+
+    private void JX(String body) {
         try {
-            JSONObject jsonObject=new JSONObject(body);
-            if (jsonObject.getBoolean("success")){
+            JSONObject jsonObject = new JSONObject(body);
+            if (jsonObject.getBoolean("success")) {
                 Log.d("Login3", body.toString());
                 userRole = jsonObject.getJSONObject("data").getString("role");
                 Log.d("Login_userRole", userRole);
@@ -162,7 +196,7 @@ public class LoginActivity extends AppCompatActivity {
                 setResult(RESULT_OK, intent);
                 finish();
 
-            }else{
+            } else {
                 Log.d("Login4", body.toString());
                 //Looper解决闪退bug
                 Looper.prepare();

@@ -11,7 +11,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="10dp"
-        android:background="@color/colorPrimary">
+        android:background="@color/primary">
 
 
         <TextView

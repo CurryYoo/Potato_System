@@ -41,8 +41,6 @@ public class SpeciesClickActivity extends AppCompatActivity implements SpeciesCl
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //在Action bar显示返回键
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.species_click_activity);
 
         Intent intent = getIntent();

@@ -1,6 +1,7 @@
 package com.example.kerne.potato;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -16,7 +17,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kerne.potato.complextable.widget.multilevellist.TreeAdapter;
@@ -30,8 +34,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MultiLevelActivity extends AppCompatActivity {
 
+    @BindView(R.id.left_one_button)
+    ImageView leftOneButton;
+    @BindView(R.id.left_one_layout)
+    LinearLayout leftOneLayout;
+    @BindView(R.id.title_text)
+    TextView titleText;
     private TreeAdapter adapter;
     private ListView listView;
     private EditText et_filter;
@@ -44,19 +57,40 @@ public class MultiLevelActivity extends AppCompatActivity {
     private List<JSONObject> mSpeciesList = new ArrayList<>();
     private static final int COMPLETED = 0;
     @SuppressLint("HandlerLeak")
-    private Handler handler=new Handler(){
+    private Handler handler = new Handler() {
         @Override
-        public void handleMessage(Message msg){
+        public void handleMessage(Message msg) {
             if (msg.what == COMPLETED) adapter.notifyDataSetChanged();
         }
     };
+
+    View.OnClickListener toolBarOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.left_one_layout:
+                    finish();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_mutlilevel);
+        ButterKnife.bind(this);
         init();
         addListener();
+    }
+
+    private void initToolBar() {
+        titleText.setText("实验田目录树");
+        leftOneButton.setBackgroundResource(R.drawable.left_back);
+
+        leftOneLayout.setOnClickListener(toolBarOnClickListener);
     }
 
     public void init() {

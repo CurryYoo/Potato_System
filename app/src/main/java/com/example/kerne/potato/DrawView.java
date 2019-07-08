@@ -83,7 +83,7 @@ public class DrawView extends View {
         pText.setColor(Color.BLACK);
         pText.setTextSize(50);
 
-        p.setColor(Color.BLACK);// 设置黑色边框
+        p.setColor(Color.WHITE);// 设置黑色边框
         p.setStyle(Paint.Style.STROKE);
         //canvas.drawRect(left, top, right, bottom, p);
         Log.d("----width", width + "");

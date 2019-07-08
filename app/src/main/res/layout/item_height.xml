@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="平均株高:"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/primary" />
 
             <EditText
                 android:id="@+id/average_plant_height"

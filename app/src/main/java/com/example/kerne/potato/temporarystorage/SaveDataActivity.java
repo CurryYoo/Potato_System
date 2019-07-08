@@ -14,7 +14,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -41,6 +40,7 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kerne.potato.GeneralClickActivity;
 import com.example.kerne.potato.MainActivity;
 import com.example.kerne.potato.R;
 
@@ -51,7 +51,8 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-import q.rorbin.badgeview.QBadgeView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static com.example.kerne.potato.temporarystorage.RealPath.getRealPathFromUri;
 import static com.example.kerne.potato.temporarystorage.Util.getAverage;
@@ -69,6 +70,20 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     String TAG = "SaveDataActivity";
     //blockId
     String blockId;
+    @BindView(R.id.left_one_button)
+    ImageView leftOneButton;
+    @BindView(R.id.left_one_layout)
+    LinearLayout leftOneLayout;
+    @BindView(R.id.title_text)
+    TextView titleText;
+    @BindView(R.id.right_two_button)
+    ImageView rightTwoButton;
+    @BindView(R.id.right_two_layout)
+    LinearLayout rightTwoLayout;
+    @BindView(R.id.right_one_button)
+    ImageView rightOneButton;
+    @BindView(R.id.right_one_layout)
+    LinearLayout rightOneLayout;
     //需要暂存的各字段
     //品种id
     private String speciesId;
@@ -233,14 +248,53 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     //下拉按键
     private TextView down = null;
 
+    View.OnClickListener toolBarOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.left_one_layout:
+                    finish();
+                    break;
+                case R.id.right_one_layout:
+                    Intent intent = new Intent(SaveDataActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.right_two_layout:
+                    final AlertDialog.Builder saveDialog = new AlertDialog.Builder(SaveDataActivity.this);
+//                saveDialog.setIcon();
+                    saveDialog.setTitle("提示");
+                    saveDialog.setMessage("是否确定保存？");
+                    saveDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            updateDataLocally();
+                            editor.putBoolean("update_pick_data", true);
+                            editor.apply();
+                        }
+                    });
+                    saveDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    saveDialog.show();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //在Action bar显示返回键
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_commit);
+        ButterKnife.bind(this);
         sp = getSharedPreferences("update_flag", Context.MODE_PRIVATE);
         editor = sp.edit();
+
+        initToolBar();
 
         LinearLayout mLinearLayout = (LinearLayout) findViewById(R.id.mianliner);
         View view_basic = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_basicinfo, null);
@@ -896,54 +950,15 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         cursor.close();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // 为ActionBar扩展菜单项
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.actions, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+    private void initToolBar() {
+        titleText.setText("品种种植");
+        leftOneButton.setBackgroundResource(R.drawable.left_back);
+        rightOneButton.setBackgroundResource(R.drawable.ic_menu_home);
+        rightTwoButton.setBackgroundResource(R.drawable.ic_menu_save);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-//            case R.id.search:
-//                Toast.makeText(this, "Search item selected", Toast.LENGTH_SHORT).show();
-//                break;
-            case android.R.id.home:
-                this.finish();
-                break;
-//                Intent intent = new Intent(this, MainActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-            case R.id.save_off:
-                final AlertDialog.Builder saveDialog = new AlertDialog.Builder(SaveDataActivity.this);
-//                saveDialog.setIcon();
-                saveDialog.setTitle("提示");
-                saveDialog.setMessage("是否确定保存？");
-                saveDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        updateDataLocally();
-                        editor.putBoolean("update_pick_data",true);
-                        editor.apply();
-                    }
-                });
-                saveDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-                saveDialog.show();
-                break;
-            case R.id.back_home:
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                break;
-            default:
-        }
-        return true;
+        leftOneLayout.setOnClickListener(toolBarOnClickListener);
+        rightOneLayout.setOnClickListener(toolBarOnClickListener);
+        rightTwoLayout.setOnClickListener(toolBarOnClickListener);
     }
 
     @Override

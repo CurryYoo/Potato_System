@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".click.RcvClickActivity">
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rcv_click"
@@ -13,4 +17,4 @@
         android:overScrollMode="never"
         android:scrollbars="none" />
 
-</RelativeLayout>
+</LinearLayout>

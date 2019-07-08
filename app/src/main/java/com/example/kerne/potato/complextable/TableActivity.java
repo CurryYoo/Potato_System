@@ -13,12 +13,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -46,8 +45,25 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class TableActivity extends AppCompatActivity {
 
+    @BindView(R.id.left_one_button)
+    ImageView leftOneButton;
+    @BindView(R.id.left_one_layout)
+    LinearLayout leftOneLayout;
+    @BindView(R.id.title_text)
+    TextView titleText;
+    @BindView(R.id.right_two_button)
+    ImageView rightTwoButton;
+    @BindView(R.id.right_two_layout)
+    LinearLayout rightTwoLayout;
+    @BindView(R.id.right_one_button)
+    ImageView rightOneButton;
+    @BindView(R.id.right_one_layout)
+    LinearLayout rightOneLayout;
     /**
      * 用于存放标题的id,与textview引用
      */
@@ -95,14 +111,76 @@ public class TableActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
     private MenuItem editItem;
 
+    View.OnClickListener toolBarOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.left_one_layout:
+                    finish();
+                    break;
+                case R.id.right_one_layout:
+                    Intent intent = new Intent(TableActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.right_two_layout:
+                    if (status == STATUS_READ) {
+                        status = STATUS_EDIT;
+                        rightTwoButton.setBackgroundResource(R.drawable.ic_menu_no_save);
+                        titleText.setText("品种规划");
+                        Toast.makeText(TableActivity.this, "进入品种规划", Toast.LENGTH_SHORT).show();
+                    } else {
+
+                        //保存操作 sqlite
+                        List<ContentValues> contentValuesList = assembleData(str);
+
+//                db.delete("SpeciesList", "fieldId=?", new String[]{fieldId});
+                        try {
+                            int lastRows = 0; //把之前列的行数叠加起来，确定contentvalueslist中的位置
+                            for (int i = 0; i < jsonArray.length() * column; i++) {
+                                int rows_num = rows.getInt(i / column);
+                                if (i > 0) {
+                                    lastRows += rows.getInt((i - 1) / column);
+                                }
+
+                                for (int j = 0; j < rows_num; j++) {
+                                    int id = lastRows + j;
+                                    db.update("SpeciesList", contentValuesList.get(id), "fieldId=? and x=? and y=?",
+                                            new String[]{contentValuesList.get(id).getAsString("fieldId"), contentValuesList.get(id).getAsString("x"), contentValuesList.get(id).getAsString("y")});
+                                    Log.d("fieldId,x,y", contentValuesList.get(id).getAsString("fieldId") + "," + contentValuesList.get(id).getAsString("x") + "," + contentValuesList.get(id).getAsString("y"));
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+//                for(int i = 0; i < maxRows; i++){
+//                    db.update("SpeciesList", contentValuesList.get(i), "fieldId=? and x=? and y=?", new String[]{fieldId, contentValuesList.get(i).getAsString("x"), contentValuesList.get(i).getAsString("y")});
+////                    db.insert("SpeciesList", null, contentValuesList.get(i));
+//                }
+                        Log.d("str_content", contentValuesList.get(0).getAsString("ContentofColumn") + "");
+                        status = STATUS_READ;
+                        rightTwoButton.setBackgroundResource(R.drawable.ic_menu_plan);
+                        titleText.setText("品种种植");
+                        Toast.makeText(TableActivity.this, "保存成功，退出品种规划", Toast.LENGTH_SHORT).show();
+                        editor.putBoolean("update_location_data", true);
+                        editor.apply();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.table_layout);
+        ButterKnife.bind(this);
         sp = getSharedPreferences("update_flag", Context.MODE_PRIVATE);
         editor = sp.edit();
-        //在Action bar显示返回键
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        initToolBar();
 
         dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
         db = dbHelper.getWritableDatabase();
@@ -166,8 +244,7 @@ public class TableActivity extends AppCompatActivity {
             sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
                     "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
                     "' and ExperimentField.farmlandId='" + farmlandId + "' order by ExperimentField.moveX";
-        }
-        else {
+        } else {
             sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
                     "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
                     "' and ExperimentField.id='" + fieldId + "' order by ExperimentField.moveX";
@@ -239,88 +316,15 @@ public class TableActivity extends AppCompatActivity {
         init();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // 为ActionBar扩展菜单项
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.sequence, menu);
-        editItem = menu.findItem(R.id.save_off_seq);
-        return super.onCreateOptionsMenu(menu);
+    private void initToolBar() {
+        titleText.setText("品种种植");
+        leftOneButton.setBackgroundResource(R.drawable.left_back);
+        rightOneButton.setBackgroundResource(R.drawable.ic_menu_home);
+        rightTwoButton.setBackgroundResource(R.drawable.ic_menu_plan);
 
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                break;
-//            case R.id.species_list:
-//                Intent intent= new Intent(TableActivity.this, SpeciesClickActivity.class);
-//                intent.putExtra("fieldId", fieldId);
-//                startActivity(intent);
-//                break;
-            case R.id.save_off_seq:
-                if (status == STATUS_READ) {
-                    status = STATUS_EDIT;
-                    if(editItem!=null){
-                        editItem.setIcon(R.drawable.ic_menu_no_save);
-                        editItem.setTitle("保存");
-                    }
-                    this.setTitle("品种规划");
-                    Toast.makeText(this, "进入品种规划", Toast.LENGTH_SHORT).show();
-                } else {
-
-                    //保存操作 sqlite
-                    List<ContentValues> contentValuesList = assembleData(str);
-                    Log.d("contentvaluesList", contentValuesList.toString());
-
-//                db.delete("SpeciesList", "fieldId=?", new String[]{fieldId});
-                    try {
-                        int lastRows = 0; //把之前列的行数叠加起来，确定contentvalueslist中的位置
-                        for (int i = 0; i < jsonArray.length() * column; i++) {
-                            int rows_num = rows.getInt(i / column);
-                            if (i > 0) {
-                                lastRows += rows.getInt((i - 1) / column);
-                            }
-
-                            for (int j = 0; j < rows_num; j++) {
-                                int id = lastRows + j;
-                                db.update("SpeciesList", contentValuesList.get(id), "fieldId=? and x=? and y=?",
-                                        new String[]{contentValuesList.get(id).getAsString("fieldId"), contentValuesList.get(id).getAsString("x"), contentValuesList.get(id).getAsString("y")});
-                                Log.d("fieldId,x,y", contentValuesList.get(id).getAsString("fieldId") + "," + contentValuesList.get(id).getAsString("x") + "," + contentValuesList.get(id).getAsString("y"));
-                            }
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-//                for(int i = 0; i < maxRows; i++){
-//                    db.update("SpeciesList", contentValuesList.get(i), "fieldId=? and x=? and y=?", new String[]{fieldId, contentValuesList.get(i).getAsString("x"), contentValuesList.get(i).getAsString("y")});
-////                    db.insert("SpeciesList", null, contentValuesList.get(i));
-//                }
-                    Log.d("str_content", contentValuesList.get(0).getAsString("ContentofColumn") + "");
-                    status = STATUS_READ;
-                    if(editItem!=null){
-                        editItem.setIcon(R.drawable.ic_menu_plan);
-                        editItem.setTitle("品种规划");
-                    }
-                    this.setTitle("品种种植");
-                    Toast.makeText(TableActivity.this, "保存成功，退出品种规划", Toast.LENGTH_SHORT).show();
-                    editor.putBoolean("update_location_data", true);
-                    editor.apply();
-                }
-                break;
-            case R.id.back_home_seq:
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                break;
-            default:
-                break;
-        }
-
-//        startActivity(new Intent(this,AboutMeActivity.class));
-        return super.onOptionsItemSelected(item);
+        leftOneLayout.setOnClickListener(toolBarOnClickListener);
+        rightOneLayout.setOnClickListener(toolBarOnClickListener);
+        rightTwoLayout.setOnClickListener(toolBarOnClickListener);
     }
 
     //组装数据

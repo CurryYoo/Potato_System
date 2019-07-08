@@ -2,15 +2,16 @@ package com.example.kerne.potato;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
@@ -21,49 +22,55 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class BigfarmClickActivity extends AppCompatActivity implements BigfarmClickAdapter.OnItemClickListener {
 
     private static final String TAG = BigfarmClickActivity.class.getSimpleName();
+    @BindView(R.id.left_one_button)
+    ImageView leftOneButton;
+    @BindView(R.id.left_one_layout)
+    LinearLayout leftOneLayout;
+    @BindView(R.id.title_text)
+    TextView titleText;
 
     private List<JSONObject> mList = new ArrayList<>();
 
     private String name = null;
     private String userRole;
 
+    View.OnClickListener toolBarOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.left_one_layout:
+                    finish();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //在Action bar显示返回键
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.bigfarm_click_activity);
+        ButterKnife.bind(this);
 
 //        userRole = getIntent().getStringExtra("userRole");
 
+        initToolBar();
         initData();
 
         //initView();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // 为ActionBar扩展菜单项
-        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.actions, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                break;
-//                Intent intent = new Intent(this, MainActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-            default:
-        }
-        return true;
+    private void initToolBar() {
+        titleText.setText("试验基地");
+        leftOneButton.setBackgroundResource(R.drawable.left_back);
+        leftOneLayout.setOnClickListener(toolBarOnClickListener);
     }
 
     private void initData() {
