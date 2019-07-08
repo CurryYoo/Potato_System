@@ -3,16 +3,22 @@ package com.example.kerne.potato;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
+import com.example.kerne.potato.temporarystorage.Util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,15 +26,32 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Item 点击对应的 Activity
- *
+ * <p>
  * Created by Tnno Wu on 2018/03/05.
  */
 
 public class SpeciesListActivity extends AppCompatActivity implements SpeciesListAdapter.OnItemClickListener {
 
     private static final String TAG = SpeciesListActivity.class.getSimpleName();
+    @BindView(R.id.left_one_button)
+    ImageView leftOneButton;
+    @BindView(R.id.left_one_layout)
+    LinearLayout leftOneLayout;
+    @BindView(R.id.title_text)
+    TextView titleText;
+    @BindView(R.id.right_two_button)
+    ImageView rightTwoButton;
+    @BindView(R.id.right_two_layout)
+    LinearLayout rightTwoLayout;
+    @BindView(R.id.right_one_button)
+    ImageView rightOneButton;
+    @BindView(R.id.right_one_layout)
+    LinearLayout rightOneLayout;
 
     private List<JSONObject> mList = new ArrayList<>();
     private List<JSONObject> jList = new ArrayList<>();
@@ -38,12 +61,29 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
 
     private String speciesId;
     private String userRole;
-
+    View.OnClickListener toolBarOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.left_one_layout:
+                    finish();
+                    break;
+                case R.id.right_one_layout:
+                    Intent intent = new Intent(SpeciesListActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.species_list_activity);
+        ButterKnife.bind(this);
 
+        initToolBar();
         Intent intent = getIntent();
         speciesId = intent.getStringExtra("speciesId");
 //        userRole = intent.getStringExtra("userRole");
@@ -51,6 +91,15 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
         initData();
 
         //initView();
+    }
+    private void initToolBar() {
+        titleText.setText("");
+        leftOneButton.setBackgroundResource(R.drawable.left_back);
+        rightOneButton.setBackgroundResource(R.drawable.ic_menu_home);
+        rightTwoButton.setBackgroundResource(R.drawable.ic_menu_map);
+
+        leftOneLayout.setOnClickListener(toolBarOnClickListener);
+        rightOneLayout.setOnClickListener(toolBarOnClickListener);
     }
 
     private void initData() {
@@ -63,7 +112,7 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
 //        db.rawQuery(sql, null);
 
         Cursor cursor = db.query("SpeciesList", null, "speciesId=?", new String[]{speciesId}, null, null, null);
-        if(cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
                 JSONObject jsonObject0 = new JSONObject();
                 try {
@@ -73,10 +122,9 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
                     jsonObject0.put("speciesId", cursor.getString(cursor.getColumnIndex("speciesId")));
 //                    jsonObject0.put("userRole", userRole);
                     Cursor cursor1 = db.query("ExperimentField", null, "id=?", new String[]{fieldId}, null, null, null);
-                    if(cursor1.moveToFirst()){
+                    if (cursor1.moveToFirst()) {
                         jsonObject0.put("expType", cursor1.getString(cursor1.getColumnIndex("expType")));
-                    }
-                    else{
+                    } else {
                         Toast.makeText(SpeciesListActivity.this, "Do not have the fieldId '" + fieldId + "' in ExperimentField", Toast.LENGTH_SHORT).show();
                     }
                     cursor1.close();
@@ -87,19 +135,17 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
                     Log.e("speciesId_error", cursor.getString(cursor.getColumnIndex("speciesId")));
                 }
             } while (cursor.moveToNext());
-        }
-        else {
+        } else {
             Toast.makeText(SpeciesListActivity.this, "该品种不存在！", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(SpeciesListActivity.this, MainActivity.class);
             startActivity(intent);
         }
 
-        if(fieldId != null){
+        if (fieldId != null) {
             cursor = db.query("ExperimentField", null, "id=?", new String[]{fieldId}, null, null, null);
-            if(cursor.moveToFirst()){
+            if (cursor.moveToFirst()) {
                 expType = cursor.getString(cursor.getColumnIndex("expType"));
-            }
-            else{
+            } else {
                 Toast.makeText(SpeciesListActivity.this, "Do not have the fieldId '" + fieldId + "' in ExperimentField", Toast.LENGTH_SHORT).show();
             }
         }
@@ -176,19 +222,4 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
     public void onItemClick(String content) {
         Toast.makeText(this, "你点击的是：" + content, Toast.LENGTH_SHORT).show();
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                break;
-//                Intent intent = new Intent(this, MainActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-            default:
-        }
-        return true;
-    }
-
 }

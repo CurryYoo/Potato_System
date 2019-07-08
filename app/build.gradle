@@ -48,7 +48,10 @@ dependencies {
     implementation 'com.facebook.fresco:fresco:0.12.0'
     implementation 'me.relex:photodraweeview:1.1.2'
 
-
+    //ButterKnife
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    //ViewPagerIndicator
+    implementation 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
 }

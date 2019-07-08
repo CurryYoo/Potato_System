@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:end="@dimen/dp_100"
+        android:start="@dimen/dp_100">
+        <shape>
+            <solid android:color="@color/colorOrange" />
+
+            <corners android:radius="@dimen/dp_5"/>
+        </shape>
+    </item>
+    <item
+        android:bottom="2dp"
+        android:end="@dimen/dp_100"
+        android:start="@dimen/dp_100">
+        <shape>
+            <solid android:color="@color/white" />
+        </shape>
+    </item>
+</layer-list>

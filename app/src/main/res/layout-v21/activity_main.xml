@@ -112,7 +112,7 @@
                 android:layout_marginLeft="5dp"
                 android:paddingTop="@dimen/dp_3"
                 android:paddingBottom="@dimen/dp_3"
-                android:text="实验田列表"
+                android:text="实验田目录树"
                 android:textColor="@color/colorOrange"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -162,6 +162,7 @@
             android:padding="@dimen/dp_5">
 
             <ImageView
+                android:id="@+id/update_location_data_icon"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="5dp"
@@ -194,6 +195,7 @@
             android:padding="@dimen/dp_5">
 
             <ImageView
+                android:id="@+id/update_pick_data_icon"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="5dp"

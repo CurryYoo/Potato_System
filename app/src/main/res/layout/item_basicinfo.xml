@@ -21,7 +21,7 @@
         <EditText
             android:id="@+id/edt_species_id"
             style="@style/style_item_basicinfo_edittext"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/accent"
             android:layout_width="match_parent"
             android:focusable="false"/>
         <!--android:hint="每次提交请输入不同的数字"-->
@@ -47,7 +47,7 @@
         <EditText
             android:id="@+id/edt_experiment_type"
             style="@style/style_item_basicinfo_edittext"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/accent"
             android:layout_width="match_parent"
             android:focusable="false"/>
     </LinearLayout>
@@ -206,17 +206,13 @@
 
         <ImageButton
             android:id="@+id/imb_colors"
-            android:layout_width="60dp"
-            android:layout_height="@dimen/dp_40"
-            android:src="@android:drawable/ic_menu_camera" />
+            android:src="@android:drawable/ic_menu_camera"
+            style="@style/style_basic_camera_btn" />
 
         <Button
             android:id="@+id/btn_select_from_album_colors"
-            android:layout_width="@dimen/dp_60"
-            android:layout_height="40dp"
-            android:stateListAnimator="@null"
             android:text="相册"
-            android:textSize="15sp" />
+            style="@style/style_basic_album_btn" />
 
         <ImageView
             android:id="@+id/imv_colors"
@@ -253,17 +249,13 @@
 
         <ImageButton
             android:id="@+id/imb_corolla_colors"
-            android:layout_width="@dimen/dp_60"
-            android:layout_height="@dimen/dp_40"
-            android:src="@android:drawable/ic_menu_camera" />
+            style="@style/style_basic_camera_btn"
+            android:src="@android:drawable/ic_menu_camera"/>
 
         <Button
             android:id="@+id/btn_select_from_album_corolla_colors"
-            android:layout_width="60dp"
-            android:layout_height="@dimen/dp_40"
-            android:stateListAnimator="@null"
             android:text="相册"
-            android:textSize="15sp" />
+            style="@style/style_basic_album_btn" />
 
         <ImageView
             android:id="@+id/imv_corolla_colors"
@@ -299,17 +291,13 @@
 
         <ImageButton
             android:id="@+id/imb_plant_flourish"
-            android:layout_width="@dimen/dp_60"
-            android:layout_height="40dp"
-            android:src="@android:drawable/ic_menu_camera" />
+            android:src="@android:drawable/ic_menu_camera"
+            style="@style/style_basic_camera_btn"  />
 
         <Button
             android:id="@+id/btn_select_from_album_plant_flourish"
-            android:layout_width="60dp"
-            android:layout_height="@dimen/dp_40"
-            android:stateListAnimator="@null"
             android:text="相册"
-            android:textSize="15sp" />
+            style="@style/style_basic_album_btn"/>
 
         <ImageView
             android:id="@+id/imv_plant_flourish"
@@ -345,16 +333,13 @@
 
         <ImageButton
             android:id="@+id/imb_stem_color"
-            android:layout_width="60dp"
-            android:layout_height="@dimen/dp_40"
-            android:src="@android:drawable/ic_menu_camera" />
+            android:src="@android:drawable/ic_menu_camera"
+            style="@style/style_basic_camera_btn" />
 
         <Button
             android:id="@+id/btn_select_from_album_stem_color"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
-            android:stateListAnimator="@null"
-            android:text="相册" />
+            android:text="相册"
+            style="@style/style_basic_album_btn"/>
 
         <ImageView
             android:id="@+id/imv_stem_color"
@@ -391,17 +376,13 @@
 
         <ImageButton
             android:id="@+id/imb_natural_fecundity"
-            android:layout_width="60dp"
-            android:layout_height="@dimen/dp_40"
-            android:src="@android:drawable/ic_menu_camera" />
+            android:src="@android:drawable/ic_menu_camera"
+            style="@style/style_basic_camera_btn" />
 
         <Button
             android:id="@+id/btn_select_from_album_natural_fecundity"
-            android:layout_width="60dp"
-            android:layout_height="@dimen/dp_40"
-            android:stateListAnimator="@null"
             android:text="相册"
-            android:textSize="15sp" />
+            style="@style/style_basic_album_btn" />
 
         <ImageView
             android:id="@+id/imv_natural_fecundity"
@@ -458,15 +439,12 @@
             android:layout_width="100dp"
             android:focusable="false"
             android:inputType="number"
-            android:textColor="@color/colorAccent"/>
+            android:textColor="@color/accent"/>
 
         <Button
             android:id="@+id/btn_compute_growing_days"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
-            android:stateListAnimator="@null"
             android:text="计算"
-            android:textSize="15sp" />
+            style="@style/style_basic_album_btn"/>
     </LinearLayout>
 
     <View
@@ -910,15 +888,12 @@
             android:layout_width="100dp"
             android:focusable="false"
             android:inputType="number"
-            android:textColor="@color/colorAccent"/>
+            android:textColor="@color/accent"/>
 
         <Button
             android:id="@+id/btn_compute_rate_of_economic_potato"
-            android:layout_width="60dp"
-            android:layout_height="@dimen/dp_40"
-            android:stateListAnimator="@null"
             android:text="计算"
-            android:textSize="15sp" />
+            style="@style/style_basic_album_btn"/>
     </LinearLayout>
 
     <View
@@ -1020,15 +995,12 @@
             android:layout_width="100dp"
             android:focusable="false"
             android:inputType="number"
-            android:textColor="@color/colorAccent"/>
+            android:textColor="@color/accent"/>
 
         <Button
             android:id="@+id/btn_compute_average_per_mu_yield"
-            android:layout_width="@dimen/dp_60"
-            android:layout_height="40dp"
-            android:stateListAnimator="@null"
             android:text="计算"
-            android:textSize="15sp" />
+            style="@style/style_basic_album_btn" />
     </LinearLayout>
 
     <View

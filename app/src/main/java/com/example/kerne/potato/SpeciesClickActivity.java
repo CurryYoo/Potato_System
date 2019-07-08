@@ -9,27 +9,46 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Item 点击对应的 Activity
- *
+ * <p>
  * Created by Tnno Wu on 2018/03/05.
  */
 
 public class SpeciesClickActivity extends AppCompatActivity implements SpeciesClickAdapter.OnItemClickListener {
 
     private static final String TAG = SpeciesClickActivity.class.getSimpleName();
+    @BindView(R.id.left_one_button)
+    ImageView leftOneButton;
+    @BindView(R.id.left_one_layout)
+    LinearLayout leftOneLayout;
+    @BindView(R.id.title_text)
+    TextView titleText;
+    @BindView(R.id.right_two_button)
+    ImageView rightTwoButton;
+    @BindView(R.id.right_two_layout)
+    LinearLayout rightTwoLayout;
+    @BindView(R.id.right_one_button)
+    ImageView rightOneButton;
+    @BindView(R.id.right_one_layout)
+    LinearLayout rightOneLayout;
 
     private List<JSONObject> mList = new ArrayList<>();
 
@@ -37,12 +56,29 @@ public class SpeciesClickActivity extends AppCompatActivity implements SpeciesCl
     public static String expType;
 
     private String userRole;
-
+    View.OnClickListener toolBarOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.left_one_layout:
+                    finish();
+                    break;
+                case R.id.right_one_layout:
+                    Intent intent = new Intent(SpeciesClickActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.species_click_activity);
+        ButterKnife.bind(this);
 
+        initToolBar();
         Intent intent = getIntent();
         fieldId = intent.getStringExtra("fieldId");
         expType = intent.getStringExtra("expType");
@@ -53,12 +89,22 @@ public class SpeciesClickActivity extends AppCompatActivity implements SpeciesCl
         //initView();
     }
 
+    private void initToolBar() {
+        titleText.setText("");
+        leftOneButton.setBackgroundResource(R.drawable.left_back);
+        rightOneButton.setBackgroundResource(R.drawable.ic_menu_home);
+        rightTwoButton.setBackgroundResource(R.drawable.ic_menu_map);
+
+        leftOneLayout.setOnClickListener(toolBarOnClickListener);
+        rightOneLayout.setOnClickListener(toolBarOnClickListener);
+    }
+
     private void initData() {
         SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.query("SpeciesList", null, "fieldId=?", new String[]{fieldId}, null, null, null);
-        if(cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
                 JSONObject jsonObject0 = new JSONObject();
                 try {
@@ -72,8 +118,7 @@ public class SpeciesClickActivity extends AppCompatActivity implements SpeciesCl
                     Log.e("blockId_error", cursor.getString(cursor.getColumnIndex("blockId")));
                 }
             } while (cursor.moveToNext());
-        }
-        else {
+        } else {
             Toast.makeText(SpeciesClickActivity.this, "SpeciesList null", Toast.LENGTH_SHORT).show();
         }
         cursor.close();
@@ -148,10 +193,10 @@ public class SpeciesClickActivity extends AppCompatActivity implements SpeciesCl
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        switch (requestCode){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
             case 1:
-                if(resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
 //                    userRole = data.getStringExtra("userRole");
 //                    Log.d("userRole", userRole);
                 }
@@ -159,20 +204,6 @@ public class SpeciesClickActivity extends AppCompatActivity implements SpeciesCl
             default:
                 break;
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                break;
-//                Intent intent = new Intent(this, MainActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-            default:
-        }
-        return true;
     }
 
 }

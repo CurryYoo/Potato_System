@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="平均株高:"
-                android:textColor="@color/primary" />
+                android:textColor="@color/colorGreen" />
 
             <EditText
                 android:id="@+id/average_plant_height"
@@ -106,7 +106,7 @@
                 android:layout_width="150dp"
                 android:inputType="number"
                 android:focusable="false"
-                android:textColor="@color/colorAccent"/>
+                android:textColor="@color/colorGreen"/>
 
             <View
                 style="@style/view_divider_style"
@@ -187,7 +187,11 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:stateListAnimator="@null"
-            android:text="计算" />
+            android:text="计算"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_basic_info_btn_green" />
 
     </LinearLayout>
 

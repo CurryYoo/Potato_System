@@ -150,7 +150,6 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
                     jsonObject0.put("rows", cursor.getInt(cursor.getColumnIndex("rows")));
                     jsonObject0.put("type", "greenhouse");
 //                    jsonObject0.put("userRole", userRole);
-                    Log.d("pengnei1", jsonObject0.toString());
                     mList.add(jsonObject0);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -164,7 +163,6 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
         cursor.close();
         db.close();
         dbHelper.close();
-        //Log.d("mList.toString", mList.toString());
         initView();
 
 //        new Thread(){

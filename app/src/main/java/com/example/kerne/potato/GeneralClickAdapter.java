@@ -1,5 +1,6 @@
 package com.example.kerne.potato;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -83,6 +84,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
         return new RcvClickViewHolder(view);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull final RcvClickViewHolder holder, final int position) {
         final JSONObject jsonObject = mList.get(position);
@@ -95,6 +97,13 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
             holder.tvNum.setText("实验田序号：" + farmlandId);
             holder.tvName.setText("实验田名称：" + name);
             holder.tvType.setText("实验田类型：" + type);
+            if(type.equals("greenhouse")){
+                holder.is_shack.setVisibility(View.VISIBLE);
+            }
+            else {
+                holder.tvNum.setTextColor(R.color.primary_dark);
+                holder.tvName.setTextColor(R.color.primary_dark);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -113,7 +122,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                     e.printStackTrace();
                 }
 
-                Intent intent = new Intent();
+                Intent intent ;
                 if (type.equals("common")){
                     try {
                         length = jsonObject.getInt("length");
@@ -275,12 +284,14 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
     public class RcvClickViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvNum, tvName, tvType;
+        TextView is_shack;
 
         public RcvClickViewHolder(View itemView) {
             super(itemView);
             tvNum = itemView.findViewById(R.id.tv_num);
             tvName = itemView.findViewById(R.id.tv_name);
             tvType = itemView.findViewById(R.id.tv_type);
+            is_shack=itemView.findViewById(R.id.is_shack);
         }
     }
 
