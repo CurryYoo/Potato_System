@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,9 +24,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,12 +36,10 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.kerne.potato.GeneralClickActivity;
 import com.example.kerne.potato.MainActivity;
 import com.example.kerne.potato.R;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -54,6 +48,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.kerne.potato.Util.Utilities.getImageThumbnail;
 import static com.example.kerne.potato.temporarystorage.RealPath.getRealPathFromUri;
 import static com.example.kerne.potato.temporarystorage.Util.getAverage;
 import static com.example.kerne.potato.temporarystorage.Util.getGrowingDays;
@@ -870,11 +865,8 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                     Bitmap bitmapColor = null;
 
                     try {
-                        bitmapColor = BitmapFactory.decodeStream(getContentResolver().openInputStream(Uri.parse(
-                                "content://com.example.kerne.potato.fileprovider/potato_images/" + pathColor.replace("/storage/emulated/0/", ""))));
-                    } catch (FileNotFoundException e) {
-                        Log.d(TAG, "onCreate: img" + "FileNotFoundException" + bitmapColor);
-                        e.printStackTrace();
+                        bitmapColor = getImageThumbnail(
+                                "content://com.example.kerne.potato.fileprovider/potato_images/" + pathColor.replace("/storage/emulated/0/", ""), 1, 1);
                     } catch (NullPointerException e) {
                         Log.d(TAG, "onCreate: img" + "NullPointerException" + bitmapColor);
                         e.printStackTrace();
@@ -887,12 +879,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 if (pathCorollaColor != null) {
                     Bitmap bitmapCorollaColors = null;
                     try {
-                        bitmapCorollaColors = BitmapFactory.decodeStream(getContentResolver().openInputStream(Uri.parse(
+                        bitmapCorollaColors = getImageThumbnail(
                                 "content://com.example.kerne.potato.fileprovider/potato_images/"
-                                        + pathCorollaColor.replace("/storage/emulated/0/", ""))));
-                    } catch (FileNotFoundException e) {
-                        Log.d(TAG, "onCreate: img" + "FileNotFoundException" + bitmapCorollaColors);
-                        e.printStackTrace();
+                                        + pathCorollaColor.replace("/storage/emulated/0/", ""), 1, 1);
                     } catch (NullPointerException e) {
                         Log.d(TAG, "onCreate: img" + "NullPointerException" + bitmapCorollaColors);
                         e.printStackTrace();
@@ -904,11 +893,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 if (pathPlantFlourish != null) {
                     Bitmap bitmapPlantFlourish = null;
                     try {
-                        bitmapPlantFlourish = BitmapFactory.decodeStream(getContentResolver().openInputStream(Uri.parse(
+                        bitmapPlantFlourish = getImageThumbnail(
                                 "content://com.example.kerne.potato.fileprovider/potato_images/"
-                                        + pathPlantFlourish.replace("/storage/emulated/0/", ""))));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                                        + pathPlantFlourish.replace("/storage/emulated/0/", ""), 1, 1);
                     } catch (NullPointerException e) {
                         e.printStackTrace();
                     }
@@ -919,11 +906,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 if (pathStemColors != null) {
                     Bitmap bitmapStemColors = null;
                     try {
-                        bitmapStemColors = BitmapFactory.decodeStream(getContentResolver().openInputStream(Uri.parse(
+                        bitmapStemColors = getImageThumbnail(
                                 "content://com.example.kerne.potato.fileprovider/potato_images/"
-                                        + pathStemColors.replace("/storage/emulated/0/", ""))));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                                        + pathStemColors.replace("/storage/emulated/0/", ""), 1, 1);
                     } catch (NullPointerException e) {
                         e.printStackTrace();
                     }
@@ -934,11 +919,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 if (pathNaturalFecundity != null) {
                     Bitmap bitmapNaturalFecundity = null;
                     try {
-                        bitmapNaturalFecundity = BitmapFactory.decodeStream(getContentResolver().openInputStream(Uri.parse(
+                        bitmapNaturalFecundity = getImageThumbnail(
                                 "content://com.example.kerne.potato.fileprovider/potato_images/"
-                                        + pathNaturalFecundity.replace("/storage/emulated/0/", ""))));
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                                        + pathNaturalFecundity.replace("/storage/emulated/0/", ""), 1, 1);
                     } catch (NullPointerException e) {
                         e.printStackTrace();
                     }
@@ -1583,48 +1566,48 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         switch (requestCode) {
             //叶颜色显示照片
             case TAKE_PHOTO_COLOR:
-                onResultOfPhoto(resultCode, imageUriColor, ivShowColor);
+                onResultOfPhoto(resultCode, pathColor, ivShowColor);
                 break;
             //花冠色显示照片
             case TAKE_PHOTO_COROLLA_COLOR:
-                onResultOfPhoto(resultCode, imageUriCorollaColor, ivShowCorollaColor);
+                onResultOfPhoto(resultCode, pathCorollaColor, ivShowCorollaColor);
                 break;
             //花繁茂性显示照片
             case TAKE_PHOTO_PLANT_FLOURISH:
-                onResultOfPhoto(resultCode, imageUriPlantFlourish, ivShowPlantFlourish);
+                onResultOfPhoto(resultCode, pathPlantFlourish, ivShowPlantFlourish);
                 break;
             //茎色显示照片
             case TAKE_PHOTO_STEM_COLORS:
-                onResultOfPhoto(resultCode, imageUriStemColors, ivShowStemColors);
+                onResultOfPhoto(resultCode, pathStemColors, ivShowStemColors);
                 break;
             //天然结实性显示照片
             case TAKE_PHOTO_NATURAL_FECUNDITY:
-                onResultOfPhoto(resultCode, imageUriNaturalFecundity, ivShowNaturalFecundity);
+                onResultOfPhoto(resultCode, pathNaturalFecundity, ivShowNaturalFecundity);
                 break;
-            //块茎整齐度显示照片
-            case TAKE_PHOTO_TUBER_UNIFORMITY:
-                onResultOfPhoto(resultCode, imageUriTuberUniformity, ivShowTuberUniformity);
-                break;
-            //薯型显示照片
-            case TAKE_PHOTO_TUBER_SHAPE:
-                onResultOfPhoto(resultCode, imageUriTuberShape, ivShowTuberShape);
-                break;
-            //薯皮光滑度显示照片
-            case TAKE_PHOTO_POTATO_SKIN_SMOOTHNESS:
-                onResultOfPhoto(resultCode, imageUriPotatoSkinSmoothness, ivShowPotatoSkinSmoothness);
-                break;
-            //芽眼深浅显示照片
-            case TAKE_PHOTO_EYE:
-                onResultOfPhoto(resultCode, imageUriEye, ivShowEye);
-                break;
-            //皮色显示照片
-            case TAKE_PHOTO_SKIN_COLOR:
-                onResultOfPhoto(resultCode, imageUriSkinColor, ivShowSkinColor);
-                break;
-            //肉色显示照片
-            case TAKE_PHOTO_FLESH_COLOR:
-                onResultOfPhoto(resultCode, imageUriFleshColor, ivShowFleshColor);
-                break;
+//            //块茎整齐度显示照片
+//            case TAKE_PHOTO_TUBER_UNIFORMITY:
+//                onResultOfPhoto(resultCode, imageUriTuberUniformity, ivShowTuberUniformity);
+//                break;
+//            //薯型显示照片
+//            case TAKE_PHOTO_TUBER_SHAPE:
+//                onResultOfPhoto(resultCode, imageUriTuberShape, ivShowTuberShape);
+//                break;
+//            //薯皮光滑度显示照片
+//            case TAKE_PHOTO_POTATO_SKIN_SMOOTHNESS:
+//                onResultOfPhoto(resultCode, imageUriPotatoSkinSmoothness, ivShowPotatoSkinSmoothness);
+//                break;
+//            //芽眼深浅显示照片
+//            case TAKE_PHOTO_EYE:
+//                onResultOfPhoto(resultCode, imageUriEye, ivShowEye);
+//                break;
+//            //皮色显示照片
+//            case TAKE_PHOTO_SKIN_COLOR:
+//                onResultOfPhoto(resultCode, imageUriSkinColor, ivShowSkinColor);
+//                break;
+//            //肉色显示照片
+//            case TAKE_PHOTO_FLESH_COLOR:
+//                onResultOfPhoto(resultCode, imageUriFleshColor, ivShowFleshColor);
+//                break;
             //从相册选择叶颜色图片
             case SELECT_PHOTO_COLOR:
                 if (data != null) {
@@ -1633,11 +1616,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                     //Log.d("Uriiiii2", imageUriColor + " || " + pathColor);
                     if (imageUriColor != null) {
                         Bitmap bit = null;
-                        try {
-                            bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUriColor));
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
+
+                        bit = getImageThumbnail(pathColor, 50, 50);
+
                         ivShowColor.setImageBitmap(bit);
                     }
                 }
@@ -1650,11 +1631,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                     pathCorollaColor = getRealPathFromUri(SaveDataActivity.this, imageUriCorollaColor);
                     if (imageUriCorollaColor != null) {
                         Bitmap bit = null;
-                        try {
-                            bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUriCorollaColor));
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
+                        bit = getImageThumbnail(pathCorollaColor, 50, 50);
                         ivShowCorollaColor.setImageBitmap(bit);
                     }
                 }
@@ -1667,11 +1644,9 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                     pathPlantFlourish = getRealPathFromUri(SaveDataActivity.this, imageUriPlantFlourish);
                     if (imageUriPlantFlourish != null) {
                         Bitmap bit = null;
-                        try {
-                            bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUriPlantFlourish));
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
+
+                        bit = getImageThumbnail(pathPlantFlourish, 50, 50);
+
                         ivShowPlantFlourish.setImageBitmap(bit);
                     }
                 }
@@ -1684,11 +1659,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                     pathStemColors = getRealPathFromUri(SaveDataActivity.this, imageUriStemColors);
                     if (imageUriStemColors != null) {
                         Bitmap bit = null;
-                        try {
-                            bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUriStemColors));
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
+                        bit = getImageThumbnail(pathStemColors, 50, 50);
                         ivShowStemColors.setImageBitmap(bit);
                     }
                 }
@@ -1701,11 +1672,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                     pathNaturalFecundity = getRealPathFromUri(SaveDataActivity.this, imageUriNaturalFecundity);
                     if (imageUriNaturalFecundity != null) {
                         Bitmap bit = null;
-                        try {
-                            bit = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUriNaturalFecundity));
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
+                        bit = getImageThumbnail(pathNaturalFecundity, 50, 50);
                         ivShowNaturalFecundity.setImageBitmap(bit);
                     }
                 }
@@ -1716,15 +1683,16 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void onResultOfPhoto(int resultCode, Uri imageUri, ImageView ivShowPicture) {
+    private void onResultOfPhoto(int resultCode, String path, ImageView ivShowPicture) {
         if (resultCode == RESULT_OK) {
             //在应用中显示图片
             Bitmap bitmap = null;
-            try {
-                bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+            bitmap = getImageThumbnail(path, 50, 50);
             ivShowPicture.setImageBitmap(bitmap);
         }
     }
