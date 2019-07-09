@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     LinearLayout btn_mutlilevel;
     LinearLayout btn_location;
     LinearLayout btn_pick;
+    ImageView icon_update_location;
+    ImageView icon_update_pick;
 
     QBadgeView qBadgeView_location;
     QBadgeView qBadgeView_pick;
@@ -510,11 +513,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         qBadgeView_location = new QBadgeView(this);
         qBadgeView_pick = new QBadgeView(this);
 
+        icon_update_location=findViewById(R.id.update_location_data_icon);
+        icon_update_pick=findViewById(R.id.update_pick_data_icon);
+
         if (sp.getBoolean("update_pick_data", false)) {
-            badge_pick = new QBadgeView(this).bindTarget(btn_pick).setBadgeText("");
+            badge_pick = new QBadgeView(this).bindTarget(icon_update_pick).setBadgeText("");
         }
         if (sp.getBoolean("update_location_data", false)) {
-            badge_location = new QBadgeView(this).bindTarget(btn_location).setBadgeText("");
+            badge_location = new QBadgeView(this).bindTarget(icon_update_location).setBadgeText("");
         }
 
 //                View view = findViewById(R.id.list_commit);
@@ -553,10 +559,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         if (sp.getBoolean("update_pick_data", false)) {
-            badge_pick = new QBadgeView(this).bindTarget(btn_pick).setBadgeText("");
+            badge_pick = new QBadgeView(this).bindTarget(icon_update_pick).setBadgeText("");
         }
         if (sp.getBoolean("update_location_data", false)) {
-            badge_location = new QBadgeView(this).bindTarget(btn_location).setBadgeText("");
+            badge_location = new QBadgeView(this).bindTarget(icon_update_location).setBadgeText("");
         }
     }
 

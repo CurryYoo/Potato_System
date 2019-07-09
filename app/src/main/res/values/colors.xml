@@ -19,6 +19,7 @@
     <color name="colorRed">#d50000</color>
     <color name="colorBlue">#03A9F4</color>
     <color name="colorPink">#ff4081</color>
+    <color name="colorDarkGreen">#004d40</color>
 
     <!--ProgressWheel-->
     <color name="ProgressWheel_color">#489df3</color>

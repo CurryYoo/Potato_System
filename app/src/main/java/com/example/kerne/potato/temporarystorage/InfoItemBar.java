@@ -1,6 +1,7 @@
 package com.example.kerne.potato.temporarystorage;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,10 +19,10 @@ public class InfoItemBar extends LinearLayout {
     {
         super(mContext);
         View view=LayoutInflater.from(mContext).inflate(R.layout.item_bar, this);
-        this.mLinearLayout = (LinearLayout)view.findViewById(R.id.itemBar_content);
-        this.mitembar=(LinearLayout) view.findViewById(R.id.itembar);
-        this.Image = (ImageView) view.findViewById(R.id.item_img_title);
-        TextView titleTextView = (TextView) view.findViewById(R.id.itemBar_title);
+        this.mLinearLayout = view.findViewById(R.id.itemBar_content);
+        this.mitembar= view.findViewById(R.id.itembar);
+        this.Image =  view.findViewById(R.id.item_img_title);
+        TextView titleTextView =  view.findViewById(R.id.itemBar_title);
         titleTextView.setText(title + " :");
 
         mitembar.setOnClickListener(new OnClickListener() {
@@ -60,6 +61,17 @@ public class InfoItemBar extends LinearLayout {
     public void addView(View item) {
 
         mLinearLayout.addView(item);
+
+    }
+
+    /**
+     * 改变itemBar颜色
+     *
+     * @param drawable
+     */
+    public void setColor(Drawable drawable) {
+
+        mitembar.setBackground(drawable);
 
     }
 

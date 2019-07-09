@@ -7,8 +7,7 @@
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingTop="5dp"
-    android:paddingBottom="5dp"
-    android:elevation="@dimen/dp_2">
+    android:paddingBottom="5dp">
 
     <LinearLayout
         android:id="@+id/left_one_layout"
@@ -61,7 +60,7 @@
         android:layout_weight="10"
         android:gravity="center"
         android:textColor="@color/primary_text"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold" />
 
     <LinearLayout

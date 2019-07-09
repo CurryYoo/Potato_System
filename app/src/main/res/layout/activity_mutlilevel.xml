@@ -2,30 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
     <include layout="@layout/tool_bar"
         android:id="@+id/tool_bar"/>
-    <EditText
-        android:id="@+id/et_filter"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/bg_input_filter"
-        android:drawableLeft="@drawable/ic_search"
-        android:drawablePadding="8dp"
-        android:hint="请输入关键字"
-        android:maxLines="1"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:textColor="@color/normalcolor"
-        android:textSize="14sp"
-        android:visibility="visible" />
 
-    <ListView
-        android:id="@+id/listView"
+    <com.viewpagerindicator.TabPageIndicator
+        android:id="@+id/indicator"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:theme="@style/StyledIndicators" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 </LinearLayout>

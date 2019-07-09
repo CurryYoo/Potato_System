@@ -1,41 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="110dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="8dp"
     android:background="@drawable/bg_main_button"
-    android:orientation="vertical"
-    android:elevation="@dimen/dp_3">
+    android:orientation="horizontal"
+    android:elevation="@dimen/dp_5">
+    <LinearLayout
+        android:id="@+id/text"
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+        <TextView
+            android:id="@+id/tv_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textColor="@color/colorGrey"
+            android:textStyle="bold"
+            tools:text="序号"
+            android:textSize="15sp"/>
 
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textColor="@color/colorGrey"
+            android:textStyle="bold"
+            tools:text="名称"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/tv_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textColor="@color/secondary_text"
+            android:textStyle="bold"
+            tools:text="类型"
+            android:textSize="12sp"/>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view_one"
+        android:layout_width="@dimen/dp_1"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/dp_40"
+        android:background="@color/transparent"/>
+    <View
+        android:id="@+id/view_two"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/view_one"
+        android:layout_marginTop="@dimen/dp_40"
+        android:background="@color/transparent"/>
     <TextView
-        android:id="@+id/tv_num"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:id="@+id/is_shack"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_60"
+        android:text="棚"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:textStyle="bold"
         android:textColor="@color/primary_text"
-        android:textStyle="bold"
-        tools:text="序号"
-        android:textSize="15sp"/>
-
-    <TextView
-        android:id="@+id/tv_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:textColor="@color/primary_text"
-        android:textStyle="bold"
-        tools:text="名称"
-        android:textSize="15sp"/>
-
-    <TextView
-        android:id="@+id/tv_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:textColor="@color/secondary_text"
-        android:textStyle="bold"
-        tools:text="类型"
-        android:textSize="12sp"/>
-
-</LinearLayout>
+        android:background="@drawable/bg_circle_shack"
+        android:padding="@dimen/dp_5"
+        app:layout_constraintStart_toEndOf="@id/view_one"
+        app:layout_constraintBottom_toTopOf="@id/view_two"
+        android:alpha="0.7"
+        android:visibility="gone"
+        />
+</android.support.constraint.ConstraintLayout>

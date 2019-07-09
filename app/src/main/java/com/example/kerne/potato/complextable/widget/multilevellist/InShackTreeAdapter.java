@@ -3,7 +3,6 @@ package com.example.kerne.potato.complextable.widget.multilevellist;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.annotation.IntDef;
 import android.text.Html;
 import android.text.Spanned;
@@ -11,19 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kerne.potato.R;
 import com.example.kerne.potato.complextable.TableActivity;
-import com.example.kerne.potato.temporarystorage.SaveDataActivity;
 
 import org.json.JSONException;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -31,7 +27,7 @@ import java.util.List;
  * Created by xulc on 2018/7/27.
  */
 
-public class TreeAdapter extends BaseAdapter {
+public class InShackTreeAdapter extends BaseAdapter {
     private Context mcontext;
     private Activity mActivity;
     private List<TreePoint> pointList;
@@ -53,7 +49,7 @@ public class TreeAdapter extends BaseAdapter {
         this.operateMode = operateMode;
     }
 
-    public TreeAdapter(final Context mcontext, List<TreePoint> pointList, HashMap<String, TreePoint> pointMap) {
+    public InShackTreeAdapter(final Context mcontext, List<TreePoint> pointList, HashMap<String, TreePoint> pointMap) {
         this.mcontext = mcontext;
         this.mActivity = (Activity) mcontext;
         this.pointList = pointList;
@@ -216,6 +212,8 @@ public class TreeAdapter extends BaseAdapter {
             intent.putExtra("fieldId", treePoint.getJsonObject().getString("id"));
             intent.putExtra("expType", treePoint.getJsonObject().getString("expType"));
             intent.putExtra("farmlandId", treePoint.getJsonObject().getString("farmlandId"));
+            intent.putExtra("num", treePoint.getJsonObject().getInt("num"));
+            intent.putExtra("rows", treePoint.getJsonObject().getInt("rows"));
             intent.putExtra("type", treePoint.getJsonObject().getString("type"));
             mcontext.startActivity(intent);
             Toast.makeText(mcontext, "实验类型:" + treePoint.getJsonObject().getString("expType"), Toast.LENGTH_SHORT).show();

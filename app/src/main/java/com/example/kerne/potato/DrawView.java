@@ -28,6 +28,7 @@ public class DrawView extends View {
     public static final int right = 1450; //边框右下角横坐标
     public static final int bottom = 1500; //边框右下角纵坐标
 
+
     private int width;
     private int height;
 
@@ -35,10 +36,14 @@ public class DrawView extends View {
     private int mapHeight = 2414; //原种植图的高度
     private double line_spacing = 0.65; //行距
     private double row_spacing = 0.3; //株距
-    private static final float multiple_X = 0.005f; //边框适应屏幕的左上角坐标需要乘以的倍数
-    private static final float multiple_X1 = 0.92f; //边框适应屏幕的右上角坐标需要乘以的倍数
-    private static final float multiple_Y = 0.004f; //边框适应屏幕的右上角坐标需要乘以的倍数
-    private static final float multiple_Y1 = 0.84f; //边框适应屏幕的右上角坐标需要乘以的倍数
+//    private static final float multiple_X = 0.005f; //边框适应屏幕的左上角坐标需要乘以的倍数
+//    private static final float multiple_X1 = 0.92f; //边框适应屏幕的右上角坐标需要乘以的倍数
+//    private static final float multiple_Y = 0.004f; //边框适应屏幕的右上角坐标需要乘以的倍数
+//    private static final float multiple_Y1 = 0.84f; //边框适应屏幕的右上角坐标需要乘以的倍数
+    private static final float multiple_X = 0.03f; //边框适应屏幕的左上角坐标需要乘以的倍数
+    private static final float multiple_X1 = 0.97f; //边框适应屏幕的右上角坐标需要乘以的倍数
+    private static final float multiple_Y = 0.005f; //边框适应屏幕的右上角坐标需要乘以的倍数
+    private static final float multiple_Y1 = 0.9f; //边框适应屏幕的右上角坐标需要乘以的倍数
 
     public static float coord[][] = new float[1000][4];  //种植块的坐标集
 
@@ -83,8 +88,10 @@ public class DrawView extends View {
         pText.setColor(Color.BLACK);
         pText.setTextSize(50);
 
-        p.setColor(Color.WHITE);// 设置黑色边框
+        //绘制边框
+        p.setColor(Color.BLACK);// 设置黑色边框
         p.setStyle(Paint.Style.STROKE);
+        p.setStrokeWidth(3);
         //canvas.drawRect(left, top, right, bottom, p);
         Log.d("----width", width + "");
         canvas.drawRect(frameX, frameY, frameX1, frameY1, p);
@@ -103,7 +110,7 @@ public class DrawView extends View {
                 canvas.drawRect(coord[i][0], coord[i][1], coord[i][2], coord[i][3], p);
 
                 p.setColor(Color.BLACK);
-                p.setTextSize(20);
+                p.setTextSize(30);
 
                 canvas.drawText(mList.get(i).getString("expType"), coord[i][0], coord[i][3], p);
             }
