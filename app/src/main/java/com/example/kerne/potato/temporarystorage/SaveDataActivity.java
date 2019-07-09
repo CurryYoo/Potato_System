@@ -59,6 +59,7 @@ import static com.example.kerne.potato.temporarystorage.Util.getAverage;
 import static com.example.kerne.potato.temporarystorage.Util.getGrowingDays;
 import static com.example.kerne.potato.temporarystorage.Util.showDatePickerDialog;
 import static com.example.kerne.potato.temporarystorage.Util.watchLargePhoto;
+import static com.example.kerne.potato.temporarystorage.Util.watchOnlineLargePhoto;
 
 public class SaveDataActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
@@ -1014,7 +1015,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //叶颜色查看大图
             case R.id.imv_colors:
-                watchLargePhoto(this, imageUriColor);
+                watchOnlineLargePhoto(this, imageUriColor);
                 break;
             //花冠色拍照并显示
             case R.id.imb_corolla_colors:
@@ -1036,7 +1037,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //花冠色查看大图
             case R.id.imv_corolla_colors:
-                watchLargePhoto(this, imageUriCorollaColor);
+                watchOnlineLargePhoto(this, imageUriCorollaColor);
                 break;
             //从相册选择花冠色照片
             case R.id.btn_select_from_album_corolla_colors:
@@ -1059,7 +1060,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //花繁茂性查看大图
             case R.id.imv_plant_flourish:
-                watchLargePhoto(this, imageUriPlantFlourish);
+                watchOnlineLargePhoto(this, imageUriPlantFlourish);
                 break;
             //从相册选择花繁茂性照片
             case R.id.btn_select_from_album_plant_flourish:
@@ -1082,7 +1083,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //茎色查看大图
             case R.id.imv_stem_color:
-                watchLargePhoto(this, imageUriStemColors);
+                watchOnlineLargePhoto(this, imageUriStemColors);
                 break;
             //从相册选择茎色照片
             case R.id.btn_select_from_album_stem_color:
@@ -1105,7 +1106,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //天然结实性查看大图
             case R.id.imv_natural_fecundity:
-                watchLargePhoto(this, imageUriNaturalFecundity);
+                watchOnlineLargePhoto(this, imageUriNaturalFecundity);
                 break;
             //从相册选择天然结实性照片
             case R.id.btn_select_from_album_natural_fecundity:
