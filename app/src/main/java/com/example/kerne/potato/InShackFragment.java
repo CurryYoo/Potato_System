@@ -191,32 +191,17 @@ public class InShackFragment extends Fragment {
         for (int i = 0; i < mBigFarmList.size(); i++) {
             id++;
             pointList.add(new TreePoint("" + id, "" + mBigFarmList.get(i).getString("name"), "" + parentId, "0", i));
-            int order_i = 1;
-            for (int j = 0; j < mFarmList.size(); j++) {
-                if (j == 0) {
-                    parentId2 = id;
+            int order_j = 1;
+            for (int k = 0; k < mFieldList.size(); k++) {
+                if (k == 0) {
+                    parentId3 = id;
                 }
-                if (mFarmList.get(j).getString("bigfarmId").equals(mBigFarmList.get(i).getString("bigfarmId"))) {
+                if (mFieldList.get(k).getString("farmlandId").equals(mBigFarmList.get(i).getString("bigfarmId"))) {
                     id++;
-                    for(int m=0;m<mFieldList.size();m++){
-                        if (mFieldList.get(m).getString("farmlandId").equals(mFarmList.get(j).getString("bigfarmId"))) {
-                            pointList.add(new TreePoint("" + id, "" + mFieldList.get(j).getString("name"), "" + parentId2, "0", order_i++));
-                            break;
-                        }
-                    }
-                    int order_j = 1;
-                    for (int k = 0; k < mFieldList.size(); k++) {
-                        if (k == 0) {
-                            parentId3 = id;
-                        }
-                        if (mFieldList.get(k).getString("farmlandId").equals(mFarmList.get(j).getString("bigfarmId"))) {
-                            id++;
-                            TreePoint treePoint = new TreePoint("" + id, "" + mFieldList.get(k).getString("expType"), "" + parentId3, "1", order_j++);
-                            mFieldList.get(k).put("type", "greenhouse");
-                            treePoint.setJsonObject(mFieldList.get(k));
-                            pointList.add(treePoint);
-                        }
-                    }
+                    TreePoint treePoint = new TreePoint("" + id, "" + mFieldList.get(k).getString("name"), "" + parentId3, "1", order_j++);
+                    mFieldList.get(k).put("type", "greenhouse");
+                    treePoint.setJsonObject(mFieldList.get(k));
+                    pointList.add(treePoint);
                 }
             }
         }
