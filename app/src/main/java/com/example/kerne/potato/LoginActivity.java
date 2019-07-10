@@ -31,6 +31,8 @@ import java.io.IOException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.kerne.potato.Util.ShowKeyBoard.delayShowSoftKeyBoard;
+
 public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.left_one_button)
@@ -82,6 +84,8 @@ public class LoginActivity extends AppCompatActivity {
         accountEdit = (EditText) findViewById(R.id.account);
         passwordEdit = (EditText) findViewById(R.id.password);
         rememberPass = (CheckBox) findViewById(R.id.remember_pass);
+        //弹出软键盘
+        delayShowSoftKeyBoard(accountEdit);
         login = (Button) findViewById(R.id.login);
         boolean isRemember = pref.getBoolean("remember_password", false);
         if (isRemember) {

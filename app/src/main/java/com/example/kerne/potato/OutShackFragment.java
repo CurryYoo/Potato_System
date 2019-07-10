@@ -207,6 +207,9 @@ public class OutShackFragment extends Fragment {
                             id++;
                             TreePoint treePoint=new TreePoint("" + id, "" + mFieldList.get(k).getString("expType"), "" + parentId3, "1", order_j++);
                             mFieldList.get(k).put("type","common");
+                            mFieldList.get(k).put("bigFarmName",mBigFarmList.get(i).getString("name"));
+                            mFieldList.get(k).put("farmName",mFarmList.get(j).getString("name"));
+                            mFieldList.get(k).put("year",mBigFarmList.get(i).getInt("year"));
                             treePoint.setJsonObject(mFieldList.get(k));
                             pointList.add(treePoint);
                         }

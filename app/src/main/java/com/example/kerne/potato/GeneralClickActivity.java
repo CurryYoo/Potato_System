@@ -87,18 +87,19 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
         setContentView(R.layout.general_click_activity);
         ButterKnife.bind(this);
 
-        initToolBar();
+
         bigfarmId = getIntent().getStringExtra("bigfarmId");
         img = getIntent().getStringExtra("img");
         uri = getIntent().getStringExtra("uri");
         name=getIntent().getStringExtra("name");
+        initToolBar();
         initData();
 
         //initView();
     }
 
     private void initToolBar() {
-        titleText.setText("试验田");
+        titleText.setText(name);
         leftOneButton.setBackgroundResource(R.drawable.left_back);
         rightOneButton.setBackgroundResource(R.drawable.ic_menu_home);
         rightTwoButton.setBackgroundResource(R.drawable.ic_menu_map);

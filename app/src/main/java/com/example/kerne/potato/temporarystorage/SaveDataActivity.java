@@ -48,12 +48,11 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.example.kerne.potato.Util.Utilities.getImageThumbnail;
+import static com.example.kerne.potato.Util.ThumbImage.getImageThumbnail;
 import static com.example.kerne.potato.temporarystorage.RealPath.getRealPathFromUri;
 import static com.example.kerne.potato.temporarystorage.Util.getAverage;
 import static com.example.kerne.potato.temporarystorage.Util.getGrowingDays;
 import static com.example.kerne.potato.temporarystorage.Util.showDatePickerDialog;
-import static com.example.kerne.potato.temporarystorage.Util.watchLargePhoto;
 import static com.example.kerne.potato.temporarystorage.Util.watchOnlineLargePhoto;
 
 public class SaveDataActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {

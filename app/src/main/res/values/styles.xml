@@ -110,14 +110,27 @@
         <item name="android:background">@drawable/bg_basic_info_btn</item>
     </style>
 
-    //dialog全屏显示
+    //图片dialog全屏显示
     <style name="Dialog_Fullscreen">
         <item name="android:windowCloseOnTouchOutside">true</item>
         <item name="android:fitsSystemWindows">true</item>
     </style>
 
+    //dialog动画
     <style name="dialogWindowAnim" parent="android:Animation">
         <item name="android:windowEnterAnimation" >@anim/dialog_anmi</item>
         <item name="android:windowExitAnimation" >@anim/dialog_anmi_exit</item>
     </style>
+
+    //edittext dialog样式（自动显示软键盘）
+    <style name="inputDialog" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:windowFrame">@android:color/transparent</item><!-- 边框 -->
+        <item name="android:windowIsFloating">true</item><!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsTranslucent">false</item><!-- 半透明 -->
+        <item name="android:windowNoTitle">true</item><!-- 无标题 -->
+        <item name="android:windowBackground">@android:color/transparent</item><!-- 自己想要的背景 -->
+        <item name="android:backgroundDimEnabled">true</item><!-- 模糊 -->
+        <item name="android:windowSoftInputMode">stateAlwaysVisible</item><!--显示软件盘-->
+    </style>
+
 </resources>

@@ -19,6 +19,7 @@
     <!--android:layout_height="match_parent"></WebView>-->
 
     <GridLayout
+        android:id="@+id/main_grid_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:columnCount="2"

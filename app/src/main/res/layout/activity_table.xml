@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <include
@@ -16,7 +17,7 @@
         android:layout_marginTop="@dimen/dp_5"
         android:layout_marginEnd="@dimen/dp_10"
         android:layout_marginBottom="@dimen/dp_5"
-        android:background="@drawable/bg_table_description">
+        android:background="@drawable/bg_table_info">
 
         <TextView
             android:id="@+id/table_big_farm"
@@ -25,12 +26,12 @@
             android:layout_marginStart="@dimen/dp_5"
             android:layout_marginTop="@dimen/dp_3"
             android:layout_marginBottom="@dimen/dp_3"
+            android:hint="实验基地："
             android:paddingStart="@dimen/dp_5"
             android:textColor="@color/colorGrey"
             android:textSize="14sp"
-            android:hint="实验基地："
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/table_farm"
@@ -39,12 +40,12 @@
             android:layout_marginStart="@dimen/dp_10"
             android:layout_marginTop="@dimen/dp_3"
             android:layout_marginBottom="@dimen/dp_3"
+            android:hint="实验田："
             android:paddingStart="@dimen/dp_5"
             android:textColor="@color/colorGrey"
             android:textSize="14sp"
-            android:hint="实验田："
             app:layout_constraintStart_toEndOf="@id/table_big_farm"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/table_date"
@@ -53,33 +54,49 @@
             android:layout_marginStart="@dimen/dp_10"
             android:layout_marginTop="@dimen/dp_3"
             android:layout_marginBottom="@dimen/dp_3"
+            android:hint="年份："
             android:paddingStart="@dimen/dp_5"
             android:textColor="@color/colorGrey"
             android:textSize="14sp"
-            android:hint="年份："
             app:layout_constraintStart_toEndOf="@id/table_farm"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView_description"
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_3"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:paddingStart="@dimen/dp_5"
+            android:text="备注："
+            android:textColor="@color/colorGrey"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/table_big_farm" />
 
         <EditText
             android:id="@+id/table_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_5"
+            android:layout_marginStart="@dimen/dp_50"
             android:layout_marginTop="@dimen/dp_3"
-            android:layout_marginEnd="@dimen/dp_5"
             android:layout_marginBottom="@dimen/dp_3"
-            android:paddingStart="@dimen/dp_5"
+            android:background="@null"
+            android:hint="..."
             android:textColor="@color/colorGrey"
             android:textSize="12sp"
-            style="@style/style_item_basicinfo_edittext"
-            android:hint="备注"
-            app:layout_constraintTop_toBottomOf="@id/table_big_farm"/>
+            app:layout_constraintStart_toEndOf="@id/textView_description"
+            app:layout_constraintTop_toBottomOf="@id/table_big_farm" />
     </android.support.constraint.ConstraintLayout>
     <!-- 此部分是标题部分 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#F2F2F2"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:background="@drawable/bg_table_info"
         android:orientation="horizontal">
 
         <!-- 左侧标题的父容器 -->
@@ -120,12 +137,16 @@
     <com.example.kerne.potato.complextable.widget.pullrefresh.AbPullToRefreshView
         android:id="@+id/pulltorefreshview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_3">
 
         <ScrollView
             android:id="@+id/pull_refresh_scroll"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -138,7 +159,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:scrollbars="none"></com.example.kerne.potato.complextable.widget.MyListView>
+                    android:scrollbars="none" />
 
 
                 <!-- 右侧内容的父容器 实现水平滚动 -->
@@ -155,7 +176,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="#ffffff"
-                        android:scrollbars="none"></com.example.kerne.potato.complextable.widget.MyListView>
+                        android:scrollbars="none" />
                 </com.example.kerne.potato.complextable.widget.SyncHorizontalScrollView>
             </LinearLayout>
         </ScrollView>

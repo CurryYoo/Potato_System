@@ -216,6 +216,9 @@ public class InShackTreeAdapter extends BaseAdapter {
             intent.putExtra("num", treePoint.getJsonObject().getInt("num"));
             intent.putExtra("rows", treePoint.getJsonObject().getInt("rows"));
             intent.putExtra("type", treePoint.getJsonObject().getString("type"));
+            intent.putExtra(("bigFarmName"),treePoint.getJsonObject().getString("bigFarmName"));
+            intent.putExtra(("farmName"),treePoint.getJsonObject().getString("farmName"));
+            intent.putExtra(("year"),treePoint.getJsonObject().getInt("year"));
             mcontext.startActivity(intent);
             Toast.makeText(mcontext, "实验类型:" + treePoint.getJsonObject().getString("expType"), Toast.LENGTH_SHORT).show();
         } else {  //如果点击的是父类

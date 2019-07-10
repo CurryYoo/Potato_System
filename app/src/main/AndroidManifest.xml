@@ -35,7 +35,8 @@
         <activity android:name=".SpeciesClickActivity" />
         <activity
             android:name=".MultiLevelActivity"
-            android:label="实验田列表"/>
+            android:label="实验田列表"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity
             android:name=".MainActivity"
             android:label="首页"
@@ -59,7 +60,8 @@
         <activity
             android:name=".complextable.TableActivity"
             android:label="品种种植"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
         <activity
             android:name=".BigfarmClickActivity"
             android:label="试验基地"/>

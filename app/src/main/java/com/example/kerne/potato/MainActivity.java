@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,10 +39,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import q.rorbin.badgeview.Badge;
 import q.rorbin.badgeview.QBadgeView;
+
+import static com.example.kerne.potato.Util.ShowKeyBoard.delayShowSoftKeyBoard;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     LinearLayout btn_pick;
     ImageView icon_update_location;
     ImageView icon_update_pick;
+    TextView titleText;
+    GridLayout mainGridLayout;
 
     QBadgeView qBadgeView_location;
     QBadgeView qBadgeView_pick;
@@ -71,8 +75,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String img3;
     String img4;
     String img5;
-    @BindView(R.id.title_text)
-    TextView titleText;
 
     private SpeciesDBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
@@ -131,6 +133,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (downloadSuccess_Num == request_Num) {
                     Log.d("download" + downloadSuccess_Num, "ok");
                     Toast.makeText(activity.getApplicationContext(), "下载成功!", Toast.LENGTH_SHORT).show();
+                    activity.mainGridLayout.setEnabled(true);
+                    activity.titleText.setText("马铃薯育种信息管理系统");
                     downloadSuccess_Num = 0;
                 }
             }
@@ -513,8 +517,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         qBadgeView_location = new QBadgeView(this);
         qBadgeView_pick = new QBadgeView(this);
 
-        icon_update_location=findViewById(R.id.update_location_data_icon);
-        icon_update_pick=findViewById(R.id.update_pick_data_icon);
+        icon_update_location = findViewById(R.id.update_location_data_icon);
+        icon_update_pick = findViewById(R.id.update_pick_data_icon);
 
         if (sp.getBoolean("update_pick_data", false)) {
             badge_pick = new QBadgeView(this).bindTarget(icon_update_pick).setBadgeText("");
@@ -545,6 +549,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initToolBar() {
+
+        titleText = findViewById(R.id.title_text);
+        mainGridLayout = findViewById(R.id.main_grid_layout);
         titleText.setText("马铃薯育种信息管理系统");
     }
 
@@ -571,6 +578,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_download:
                 Toast.makeText(MainActivity.this, "开始下载数据……", Toast.LENGTH_SHORT).show();
+                mainGridLayout.setEnabled(false);
+                titleText.setText("正在下载数据，请稍后进行操作");
 
 //                cache = new File(Environment.getExternalStorageDirectory(), "cache");
 
@@ -904,6 +913,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 });
                 myAlertInputDialog.show();
+                //弹出软键盘
+                delayShowSoftKeyBoard(myAlertInputDialog.getContentEditText());
                 break;
 /*            case R.id.commit_data:
                 Intent intent = new Intent(MainActivity.this, SaveDataActivity.class);

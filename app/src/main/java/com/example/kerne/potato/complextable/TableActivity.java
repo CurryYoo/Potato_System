@@ -49,6 +49,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.kerne.potato.Util.ShowKeyBoard.delayShowSoftKeyBoard;
+
 public class TableActivity extends AppCompatActivity {
 
     @BindView(R.id.left_one_button)
@@ -104,6 +106,9 @@ public class TableActivity extends AppCompatActivity {
     private String type;
     private String bigFarmName;
     private String farmName;
+    private int year;
+    private String description;
+
     private int column;
     private JSONArray rows = new JSONArray();
     private JSONArray jsonArray = new JSONArray();
@@ -199,7 +204,9 @@ public class TableActivity extends AppCompatActivity {
         fieldId = getIntent().getStringExtra("fieldId");
         expType = getIntent().getStringExtra("expType");
         type = getIntent().getStringExtra("type");
+        bigFarmName=getIntent().getStringExtra("bigFarmName");
         farmName = getIntent().getStringExtra("farmName");
+        year=getIntent().getIntExtra("year",1970);
         String farmlandId;
         farmlandId = getIntent().getStringExtra("farmlandId");
         Log.d("farmlandId", farmlandId);
@@ -408,7 +415,10 @@ public class TableActivity extends AppCompatActivity {
 
     public void init() {
         mContext = getApplicationContext();
-        tableFarm.setText("实验田：" + farmName);
+        tableBigFarm.setText("试验基地："+bigFarmName);
+        tableFarm.setText("试验田：" + farmName);
+        tableDate.setText("年份："+year);
+        tableDescription.setText(description);
         findByid();
         setListener();
         setData();
@@ -575,6 +585,8 @@ public class TableActivity extends AppCompatActivity {
                                     }
                                 });
                                 myAlertInputDialog.show();
+                                //弹出软键盘
+                                delayShowSoftKeyBoard(myAlertInputDialog.getContentEditText());
 
 //                                AlertDialog.Builder inputDialog = new AlertDialog.Builder(TableActivity.this);
 //                                inputDialog.setTitle(finalI+1 + "-" + pos+1 + ":请输入品种编号").setView(editText);

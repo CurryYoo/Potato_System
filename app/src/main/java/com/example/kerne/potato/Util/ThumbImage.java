@@ -16,37 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Utilities {
-
-
-//    public static Bitmap getImageThumbnail(String path, int maxWidth, int maxHeight) throws IOException {
-//        Bitmap bitmap = null;
-//        try {
-//            BufferedInputStream in = new BufferedInputStream(new FileInputStream(
-//                    new File(path)));
-//            BitmapFactory.Options options = new BitmapFactory.Options();
-//            options.inJustDecodeBounds = true;
-//            BitmapFactory.decodeStream(in, null, options);
-//            in.close();
-//            int i = 0;
-//            while (true) {
-//                if ((options.outWidth >> i <= maxWidth)
-//                        && (options.outHeight >> i <= maxHeight)) {
-//                    in = new BufferedInputStream(
-//                            new FileInputStream(new File(path)));
-//                    options.inSampleSize = (int) Math.pow(2.0D, i);
-//                    options.inJustDecodeBounds = false;
-//                    bitmap = BitmapFactory.decodeStream(in, null, options);
-//                    break;
-//                }
-//                i += 1;
-//            }
-//        } catch (Exception e) {
-//            return null;
-//        }
-//        return bitmap;
-//    }
-
+public class ThumbImage {
     public static Bitmap getImageThumbnail(String imagePath, int width, int height) {
         Bitmap bitmap = null;
         BitmapFactory.Options options = new BitmapFactory.Options();
