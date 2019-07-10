@@ -66,7 +66,7 @@ public class BigfarmClickAdapter extends RecyclerView.Adapter<BigfarmClickAdapte
             img = jsonObject.getString("img");
             year = jsonObject.getInt("year");
 //            userRole = jsonObject.getString("userRole");
-            holder.tvNum.setText("大田序号：" + bigfarmId);
+//            holder.tvNum.setText("大田序号：" + bigfarmId);
             holder.tvName.setText("大田名称：" + name);
             holder.tvYear.setText("年份：" + year);
         } catch (JSONException e) {
@@ -84,6 +84,7 @@ public class BigfarmClickAdapter extends RecyclerView.Adapter<BigfarmClickAdapte
                     img = jsonObject.getString("img");
                     year = jsonObject.getInt("year");
                     uri = jsonObject.getString("uri");
+                    name=jsonObject.getString("name");
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -93,6 +94,7 @@ public class BigfarmClickAdapter extends RecyclerView.Adapter<BigfarmClickAdapte
                 intent.putExtra("img", img);
                 intent.putExtra("year", year);
                 intent.putExtra("uri", uri);
+                intent.putExtra("name",name);
                 mContext.startActivity(intent);
 
 //                //弹出输入年份的对话框
@@ -184,11 +186,12 @@ public class BigfarmClickAdapter extends RecyclerView.Adapter<BigfarmClickAdapte
 
     public class RcvClickViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvNum, tvName, tvYear;
+        TextView tvNum;
+        TextView tvName, tvYear;
 
         public RcvClickViewHolder(View itemView) {
             super(itemView);
-            tvNum = itemView.findViewById(R.id.tv_num);
+//            tvNum = itemView.findViewById(R.id.tv_num);
             tvName = itemView.findViewById(R.id.tv_name);
             tvYear = itemView.findViewById(R.id.tv_year);
         }

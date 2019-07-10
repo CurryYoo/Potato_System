@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Potato</string>
+    <string name="app_name">育种管理系统</string>
     <string name="title_activity_login">Sign in</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

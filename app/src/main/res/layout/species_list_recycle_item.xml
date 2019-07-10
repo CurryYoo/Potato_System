@@ -2,35 +2,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="110dp"
+    android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:background="@drawable/bg_main_button"
+    android:elevation="5dp"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_plotId1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        tools:text="1" />
 
     <TextView
         android:id="@+id/tv_speciesId1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:textColor="@color/white"
+        android:textColor="@color/colorGrey"
+        android:textSize="16sp"
         android:textStyle="bold"
         tools:text="内容" />
+
+    <TextView
+        android:id="@+id/tv_plotId1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textColor="@color/colorGrey"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        tools:text="1" />
+
 
     <TextView
         android:id="@+id/tv_fieldId1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:textColor="@color/white"
+        android:textColor="@color/secondary_text"
+        android:textSize="12sp"
         android:textStyle="bold"
         tools:text="内容" />
 

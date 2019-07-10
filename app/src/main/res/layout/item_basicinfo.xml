@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:animateLayoutChanges="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +15,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="品种ID" />
+            android:text="1-品种ID" />
 
         <View style="@style/view_vertical_devider_style" />
 
@@ -39,7 +40,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="1-实验类型" />
+            android:text="2-实验类型" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -64,7 +65,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="2-播种期" />
+            android:text="3-播种期" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -90,7 +91,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="3-出苗期" />
+            android:text="4-出苗期" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -115,7 +116,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="4-出苗率(%)" />
+            android:text="5-出苗率(%)" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -139,7 +140,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="5-现蕾期" />
+            android:text="6-现蕾期" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -164,7 +165,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="6-开花期" />
+            android:text="7-开花期" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -189,7 +190,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="7-叶颜色" />
+            android:text="8-叶颜色" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -233,7 +234,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="8-花冠色" />
+            android:text="9-花冠色" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -275,7 +276,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="9-花繁茂性" />
+            android:text="10-花繁茂性" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -317,7 +318,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="10-茎色" />
+            android:text="11-茎色" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -360,7 +361,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="11-天然结实性" />
+            android:text="12-天然结实性" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -403,7 +404,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="12-成熟期" />
+            android:text="13-成熟期" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -428,7 +429,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="13-生育日数" />
+            android:text="14-生育日数" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -459,7 +460,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="14-块茎整齐度" />
+            android:text="15-块茎整齐度" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -472,17 +473,7 @@
             android:entries="@array/tuber_uniformity_arr"
             android:gravity="center_horizontal"
             android:textSize="15sp" />
-        <!--
-        <ImageButton
-            android:id="@+id/imb_tuber_uniformity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_camera" />
 
-        <ImageView
-            android:id="@+id/imv_tuber_uniformity"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />-->
     </LinearLayout>
 
     <View
@@ -497,7 +488,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="15-薯型" />
+            android:text="16-薯型" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -535,7 +526,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="16-薯皮光滑度" />
+            android:text="17-薯皮光滑度" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -573,7 +564,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="17-芽眼深浅" />
+            android:text="18-芽眼深浅" />
 
         <View
             style="@style/view_vertical_devider_style"/>
@@ -611,7 +602,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="18-皮色" />
+            android:text="19-皮色" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -649,7 +640,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="19-肉色" />
+            android:text="20-肉色" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -687,7 +678,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="20-是否入选" />
+            android:text="21-是否入选" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -728,7 +719,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="21-备注" />
+            android:text="22-备注" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -752,7 +743,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="22-收获株数" />
+            android:text="23-收获株数" />
 
         <View
             style="@style/view_vertical_devider_style"/>
@@ -777,7 +768,7 @@
         <TextView
             style="@style/style_item_basicinfo_textview"
             android:layout_width="160dp"
-            android:text="23-大中薯数" />
+            android:text="24-大中薯数" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -802,7 +793,7 @@
         <TextView
             style="@style/style_item_basicinfo_textview"
             android:layout_width="160dp"
-            android:text="24-大中薯重(0.00kg)" />
+            android:text="25-大中薯重(0.00kg)" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -827,7 +818,7 @@
         <TextView
             style="@style/style_item_basicinfo_textview"
             android:layout_width="160dp"
-            android:text="25-小薯数" />
+            android:text="26-小薯数" />
 
         <View
             style="@style/view_vertical_devider_style"/>
@@ -852,7 +843,7 @@
         <TextView
             style="@style/style_item_basicinfo_textview"
             android:layout_width="160dp"
-            android:text="26-小薯重(0.00kg)" />
+            android:text="27-小薯重(0.00kg)" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -877,7 +868,7 @@
         <TextView
             style="@style/style_item_basicinfo_textview"
             android:layout_width="160dp"
-            android:text="27-商品薯率(%)" />
+            android:text="28-商品薯率(%)" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -909,7 +900,7 @@
         <TextView
             style="@style/style_item_basicinfo_textview"
             android:layout_width="160dp"
-            android:text="28-小区产量1(0.00kg)" />
+            android:text="29-小区产量1(0.00kg)" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -934,7 +925,7 @@
         <TextView
             style="@style/style_item_basicinfo_textview"
             android:layout_width="160dp"
-            android:text="29-小区产量2(0.00kg)" />
+            android:text="30-小区产量2(0.00kg)" />
 
         <View
             style="@style/view_vertical_devider_style"/>
@@ -959,7 +950,7 @@
         <TextView
             style="@style/style_item_basicinfo_textview"
             android:layout_width="160dp"
-            android:text="30-小区产量3(0.00kg)" />
+            android:text="31-小区产量3(0.00kg)" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -984,7 +975,7 @@
         <TextView
             style="@style/style_item_basicinfo_textview"
             android:layout_width="160dp"
-            android:text="31-亩产量(0.00kg)" />
+            android:text="32-亩产量(0.00kg)" />
 
         <View
             style="@style/view_vertical_devider_style"/>

@@ -3,7 +3,6 @@ package com.example.kerne.potato.complextable.widget.multilevellist;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.annotation.IntDef;
 import android.text.Html;
 import android.text.Spanned;
@@ -11,19 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kerne.potato.R;
 import com.example.kerne.potato.complextable.TableActivity;
-import com.example.kerne.potato.temporarystorage.SaveDataActivity;
 
 import org.json.JSONException;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -111,16 +107,6 @@ public class TreeAdapter extends BaseAdapter {
                 }
             }
         }
-//        for (TreePoint tempPoint : pointList) {
-//            if ("0".equals(tempPoint.getPARENTID())) {
-//                count++;
-//            } else {
-//                if (getItemIsExpand(tempPoint.getPARENTID())) {
-//                    count++;
-//                }
-//            }
-//        }
-
         return count;
     }
 
@@ -167,7 +153,7 @@ public class TreeAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(mcontext).inflate(R.layout.adapter_treeview, null);
+            convertView = LayoutInflater.from(mcontext).inflate(R.layout.item_adapter_treeview, null);
             holder = new ViewHolder();
             holder.text =  convertView.findViewById(R.id.text);
             holder.icon =  convertView.findViewById(R.id.icon);
@@ -187,8 +173,8 @@ public class TreeAdapter extends BaseAdapter {
                 holder.icon.setImageResource(R.drawable.outline_list_expand);
             }
         } else {   //如果叶子节点，不占位显示
+            holder.icon.setImageResource(R.drawable.outline_list_expand);
             holder.icon.setVisibility(View.INVISIBLE);
-//            holder.potato_icon.setVisibility(View.VISIBLE);
         }
         //如果存在搜索关键字
         if (keyword != null && !"".equals(keyword) && tempPoint.getNNAME().contains(keyword)) {

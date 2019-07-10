@@ -209,7 +209,7 @@ public class InShackFragment extends Fragment {
         for (TreePoint treePoint : pointList) {
             pointMap.put(treePoint.getID(), treePoint);
         }
-        adapter.notifyDataSetChanged();
+//        adapter.notifyDataSetChanged();
     }
 
 

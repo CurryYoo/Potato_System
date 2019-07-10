@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-<TextView
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="实验田示意图"
-    android:textColor="@color/primary_text"
-    android:textSize="16sp"
-    android:layout_marginStart="@dimen/dp_10"
-    android:layout_marginTop="@dimen/dp_10"/>
+    android:background="@color/primary_text"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialog_picture_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_10"
+        android:text="示意图"
+        android:textColor="@color/icons"
+        android:textSize="16sp" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="双指缩放,单击退出"
         android:layout_marginStart="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_5"
-        android:textSize="12sp"
-        android:textColor="@color/secondary_text"/>
+        android:text="双指缩放,单击退出"
+        android:textColor="@color/divider"
+        android:textSize="12sp" />
 </LinearLayout>

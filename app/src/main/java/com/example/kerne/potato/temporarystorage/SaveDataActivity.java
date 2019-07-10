@@ -998,7 +998,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //叶颜色查看大图
             case R.id.imv_colors:
-                watchOnlineLargePhoto(this, imageUriColor);
+                watchOnlineLargePhoto(this, imageUriColor,"叶颜色");
                 break;
             //花冠色拍照并显示
             case R.id.imb_corolla_colors:
@@ -1020,7 +1020,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //花冠色查看大图
             case R.id.imv_corolla_colors:
-                watchOnlineLargePhoto(this, imageUriCorollaColor);
+                watchOnlineLargePhoto(this, imageUriCorollaColor,"花冠色");
                 break;
             //从相册选择花冠色照片
             case R.id.btn_select_from_album_corolla_colors:
@@ -1043,7 +1043,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //花繁茂性查看大图
             case R.id.imv_plant_flourish:
-                watchOnlineLargePhoto(this, imageUriPlantFlourish);
+                watchOnlineLargePhoto(this, imageUriPlantFlourish,"花繁茂性");
                 break;
             //从相册选择花繁茂性照片
             case R.id.btn_select_from_album_plant_flourish:
@@ -1066,7 +1066,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //茎色查看大图
             case R.id.imv_stem_color:
-                watchOnlineLargePhoto(this, imageUriStemColors);
+                watchOnlineLargePhoto(this, imageUriStemColors,"茎色");
                 break;
             //从相册选择茎色照片
             case R.id.btn_select_from_album_stem_color:
@@ -1089,7 +1089,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //天然结实性查看大图
             case R.id.imv_natural_fecundity:
-                watchOnlineLargePhoto(this, imageUriNaturalFecundity);
+                watchOnlineLargePhoto(this, imageUriNaturalFecundity,"天然结实性");
                 break;
             //从相册选择天然结实性照片
             case R.id.btn_select_from_album_natural_fecundity:

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.kerne.potato.R;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -49,13 +50,21 @@ public class Util {
     }
 
     //查看网络大图
-    public static void watchOnlineLargePhoto(Context context, Uri imageUri) {
+    public static void watchOnlineLargePhoto(Context context, Uri imageUri,String title) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
+        LayoutInflater layoutInflater_2 = LayoutInflater.from(context);
+
         View imgLargeView = layoutInflater.inflate(R.layout.dialog_watch_online_big_photo, null);
+        View titleView=layoutInflater_2.inflate(R.layout.dialog_custom_title,null);
+
+        TextView dialog_title= titleView.findViewById(R.id.dialog_picture_title);
+        dialog_title.setText(title);
         imgLargeView.setFitsSystemWindows(true);
-        final AlertDialog alertDialogShowLargeImage = new AlertDialog.Builder(context)
-                .setCustomTitle(layoutInflater.inflate(R.layout.dialog_custom_title, null))
+        final AlertDialog alertDialogShowLargeImage = new AlertDialog.Builder(context,R.style.Dialog_Fullscreen)
+                .setCustomTitle(titleView)
                 .create();
+
+        alertDialogShowLargeImage.getWindow().setWindowAnimations(R.style.dialogWindowAnim);
         //获取ImageView
         final PhotoDraweeView imvLargePhoto = imgLargeView.findViewById(R.id.imv_online_large_photo);
         alertDialogShowLargeImage.setView(imgLargeView);

@@ -58,6 +58,7 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
     private String bigfarmId = null;
     private String img;
     private String uri;
+    private String name;
 
     View.OnClickListener toolBarOnClickListener = new View.OnClickListener() {
         @Override
@@ -71,7 +72,7 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
                     startActivity(intent);
                     break;
                 case R.id.right_two_layout:
-                    Util.watchOnlineLargePhoto(GeneralClickActivity.this, Uri.parse(uri));
+                    Util.watchOnlineLargePhoto(GeneralClickActivity.this, Uri.parse(uri),"实验田示意图");
                     break;
                 default:
                     break;
@@ -90,6 +91,7 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
         bigfarmId = getIntent().getStringExtra("bigfarmId");
         img = getIntent().getStringExtra("img");
         uri = getIntent().getStringExtra("uri");
+        name=getIntent().getStringExtra("name");
         initData();
 
         //initView();

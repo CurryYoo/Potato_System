@@ -58,6 +58,7 @@ public class GeneralActivity extends AppCompatActivity {
     private int length;  //试验田的长
     private int width;  //试验田的宽
     private String type;
+    private String farmName;
     private int year;
     private String userRole;
     private int flag = 0;
@@ -127,6 +128,7 @@ public class GeneralActivity extends AppCompatActivity {
         length = getIntent().getIntExtra("length", 0);
         width = getIntent().getIntExtra("width", 0);
         type = getIntent().getStringExtra("type");
+        farmName=getIntent().getStringExtra("farmName");
 //        year = getIntent().getIntExtra("year", 0);
 
         //获取权限角色
@@ -324,6 +326,7 @@ public class GeneralActivity extends AppCompatActivity {
                             intent.putExtra("expType", expType);
                             intent.putExtra("farmlandId", farmlandId);
                             intent.putExtra("type", type);
+                            intent.putExtra("farmName",farmName);
 //                                        intent.putExtra("userRole", userRole);
                             startActivity(intent);
                         }

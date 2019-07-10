@@ -545,7 +545,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initToolBar() {
-        titleText.setText("土豆种植规划");
+        titleText.setText("马铃薯育种信息管理系统");
     }
 
     @Override

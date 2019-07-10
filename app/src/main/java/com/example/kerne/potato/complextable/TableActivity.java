@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -64,6 +65,14 @@ public class TableActivity extends AppCompatActivity {
     ImageView rightOneButton;
     @BindView(R.id.right_one_layout)
     LinearLayout rightOneLayout;
+    @BindView(R.id.table_big_farm)
+    TextView tableBigFarm;
+    @BindView(R.id.table_farm)
+    TextView tableFarm;
+    @BindView(R.id.table_date)
+    TextView tableDate;
+    @BindView(R.id.table_description)
+    EditText tableDescription;
     /**
      * 用于存放标题的id,与textview引用
      */
@@ -93,6 +102,8 @@ public class TableActivity extends AppCompatActivity {
     private String fieldId;
     private String expType;
     private String type;
+    private String bigFarmName;
+    private String farmName;
     private int column;
     private JSONArray rows = new JSONArray();
     private JSONArray jsonArray = new JSONArray();
@@ -175,7 +186,7 @@ public class TableActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.table_layout);
+        setContentView(R.layout.activity_table);
         ButterKnife.bind(this);
         sp = getSharedPreferences("update_flag", Context.MODE_PRIVATE);
         editor = sp.edit();
@@ -188,6 +199,7 @@ public class TableActivity extends AppCompatActivity {
         fieldId = getIntent().getStringExtra("fieldId");
         expType = getIntent().getStringExtra("expType");
         type = getIntent().getStringExtra("type");
+        farmName = getIntent().getStringExtra("farmName");
         String farmlandId;
         farmlandId = getIntent().getStringExtra("farmlandId");
         Log.d("farmlandId", farmlandId);
@@ -316,6 +328,11 @@ public class TableActivity extends AppCompatActivity {
         init();
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
     private void initToolBar() {
         titleText.setText("品种种植");
         leftOneButton.setBackgroundResource(R.drawable.left_back);
@@ -391,6 +408,7 @@ public class TableActivity extends AppCompatActivity {
 
     public void init() {
         mContext = getApplicationContext();
+        tableFarm.setText("实验田：" + farmName);
         findByid();
         setListener();
         setData();

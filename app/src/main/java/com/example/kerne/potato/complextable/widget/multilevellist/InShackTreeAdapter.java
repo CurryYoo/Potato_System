@@ -163,7 +163,7 @@ public class InShackTreeAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(mcontext).inflate(R.layout.adapter_treeview, null);
+            convertView = LayoutInflater.from(mcontext).inflate(R.layout.item_adapter_treeview, null);
             holder = new ViewHolder();
             holder.text =  convertView.findViewById(R.id.text);
             holder.icon =  convertView.findViewById(R.id.icon);
@@ -183,6 +183,7 @@ public class InShackTreeAdapter extends BaseAdapter {
                 holder.icon.setImageResource(R.drawable.outline_list_expand);
             }
         } else {   //如果叶子节点，不占位显示
+            holder.icon.setImageResource(R.drawable.outline_list_expand);
             holder.icon.setVisibility(View.INVISIBLE);
 //            holder.potato_icon.setVisibility(View.VISIBLE);
         }

@@ -94,14 +94,14 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
             name = jsonObject.getString("name");
             type = jsonObject.getString("type");
 //            userRole = jsonObject.getString("userRole");
-            holder.tvNum.setText("实验田序号：" + farmlandId);
+//            holder.tvNum.setText("实验田序号：" + farmlandId);
             holder.tvName.setText("实验田名称：" + name);
             holder.tvType.setText("实验田类型：" + type);
             if(type.equals("greenhouse")){
                 holder.is_shack.setVisibility(View.VISIBLE);
             }
             else {
-                holder.tvNum.setTextColor(R.color.primary_dark);
+//                holder.tvNum.setTextColor(R.color.primary_dark);
                 holder.tvName.setTextColor(R.color.primary_dark);
             }
         } catch (JSONException e) {
@@ -117,7 +117,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                 try {
                     farmlandId = jsonObject.getString("farmlandId");
                     type = jsonObject.getString("type");
-
+                    name=jsonObject.getString("name");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -127,6 +127,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                     try {
                         length = jsonObject.getInt("length");
                         width = jsonObject.getInt("width");
+                        name=jsonObject.getString("name");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -136,6 +137,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                     intent.putExtra("width", width);
                     intent.putExtra("farmlandId", farmlandId);
                     intent.putExtra("type", type);
+                    intent.putExtra("farmName",name);
                     mContext.startActivity(intent);
                 }
                 else if (type.equals("greenhouse")) {
@@ -151,6 +153,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                         fieldId = jsonObject.getString("fieldId");
                         num = jsonObject.getInt("num");
                         rows = jsonObject.getInt("rows");
+                        name=jsonObject.getString("name");
                         Log.d("pengnei2", num + "," + rows);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -163,6 +166,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                     finalIntent.putExtra("rows", rows);
                     finalIntent.putExtra("farmlandId", farmlandId);
                     finalIntent.putExtra("type", type);
+                    finalIntent.putExtra("farmName",name);
                     mContext.startActivity(finalIntent);
 //                    builder.setItems(options, new DialogInterface.OnClickListener() {
 //                        @Override
@@ -283,12 +287,13 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
 
     public class RcvClickViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvNum, tvName, tvType;
+//        TextView tvNum;
+        TextView tvName, tvType;
         TextView is_shack;
 
         public RcvClickViewHolder(View itemView) {
             super(itemView);
-            tvNum = itemView.findViewById(R.id.tv_num);
+//            tvNum = itemView.findViewById(R.id.tv_num);
             tvName = itemView.findViewById(R.id.tv_name);
             tvType = itemView.findViewById(R.id.tv_type);
             is_shack=itemView.findViewById(R.id.is_shack);

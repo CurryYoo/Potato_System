@@ -58,7 +58,8 @@
         <activity android:name=".TestActivity" />
         <activity
             android:name=".complextable.TableActivity"
-            android:label="品种种植"/>
+            android:label="品种种植"
+            android:configChanges="orientation|screenSize"/>
         <activity
             android:name=".BigfarmClickActivity"
             android:label="试验基地"/>
