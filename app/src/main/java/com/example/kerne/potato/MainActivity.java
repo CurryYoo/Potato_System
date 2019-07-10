@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @BindView(R.id.title_text)
     TextView titleText;
     @BindView(R.id.view_download)
-    TextView viewDownload;
+    LinearLayout viewDownload;
 
     private SpeciesDBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;

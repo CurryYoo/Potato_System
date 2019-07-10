@@ -222,19 +222,24 @@
 
         </GridLayout>
 
-        <TextView
+        <LinearLayout
             android:id="@+id/view_download"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:alpha="0.75"
-            android:background="@color/line_grey"
             android:gravity="center_horizontal"
-            android:paddingTop="@dimen/dp_100"
+            android:background="@color/line_grey"
+            android:alpha="0.8"
+            android:enabled="false">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_100"
+            android:padding="@dimen/dp_10"
             android:text="下载离线数据..."
             android:textColor="@color/primary_text"
             android:textSize="25sp"
             android:textStyle="bold"
-            android:enabled="false"
-            android:visibility="gone"/>
+            android:background="@drawable/bg_table_info"/>
+        </LinearLayout>
     </RelativeLayout>
 </LinearLayout>
