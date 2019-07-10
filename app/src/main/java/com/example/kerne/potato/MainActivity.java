@@ -14,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,6 +38,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import q.rorbin.badgeview.Badge;
 import q.rorbin.badgeview.QBadgeView;
@@ -58,8 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     LinearLayout btn_pick;
     ImageView icon_update_location;
     ImageView icon_update_pick;
-    TextView titleText;
-    GridLayout mainGridLayout;
+
 
     QBadgeView qBadgeView_location;
     QBadgeView qBadgeView_pick;
@@ -75,6 +74,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String img3;
     String img4;
     String img5;
+    @BindView(R.id.title_text)
+    TextView titleText;
+    @BindView(R.id.view_download)
+    TextView viewDownload;
 
     private SpeciesDBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
@@ -133,8 +136,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (downloadSuccess_Num == request_Num) {
                     Log.d("download" + downloadSuccess_Num, "ok");
                     Toast.makeText(activity.getApplicationContext(), "下载成功!", Toast.LENGTH_SHORT).show();
-                    activity.mainGridLayout.setEnabled(true);
-                    activity.titleText.setText("马铃薯育种信息管理系统");
+                    activity.viewDownload.setVisibility(View.GONE);
                     downloadSuccess_Num = 0;
                 }
             }
@@ -550,9 +552,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initToolBar() {
 
-        titleText = findViewById(R.id.title_text);
-        mainGridLayout = findViewById(R.id.main_grid_layout);
         titleText.setText("马铃薯育种信息管理系统");
+        viewDownload.setOnClickListener(null);
     }
 
     @Override
@@ -578,9 +579,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_download:
                 Toast.makeText(MainActivity.this, "开始下载数据……", Toast.LENGTH_SHORT).show();
-                mainGridLayout.setEnabled(false);
-                titleText.setText("正在下载数据，请稍后进行操作");
-
+                viewDownload.setVisibility(View.VISIBLE);
 //                cache = new File(Environment.getExternalStorageDirectory(), "cache");
 
                 HttpRequest.HttpRequest_bigfarm(null, MainActivity.this, new HttpRequest.HttpCallback() {
