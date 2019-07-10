@@ -172,7 +172,8 @@
             android:gravity="center_horizontal"
             android:background="@color/line_grey"
             android:alpha="0.8"
-            android:enabled="false">
+            android:enabled="false"
+            android:visibility="gone">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
