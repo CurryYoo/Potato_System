@@ -8,15 +8,11 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,7 +22,6 @@ import android.widget.Toast;
 
 import com.example.kerne.potato.complextable.TableActivity;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
-import com.example.kerne.potato.temporarystorage.Util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,6 +54,7 @@ public class GeneralActivity extends AppCompatActivity {
     private int width;  //试验田的宽
     private String type;
     private String farmName;
+    private String bigFarmName;
     private int year;
     private String userRole;
     private int flag = 0;
@@ -129,7 +125,8 @@ public class GeneralActivity extends AppCompatActivity {
         width = getIntent().getIntExtra("width", 0);
         type = getIntent().getStringExtra("type");
         farmName=getIntent().getStringExtra("farmName");
-//        year = getIntent().getIntExtra("year", 0);
+        bigFarmName = getIntent().getStringExtra("bigFarmName");
+        year = getIntent().getIntExtra("year", 1970);
 
         //获取权限角色
 //        userRole = getIntent().getStringExtra("userRole");
@@ -327,6 +324,8 @@ public class GeneralActivity extends AppCompatActivity {
                             intent.putExtra("farmlandId", farmlandId);
                             intent.putExtra("type", type);
                             intent.putExtra("farmName",farmName);
+                            intent.putExtra("bigFarmName", bigFarmName);
+                            intent.putExtra("year", year);
 //                                        intent.putExtra("userRole", userRole);
                             startActivity(intent);
                         }

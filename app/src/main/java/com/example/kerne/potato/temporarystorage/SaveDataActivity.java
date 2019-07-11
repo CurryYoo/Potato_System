@@ -1,6 +1,7 @@
 package com.example.kerne.potato.temporarystorage;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,6 +14,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -36,8 +39,11 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kerne.potato.BigfarmClickActivity;
 import com.example.kerne.potato.MainActivity;
 import com.example.kerne.potato.R;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -936,7 +942,25 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
             savaDataLocally();
         }
         cursor.close();
+
+//        Message msg = new Message();
+//        msg.what = 1;
+//        msg.obj = new JSONObject();
+//        uiHandler.sendMessage(msg);
     }
+
+//    @SuppressLint("HandlerLeak")
+//    private Handler uiHandler = new Handler() {
+//        @Override
+//        public void handleMessage(Message msg) {
+//            switch (msg.what) {
+//                case 1:
+//                    JSONObject jsonObject = (JSONObject)msg.obj;
+//
+//                    break;
+//            }
+//        }
+//    };
 
     private void initToolBar() {
         titleText.setText("品种种植");

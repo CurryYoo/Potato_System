@@ -187,11 +187,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                            Log.d("Response_SpeciesList", result.toString());
                                 }
                             });
-                            Toast.makeText(MainActivity.this, "上传成功!", Toast.LENGTH_SHORT).show();
+
                         } else {
                             Toast.makeText(MainActivity.this, "尚未填写数据!", Toast.LENGTH_SHORT).show();
                         }
+
+//                        HttpRequest.HttpRequest_description("field15627479929644081", "", MainActivity.this, new HttpRequest.HttpCallback() {
+//                            @Override
+//                            public void onSuccess(JSONObject result) {
+//
+//                            }
+//                        });
+                        cursor0 = sqLiteDatabase.query("ExperimentField", null, null, null, null, null, null);
+                        if (cursor0.moveToFirst()) {
+                            do {
+                                String experimentFieldId = cursor0.getString(cursor0.getColumnIndex("id"));
+                                String description = cursor0.getString(cursor0.getColumnIndex("description"));
+                                HttpRequest.HttpRequest_description(experimentFieldId, description, MainActivity.this, new HttpRequest.HttpCallback() {
+                                    @Override
+                                    public void onSuccess(JSONObject result) {
+
+                                    }
+                                });
+                            } while (cursor0.moveToNext());
+                        }
                         cursor0.close();
+
+                        Toast.makeText(MainActivity.this, "上传成功!", Toast.LENGTH_SHORT).show();
+
                     } else {
                         Toast.makeText(MainActivity.this, "对不起，您没有该权限！请登录有权限的账号！", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -733,6 +756,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         if (jsonObject0.get("rows") != null) {
                                             contentValues.put("rows", jsonObject0.getInt("rows"));
                                         }
+                                        contentValues.put("description", jsonObject0.getString("description"));
                                         contentValues.put("speciesList", jsonObject0.getString("speciesList"));
 
 //                                        Log.d("db begin", "ExperimentField");

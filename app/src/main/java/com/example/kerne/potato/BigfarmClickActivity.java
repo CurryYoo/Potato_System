@@ -1,8 +1,11 @@
 package com.example.kerne.potato;
 
+import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -74,37 +77,47 @@ public class BigfarmClickActivity extends AppCompatActivity implements BigfarmCl
     }
 
     private void initData() {
-        //获取服务器中数据
-        SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //获取数据库中数据
+                SpeciesDBHelper dbHelper = new SpeciesDBHelper(BigfarmClickActivity.this, "SpeciesTable.db", null, 10);
+                SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.query("BigfarmList", null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
-            do {
-                JSONObject jsonObject0 = new JSONObject();
-                try {
-                    jsonObject0.put("bigfarmId", cursor.getString(cursor.getColumnIndex("bigfarmId")));
-                    jsonObject0.put("name", cursor.getString(cursor.getColumnIndex("name")));
-                    jsonObject0.put("description", cursor.getString(cursor.getColumnIndex("description")));
-                    jsonObject0.put("img", cursor.getString(cursor.getColumnIndex("img")));
-                    jsonObject0.put("year", cursor.getInt(cursor.getColumnIndex("year")));
-                    jsonObject0.put("uri", cursor.getString(cursor.getColumnIndex("uri")));
+                Cursor cursor = db.query("BigfarmList", null, null, null, null, null, null);
+                if (cursor.moveToFirst()) {
+                    do {
+                        JSONObject jsonObject0 = new JSONObject();
+                        try {
+                            jsonObject0.put("bigfarmId", cursor.getString(cursor.getColumnIndex("bigfarmId")));
+                            jsonObject0.put("name", cursor.getString(cursor.getColumnIndex("name")));
+                            jsonObject0.put("description", cursor.getString(cursor.getColumnIndex("description")));
+                            jsonObject0.put("img", cursor.getString(cursor.getColumnIndex("img")));
+                            jsonObject0.put("year", cursor.getInt(cursor.getColumnIndex("year")));
+                            jsonObject0.put("uri", cursor.getString(cursor.getColumnIndex("uri")));
 
 //                    jsonObject0.put("userRole", userRole);
-                    mList.add(jsonObject0);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.e("bigfarmId_error", cursor.getString(cursor.getColumnIndex("bigfarmId")));
+                            mList.add(jsonObject0);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.e("bigfarmId_error", cursor.getString(cursor.getColumnIndex("bigfarmId")));
+                        }
+                    } while (cursor.moveToNext());
+                } else {
+                    Toast.makeText(BigfarmClickActivity.this, "BigfarmList null", Toast.LENGTH_SHORT).show();
                 }
-            } while (cursor.moveToNext());
-        } else {
-            Toast.makeText(BigfarmClickActivity.this, "BigfarmList null", Toast.LENGTH_SHORT).show();
-        }
-        cursor.close();
-        db.close();
-        dbHelper.close();
+                cursor.close();
+                db.close();
+                dbHelper.close();
+
+                Message msg = new Message();
+                msg.what = 1;
+                uiHandler.sendMessage(msg);
+            }
+        }).start();
+
         //Log.d("mList.toString", mList.toString());
-        initView();
+//        initView();
 
 //        new Thread(){
 //            @Override
@@ -134,6 +147,19 @@ public class BigfarmClickActivity extends AppCompatActivity implements BigfarmCl
 
     }
 
+    @SuppressLint("HandlerLeak")
+    private Handler uiHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    Log.i(BigfarmClickActivity.TAG, "init data ok");
+                    initView();
+                    break;
+            }
+        }
+    };
+
     private void initView() {
         BigfarmClickAdapter adapter = new BigfarmClickAdapter(this, this);
 
@@ -148,5 +174,11 @@ public class BigfarmClickActivity extends AppCompatActivity implements BigfarmCl
 
     @Override
     public void onItemClick(final String content) {
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        uiHandler.removeCallbacksAndMessages(null);
     }
 }

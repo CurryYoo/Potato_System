@@ -144,6 +144,7 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "color text,"
             + "farmlandId text,"
             + "rows integer,"
+            + "description text,"
             + "speciesList text)";
 
     public static final String CREATE_SPECIESLIST = "create table SpeciesList ("

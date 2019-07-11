@@ -1,5 +1,6 @@
 package com.example.kerne.potato.complextable;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -24,6 +27,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kerne.potato.BigfarmClickActivity;
 import com.example.kerne.potato.MainActivity;
 import com.example.kerne.potato.R;
 import com.example.kerne.potato.complextable.base.RefreshParams;
@@ -106,12 +110,13 @@ public class TableActivity extends AppCompatActivity {
     private String type;
     private String bigFarmName;
     private String farmName;
+    private String farmlandId;
     private int year;
     private String description;
 
     private int column;
     private JSONArray rows = new JSONArray();
-    private JSONArray jsonArray = new JSONArray();
+    private JSONArray fieldArray = new JSONArray();
 
     private int column_num;
     private int row_num;
@@ -151,8 +156,20 @@ public class TableActivity extends AppCompatActivity {
 
 //                db.delete("SpeciesList", "fieldId=?", new String[]{fieldId});
                         try {
+                            //更新备注description
+                            Log.d("fieldArray", fieldArray.toString());
+                            description = tableDescription.getText().toString();
+                            Log.d("description", description);
+                            for (int k = 0; k < fieldArray.length(); k++) {
+                                ContentValues contentValues = new ContentValues();
+                                contentValues.put("description", description);
+
+                                db.update("ExperimentField", contentValues, "id=?", new String[]{fieldArray.getString(k)});
+                            }
+                            //更新品种块block
                             int lastRows = 0; //把之前列的行数叠加起来，确定contentvalueslist中的位置
-                            for (int i = 0; i < jsonArray.length() * column; i++) {
+                            for (int i = 0; i < fieldArray.length() * column; i++) {
+
                                 int rows_num = rows.getInt(i / column);
                                 if (i > 0) {
                                     lastRows += rows.getInt((i - 1) / column);
@@ -162,7 +179,7 @@ public class TableActivity extends AppCompatActivity {
                                     int id = lastRows + j;
                                     db.update("SpeciesList", contentValuesList.get(id), "fieldId=? and x=? and y=?",
                                             new String[]{contentValuesList.get(id).getAsString("fieldId"), contentValuesList.get(id).getAsString("x"), contentValuesList.get(id).getAsString("y")});
-                                    Log.d("fieldId,x,y", contentValuesList.get(id).getAsString("fieldId") + "," + contentValuesList.get(id).getAsString("x") + "," + contentValuesList.get(id).getAsString("y"));
+//                                    Log.d("fieldId,x,y", contentValuesList.get(id).getAsString("fieldId") + "," + contentValuesList.get(id).getAsString("x") + "," + contentValuesList.get(id).getAsString("y"));
                                 }
                             }
                         } catch (JSONException e) {
@@ -204,136 +221,124 @@ public class TableActivity extends AppCompatActivity {
         fieldId = getIntent().getStringExtra("fieldId");
         expType = getIntent().getStringExtra("expType");
         type = getIntent().getStringExtra("type");
-        bigFarmName=getIntent().getStringExtra("bigFarmName");
+        bigFarmName =getIntent().getStringExtra("bigFarmName");
         farmName = getIntent().getStringExtra("farmName");
         year=getIntent().getIntExtra("year",1970);
-        String farmlandId;
         farmlandId = getIntent().getStringExtra("farmlandId");
         Log.d("farmlandId", farmlandId);
 
-        if (type.equals("common")) {
-            try {
-                Cursor cursor = db.query("ExperimentField", null, "farmlandId=? and expType=?",
-                        new String[]{farmlandId, expType}, null, null, "moveX");
-                maxColumns = cursor.getCount();
-                if (maxColumns > 0) {
-                    cursor.moveToFirst();
-                    for (int i = 0; i < maxColumns; i++) {
-                        jsonArray.put(i, cursor.getString(cursor.getColumnIndex("id")));
-                        int num = cursor.getInt(cursor.getColumnIndex("num"));
-                        rows.put(i, num);
-                        maxRows = (num > maxRows ? num : maxRows);
-                        column = 1;
-                        cursor.moveToNext();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (type.equals("common")) {
+                    try {
+                        Cursor cursor = db.query("ExperimentField", null, "farmlandId=? and expType=?",
+                                new String[]{farmlandId, expType}, null, null, "moveX");
+                        maxColumns = cursor.getCount();
+                        if (maxColumns > 0) {
+                            cursor.moveToFirst();
+                            for (int i = 0; i < maxColumns; i++) {
+                                fieldArray.put(i, cursor.getString(cursor.getColumnIndex("id")));
+                                int num = cursor.getInt(cursor.getColumnIndex("num"));
+                                rows.put(i, num);
+                                maxRows = (num > maxRows ? num : maxRows);
+                                column = 1;
+                                cursor.moveToNext();
+                            }
+                        }
+                        cursor.close();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    str = new String[maxRows][maxColumns];
+                } else {
+                    column = getIntent().getIntExtra("rows", 2);
+                    maxRows = getIntent().getIntExtra("num", 0) / column;
+                    maxColumns = getIntent().getIntExtra("rows", 0);
+                    Log.d("num,rows", maxRows + "," + maxColumns);
+                    str = new String[maxRows][maxColumns];
+
+                    try {
+                        fieldArray.put(0, fieldId);
+                        rows.put(0, maxRows);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
-                cursor.close();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            str = new String[maxRows][maxColumns];
-        } else {
-            column = getIntent().getIntExtra("rows", 2);
-            maxRows = getIntent().getIntExtra("num", 0) / column;
-            maxColumns = getIntent().getIntExtra("rows", 0);
-            Log.d("num,rows", maxRows + "," + maxColumns);
-            str = new String[maxRows][maxColumns];
 
-            try {
-                jsonArray.put(0, fieldId);
-                rows.put(0, maxRows);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        Cursor cursor = db.query("LocalSpecies", null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
-            do {
-                speciesNames.add(cursor.getString(cursor.getColumnIndex("name")));
-            } while (cursor.moveToNext());
-        } else {
-            Toast.makeText(TableActivity.this, "species null", Toast.LENGTH_SHORT).show();
-        }
-        cursor.close();
-
-        String sql;
-        if (type.equals("common")) {
-            sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
-                    "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
-                    "' and ExperimentField.farmlandId='" + farmlandId + "' order by ExperimentField.moveX";
-        } else {
-            sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
-                    "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
-                    "' and ExperimentField.id='" + fieldId + "' order by ExperimentField.moveX";
-        }
-
-        Cursor cursor0 = db.rawQuery(sql, null);
-        if (cursor0.moveToFirst()) {
-            String fieldId = "";
-            int x = 0, y = 0;
-            int columns = 0;
-            fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
-            do {
-                if (!fieldId.equals(cursor0.getString(cursor0.getColumnIndex("id")))) {
-                    Log.d("columns,fieldId,id", columns + "," + fieldId + "," + cursor0.getString(cursor0.getColumnIndex("id")));
-                    columns++;
-                    fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
+                Cursor cursor = db.query("LocalSpecies", null, null, null, null, null, null);
+                if (cursor.moveToFirst()) {
+                    do {
+                        speciesNames.add(cursor.getString(cursor.getColumnIndex("name")));
+                    } while (cursor.moveToNext());
+                } else {
+                    Toast.makeText(TableActivity.this, "species null", Toast.LENGTH_SHORT).show();
                 }
-                Log.d("x,y", x + "," + y + "," + columns + "," + column);
-                x = cursor0.getInt(cursor0.getColumnIndex("x")) + columns * column - 1; //从0开始
-                y = cursor0.getInt(cursor0.getColumnIndex("y")) - 1; //从0开始
+                cursor.close();
 
-                str[y][x] = cursor0.getString(cursor0.getColumnIndex("speciesId"));
+                String sql;
+                if (type.equals("common")) {
+                    sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
+                            "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
+                            "' and ExperimentField.farmlandId='" + farmlandId + "' order by ExperimentField.moveX";
+                } else {
+                    sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
+                            "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
+                            "' and ExperimentField.id='" + fieldId + "' order by ExperimentField.moveX";
+                }
+
+                Cursor cursor0 = db.rawQuery(sql, null);
+                if (cursor0.moveToFirst()) {
+                    String fieldId = "";
+                    int x = 0, y = 0;
+                    int columns = 0;
+                    description = cursor0.getString(cursor0.getColumnIndex("description"));
+                    fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
+                    do {
+                        if (!fieldId.equals(cursor0.getString(cursor0.getColumnIndex("id")))) {
+                            Log.d("columns,fieldId,id", columns + "," + fieldId + "," + cursor0.getString(cursor0.getColumnIndex("id")));
+                            columns++;
+                            fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
+                        }
+                        Log.d("x,y", x + "," + y + "," + columns + "," + column);
+                        x = cursor0.getInt(cursor0.getColumnIndex("x")) + columns * column - 1; //从0开始
+                        y = cursor0.getInt(cursor0.getColumnIndex("y")) - 1; //从0开始
+
+                        str[y][x] = cursor0.getString(cursor0.getColumnIndex("speciesId"));
 //                Log.d("x,y,str", x + "," + y + "," + str[y][x]);
-            } while (cursor0.moveToNext());
-        } else {
+                    } while (cursor0.moveToNext());
+                } else {
 //            List<ContentValues> contentValuesList = assembleData(str, STATUS_INIT);
 //            for(int i = 0; i < maxColumns; i++){
 //                db.insert("SpeciesSequence", null, contentValuesList.get(i));
 //            }
 //            Log.d("str_", "111");
 //            Toast.makeText(TableActivity.this, "创建成功", Toast.LENGTH_SHORT).show();
-        }
-        cursor0.close();
+                }
+                cursor0.close();
+            }
+        }).start();
 
+        Message msg = new Message();
+        msg.what = 1;
+        uiHandler.sendMessage(msg);
 
-//        Cursor cursor = db.query("SpeciesSequence", null, "fieldId=?",
-//                new String[]{fieldId}, null, null, "id");
-//        if(cursor.getCount() > 0){
-//            cursor.moveToFirst();
-//            for(int i = 0; i < cursor.getCount(); i++){
-//                int NumofRows = cursor.getInt(cursor.getColumnIndex("NumofRows"));
-//                String ContentofColumn = cursor.getString(cursor.getColumnIndex("ContentofColumn"));
-//                Log.d("str__", NumofRows + "," + ContentofColumn);
-//                JSONObject jsonObject0 = null;
-//                try {
-//                    jsonObject0 = new JSONObject(ContentofColumn);
-//                    for(int j = 0; j < NumofRows; j++){
-//                        str[j][i] = jsonObject0.getString("row_" + j);
-//                    }
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//
-//                cursor.moveToNext();
-//            }
-//            Log.d("str_init", str[0][0] + " | count=" + cursor.getCount());
-//        }
-//        else {
-//            List<ContentValues> contentValuesList = assembleData(str, STATUS_INIT);
-//            for(int i = 0; i < maxColumns; i++){
-//                db.insert("SpeciesSequence", null, contentValuesList.get(i));
-//            }
-//            Log.d("str_", "111");
-//            Toast.makeText(TableActivity.this, "创建成功", Toast.LENGTH_SHORT).show();
-//        }
-//        cursor.close();
-
-        init();
+//        init();
     }
+
+    @SuppressLint("HandlerLeak")
+    private Handler uiHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    Log.i("TableActivity", "init data ok");
+                    init();
+                    break;
+            }
+        }
+    };
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -356,11 +361,11 @@ public class TableActivity extends AppCompatActivity {
         Log.d("str_save", str[0][0] + "");
         List<ContentValues> contentValuesList = new ArrayList<>();
         try {
-            for (int i = 0; i < jsonArray.length() * column; i++) {
+            for (int i = 0; i < fieldArray.length() * column; i++) {
                 int rows_num = rows.getInt(i / column);
                 for (int j = 0; j < rows_num; j++) {
                     ContentValues contentValues = new ContentValues();
-                    contentValues.put("fieldId", jsonArray.getString(i / column));
+                    contentValues.put("fieldId", fieldArray.getString(i / column));
                     contentValues.put("speciesId", str[j][i]);
 
                     contentValues.put("x", i % column + 1);
@@ -415,7 +420,7 @@ public class TableActivity extends AppCompatActivity {
 
     public void init() {
         mContext = getApplicationContext();
-        tableBigFarm.setText("试验基地："+bigFarmName);
+        tableBigFarm.setText("试验基地："+ bigFarmName);
         tableFarm.setText("试验田：" + farmName);
         tableDate.setText("年份："+year);
         tableDescription.setText(description);
@@ -553,10 +558,9 @@ public class TableActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             if (status == STATUS_EDIT) {
-                                final EditText editText = new EditText(TableActivity.this);
-                                editText.setGravity(Gravity.CENTER); //文字居中
+                                int x = pos + 1, y = finalI + 1;
                                 final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(TableActivity.this).builder()
-                                        .setTitle("请输入品种编号")
+                                        .setTitle(x + "-" + y + ":请输入品种编号")
                                         .setEditText("");
                                 myAlertInputDialog.setPositiveButton("确认", new View.OnClickListener() {
                                     @Override
@@ -613,24 +617,30 @@ public class TableActivity extends AppCompatActivity {
                             } else if (status == STATUS_READ) {
                                 String blockId = null;
                                 String speciesId = tv.getText().toString();
-                                Cursor c = db.query("SpeciesList", null, "speciesId=? and fieldId=?",
-                                        new String[]{speciesId, fieldId}, null, null, null);
-                                if (c.moveToFirst()) {
-                                    blockId = c.getString(c.getColumnIndex("blockId"));
+                                if (speciesId.equals("")) {
+                                    Toast.makeText(TableActivity.this, "请填写品种名称", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    Cursor c = db.query("SpeciesList", null, "speciesId=? and fieldId=?",
+                                            new String[]{speciesId, fieldId}, null, null, null);
+                                    if (c.moveToFirst()) {
+                                        blockId = c.getString(c.getColumnIndex("blockId"));
+                                    }
+
+                                    Intent intent = new Intent(TableActivity.this, SaveDataActivity.class);
+                                    intent.putExtra("speciesId", speciesId);
+                                    intent.putExtra("expType", expType);
+                                    if (blockId != null) {
+                                        intent.putExtra("blockId", blockId);
+                                    } else {
+                                        intent.putExtra("blockId", "test");
+                                    }
+
+                                    startActivity(intent);
+                                    Toast.makeText(TableActivity.this, "点击的品种编号：" + tv.getText(), Toast.LENGTH_SHORT).show();
+                                    c.close();
                                 }
 
-                                Intent intent = new Intent(TableActivity.this, SaveDataActivity.class);
-                                intent.putExtra("speciesId", speciesId);
-                                intent.putExtra("expType", expType);
-                                if (blockId != null) {
-                                    intent.putExtra("blockId", blockId);
-                                } else {
-                                    intent.putExtra("blockId", "test");
-                                }
-
-                                startActivity(intent);
-                                Toast.makeText(TableActivity.this, "点击的品种编号：" + tv.getText(), Toast.LENGTH_SHORT).show();
-                                c.close();
                             } else {
                                 Toast.makeText(TableActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
                             }
@@ -808,6 +818,7 @@ public class TableActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        uiHandler.removeCallbacksAndMessages(null);
     }
 
 }

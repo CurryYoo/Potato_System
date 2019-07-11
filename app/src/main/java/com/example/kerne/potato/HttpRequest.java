@@ -58,7 +58,7 @@ public class HttpRequest {
 //                    Uri uri = getImageURI(serverUrl + jsonObject.getString("img"), cache);
 //                    jsonObject.put("uri", uri);
                     callback.onSuccess(jsonObject);
-                } catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -140,7 +140,7 @@ public class HttpRequest {
         requestQueue = Volley.newRequestQueue(context);
 
         JSONObject jsonObject = new JSONObject();
-        if(name != null){
+        if (name != null) {
             try {
                 jsonObject.put("name", name); //POST数据
             } catch (JSONException e) {
@@ -173,7 +173,7 @@ public class HttpRequest {
         requestQueue = Volley.newRequestQueue(context);
 
         JSONObject jsonObject = new JSONObject();
-        if(farmlandId != null){
+        if (farmlandId != null) {
             try {
                 jsonObject.put("farmlandId", farmlandId); //POST数据
             } catch (JSONException e) {
@@ -245,7 +245,7 @@ public class HttpRequest {
                 Log.d("Species_Response", response);
                 try {
                     callback.onSuccess(new JSONObject(response));
-                } catch (JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -310,6 +310,11 @@ public class HttpRequest {
                 headers.put("Content-Type", "application/json; charset=UTF-8");
                 return headers;
             }
+
+            @Override
+            public String getBodyContentType() {
+                return super.getBodyContentType();
+            }
         };
 
         requestQueue.add(jsonObjectRequest);
@@ -331,7 +336,7 @@ public class HttpRequest {
 
         if (!f1.exists()) {
             //Toast.makeText(getApplicationContext(), "图片不存在，测试无效", Toast.LENGTH_SHORT).show();
-            Log.d("file","not found");
+            Log.d("file", "not found");
             return;
         }
         List<File> f = new ArrayList<File>();
@@ -403,9 +408,9 @@ public class HttpRequest {
             public void onErrorResponse(VolleyError error) {
                 Log.e("SpeciesList_error", error.getMessage(), error);
             }
-        }){
+        }) {
             @Override
-            protected Response<JSONArray> parseNetworkResponse(NetworkResponse response){
+            protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
                 try {
                     String jsonString = new String(response.data,
                             HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
@@ -421,6 +426,59 @@ public class HttpRequest {
         };
 
         requestQueue.add(jsonArrayRequest);
+    }
+
+    public static void HttpRequest_description(final String experimentFieldId, final String description, Context context, final HttpCallback callback) {
+        requestQueue = Volley.newRequestQueue(context);
+//        StringRequest s = new StringRequest()
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "/experimentfield/updateDesc", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("decription_response", response);
+                try {
+                    callback.onSuccess(new JSONObject(response));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("description_error", error.getMessage(), error);
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                map.put("experimentFieldId", experimentFieldId);
+                map.put("description", description);
+                return map;
+            }
+        };
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("experimentFieldId", experimentFieldId);
+            jsonObject.put("description", description);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "/experimentfield/updateDescForAndroid", jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("decription_response", response.toString());
+                callback.onSuccess(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("description_error", error.getMessage(), error);
+            }
+        });
+
+//        requestQueue.add(stringRequest);
+        requestQueue.add(jsonObjectRequest);
     }
 
     public interface HttpCallback {

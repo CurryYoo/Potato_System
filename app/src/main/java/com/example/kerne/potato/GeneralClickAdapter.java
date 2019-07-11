@@ -1,9 +1,7 @@
 package com.example.kerne.potato;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -15,23 +13,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kerne.potato.complextable.TableActivity;
-import com.hb.dialog.myDialog.MyAlertInputDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
-
-import static com.example.kerne.potato.complextable.TableActivity.STATUS_EDIT;
-import static com.example.kerne.potato.complextable.TableActivity.STATUS_READ;
 
 /**
  * Item 点击对应的 Adapter
- *
+ * <p>
  * Created by Tnno Wu on 2018/03/05.
  */
 
@@ -47,13 +38,14 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
 
     private String farmlandId;
     private String name;
+    private String bigFarmName;
 
     //棚外特有属性
     private int length;
     private int width;
 
     private String type;
-    private String year;
+    private int year;
 
     //棚内特有属性
     private String expType;
@@ -97,10 +89,9 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
 //            holder.tvNum.setText("实验田序号：" + farmlandId);
             holder.tvName.setText("实验田名称：" + name);
             holder.tvType.setText("实验田类型：" + type);
-            if(type.equals("greenhouse")){
+            if (type.equals("greenhouse")) {
                 holder.is_shack.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
 //                holder.tvNum.setTextColor(R.color.primary_dark);
                 holder.tvName.setTextColor(R.color.primary_dark);
             }
@@ -117,17 +108,19 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                 try {
                     farmlandId = jsonObject.getString("farmlandId");
                     type = jsonObject.getString("type");
-                    name=jsonObject.getString("name");
+                    name = jsonObject.getString("name");
+                    bigFarmName = jsonObject.getString("bigFarmName");
+                    year = jsonObject.getInt("year");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                Intent intent ;
-                if (type.equals("common")){
+                Intent intent;
+                if (type.equals("common")) {
                     try {
                         length = jsonObject.getInt("length");
                         width = jsonObject.getInt("width");
-                        name=jsonObject.getString("name");
+                        name = jsonObject.getString("name");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -137,10 +130,11 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                     intent.putExtra("width", width);
                     intent.putExtra("farmlandId", farmlandId);
                     intent.putExtra("type", type);
-                    intent.putExtra("farmName",name);
+                    intent.putExtra("farmName", name);
+                    intent.putExtra("bigFarmName", bigFarmName);
+                    intent.putExtra("year", year);
                     mContext.startActivity(intent);
-                }
-                else if (type.equals("greenhouse")) {
+                } else if (type.equals("greenhouse")) {
                     intent = new Intent(mContext, TableActivity.class);
                     final int[] status = new int[1];
 //                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
@@ -153,7 +147,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                         fieldId = jsonObject.getString("fieldId");
                         num = jsonObject.getInt("num");
                         rows = jsonObject.getInt("rows");
-                        name=jsonObject.getString("name");
+                        name = jsonObject.getString("name");
                         Log.d("pengnei2", num + "," + rows);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -166,7 +160,9 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                     finalIntent.putExtra("rows", rows);
                     finalIntent.putExtra("farmlandId", farmlandId);
                     finalIntent.putExtra("type", type);
-                    finalIntent.putExtra("farmName",name);
+                    finalIntent.putExtra("farmName", name);
+                    finalIntent.putExtra("bigFarmName", bigFarmName);
+                    finalIntent.putExtra("year", year);
                     mContext.startActivity(finalIntent);
 //                    builder.setItems(options, new DialogInterface.OnClickListener() {
 //                        @Override
@@ -287,7 +283,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
 
     public class RcvClickViewHolder extends RecyclerView.ViewHolder {
 
-//        TextView tvNum;
+        //        TextView tvNum;
         TextView tvName, tvType;
         TextView is_shack;
 
@@ -296,7 +292,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
 //            tvNum = itemView.findViewById(R.id.tv_num);
             tvName = itemView.findViewById(R.id.tv_name);
             tvType = itemView.findViewById(R.id.tv_type);
-            is_shack=itemView.findViewById(R.id.is_shack);
+            is_shack = itemView.findViewById(R.id.is_shack);
         }
     }
 

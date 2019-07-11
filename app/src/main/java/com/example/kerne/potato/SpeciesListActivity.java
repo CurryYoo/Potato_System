@@ -1,10 +1,14 @@
 package com.example.kerne.potato;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -103,58 +107,70 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
     }
 
     private void initData() {
-        SpeciesDBHelper dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Looper.prepare();
+                SpeciesDBHelper dbHelper = new SpeciesDBHelper(SpeciesListActivity.this, "SpeciesTable.db", null, 10);
+                SQLiteDatabase db = dbHelper.getReadableDatabase();
 
 //        String sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
 //                "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
 //                "' order by ExperimentField.moveX";
 //        db.rawQuery(sql, null);
 
-        Cursor cursor = db.query("SpeciesList", null, "speciesId=?", new String[]{speciesId}, null, null, null);
-        if (cursor.moveToFirst()) {
-            do {
-                JSONObject jsonObject0 = new JSONObject();
-                try {
-                    jsonObject0.put("blockId", cursor.getString(cursor.getColumnIndex("blockId")));
-                    fieldId = cursor.getString(cursor.getColumnIndex("fieldId"));
-                    jsonObject0.put("fieldId", fieldId);
-                    jsonObject0.put("speciesId", cursor.getString(cursor.getColumnIndex("speciesId")));
+                Cursor cursor = db.query("SpeciesList", null, "speciesId=?", new String[]{speciesId}, null, null, null);
+                if (cursor.moveToFirst()) {
+                    do {
+                        JSONObject jsonObject0 = new JSONObject();
+                        try {
+                            jsonObject0.put("blockId", cursor.getString(cursor.getColumnIndex("blockId")));
+                            fieldId = cursor.getString(cursor.getColumnIndex("fieldId"));
+                            jsonObject0.put("fieldId", fieldId);
+                            jsonObject0.put("speciesId", cursor.getString(cursor.getColumnIndex("speciesId")));
 //                    jsonObject0.put("userRole", userRole);
-                    Cursor cursor1 = db.query("ExperimentField", null, "id=?", new String[]{fieldId}, null, null, null);
-                    if (cursor1.moveToFirst()) {
-                        jsonObject0.put("expType", cursor1.getString(cursor1.getColumnIndex("expType")));
+                            Cursor cursor1 = db.query("ExperimentField", null, "id=?", new String[]{fieldId}, null, null, null);
+                            if (cursor1.moveToFirst()) {
+                                jsonObject0.put("expType", cursor1.getString(cursor1.getColumnIndex("expType")));
+                            } else {
+                                Toast.makeText(SpeciesListActivity.this, "Do not have the fieldId '" + fieldId + "' in ExperimentField", Toast.LENGTH_SHORT).show();
+                            }
+                            cursor1.close();
+                            mList.add(jsonObject0);
+//                    Log.d("mList.jsonObject", jsonObject0.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.e("speciesId_error", cursor.getString(cursor.getColumnIndex("speciesId")));
+                        }
+                    } while (cursor.moveToNext());
+                } else {
+                    Toast.makeText(SpeciesListActivity.this, "该品种不存在！", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SpeciesListActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+
+                if (fieldId != null) {
+                    cursor = db.query("ExperimentField", null, "id=?", new String[]{fieldId}, null, null, null);
+                    if (cursor.moveToFirst()) {
+                        expType = cursor.getString(cursor.getColumnIndex("expType"));
                     } else {
                         Toast.makeText(SpeciesListActivity.this, "Do not have the fieldId '" + fieldId + "' in ExperimentField", Toast.LENGTH_SHORT).show();
                     }
-                    cursor1.close();
-                    mList.add(jsonObject0);
-//                    Log.d("mList.jsonObject", jsonObject0.toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.e("speciesId_error", cursor.getString(cursor.getColumnIndex("speciesId")));
                 }
-            } while (cursor.moveToNext());
-        } else {
-            Toast.makeText(SpeciesListActivity.this, "该品种不存在！", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(SpeciesListActivity.this, MainActivity.class);
-            startActivity(intent);
-        }
 
-        if (fieldId != null) {
-            cursor = db.query("ExperimentField", null, "id=?", new String[]{fieldId}, null, null, null);
-            if (cursor.moveToFirst()) {
-                expType = cursor.getString(cursor.getColumnIndex("expType"));
-            } else {
-                Toast.makeText(SpeciesListActivity.this, "Do not have the fieldId '" + fieldId + "' in ExperimentField", Toast.LENGTH_SHORT).show();
+                cursor.close();
+                db.close();
+                dbHelper.close();
+                //Log.d("mList.toString", mList.toString());
+
+                Message msg = new Message();
+                msg.what = 1;
+                uiHandler.sendMessage(msg);
+                Looper.loop();
             }
-        }
+        }).start();
 
-        cursor.close();
-        db.close();
-        dbHelper.close();
-        //Log.d("mList.toString", mList.toString());
-        initView();
+//        initView();
 
 //        new Thread(){
 //            @Override
@@ -185,26 +201,20 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
 //            }
 //        }.start();
 
-//        JSONObject jsonObject0 = new JSONObject();
-//        JSONObject jsonObject1 = new JSONObject();
-//        try {
-//            jsonObject0.put("plotId", "AA");
-//            jsonObject0.put("speciesId", "品种1号");
-//            jsonObject0.put("fieldId", fieldId);
-//            jsonObject0.put("userRole", userRole);
-//            jsonObject1.put("plotId", "BB");
-//            jsonObject1.put("speciesId", "品种2号");
-//            jsonObject1.put("fieldId", fieldId);
-//            jsonObject1.put("userRole", userRole);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        mList.add(jsonObject0);
-//        mList.add(jsonObject1);
-//
-//        //!!!
-//        initView();
     }
+
+    @SuppressLint("HandlerLeak")
+    private Handler uiHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    Log.i(SpeciesListActivity.TAG, "init data ok");
+                    initView();
+                    break;
+            }
+        }
+    };
 
     private void initView() {
         SpeciesListAdapter adapter = new SpeciesListAdapter(this, this);

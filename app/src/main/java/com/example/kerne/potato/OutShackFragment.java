@@ -260,4 +260,9 @@ public class OutShackFragment extends Fragment {
         adapter.setKeyword(s.toString());
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
+    }
 }
