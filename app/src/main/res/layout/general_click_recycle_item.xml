@@ -54,7 +54,7 @@
         android:layout_width="@dimen/dp_1"
         android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="@dimen/dp_40"
+        android:layout_marginEnd="42dp"
         android:background="@color/transparent"/>
     <View
         android:id="@+id/view_two"
