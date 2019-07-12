@@ -9,24 +9,26 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="60dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:textSize="15sp"
             android:layout_marginStart="@dimen/dp_15"
             android:text="账号"
-            android:textColor="@color/colorGrey"/>
+            android:textColor="@color/primary_text"
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/dp_10"
-            android:textSize="15sp"
-            android:textColor="@color/colorGrey"
+            android:layout_marginStart="@dimen/dp_20"
+            android:textSize="18sp"
+            android:textColor="@color/primary_text"
             android:hint="..."
+            android:maxLines="1"
             android:background="@null"/>
     </LinearLayout>
 
@@ -36,24 +38,26 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="60dp">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:textSize="15sp"
             android:layout_marginStart="@dimen/dp_15"
             android:text="密码"
-            android:textColor="@color/colorGrey"/>
+            android:textColor="@color/primary_text"
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/dp_10"
-            android:textSize="15sp"
-            android:textColor="@color/colorGrey"
+            android:layout_marginStart="@dimen/dp_20"
+            android:textSize="18sp"
+            android:textColor="@color/primary_text"
             android:hint="..."
+            android:maxLines="1"
             android:inputType="textPassword"
             android:background="@null"/>
     </LinearLayout>
@@ -89,12 +93,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
+            android:layout_marginTop="@dimen/dp_10"
             android:layout_marginStart="@dimen/dp_10"
             android:layout_marginEnd="@dimen/dp_10"
             android:paddingTop="@dimen/dp_20"
             android:paddingBottom="@dimen/dp_20"
             android:stateListAnimator="@null"
-            android:background="@drawable/bg_basic_info_btn"
+            android:background="@drawable/bg_login_btn"
             android:text="登  录"
             android:textColor="@color/white"
             android:textStyle="bold"/>
