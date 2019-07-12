@@ -16,7 +16,7 @@
             android:textSize="15sp"
             android:layout_marginStart="@dimen/dp_15"
             android:text="账号"
-            android:textColor="@color/colorBlue"/>
+            android:textColor="@color/colorGrey"/>
 
         <EditText
             android:id="@+id/account"
@@ -25,6 +25,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/dp_10"
             android:textSize="15sp"
+            android:textColor="@color/colorGrey"
             android:hint="..."
             android:background="@null"/>
     </LinearLayout>
@@ -42,7 +43,7 @@
             android:textSize="15sp"
             android:layout_marginStart="@dimen/dp_15"
             android:text="密码"
-            android:textColor="@color/colorBlue"/>
+            android:textColor="@color/colorGrey"/>
 
         <EditText
             android:id="@+id/password"
@@ -51,6 +52,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/dp_10"
             android:textSize="15sp"
+            android:textColor="@color/colorGrey"
             android:hint="..."
             android:inputType="textPassword"
             android:background="@null"/>
@@ -89,8 +91,13 @@
             android:textSize="18sp"
             android:layout_marginStart="@dimen/dp_10"
             android:layout_marginEnd="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_20"
+            android:paddingBottom="@dimen/dp_20"
             android:stateListAnimator="@null"
-            android:text="登录" />
+            android:background="@drawable/bg_basic_info_btn"
+            android:text="登  录"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
     </LinearLayout>
 
 </LinearLayout>

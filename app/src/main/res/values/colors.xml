@@ -14,11 +14,11 @@
     <color name="divider">#BDBDBD</color>
 
     <color name="colorGrey">#607D8B</color>
-    <color name="colorOrange">#ff3d00</color>
-    <color name="colorGreen">#00c853</color>
-    <color name="colorRed">#d50000</color>
+    <color name="colorOrange">#E64A19</color>
+    <color name="colorGreen">#4CAF50</color>
+    <color name="colorRed">#D32F2F</color>
     <color name="colorBlue">#0288D1</color>
-    <color name="colorPink">#ff4081</color>
+    <color name="colorPink">#E91E63</color>
     <color name="colorDarkGreen">#004d40</color>
 
     <!--ProgressWheel-->

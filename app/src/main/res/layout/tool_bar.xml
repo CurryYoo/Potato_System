@@ -38,19 +38,19 @@
             android:layout_height="25dp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/left_three_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="@dimen/dp_5"
-        android:layout_weight="1"
-        android:gravity="center">
+    <!--<LinearLayout-->
+        <!--android:id="@+id/left_three_layout"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_marginEnd="@dimen/dp_5"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="center">-->
 
-        <ImageView
-            android:id="@+id/left_three_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp" />
-    </LinearLayout>
+        <!--<ImageView-->
+            <!--android:id="@+id/left_three_button"-->
+            <!--android:layout_width="25dp"-->
+            <!--android:layout_height="25dp" />-->
+    <!--</LinearLayout>-->
 
 
     <TextView
@@ -63,19 +63,19 @@
         android:textSize="14sp"
         android:textStyle="bold" />
 
-    <LinearLayout
-        android:id="@+id/right_three_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/dp_5"
-        android:layout_weight="1"
-        android:gravity="center">
+    <!--<LinearLayout-->
+        <!--android:id="@+id/right_three_layout"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_marginStart="@dimen/dp_5"-->
+        <!--android:layout_weight="1"-->
+        <!--android:gravity="center">-->
 
-        <ImageView
-            android:id="@+id/right_three_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp" />
-    </LinearLayout>
+        <!--<ImageView-->
+            <!--android:id="@+id/right_three_button"-->
+            <!--android:layout_width="25dp"-->
+            <!--android:layout_height="25dp" />-->
+    <!--</LinearLayout>-->
 
     <LinearLayout
         android:id="@+id/right_two_layout"
