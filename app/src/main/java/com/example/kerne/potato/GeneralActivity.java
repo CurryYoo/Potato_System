@@ -84,7 +84,7 @@ public class GeneralActivity extends AppCompatActivity {
                         layout.addView(view);
                         view.setOnTouchListener(touch);
                     } else {
-                        Toast.makeText(GeneralActivity.this, "选择的实验田尚未规划种植图", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GeneralActivity.this, R.string.field_plan_null_error, Toast.LENGTH_SHORT).show();
                     }
 
                     break;
@@ -192,7 +192,6 @@ public class GeneralActivity extends AppCompatActivity {
         //获取分块的坐标信息
         Cursor cursor = db.query("ExperimentField", null, "farmlandId=?", new String[]{farmlandId}, null, null, null);
 
-//        Cursor cursor = db.query("ExperimentField", null, "farmlandId=?", new String[]{farmlandId}, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 JSONObject jsonObject = new JSONObject();
@@ -217,7 +216,7 @@ public class GeneralActivity extends AppCompatActivity {
                 }
             } while (cursor.moveToNext());
         } else {
-            Toast.makeText(GeneralActivity.this, "ExperimentField null", Toast.LENGTH_SHORT).show();
+            Toast.makeText(GeneralActivity.this, R.string.field_null_error, Toast.LENGTH_SHORT).show();
         }
         cursor.close();
         Log.d("mList.toString", mList.toString());
@@ -305,7 +304,7 @@ public class GeneralActivity extends AppCompatActivity {
                     for (int i = 0; i < mList.size(); i++) {
                         if (X > DrawView.coord[i][0] && X < DrawView.coord[i][2] && Y > DrawView.coord[i][1] && Y < DrawView.coord[i][3]) {
                             try {
-                                Toast.makeText(GeneralActivity.this, "点击了'" + mList.get(i).getString("expType") + "'模块", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(GeneralActivity.this, "试验类型：" + mList.get(i).getString("expType"), Toast.LENGTH_SHORT).show();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -80,6 +81,7 @@ public class BigfarmClickActivity extends AppCompatActivity implements BigfarmCl
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Looper.prepare();
                 //获取数据库中数据
                 SpeciesDBHelper dbHelper = new SpeciesDBHelper(BigfarmClickActivity.this, "SpeciesTable.db", null, 10);
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -103,8 +105,6 @@ public class BigfarmClickActivity extends AppCompatActivity implements BigfarmCl
                             Log.e("bigfarmId_error", cursor.getString(cursor.getColumnIndex("bigfarmId")));
                         }
                     } while (cursor.moveToNext());
-                } else {
-                    Toast.makeText(BigfarmClickActivity.this, "BigfarmList null", Toast.LENGTH_SHORT).show();
                 }
                 cursor.close();
                 db.close();
@@ -113,6 +113,7 @@ public class BigfarmClickActivity extends AppCompatActivity implements BigfarmCl
                 Message msg = new Message();
                 msg.what = 1;
                 uiHandler.sendMessage(msg);
+                Looper.loop();
             }
         }).start();
 
@@ -169,6 +170,9 @@ public class BigfarmClickActivity extends AppCompatActivity implements BigfarmCl
         rcvClick.setHasFixedSize(true);
         rcvClick.setAdapter(adapter);
 
+        if(mList.size()==0){
+            Toast.makeText(this,R.string.bigFarm_null_error,Toast.LENGTH_SHORT).show();
+        }
         adapter.setRcvClickDataList(mList);
     }
 

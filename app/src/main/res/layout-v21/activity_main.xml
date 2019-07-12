@@ -85,7 +85,7 @@
                     android:layout_marginLeft="5dp"
                     android:paddingTop="@dimen/dp_3"
                     android:paddingBottom="@dimen/dp_3"
-                    android:text="实验田列表"
+                    android:text="试验田列表"
                     android:textSize="15sp"
                     android:textColor="@color/colorGrey"
                     android:textStyle="bold" />
@@ -118,7 +118,7 @@
                     android:layout_marginLeft="5dp"
                     android:paddingTop="@dimen/dp_3"
                     android:paddingBottom="@dimen/dp_3"
-                    android:text="实验田目录树"
+                    android:text="试验田目录树"
                     android:textSize="15sp"
                     android:textColor="@color/colorOrange"
                     android:textStyle="bold" />

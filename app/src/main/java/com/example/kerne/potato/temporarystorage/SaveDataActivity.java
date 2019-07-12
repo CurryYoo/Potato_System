@@ -963,7 +963,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 //    };
 
     private void initToolBar() {
-        titleText.setText("品种种植");
+        titleText.setText("品种信息采集");
         leftOneButton.setBackgroundResource(R.drawable.left_back);
         rightOneButton.setBackgroundResource(R.drawable.ic_menu_home);
         rightTwoButton.setBackgroundResource(R.drawable.ic_menu_save);
@@ -1313,7 +1313,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     private void savaDataLocally() {
         ContentValues contentValues = assembleData();
         if (contentValues == null) {
-            Toast.makeText(SaveDataActivity.this, "输入有误！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SaveDataActivity.this, "输入有误", Toast.LENGTH_SHORT).show();
             return;
         }
         sqLiteDatabase.insert("SpeciesTable", null, contentValues);
@@ -1566,7 +1566,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
             contentValues.put("img5", pathNaturalFecundity);
 
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "请检查输入数据的格式是否正确！", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "请检查输入数据的格式是否正确", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         return contentValues;

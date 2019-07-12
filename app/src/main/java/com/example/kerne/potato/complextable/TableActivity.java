@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -226,6 +227,7 @@ public class TableActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Looper.prepare();
                 if (type.equals("common")) {
                     try {
                         Cursor cursor = db.query("ExperimentField", null, "farmlandId=? and expType=?",
@@ -269,7 +271,7 @@ public class TableActivity extends AppCompatActivity {
                         speciesNames.add(cursor.getString(cursor.getColumnIndex("name")));
                     } while (cursor.moveToNext());
                 } else {
-                    Toast.makeText(TableActivity.this, "species null", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TableActivity.this, R.string.species_null_error, Toast.LENGTH_SHORT).show();
                 }
                 cursor.close();
 
@@ -313,14 +315,13 @@ public class TableActivity extends AppCompatActivity {
 //            Toast.makeText(TableActivity.this, "创建成功", Toast.LENGTH_SHORT).show();
                 }
                 cursor0.close();
+                Looper.loop();
             }
         }).start();
 
         Message msg = new Message();
         msg.what = 1;
         uiHandler.sendMessage(msg);
-
-//        init();
     }
 
     @SuppressLint("HandlerLeak")
@@ -571,7 +572,7 @@ public class TableActivity extends AppCompatActivity {
                                             str[pos][finalI] = species;
                                             Toast.makeText(TableActivity.this, species, Toast.LENGTH_SHORT).show();
                                         } else {
-                                            Toast.makeText(TableActivity.this, "该品种不存在", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(TableActivity.this, R.string.species_null_error, Toast.LENGTH_SHORT).show();
                                         }
                                         myAlertInputDialog.dismiss();
                                     }
@@ -630,12 +631,12 @@ public class TableActivity extends AppCompatActivity {
                                     }
 
                                     startActivity(intent);
-                                    Toast.makeText(TableActivity.this, "点击的品种编号：" + tv.getText(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(TableActivity.this, "品种名称：" + tv.getText(), Toast.LENGTH_SHORT).show();
                                     c.close();
                                 }
 
                             } else {
-                                Toast.makeText(TableActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(TableActivity.this, R.string.null_error, Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -717,7 +718,7 @@ public class TableActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //跳转界面
-                Toast.makeText(TableActivity.this, "打开某条记录的单独详情", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TableActivity.this, R.string.species_click_tip, Toast.LENGTH_SHORT).show();
             }
         });
 //        rightListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

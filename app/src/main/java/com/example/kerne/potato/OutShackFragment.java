@@ -115,7 +115,7 @@ public class OutShackFragment extends Fragment {
                 }
             } while (cursor.moveToNext());
         } else {
-            Toast.makeText(getContext(), "BigfarmList null", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.bigFarm_null_error, Toast.LENGTH_SHORT).show();
         }
         cursor.close();
 
@@ -139,7 +139,7 @@ public class OutShackFragment extends Fragment {
                 }
             } while (cursor2.moveToNext());
         } else {
-            Toast.makeText(getContext(), "ExperimentField null", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.farm_null_error, Toast.LENGTH_SHORT).show();
         }
         cursor2.close();
 
@@ -169,7 +169,7 @@ public class OutShackFragment extends Fragment {
                 }
             } while (cursor3.moveToNext());
         } else {
-            Toast.makeText(getContext(), "ExperimentField null", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.field_null_error, Toast.LENGTH_SHORT).show();
         }
         cursor3.close();
 

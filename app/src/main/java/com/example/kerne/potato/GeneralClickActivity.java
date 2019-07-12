@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -76,7 +77,7 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
                     startActivity(intent);
                     break;
                 case R.id.right_two_layout:
-                    Util.watchOnlineLargePhoto(GeneralClickActivity.this, Uri.parse(uri),"实验田示意图");
+                    Util.watchOnlineLargePhoto(GeneralClickActivity.this, Uri.parse(uri), "实验田示意图");
                     break;
                 default:
                     break;
@@ -96,7 +97,7 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
         img = getIntent().getStringExtra("img");
         year = getIntent().getIntExtra("year", 1970);
         uri = getIntent().getStringExtra("uri");
-        bigFarmName =getIntent().getStringExtra("name");
+        bigFarmName = getIntent().getStringExtra("name");
         initToolBar();
         initData();
 
@@ -119,6 +120,7 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Looper.prepare();
                 //获取数据库中数据
                 SpeciesDBHelper dbHelper = new SpeciesDBHelper(GeneralClickActivity.this, "SpeciesTable.db", null, 10);
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -145,22 +147,22 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
                             Log.e("farmlandId_error", cursor.getString(cursor.getColumnIndex("farmlandId")));
                         }
                     } while (cursor.moveToNext());
-                } else {
-                    Toast.makeText(GeneralClickActivity.this, "FarmList null", Toast.LENGTH_SHORT).show();
                 }
+                cursor.close();
+
 
                 //获取大棚区域
-                cursor = db.query("ExperimentField", null, "farmlandId=?", new String[]{bigfarmId}, null, null, null);
-                if (cursor.moveToFirst()) {
+                Cursor cursor2 = db.query("ExperimentField", null, "farmlandId=?", new String[]{bigfarmId}, null, null, null);
+                if (cursor2.moveToFirst()) {
                     do {
                         JSONObject jsonObject0 = new JSONObject();
                         try {
-                            jsonObject0.put("fieldId", cursor.getString(cursor.getColumnIndex("id")));
-                            jsonObject0.put("name", cursor.getString(cursor.getColumnIndex("name")));
-                            jsonObject0.put("expType", cursor.getString(cursor.getColumnIndex("expType")));
-                            jsonObject0.put("num", cursor.getInt(cursor.getColumnIndex("num")));
-                            jsonObject0.put("farmlandId", cursor.getString(cursor.getColumnIndex("farmlandId")));
-                            jsonObject0.put("rows", cursor.getInt(cursor.getColumnIndex("rows")));
+                            jsonObject0.put("fieldId", cursor2.getString(cursor2.getColumnIndex("id")));
+                            jsonObject0.put("name", cursor2.getString(cursor2.getColumnIndex("name")));
+                            jsonObject0.put("expType", cursor2.getString(cursor2.getColumnIndex("expType")));
+                            jsonObject0.put("num", cursor2.getInt(cursor2.getColumnIndex("num")));
+                            jsonObject0.put("farmlandId", cursor2.getString(cursor2.getColumnIndex("farmlandId")));
+                            jsonObject0.put("rows", cursor2.getInt(cursor2.getColumnIndex("rows")));
                             jsonObject0.put("type", "greenhouse");
                             jsonObject0.put("bigFarmName", bigFarmName);
                             jsonObject0.put("year", year);
@@ -168,23 +170,21 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
                             mList.add(jsonObject0);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Log.e("greenhouse_error", cursor.getString(cursor.getColumnIndex("farmlandId")));
+                            Log.e("greenhouse_error", cursor2.getString(cursor2.getColumnIndex("farmlandId")));
                         }
-                    } while (cursor.moveToNext());
-                } else {
-                    Toast.makeText(GeneralClickActivity.this, "FarmList null", Toast.LENGTH_SHORT).show();
+                    } while (cursor2.moveToNext());
                 }
+                cursor2.close();
 
-                cursor.close();
                 db.close();
                 dbHelper.close();
 
                 Message msg = new Message();
                 msg.what = 1;
                 uiHandler.sendMessage(msg);
+                Looper.loop();
             }
         }).start();
-
 
 //        initView();
 
@@ -238,6 +238,9 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
         rcvClick.setHasFixedSize(true);
         rcvClick.setAdapter(adapter);
 
+        if(mList.size()==0){
+            Toast.makeText(this,R.string.farm_null_error,Toast.LENGTH_SHORT).show();
+        }
         adapter.setRcvClickDataList(mList);
     }
 

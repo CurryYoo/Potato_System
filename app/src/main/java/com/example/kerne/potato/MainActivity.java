@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 if (downloadSuccess_Num == request_Num) {
                     Log.d("download" + downloadSuccess_Num, "ok");
-                    Toast.makeText(activity.getApplicationContext(), "下载成功!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity.getApplicationContext(), "下载成功", Toast.LENGTH_SHORT).show();
                     activity.viewDownload.setVisibility(View.GONE);
                     downloadSuccess_Num = 0;
                 }
@@ -155,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     userRole = UserRole.getUserRole();
                     if (!userRole.equals("farmer")) {
-
                         JSONArray jsonArray = new JSONArray();
                         sqLiteDatabase = dbHelper.getReadableDatabase();
                         Cursor cursor0 = sqLiteDatabase.query("SpeciesList", null, null, null, null, null, null);
@@ -184,20 +183,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             HttpRequest.HttpRequest_SpeciesList(jsonArray, MainActivity.this, new HttpRequest.HttpCallback() {
                                 @Override
                                 public void onSuccess(JSONObject result) {
-//                            Log.d("Response_SpeciesList", result.toString());
                                 }
                             });
 
                         } else {
-                            Toast.makeText(MainActivity.this, "尚未填写数据!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "尚未填写数据", Toast.LENGTH_SHORT).show();
                         }
-
-//                        HttpRequest.HttpRequest_description("field15627479929644081", "", MainActivity.this, new HttpRequest.HttpCallback() {
-//                            @Override
-//                            public void onSuccess(JSONObject result) {
-//
-//                            }
-//                        });
                         cursor0 = sqLiteDatabase.query("ExperimentField", null, null, null, null, null, null);
                         if (cursor0.moveToFirst()) {
                             do {
@@ -206,24 +197,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 HttpRequest.HttpRequest_description(experimentFieldId, description, MainActivity.this, new HttpRequest.HttpCallback() {
                                     @Override
                                     public void onSuccess(JSONObject result) {
-
                                     }
                                 });
                             } while (cursor0.moveToNext());
                         }
                         cursor0.close();
-
-                        Toast.makeText(MainActivity.this, "上传成功!", Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText(MainActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(MainActivity.this, "对不起，您没有该权限！请登录有权限的账号！", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "请登录账号", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivityForResult(intent, 1);
                     }
-
                     break;
                 case R.id.update_pick_data:
                     //将暂存的数据从数据库取出并提交到远程服务器
+                    btn_pick.setEnabled(false);
                     editor.putBoolean("update_pick_data", false);
                     editor.apply();
                     if (badge_pick != null) {
@@ -231,7 +219,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     userRole = UserRole.getUserRole();
                     if (!userRole.equals("farmer")) {
-
                         String sql = "select SpeciesTable.*, LocalSpecies.* from SpeciesTable, LocalSpecies " +
                                 "where SpeciesTable.speciesId=LocalSpecies.name";
                         sqLiteDatabase = dbHelper.getReadableDatabase();
@@ -488,15 +475,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 }.start();
 
                             } while (cursor.moveToNext());
-                            Toast.makeText(MainActivity.this, "数据上传成功！", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "数据上传成功", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(MainActivity.this, "尚未采集数据!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "尚未采集数据", Toast.LENGTH_SHORT).show();
                         }
                         cursor.close();
+                        btn_pick.setEnabled(true);
                     } else {
-                        Toast.makeText(MainActivity.this, "对不起，您没有该权限！请登录有权限的账号！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "请登录账号", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivityForResult(intent, 1);
+                        btn_pick.setEnabled(true);
                     }
                     break;
                 default:
@@ -602,7 +591,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //获取大田信息
         switch (v.getId()) {
             case R.id.btn_download:
-                Toast.makeText(MainActivity.this, "开始下载数据……", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "开始下载数据", Toast.LENGTH_SHORT).show();
                 viewDownload.setVisibility(View.VISIBLE);
 //                cache = new File(Environment.getExternalStorageDirectory(), "cache");
 
@@ -867,59 +856,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.btn_general:
-                Cursor cursor = db.query("BigfarmList", null, null, null, null, null, null);
-                if (cursor.moveToFirst()) {
-                    do {
-                        JSONObject jsonObject0 = new JSONObject();
-                        try {
-                            jsonObject0.put("bigfarmId", cursor.getString(cursor.getColumnIndex("bigfarmId")));
-                            jsonObject0.put("name", cursor.getString(cursor.getColumnIndex("name")));
-                            jsonObject0.put("description", cursor.getString(cursor.getColumnIndex("description")));
-                            jsonObject0.put("img", cursor.getString(cursor.getColumnIndex("img")));
-                            jsonObject0.put("year", cursor.getInt(cursor.getColumnIndex("year")));
-                            mBigFarmList.add(jsonObject0);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.e("bigfarmId_error", cursor.getString(cursor.getColumnIndex("bigfarmId")));
-                        }
-                    } while (cursor.moveToNext());
-                }
-                cursor.close();
-                if (mBigFarmList.size() == 0) {
-                    Toast.makeText(MainActivity.this, "数据为空，请下载数据后重试！", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intent_general = new Intent(MainActivity.this, BigfarmClickActivity.class);
-//                intent_general.putExtra("userRole", userRole);
-                    startActivity(intent_general);
-                }
+                Intent intent_general = new Intent(MainActivity.this, BigfarmClickActivity.class);
+//              intent_general.putExtra("userRole", userRole);
+                startActivity(intent_general);
                 break;
             case R.id.btn_mutlilevel:
-                Cursor cursor2 = db.query("BigfarmList", null, null, null, null, null, null);
-
-                if (cursor2.moveToFirst()) {
-                    do {
-                        JSONObject jsonObject0 = new JSONObject();
-                        try {
-                            jsonObject0.put("bigfarmId", cursor2.getString(cursor2.getColumnIndex("bigfarmId")));
-                            jsonObject0.put("name", cursor2.getString(cursor2.getColumnIndex("name")));
-                            jsonObject0.put("description", cursor2.getString(cursor2.getColumnIndex("description")));
-                            jsonObject0.put("img", cursor2.getString(cursor2.getColumnIndex("img")));
-                            jsonObject0.put("year", cursor2.getInt(cursor2.getColumnIndex("year")));
-                            mBigFarmList.add(jsonObject0);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.e("bigfarmId_error", cursor2.getString(cursor2.getColumnIndex("bigfarmId")));
-                        }
-                    } while (cursor2.moveToNext());
-                }
-                cursor2.close();
-
-                if (mBigFarmList.size() == 0) {
-                    Toast.makeText(MainActivity.this, "数据为空，请下载数据后重试！", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intent_mutlilevel = new Intent(MainActivity.this, MultiLevelActivity.class);
-                    startActivity(intent_mutlilevel);
-                }
+//                Cursor cursor2 = db.query("BigfarmList", null, null, null, null, null, null);
+//
+//                if (cursor2.moveToFirst()) {
+//                    do {
+//                        JSONObject jsonObject0 = new JSONObject();
+//                        try {
+//                            jsonObject0.put("bigfarmId", cursor2.getString(cursor2.getColumnIndex("bigfarmId")));
+//                            jsonObject0.put("name", cursor2.getString(cursor2.getColumnIndex("name")));
+//                            jsonObject0.put("description", cursor2.getString(cursor2.getColumnIndex("description")));
+//                            jsonObject0.put("img", cursor2.getString(cursor2.getColumnIndex("img")));
+//                            jsonObject0.put("year", cursor2.getInt(cursor2.getColumnIndex("year")));
+//                            mBigFarmList.add(jsonObject0);
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                            Log.e("bigfarmId_error", cursor2.getString(cursor2.getColumnIndex("bigfarmId")));
+//                        }
+//                    } while (cursor2.moveToNext());
+//                }
+//                cursor2.close();
+//
+//                if (mBigFarmList.size() == 0) {
+//                    Toast.makeText(MainActivity.this, "数据为空，请下载数据后重试！", Toast.LENGTH_SHORT).show();
+//                } else {
+                Intent intent_mutlilevel = new Intent(MainActivity.this, MultiLevelActivity.class);
+                startActivity(intent_mutlilevel);
+//                }
                 break;
             case R.id.btn_data:
                 final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(MainActivity.this).builder()

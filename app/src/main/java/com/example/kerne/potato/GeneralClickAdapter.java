@@ -87,8 +87,8 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
             type = jsonObject.getString("type");
 //            userRole = jsonObject.getString("userRole");
 //            holder.tvNum.setText("实验田序号：" + farmlandId);
-            holder.tvName.setText("实验田名称：" + name);
-            holder.tvType.setText("实验田类型：" + type);
+            holder.tvName.setText("实验田：" + name);
+            holder.tvType.setText("类型：" + type);
             if (type.equals("greenhouse")) {
                 holder.is_shack.setVisibility(View.VISIBLE);
             } else {
@@ -134,14 +134,8 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                     intent.putExtra("bigFarmName", bigFarmName);
                     intent.putExtra("year", year);
                     mContext.startActivity(intent);
+                    Toast.makeText(mContext, "试验田：" + name, Toast.LENGTH_SHORT).show();
                 } else if (type.equals("greenhouse")) {
-                    intent = new Intent(mContext, TableActivity.class);
-                    final int[] status = new int[1];
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-//                    builder.setTitle("选择一个操作");
-//                    // 指定下拉列表的显示数据
-//                    final String[] options = {"品种规划", "查看品种规划详情"};
-//                    // 设置一个下拉的列表选择项
                     try {
                         expType = jsonObject.getString("expType");
                         fieldId = jsonObject.getString("fieldId");
@@ -152,48 +146,25 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    if (num == 0) {
+                        Toast.makeText(mContext, R.string.shack_farm_null_error, Toast.LENGTH_SHORT).show();
+                    } else {
+                        intent = new Intent(mContext, TableActivity.class);
 
-                    final Intent finalIntent = intent;
-                    finalIntent.putExtra("expType", expType);
-                    finalIntent.putExtra("fieldId", fieldId);
-                    finalIntent.putExtra("num", num);
-                    finalIntent.putExtra("rows", rows);
-                    finalIntent.putExtra("farmlandId", farmlandId);
-                    finalIntent.putExtra("type", type);
-                    finalIntent.putExtra("farmName", name);
-                    finalIntent.putExtra("bigFarmName", bigFarmName);
-                    finalIntent.putExtra("year", year);
-                    mContext.startActivity(finalIntent);
-//                    builder.setItems(options, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            if(which == 0){    // 点击第一个操作"品种规划"时
-////                                intent = new Intent(mContext, TableActivity.class);
-//                                finalIntent.putExtra("status", STATUS_EDIT);
-//                                finalIntent.putExtra("expType", expType);
-//                                finalIntent.putExtra("fieldId", fieldId);
-//                                finalIntent.putExtra("num", num);
-//                                finalIntent.putExtra("rows", rows);
-//                                finalIntent.putExtra("farmlandId", farmlandId);
-//                                finalIntent.putExtra("type", type);
-//                                mContext.startActivity(finalIntent);
-////                                        intent.putExtra("userRole", userRole);
-//                            }
-//                            else {   // 点击第二个操作"查看品种规划详情"时
-//                                finalIntent.putExtra("status", STATUS_READ);
-//                                finalIntent.putExtra("expType", expType);
-//                                finalIntent.putExtra("fieldId", fieldId);
-//                                finalIntent.putExtra("num", num);
-//                                finalIntent.putExtra("rows", rows);
-//                                finalIntent.putExtra("farmlandId", farmlandId);
-//                                finalIntent.putExtra("type", type);
-//                                mContext.startActivity(finalIntent);
-//                            }
-//                        }
-//                    });
-//                    builder.show();
+                        final Intent finalIntent = intent;
+                        finalIntent.putExtra("expType", expType);
+                        finalIntent.putExtra("fieldId", fieldId);
+                        finalIntent.putExtra("num", num);
+                        finalIntent.putExtra("rows", rows);
+                        finalIntent.putExtra("farmlandId", farmlandId);
+                        finalIntent.putExtra("type", type);
+                        finalIntent.putExtra("farmName", name);
+                        finalIntent.putExtra("bigFarmName", bigFarmName);
+                        finalIntent.putExtra("year", year);
+                        mContext.startActivity(finalIntent);
+                        Toast.makeText(mContext, "试验田：" + name, Toast.LENGTH_SHORT).show();
+                    }
                 }
-
 //                //弹出输入年份的对话框
 //                final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(mContext).builder()
 //                        .setTitle("请输入年份：")
@@ -263,7 +234,6 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
 //                });
 //                builder.show();
 
-                Toast.makeText(mContext, "你点击的farmlandId是：" + farmlandId, Toast.LENGTH_SHORT).show();
             }
         });
 

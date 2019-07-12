@@ -13,4 +13,14 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    //错误Tip
+    <string name="bigFarm_null_error">"无试验基地信息"</string>
+    <string name="farm_null_error">"无试验田信息"</string>
+    <string name="shack_farm_null_error">"无棚内试验田信息"</string>
+    <string name="field_null_error">"无试验田规划信息"</string>
+    <string name="field_plan_null_error">"选择的试验田尚未规划种植图"</string>
+    <string name="species_null_error">"无试验品种信息"</string>
+    <string name="null_error">"未知错误"</string>
+    <string name="species_click_tip">请点击品种名称</string>
 </resources>
