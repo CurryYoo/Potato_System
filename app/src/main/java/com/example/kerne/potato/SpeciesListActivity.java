@@ -48,14 +48,7 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
     LinearLayout leftOneLayout;
     @BindView(R.id.title_text)
     TextView titleText;
-    @BindView(R.id.right_two_button)
-    ImageView rightTwoButton;
-    @BindView(R.id.right_two_layout)
-    LinearLayout rightTwoLayout;
-    @BindView(R.id.right_one_button)
-    ImageView rightOneButton;
-    @BindView(R.id.right_one_layout)
-    LinearLayout rightOneLayout;
+    private  Thread thread;
 
     private List<JSONObject> mList = new ArrayList<>();
     private List<JSONObject> jList = new ArrayList<>();
@@ -72,10 +65,6 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
                 case R.id.left_one_layout:
                     finish();
                     break;
-                case R.id.right_one_layout:
-                    Intent intent = new Intent(SpeciesListActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    break;
                 default:
                     break;
             }
@@ -87,23 +76,16 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
         setContentView(R.layout.species_list_activity);
         ButterKnife.bind(this);
 
-        initToolBar();
         Intent intent = getIntent();
         speciesId = intent.getStringExtra("speciesId");
+        initToolBar();
 //        userRole = intent.getStringExtra("userRole");
 
         initData();
-
-        //initView();
     }
     private void initToolBar() {
-        titleText.setText("");
+        titleText.setText(speciesId);
         leftOneButton.setBackgroundResource(R.drawable.left_back);
-        rightOneButton.setBackgroundResource(R.drawable.ic_menu_home);
-        rightTwoButton.setBackgroundResource(R.drawable.ic_menu_map);
-
-        leftOneLayout.setOnClickListener(toolBarOnClickListener);
-        rightOneLayout.setOnClickListener(toolBarOnClickListener);
     }
 
     private void initData() {
@@ -144,7 +126,7 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
                         }
                     } while (cursor.moveToNext());
                 } else {
-                    Toast.makeText(SpeciesListActivity.this, "该品种不存在！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SpeciesListActivity.this, "品种不存在", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(SpeciesListActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
@@ -154,7 +136,7 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
                     if (cursor.moveToFirst()) {
                         expType = cursor.getString(cursor.getColumnIndex("expType"));
                     } else {
-                        Toast.makeText(SpeciesListActivity.this, "Do not have the fieldId '" + fieldId + "' in ExperimentField", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SpeciesListActivity.this, "实验田中无 " + fieldId +" 相关信息", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -230,6 +212,6 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
 
     @Override
     public void onItemClick(String content) {
-        Toast.makeText(this, "你点击的是：" + content, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "品种编号：" + content, Toast.LENGTH_SHORT).show();
     }
 }

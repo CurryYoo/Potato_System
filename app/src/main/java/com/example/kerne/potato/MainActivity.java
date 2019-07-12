@@ -898,13 +898,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         //showMsg(myAlertInputDialog.getResult());
                         String speciesId;
                         speciesId = myAlertInputDialog.getResult();
-
-                        Intent intent = new Intent(MainActivity.this, SpeciesListActivity.class);
-                        intent.putExtra("speciesId", speciesId);
-                        intent.putExtra("userRole", userRole);
-                        startActivity(intent);
-                        dbHelper.close();
-                        myAlertInputDialog.dismiss();
+                        if ("".equals(speciesId)) {
+                            Toast.makeText(MainActivity.this, "请输入品种编号", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Intent intent = new Intent(MainActivity.this, SpeciesListActivity.class);
+                            intent.putExtra("speciesId", speciesId);
+                            intent.putExtra("userRole", userRole);
+                            startActivity(intent);
+                            dbHelper.close();
+                            myAlertInputDialog.dismiss();
+                        }
                     }
                 }).setNegativeButton("取消", new View.OnClickListener() {
                     @Override
