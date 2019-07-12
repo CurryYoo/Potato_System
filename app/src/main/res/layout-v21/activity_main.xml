@@ -18,11 +18,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnCount="2"
-            android:paddingStart="@dimen/dp_20"
-            android:paddingLeft="@dimen/dp_20"
+            android:paddingStart="@dimen/dp_10"
             android:paddingTop="@dimen/dp_10"
-            android:paddingEnd="@dimen/dp_20"
-            android:paddingBottom="@dimen/dp_20"
+            android:paddingEnd="@dimen/dp_5"
+            android:paddingBottom="@dimen/dp_10"
             android:rowCount="3">
 
             <LinearLayout
@@ -38,8 +37,8 @@
                 android:padding="@dimen/dp_5">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginBottom="@dimen/dp_10"
@@ -53,6 +52,7 @@
                     android:paddingTop="@dimen/dp_3"
                     android:paddingBottom="@dimen/dp_3"
                     android:text="下载离线数据"
+                    android:textSize="15sp"
                     android:textColor="@color/colorRed"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -71,8 +71,8 @@
                 android:padding="@dimen/dp_5">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginBottom="@dimen/dp_10"
@@ -86,6 +86,7 @@
                     android:paddingTop="@dimen/dp_3"
                     android:paddingBottom="@dimen/dp_3"
                     android:text="实验田列表"
+                    android:textSize="15sp"
                     android:textColor="@color/colorGrey"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -103,8 +104,8 @@
                 android:padding="@dimen/dp_5">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginBottom="@dimen/dp_10"
@@ -118,6 +119,7 @@
                     android:paddingTop="@dimen/dp_3"
                     android:paddingBottom="@dimen/dp_3"
                     android:text="实验田目录树"
+                    android:textSize="15sp"
                     android:textColor="@color/colorOrange"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -135,8 +137,8 @@
                 android:padding="@dimen/dp_5">
 
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginBottom="@dimen/dp_10"
@@ -150,6 +152,7 @@
                     android:paddingTop="@dimen/dp_3"
                     android:paddingBottom="@dimen/dp_3"
                     android:text="精准搜索品种"
+                    android:textSize="15sp"
                     android:textColor="@color/colorPink"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -168,8 +171,8 @@
 
                 <ImageView
                     android:id="@+id/update_location_data_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginBottom="@dimen/dp_10"
@@ -183,6 +186,7 @@
                     android:paddingTop="@dimen/dp_3"
                     android:paddingBottom="@dimen/dp_3"
                     android:text="上传品种位置规划数据"
+                    android:textSize="15sp"
                     android:textColor="@color/colorBlue"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -201,8 +205,8 @@
 
                 <ImageView
                     android:id="@+id/update_pick_data_icon"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginBottom="@dimen/dp_10"
@@ -216,6 +220,7 @@
                     android:paddingTop="@dimen/dp_3"
                     android:paddingBottom="@dimen/dp_3"
                     android:text="上传品种采集数据"
+                    android:textSize="15sp"
                     android:textColor="@color/colorGreen"
                     android:textStyle="bold" />
             </LinearLayout>
