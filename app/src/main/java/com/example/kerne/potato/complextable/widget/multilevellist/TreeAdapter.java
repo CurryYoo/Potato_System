@@ -172,10 +172,14 @@ public class TreeAdapter extends BaseAdapter {
                 holder.icon.setVisibility(View.VISIBLE);
                 holder.icon.setImageResource(R.drawable.outline_list_expand);
             }
+            holder.text.setTextColor(mcontext.getResources().getColor(R.color.primary_text));
         } else {   //如果叶子节点，不占位显示
             holder.icon.setImageResource(R.drawable.outline_list_expand);
             holder.icon.setVisibility(View.INVISIBLE);
+            holder.text.setTextColor(mcontext.getResources().getColor(R.color.colorOrange));
         }
+
+
         //如果存在搜索关键字
         if (keyword != null && !"".equals(keyword) && tempPoint.getNNAME().contains(keyword)) {
             int index = tempPoint.getNNAME().indexOf(keyword);
@@ -183,7 +187,7 @@ public class TreeAdapter extends BaseAdapter {
             Spanned temp = Html.fromHtml(tempPoint.getNNAME().substring(0, index)
                     + "<font color=#FF0000>"
                     + tempPoint.getNNAME().substring(index, index + len) + "</font>"
-                    + tempPoint.getNNAME().substring(index + len, tempPoint.getNNAME().length()));
+                    + tempPoint.getNNAME().substring(index + len));
 
             holder.text.setText(temp);
         } else {
@@ -226,38 +230,31 @@ public class TreeAdapter extends BaseAdapter {
     }
 
 
-    //选择操作
-    private void onModeSelect(TreePoint treePoint) {
-        if ("1".equals(treePoint.getISLEAF())) {   //选择叶子节点
-            //处理回填
-            treePoint.setSelected(!treePoint.isSelected());
-        } else {                                   //选择父节点
-            int position = pointList.indexOf(treePoint);
-            boolean isSelect = treePoint.isSelected();
-            treePoint.setSelected(!isSelect);
-            if (position == -1) {
-                return;
-            }
-            if (position == pointList.size() - 1) {
-                return;
-            }
-            position++;
-            for (; position < pointList.size(); position++) {
-                TreePoint tempPoint = pointList.get(position);
-                if (tempPoint.getPARENTID().equals(treePoint.getPARENTID())) {    //如果找到和自己同级的数据就返回
-                    break;
-                }
-                tempPoint.setSelected(!isSelect);
-            }
-        }
-        this.notifyDataSetChanged();
-    }
-
-    //选中所有的point
-//    private void selectPoint(TreePoint treePoint) {
-//        if(){
-//
+//    //选择操作
+//    private void onModeSelect(TreePoint treePoint) {
+//        if ("1".equals(treePoint.getISLEAF())) {   //选择叶子节点
+//            //处理回填
+//            treePoint.setSelected(!treePoint.isSelected());
+//        } else {                                   //选择父节点
+//            int position = pointList.indexOf(treePoint);
+//            boolean isSelect = treePoint.isSelected();
+//            treePoint.setSelected(!isSelect);
+//            if (position == -1) {
+//                return;
+//            }
+//            if (position == pointList.size() - 1) {
+//                return;
+//            }
+//            position++;
+//            for (; position < pointList.size(); position++) {
+//                TreePoint tempPoint = pointList.get(position);
+//                if (tempPoint.getPARENTID().equals(treePoint.getPARENTID())) {    //如果找到和自己同级的数据就返回
+//                    break;
+//                }
+//                tempPoint.setSelected(!isSelect);
+//            }
 //        }
+//        this.notifyDataSetChanged();
 //    }
 
 

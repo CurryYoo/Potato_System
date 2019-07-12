@@ -13,7 +13,7 @@
         android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"/>
 
     <TextView
         android:id="@+id/text"
@@ -22,7 +22,8 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/icon"
         android:gravity="center_vertical"
-        android:text="123"
+        android:text="item"
+        android:layout_marginStart="5dp"
         android:textColor="@color/primary_text"
         android:textSize="15sp" />
 </RelativeLayout>
