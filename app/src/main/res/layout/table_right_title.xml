@@ -6,11 +6,13 @@
 
     <TextView android:id="@+id/tv_table_title_0"
               style="@style/TextView_Table_Right"
-              android:text="品种名称Ⅰ"/>
+              android:text="品种名称Ⅰ"
+        android:textSize="14sp"/>
 
     <TextView android:id="@+id/tv_table_title_1"
               style="@style/TextView_Table_Right"
-              android:text="品种名称Ⅱ"/>
+              android:text="品种名称Ⅱ"
+        android:textSize="14sp"/>
 
     <TextView android:id="@+id/tv_table_title_2"
               style="@style/TextView_Table_Right"

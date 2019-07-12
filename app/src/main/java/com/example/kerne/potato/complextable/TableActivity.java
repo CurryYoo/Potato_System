@@ -142,6 +142,7 @@ public class TableActivity extends AppCompatActivity {
                         status = STATUS_EDIT;
                         rightTwoButton.setBackgroundResource(R.drawable.ic_menu_no_save);
                         titleText.setText("品种规划");
+                        tableDescription.setEnabled(true);
                         Toast.makeText(TableActivity.this, "进入品种规划", Toast.LENGTH_SHORT).show();
                     } else {
 
@@ -188,6 +189,7 @@ public class TableActivity extends AppCompatActivity {
                         status = STATUS_READ;
                         rightTwoButton.setBackgroundResource(R.drawable.ic_menu_plan);
                         titleText.setText("品种种植");
+                        tableDescription.setEnabled(false);
                         Toast.makeText(TableActivity.this, "保存成功，退出品种规划", Toast.LENGTH_SHORT).show();
                         editor.putBoolean("update_location_data", true);
                         editor.apply();
