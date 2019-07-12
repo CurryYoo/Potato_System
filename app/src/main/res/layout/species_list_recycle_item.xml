@@ -27,7 +27,7 @@
         android:textColor="@color/colorGrey"
         android:textSize="12sp"
         android:textStyle="bold"
-        tools:text="1" />
+        tools:text="1234" />
 
 
     <TextView

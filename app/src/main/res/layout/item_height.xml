@@ -100,6 +100,7 @@
                 android:layout_marginStart="@dimen/dp_5"
                 android:gravity="center_horizontal"
                 android:text="平均株高:"
+                android:textSize="12sp"
                 android:textColor="@color/colorGreen" />
 
             <EditText
@@ -192,7 +193,7 @@
             android:stateListAnimator="@null"
             android:layout_marginTop="@dimen/dp_5"
             android:layout_marginBottom="@dimen/dp_10"
-            android:text="计算"
+            android:text="计 算"
             android:textStyle="bold"
             android:textSize="18sp"
             android:textColor="@color/white"
