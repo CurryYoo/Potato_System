@@ -599,6 +599,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        //获取大田信息
         switch (v.getId()) {
             case R.id.btn_download:
                 Toast.makeText(MainActivity.this, "开始下载数据……", Toast.LENGTH_SHORT).show();
@@ -866,18 +867,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.btn_general:
-                Intent intent_general = new Intent(MainActivity.this, BigfarmClickActivity.class);
-//                intent_general.putExtra("userRole", userRole);
-                startActivity(intent_general);
-                dbHelper.close();
-                break;
-
-            case R.id.btn_mutlilevel:
-                //获取服务器中数据
-                SpeciesDBHelper db_Helper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
-                SQLiteDatabase db = db_Helper.getReadableDatabase();
-
-                //获取大田信息
                 Cursor cursor = db.query("BigfarmList", null, null, null, null, null, null);
                 if (cursor.moveToFirst()) {
                     do {
@@ -888,21 +877,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             jsonObject0.put("description", cursor.getString(cursor.getColumnIndex("description")));
                             jsonObject0.put("img", cursor.getString(cursor.getColumnIndex("img")));
                             jsonObject0.put("year", cursor.getInt(cursor.getColumnIndex("year")));
-
-//                    jsonObject0.put("userRole", userRole);
                             mBigFarmList.add(jsonObject0);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.e("bigfarmId_error", cursor.getString(cursor.getColumnIndex("bigfarmId")));
                         }
                     } while (cursor.moveToNext());
-                } else {
-                    Toast.makeText(MainActivity.this, "BigfarmList null", Toast.LENGTH_SHORT).show();
                 }
                 cursor.close();
+                if (mBigFarmList.size() == 0) {
+                    Toast.makeText(MainActivity.this, "数据为空，请下载数据后重试！", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent_general = new Intent(MainActivity.this, BigfarmClickActivity.class);
+//                intent_general.putExtra("userRole", userRole);
+                    startActivity(intent_general);
+                }
+                break;
+            case R.id.btn_mutlilevel:
+                Cursor cursor2 = db.query("BigfarmList", null, null, null, null, null, null);
 
-                db.close();
-                db_Helper.close();
+                if (cursor2.moveToFirst()) {
+                    do {
+                        JSONObject jsonObject0 = new JSONObject();
+                        try {
+                            jsonObject0.put("bigfarmId", cursor2.getString(cursor2.getColumnIndex("bigfarmId")));
+                            jsonObject0.put("name", cursor2.getString(cursor2.getColumnIndex("name")));
+                            jsonObject0.put("description", cursor2.getString(cursor2.getColumnIndex("description")));
+                            jsonObject0.put("img", cursor2.getString(cursor2.getColumnIndex("img")));
+                            jsonObject0.put("year", cursor2.getInt(cursor2.getColumnIndex("year")));
+                            mBigFarmList.add(jsonObject0);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.e("bigfarmId_error", cursor2.getString(cursor2.getColumnIndex("bigfarmId")));
+                        }
+                    } while (cursor2.moveToNext());
+                }
+                cursor2.close();
+
                 if (mBigFarmList.size() == 0) {
                     Toast.makeText(MainActivity.this, "数据为空，请下载数据后重试！", Toast.LENGTH_SHORT).show();
                 } else {
@@ -939,10 +950,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //弹出软键盘
                 delayShowSoftKeyBoard(myAlertInputDialog.getContentEditText());
                 break;
-/*            case R.id.commit_data:
-                Intent intent = new Intent(MainActivity.this, SaveDataActivity.class);
-                startActivity(intent);
-                break;*/
             default:
                 break;
         }

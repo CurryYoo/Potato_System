@@ -16,7 +16,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,7 +26,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.kerne.potato.BigfarmClickActivity;
 import com.example.kerne.potato.MainActivity;
 import com.example.kerne.potato.R;
 import com.example.kerne.potato.complextable.base.RefreshParams;
@@ -71,14 +69,10 @@ public class TableActivity extends AppCompatActivity {
     ImageView rightOneButton;
     @BindView(R.id.right_one_layout)
     LinearLayout rightOneLayout;
-    @BindView(R.id.table_big_farm)
-    TextView tableBigFarm;
-    @BindView(R.id.table_farm)
-    TextView tableFarm;
-    @BindView(R.id.table_date)
-    TextView tableDate;
     @BindView(R.id.table_description)
     EditText tableDescription;
+    @BindView(R.id.table_info)
+    TextView tableInfo;
     /**
      * 用于存放标题的id,与textview引用
      */
@@ -221,9 +215,9 @@ public class TableActivity extends AppCompatActivity {
         fieldId = getIntent().getStringExtra("fieldId");
         expType = getIntent().getStringExtra("expType");
         type = getIntent().getStringExtra("type");
-        bigFarmName =getIntent().getStringExtra("bigFarmName");
+        bigFarmName = getIntent().getStringExtra("bigFarmName");
         farmName = getIntent().getStringExtra("farmName");
-        year=getIntent().getIntExtra("year",1970);
+        year = getIntent().getIntExtra("year", 1970);
         farmlandId = getIntent().getStringExtra("farmlandId");
         Log.d("farmlandId", farmlandId);
 
@@ -420,9 +414,7 @@ public class TableActivity extends AppCompatActivity {
 
     public void init() {
         mContext = getApplicationContext();
-        tableBigFarm.setText("试验基地："+ bigFarmName);
-        tableFarm.setText("试验田：" + farmName);
-        tableDate.setText("年份："+year);
+        tableInfo.setText("试验基地：" + bigFarmName+"   试验田：" + farmName+"   年份：" + year);
         tableDescription.setText(description);
         findByid();
         setListener();
@@ -619,8 +611,7 @@ public class TableActivity extends AppCompatActivity {
                                 String speciesId = tv.getText().toString();
                                 if (speciesId.equals("")) {
                                     Toast.makeText(TableActivity.this, "请填写品种名称", Toast.LENGTH_SHORT).show();
-                                }
-                                else {
+                                } else {
                                     Cursor c = db.query("SpeciesList", null, "speciesId=? and fieldId=?",
                                             new String[]{speciesId, fieldId}, null, null, null);
                                     if (c.moveToFirst()) {
