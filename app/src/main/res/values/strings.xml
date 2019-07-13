@@ -23,4 +23,9 @@
     <string name="species_null_error">"无试验品种信息"</string>
     <string name="null_error">"未知错误"</string>
     <string name="species_click_tip">请点击品种名称</string>
+
+    //
+    <string name="home_page">主页</string>
+    <string name="back_left">返回</string>
+    <string name="save_data">保存</string>
 </resources>

@@ -9,6 +9,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -143,6 +144,9 @@ public class TableActivity extends AppCompatActivity {
                         status = STATUS_EDIT;
                         rightTwoButton.setBackgroundResource(R.drawable.ic_menu_no_save);
                         titleText.setText("品种规划");
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            rightTwoLayout.setTooltipText(getResources().getText(R.string.save_data));
+                        }
                         tableDescription.setEnabled(true);
                         Toast.makeText(TableActivity.this, "进入品种规划", Toast.LENGTH_SHORT).show();
                     } else {
@@ -190,8 +194,11 @@ public class TableActivity extends AppCompatActivity {
                         status = STATUS_READ;
                         rightTwoButton.setBackgroundResource(R.drawable.ic_menu_plan);
                         titleText.setText("品种种植");
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            rightTwoLayout.setTooltipText("品种规划");
+                        }
                         tableDescription.setEnabled(false);
-                        Toast.makeText(TableActivity.this, "保存成功，退出品种规划", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TableActivity.this, "保存完成，退出品种规划", Toast.LENGTH_SHORT).show();
                         editor.putBoolean("update_location_data", true);
                         editor.apply();
                     }
@@ -351,6 +358,13 @@ public class TableActivity extends AppCompatActivity {
         leftOneLayout.setOnClickListener(toolBarOnClickListener);
         rightOneLayout.setOnClickListener(toolBarOnClickListener);
         rightTwoLayout.setOnClickListener(toolBarOnClickListener);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            leftOneLayout.setTooltipText(getResources().getText(R.string.back_left));
+            rightOneLayout.setTooltipText(getResources().getText(R.string.home_page));
+            rightTwoLayout.setTooltipText("品种规划");
+        }
+
     }
 
     //组装数据

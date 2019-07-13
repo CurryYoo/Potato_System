@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -185,6 +186,11 @@ public class GeneralActivity extends AppCompatActivity {
 
         leftOneLayout.setOnClickListener(toolBarOnClickListener);
         rightOneLayout.setOnClickListener(toolBarOnClickListener);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            leftOneLayout.setTooltipText(getResources().getText(R.string.back_left));
+            rightOneLayout.setTooltipText(getResources().getText(R.string.home_page));
+        }
     }
 
 

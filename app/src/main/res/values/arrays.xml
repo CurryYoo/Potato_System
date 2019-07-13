@@ -6,7 +6,7 @@
         <item>深绿</item>
     </string-array>
 
-    <string-array name="corolla_colors">
+    <string-array name="corolla_colors" >
         <item>白</item>
         <item>浅红</item>
         <item>红</item>

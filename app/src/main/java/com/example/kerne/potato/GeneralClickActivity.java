@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -110,9 +112,16 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
         rightOneButton.setBackgroundResource(R.drawable.ic_menu_home);
         rightTwoButton.setBackgroundResource(R.drawable.ic_menu_map);
 
+
         leftOneLayout.setOnClickListener(toolBarOnClickListener);
         rightOneLayout.setOnClickListener(toolBarOnClickListener);
         rightTwoLayout.setOnClickListener(toolBarOnClickListener);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            leftOneLayout.setTooltipText(getResources().getText(R.string.back_left));
+            rightOneLayout.setTooltipText(getResources().getText(R.string.home_page));
+            rightTwoLayout.setTooltipText("试验田示意图");
+        }
     }
 
 

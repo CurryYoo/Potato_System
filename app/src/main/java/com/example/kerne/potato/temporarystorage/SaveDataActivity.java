@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,7 +21,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,11 +91,11 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     //    private String commitId = "initial id";
     //实验类型
     EditText edtExperimentType = null;
-    EditText edtSowingPeriodInput = null;
-    EditText edtEmergencePeriod = null;
+    TextView edtSowingPeriodInput = null;
+    TextView edtEmergencePeriod = null;
     EditText edtRateOfEmergence = null;
-    EditText edtSquaringPeriod = null;
-    EditText edtFloweringPeriod = null;
+    TextView edtSquaringPeriod = null;
+    TextView edtFloweringPeriod = null;
 
     private Spinner spnLeafColor = null;
     private Spinner spnCorollaColors = null;
@@ -105,7 +103,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     private Spinner spnStemColor = null;
     private Spinner spnNaturalFecundity = null;
 
-    EditText edtMaturePeriod = null;
+    TextView edtMaturePeriod = null;
 
     private EditText edtGrowingDays = null;
     private Spinner spnTuberUniformity = null;
@@ -339,39 +337,40 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         initToolBar();
 
         //品种Id
-        edtSpeciesID = (EditText) findViewById(R.id.edt_species_id);
+        edtSpeciesID = findViewById(R.id.edt_species_id);
         edtSpeciesID.setText(speciesId);
         edtSpeciesID.setSelection(speciesId.length());
 
         //实验类型
-        edtExperimentType = (EditText) findViewById(R.id.edt_experiment_type);
+        edtExperimentType = findViewById(R.id.edt_experiment_type);
         edtExperimentType.setText(expType);
 
         //播种期
-        edtSowingPeriodInput = (EditText) findViewById(R.id.sowing_period_input);
+        edtSowingPeriodInput = findViewById(R.id.sowing_period_input);
 //        edtSowingPeriodInput.setInputType(InputType.TYPE_NULL);
         edtSowingPeriodInput.setOnClickListener(this);
 
         //出苗期
-        edtEmergencePeriod = (EditText) findViewById(R.id.emergence_period);
+        edtEmergencePeriod = findViewById(R.id.emergence_period);
 //        edtEmergencePeriod.setInputType(InputType.TYPE_NULL);
         edtEmergencePeriod.setOnClickListener(this);
 
         //出苗率
-        edtRateOfEmergence = (EditText) findViewById(R.id.edt_rate_of_emergence);
+        edtRateOfEmergence = findViewById(R.id.edt_rate_of_emergence);
 
         //现蕾期
-        edtSquaringPeriod = (EditText) findViewById(R.id.squaring_period);
+        edtSquaringPeriod = findViewById(R.id.squaring_period);
 //        edtSquaringPeriod.setInputType(InputType.TYPE_NULL);
         edtSquaringPeriod.setOnClickListener(this);
 
         //开花期
-        edtFloweringPeriod = (EditText) findViewById(R.id.flowering_period);
+        edtFloweringPeriod = findViewById(R.id.flowering_period);
 //        edtFloweringPeriod.setInputType(InputType.TYPE_NULL);
         edtFloweringPeriod.setOnClickListener(this);
 
         //叶颜色
-        spnLeafColor = (Spinner) findViewById(R.id.spn_colors);
+        spnLeafColor = findViewById(R.id.spn_colors);
+        spnLeafColor.setPopupBackgroundResource(R.drawable.bg_spinner_drop_down);
         //叶颜色拍照
         ImageButton imbTakePhotoColor = (ImageButton) findViewById(R.id.imb_colors);
         imbTakePhotoColor.setOnClickListener(this);
@@ -383,6 +382,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
         //花冠色
         spnCorollaColors = (Spinner) findViewById(R.id.corolla_colors);
+        spnCorollaColors.setPopupBackgroundResource(R.drawable.bg_spinner_drop_down);
         //花冠色拍照
         ImageButton imbTakePhotoCorollaColors = (ImageButton) findViewById(R.id.imb_corolla_colors);
         imbTakePhotoCorollaColors.setOnClickListener(this);
@@ -394,6 +394,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
         //花繁茂性
         spnPlantFlourish = (Spinner) findViewById(R.id.plant_flourish);
+        spnPlantFlourish.setPopupBackgroundResource(R.drawable.bg_spinner_drop_down);
         //花繁茂性拍照
         ImageButton imbTakePhotoPlantFlourish = (ImageButton) findViewById(R.id.imb_plant_flourish);
         imbTakePhotoPlantFlourish.setOnClickListener(this);
@@ -405,6 +406,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
         //茎色
         spnStemColor = (Spinner) findViewById(R.id.stem_color);
+        spnStemColor.setPopupBackgroundResource(R.drawable.bg_spinner_drop_down);
         //茎色拍照
         ImageButton imbTakePhotoStemColor = (ImageButton) findViewById(R.id.imb_stem_color);
         imbTakePhotoStemColor.setOnClickListener(this);
@@ -416,6 +418,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
         //天然结实性
         spnNaturalFecundity = (Spinner) findViewById(R.id.natural_fecundity);
+        spnNaturalFecundity.setPopupBackgroundResource(R.drawable.bg_spinner_drop_down);
         //天然结实性拍照
         ImageButton imbTakePhotoNaturalFecundity = (ImageButton) findViewById(R.id.imb_natural_fecundity);
         imbTakePhotoNaturalFecundity.setOnClickListener(this);
@@ -426,7 +429,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         btnSelectPhotoFromAlbumNaturalFecundity.setOnClickListener(this);
 
         //成熟期
-        edtMaturePeriod = (EditText) findViewById(R.id.mature_period);
+        edtMaturePeriod = findViewById(R.id.mature_period);
 //        edtMaturePeriod.setInputType(InputType.TYPE_NULL);
         edtMaturePeriod.setOnClickListener(this);
 
@@ -438,6 +441,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
         //块茎整齐度
         spnTuberUniformity = (Spinner) findViewById(R.id.tuber_uniformity);
+        spnTuberUniformity.setPopupBackgroundResource(R.drawable.bg_spinner_drop_down);
         //块茎整齐度拍照
 //        ImageButton imbTakePhotoTuberUniformity = (ImageButton) findViewById(R.id.imb_tuber_uniformity);
 //        imbTakePhotoTuberUniformity.setOnClickListener(this);
@@ -446,6 +450,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
         //薯型
         spnTuberShape = (Spinner) findViewById(R.id.tuber_shape);
+        spnTuberShape.setPopupBackgroundResource(R.drawable.bg_spinner_drop_down);
         //薯型拍照
 //        ImageButton imbTakePhotoTuberShape = (ImageButton) findViewById(R.id.imb_tuber_shape);
 //        imbTakePhotoTuberShape.setOnClickListener(this);
@@ -454,6 +459,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
         //薯皮光滑度
         spnPotatoSkinSmoothness = (Spinner) findViewById(R.id.potato_skin_smoothness);
+        spnPotatoSkinSmoothness.setPopupBackgroundResource(R.drawable.bg_spinner_drop_down);
         //薯皮光滑度拍照
 //        ImageButton imbTakePhotoPotatoSkinSmoothness = (ImageButton) findViewById(R.id.imb_potato_skin_smoothness);
 //        imbTakePhotoPotatoSkinSmoothness.setOnClickListener(this);
@@ -462,6 +468,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
         //芽眼深浅
         spnEye = (Spinner) findViewById(R.id.eye);
+        spnEye.setPopupBackgroundResource(R.drawable.bg_spinner_drop_down);
         //芽眼深浅拍照
 //        ImageButton imbTakePhotoEye = (ImageButton) findViewById(R.id.imb_eye);
 //        imbTakePhotoEye.setOnClickListener(this);
@@ -470,6 +477,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
         //皮色
         spnSkinColor = (Spinner) findViewById(R.id.skin_color);
+        spnSkinColor.setPopupBackgroundResource(R.drawable.bg_spinner_drop_down);
         //皮色拍照
 //        ImageButton imbTakePhotoSkinColor = (ImageButton) findViewById(R.id.imb_skin_color);
 //        imbTakePhotoSkinColor.setOnClickListener(this);
@@ -478,6 +486,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
         //肉色
         spnFleshColor = (Spinner) findViewById(R.id.flesh_color);
+        spnFleshColor.setPopupBackgroundResource(R.drawable.bg_spinner_drop_down);
         //肉色拍照
 //        ImageButton imbTakePhotoFleshColor = (ImageButton) findViewById(R.id.imb_flesh_color);
 //        imbTakePhotoFleshColor.setOnClickListener(this);
@@ -616,11 +625,13 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 //开花期
                 String blooming = cursor.getString(7);
                 edtFloweringPeriod.setText(blooming);
+
                 //叶颜色
                 String leafColour = cursor.getString(8);
                 Log.d(TAG, "onCreate: " + "leafColour:" + leafColour);
                 SpinnerAdapter leafColourAdapter = spnLeafColor.getAdapter();
 //                int k= apsAdapter.getCount();
+
                 for (int j = 0; j < leafColourAdapter.getCount(); j++) {
                     if (leafColour.equals(leafColourAdapter.getItem(j).toString())) {
                         spnLeafColor.setSelection(j, true);
@@ -949,7 +960,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
     private void initToolBar() {
         titleText.setText("品种信息采集");
-        commitInfo.setText("试验基地：" + bigFarmName+"   试验田：" + farmName+"   年份：" + year);
+        commitInfo.setText("试验基地：" + bigFarmName + "   试验田：" + farmName + "   年份：" + year);
         leftOneButton.setBackgroundResource(R.drawable.left_back);
         rightOneButton.setBackgroundResource(R.drawable.ic_menu_home);
         rightTwoButton.setBackgroundResource(R.drawable.ic_menu_save);
@@ -957,6 +968,12 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         leftOneLayout.setOnClickListener(toolBarOnClickListener);
         rightOneLayout.setOnClickListener(toolBarOnClickListener);
         rightTwoLayout.setOnClickListener(toolBarOnClickListener);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            leftOneLayout.setTooltipText(getResources().getText(R.string.back_left));
+            rightOneLayout.setTooltipText(getResources().getText(R.string.home_page));
+            rightTwoLayout.setTooltipText(getResources().getText(R.string.save_data));
+        }
     }
 
     @Override
@@ -1307,7 +1324,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         sqLiteDatabase.insert("SpeciesTable", null, contentValues);
         contentValues.clear();
         Toast.makeText(this,
-                "更新成功，当手机在线时，请提交到远程服务器", Toast.LENGTH_LONG).show();
+                "更新完成，当手机在线时，请提交到远程服务器", Toast.LENGTH_LONG).show();
     }
 
     //组装数据

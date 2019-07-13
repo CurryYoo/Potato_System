@@ -91,9 +91,6 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
             holder.tvType.setText("类型：" + type);
             if (type.equals("greenhouse")) {
                 holder.is_shack.setVisibility(View.VISIBLE);
-            } else {
-//                holder.tvNum.setTextColor(R.color.primary_dark);
-                holder.tvName.setTextColor(R.color.primary_dark);
             }
         } catch (JSONException e) {
             e.printStackTrace();

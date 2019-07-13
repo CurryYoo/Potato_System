@@ -20,7 +20,7 @@
         <EditText
             android:id="@+id/edt_species_id"
             style="@style/style_item_basicinfo_edittext"
-            android:textColor="@color/colorBlue"
+            android:textColor="@color/primary_text"
             android:layout_width="match_parent"
             android:focusable="false"/>
         <!--android:hint="每次提交请输入不同的数字"-->
@@ -46,7 +46,7 @@
         <EditText
             android:id="@+id/edt_experiment_type"
             style="@style/style_item_basicinfo_edittext"
-            android:textColor="@color/colorBlue"
+            android:textColor="@color/primary_text"
             android:layout_width="match_parent"
             android:focusable="false"/>
     </LinearLayout>
@@ -68,7 +68,7 @@
         <View
             style="@style/view_vertical_devider_style" />
 
-        <EditText
+        <TextView
             android:id="@+id/sowing_period_input"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
@@ -94,7 +94,7 @@
         <View
             style="@style/view_vertical_devider_style" />
 
-        <EditText
+        <TextView
             android:id="@+id/emergence_period"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
@@ -143,7 +143,7 @@
         <View
             style="@style/view_vertical_devider_style" />
 
-        <EditText
+        <TextView
             android:id="@+id/squaring_period"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
@@ -168,7 +168,7 @@
         <View
             style="@style/view_vertical_devider_style" />
 
-        <EditText
+        <TextView
             android:id="@+id/flowering_period"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
@@ -196,11 +196,8 @@
         <Spinner
             android:id="@+id/spn_colors"
             android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
             android:entries="@array/colors"
-            android:gravity="center_horizontal"
-            android:textSize="15sp" />
+            style="@style/style_spinner" />
 
 
         <ImageButton
@@ -240,11 +237,8 @@
         <Spinner
             android:id="@+id/corolla_colors"
             android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
             android:entries="@array/corolla_colors"
-            android:gravity="center_horizontal"
-            android:textSize="15sp" />
+            style="@style/style_spinner" />
 
         <ImageButton
             android:id="@+id/imb_corolla_colors"
@@ -282,11 +276,8 @@
         <Spinner
             android:id="@+id/plant_flourish"
             android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
             android:entries="@array/plant_flourish"
-            android:gravity="center_horizontal"
-            android:textSize="15sp" />
+            style="@style/style_spinner" />
 
         <ImageButton
             android:id="@+id/imb_plant_flourish"
@@ -324,11 +315,8 @@
         <Spinner
             android:id="@+id/stem_color"
             android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
             android:entries="@array/stem_colors"
-            android:gravity="center_horizontal"
-            android:textSize="15sp" />
+            style="@style/style_spinner"/>
 
         <ImageButton
             android:id="@+id/imb_stem_color"
@@ -367,11 +355,8 @@
         <Spinner
             android:id="@+id/natural_fecundity"
             android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
             android:entries="@array/natural_fecundity_arr"
-            android:gravity="center_horizontal"
-            android:textSize="15sp" />
+            style="@style/style_spinner"/>
 
         <ImageButton
             android:id="@+id/imb_natural_fecundity"
@@ -407,7 +392,7 @@
         <View
             style="@style/view_vertical_devider_style" />
 
-        <EditText
+        <TextView
             android:id="@+id/mature_period"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
@@ -438,11 +423,12 @@
             android:layout_width="100dp"
             android:focusable="false"
             android:inputType="number"
-            android:textColor="@color/colorBlue"/>
+            android:textColor="@color/primary_text"/>
 
         <Button
             android:id="@+id/btn_compute_growing_days"
             android:text="计算"
+            android:layout_marginStart="@dimen/dp_10"
             style="@style/style_basic_album_btn"/>
     </LinearLayout>
 
@@ -465,12 +451,9 @@
 
         <Spinner
             android:id="@+id/tuber_uniformity"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_width="100dp"
             android:entries="@array/tuber_uniformity_arr"
-            android:gravity="center_horizontal"
-            android:textSize="15sp" />
+            style="@style/style_spinner" />
 
     </LinearLayout>
 
@@ -493,12 +476,9 @@
 
         <Spinner
             android:id="@+id/tuber_shape"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_width="100dp"
             android:entries="@array/potato_types"
-            android:gravity="center_horizontal"
-            android:textSize="15sp" />
+            style="@style/style_spinner"/>
         <!--
         <ImageButton
             android:id="@+id/imb_tuber_shape"
@@ -531,12 +511,9 @@
 
         <Spinner
             android:id="@+id/potato_skin_smoothness"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_width="100dp"
             android:entries="@array/potato_skin_smoothness_arr"
-            android:gravity="center_horizontal"
-            android:textSize="15sp" />
+            style="@style/style_spinner"/>
         <!--
         <ImageButton
             android:id="@+id/imb_potato_skin_smoothness"
@@ -569,12 +546,9 @@
 
         <Spinner
             android:id="@+id/eye"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_width="100dp"
             android:entries="@array/eye_arr"
-            android:gravity="center_horizontal"
-            android:textSize="15sp" />
+            style="@style/style_spinner"/>
         <!--
         <ImageButton
             android:id="@+id/imb_eye"
@@ -607,12 +581,9 @@
 
         <Spinner
             android:id="@+id/skin_color"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_width="100dp"
             android:entries="@array/skin_colors"
-            android:gravity="center_horizontal"
-            android:textSize="15sp" />
+            style="@style/style_spinner"/>
         <!--
         <ImageButton
             android:id="@+id/imb_skin_color"
@@ -645,12 +616,9 @@
 
         <Spinner
             android:id="@+id/flesh_color"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_width="100dp"
             android:entries="@array/flesh_colors"
-            android:gravity="center_horizontal"
-            android:textSize="15sp" />
+            style="@style/style_spinner" />
         <!--
         <ImageButton
             android:id="@+id/imb_flesh_color"
@@ -877,11 +845,12 @@
             android:layout_width="50dp"
             android:focusable="false"
             android:inputType="number"
-            android:textColor="@color/colorBlue"/>
+            android:textColor="@color/primary_text"/>
 
         <Button
             android:id="@+id/btn_compute_rate_of_economic_potato"
             android:text="计算"
+            android:layout_marginStart="@dimen/dp_10"
             style="@style/style_basic_album_btn"/>
     </LinearLayout>
 
@@ -984,11 +953,12 @@
             android:layout_width="50dp"
             android:focusable="false"
             android:inputType="number"
-            android:textColor="@color/colorBlue"/>
+            android:textColor="@color/primary_text"/>
 
         <Button
             android:id="@+id/btn_compute_average_per_mu_yield"
             android:text="计算"
+            android:layout_marginStart="@dimen/dp_10"
             style="@style/style_basic_album_btn" />
     </LinearLayout>
 

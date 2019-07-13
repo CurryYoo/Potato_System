@@ -24,10 +24,10 @@
 
         <EditText
             android:id="@+id/ten_plant_height1"
-            android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="150dp"
-            android:inputType="number"/>
+            android:layout_marginTop="@dimen/dp_20"
+            android:inputType="number" />
 
         <View
             style="@style/view_divider_style"
@@ -36,9 +36,9 @@
 
         <EditText
             android:id="@+id/ten_plant_height3"
-            android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="150dp"
+            android:layout_marginTop="@dimen/dp_20"
             android:inputType="number" />
 
         <View
@@ -46,38 +46,35 @@
             android:layout_marginStart="5dp" />
 
 
-
         <EditText
             android:id="@+id/ten_plant_height5"
-            android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="150dp"
+            android:layout_marginTop="@dimen/dp_20"
             android:inputType="number" />
 
         <View
             style="@style/view_divider_style"
-            android:layout_marginStart="5dp"/>
-
+            android:layout_marginStart="5dp" />
 
 
         <EditText
             android:id="@+id/ten_plant_height7"
-            android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="150dp"
-            android:inputType="number"/>
+            android:layout_marginTop="@dimen/dp_20"
+            android:inputType="number" />
 
         <View
             style="@style/view_divider_style"
-            android:layout_marginStart="5dp"/>
-
+            android:layout_marginStart="5dp" />
 
 
         <EditText
             android:id="@+id/ten_plant_height9"
-            android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="150dp"
+            android:layout_marginTop="@dimen/dp_20"
             android:inputType="number" />
 
         <View
@@ -86,35 +83,34 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_70"
+            android:layout_height="45dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="@dimen/dp_10"
             android:layout_marginBottom="@dimen/dp_10"
-            android:layout_marginStart="@dimen/dp_10"
             android:background="@drawable/shape_add_content"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:padding="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_5"
-                android:gravity="center_horizontal"
-                android:text="平均株高:"
-                android:textSize="12sp"
-                android:textColor="@color/colorGreen" />
+                android:layout_marginBottom="2dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:gravity="center_vertical"
+                android:text="平均株高："
+                android:textColor="@color/colorGreen"
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/average_plant_height"
                 style="@style/style_item_basicinfo_edittext"
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_marginStart="@dimen/dp_5"
-                android:inputType="number"
                 android:focusable="false"
-                android:textColor="@color/colorGreen"/>
-
-            <View
-                style="@style/view_divider_style"
-                android:layout_marginStart="5dp"/>
+                android:inputType="number"
+                android:textColor="@color/colorGreen" />
 
         </LinearLayout>
 
@@ -128,10 +124,10 @@
 
         <EditText
             android:id="@+id/ten_plant_height2"
-            android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="150dp"
-            android:inputType="number"/>
+            android:layout_marginTop="@dimen/dp_20"
+            android:inputType="number" />
 
         <View
             style="@style/view_divider_style"
@@ -140,10 +136,10 @@
 
         <EditText
             android:id="@+id/ten_plant_height4"
-            android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="150dp"
-            android:inputType="number"/>
+            android:layout_marginTop="@dimen/dp_20"
+            android:inputType="number" />
 
         <View
             style="@style/view_divider_style"
@@ -152,52 +148,52 @@
 
         <EditText
             android:id="@+id/ten_plant_height6"
-            android:layout_marginTop="@dimen/dp_20"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="150dp"
+            android:layout_marginTop="@dimen/dp_20"
             android:inputType="number" />
-
-        <View
-            style="@style/view_divider_style"
-            android:layout_marginStart="5dp"/>
-
-
-
-        <EditText
-            android:id="@+id/ten_plant_height8"
-            android:layout_marginTop="@dimen/dp_20"
-            style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp"
-            android:inputType="number"/>
 
         <View
             style="@style/view_divider_style"
             android:layout_marginStart="5dp" />
 
 
-
         <EditText
-            android:id="@+id/ten_plant_height10"
-            android:layout_marginTop="@dimen/dp_20"
+            android:id="@+id/ten_plant_height8"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="150dp"
+            android:layout_marginTop="@dimen/dp_20"
             android:inputType="number" />
 
         <View
             style="@style/view_divider_style"
-            android:layout_marginStart="5dp"/>
+            android:layout_marginStart="5dp" />
+
+
+        <EditText
+            android:id="@+id/ten_plant_height10"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="150dp"
+            android:layout_marginTop="@dimen/dp_20"
+            android:inputType="number" />
+
+        <View
+            style="@style/view_divider_style"
+            android:layout_marginStart="5dp" />
+
         <Button
             android:id="@+id/btn_compute_average_plant_height"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:stateListAnimator="@null"
-            android:layout_marginTop="@dimen/dp_5"
+            android:layout_height="45dp"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginEnd="5dp"
             android:layout_marginBottom="@dimen/dp_10"
+            android:background="@drawable/bg_caculate_btn_"
             android:text="计 算"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            android:background="@drawable/bg_caculate_btn_" />
+            android:textColor="@color/secondary_text"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

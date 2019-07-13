@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -153,15 +154,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case SPECIESLIST_OK:
                         downloadSuccess_Num++;
                         activity.progressHorizontal.setProgress(downloadSuccess_Num);
+                        activity.progressTip.setText("下载完成");
                         Log.d("num3", "" + downloadSuccess_Num);
                         break;
                 }
                 if (downloadSuccess_Num == request_Num) {
                     Log.d("download" + downloadSuccess_Num, "ok");
-                    Toast.makeText(activity.getApplicationContext(), "下载成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity.getApplicationContext(), "下载完成", Toast.LENGTH_SHORT).show();
                     activity.viewDownload.setVisibility(View.GONE);
                     activity.progressHorizontal.setProgress(0);
-                    activity.progressTip.setText("下载试验基地数据");
                     downloadSuccess_Num = 0;
                 }
             }
@@ -233,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             } while (cursor0.moveToNext());
                         }
                         cursor0.close();
-                        Toast.makeText(MainActivity.this, "品种规划数据上传成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "品种规划数据上传完成", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(MainActivity.this, "请登录账号", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -512,7 +513,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 }.start();
 
                             } while (cursor.moveToNext());
-                            Toast.makeText(MainActivity.this, "品种采集数据上传成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "品种采集数据上传完成", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(MainActivity.this, "尚未采集数据", Toast.LENGTH_SHORT).show();
                         }
@@ -586,7 +587,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initToolBar() {
         progressHorizontal.setMax(4);
-        progressTip.setText("下载试验基地数据");
         titleText.setText("马铃薯育种信息管理系统");
         viewDownload.setOnClickListener(null);
     }
@@ -620,7 +620,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 }
                 Toast.makeText(MainActivity.this, "开始下载数据", Toast.LENGTH_SHORT).show();
+
+                progressTip.setText("下载试验基地数据");
                 viewDownload.setVisibility(View.VISIBLE);
+
 //                cache = new File(Environment.getExternalStorageDirectory(), "cache");
 
                 HttpRequest.HttpRequest_bigfarm(null, MainActivity.this, new HttpRequest.HttpCallback() {

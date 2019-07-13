@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:background="@drawable/bg_main_button"
-    android:elevation="5dp"
+    android:elevation="2dp"
     android:orientation="vertical">
 
 

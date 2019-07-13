@@ -33,7 +33,7 @@
                 android:layout_marginEnd="@dimen/dp_10"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_main_button"
-                android:elevation="@dimen/dp_5"
+                android:elevation="@dimen/dp_2"
                 android:orientation="vertical"
                 android:padding="@dimen/dp_5">
 
@@ -67,7 +67,7 @@
                 android:layout_marginEnd="@dimen/dp_10"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_main_button"
-                android:elevation="@dimen/dp_5"
+                android:elevation="@dimen/dp_2"
                 android:orientation="vertical"
                 android:padding="@dimen/dp_5">
 
@@ -100,7 +100,7 @@
                 android:layout_marginEnd="@dimen/dp_10"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_main_button"
-                android:elevation="@dimen/dp_5"
+                android:elevation="@dimen/dp_2"
                 android:orientation="vertical"
                 android:padding="@dimen/dp_5">
 
@@ -133,7 +133,7 @@
                 android:layout_marginEnd="@dimen/dp_10"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_main_button"
-                android:elevation="@dimen/dp_5"
+                android:elevation="@dimen/dp_2"
                 android:orientation="vertical"
                 android:padding="@dimen/dp_5">
 
@@ -166,7 +166,7 @@
                 android:layout_marginEnd="@dimen/dp_10"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_main_button"
-                android:elevation="@dimen/dp_5"
+                android:elevation="@dimen/dp_2"
                 android:orientation="vertical"
                 android:padding="@dimen/dp_5">
 
@@ -200,7 +200,7 @@
                 android:layout_marginEnd="@dimen/dp_10"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_main_button"
-                android:elevation="@dimen/dp_5"
+                android:elevation="@dimen/dp_2"
                 android:orientation="vertical"
                 android:padding="@dimen/dp_5">
 

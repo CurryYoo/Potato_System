@@ -7,7 +7,7 @@
     android:layout_margin="8dp"
     android:background="@drawable/bg_main_button"
     android:orientation="horizontal"
-    android:elevation="@dimen/dp_5">
+    android:elevation="@dimen/dp_2">
     <LinearLayout
         android:id="@+id/text"
         android:layout_width="match_parent"
