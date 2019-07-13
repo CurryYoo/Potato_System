@@ -624,6 +624,10 @@ public class TableActivity extends AppCompatActivity {
                                     Intent intent = new Intent(TableActivity.this, SaveDataActivity.class);
                                     intent.putExtra("speciesId", speciesId);
                                     intent.putExtra("expType", expType);
+                                    //备注信息
+                                    intent.putExtra("bigFarmName",bigFarmName);
+                                    intent.putExtra("farmName",farmName);
+                                    intent.putExtra("year",year);
                                     if (blockId != null) {
                                         intent.putExtra("blockId", blockId);
                                     } else {

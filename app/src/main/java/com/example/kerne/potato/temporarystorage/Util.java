@@ -50,17 +50,17 @@ public class Util {
     }
 
     //查看网络大图
-    public static void watchOnlineLargePhoto(Context context, Uri imageUri,String title) {
+    public static void watchOnlineLargePhoto(Context context, Uri imageUri, String title) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         LayoutInflater layoutInflater_2 = LayoutInflater.from(context);
 
         View imgLargeView = layoutInflater.inflate(R.layout.dialog_watch_online_big_photo, null);
-        View titleView=layoutInflater_2.inflate(R.layout.dialog_custom_title,null);
+        View titleView = layoutInflater_2.inflate(R.layout.dialog_custom_title, null);
 
-        TextView dialog_title= titleView.findViewById(R.id.dialog_picture_title);
+        TextView dialog_title = titleView.findViewById(R.id.dialog_picture_title);
         dialog_title.setText(title);
         imgLargeView.setFitsSystemWindows(true);
-        final AlertDialog alertDialogShowLargeImage = new AlertDialog.Builder(context,R.style.Dialog_Fullscreen)
+        final AlertDialog alertDialogShowLargeImage = new AlertDialog.Builder(context, R.style.Dialog_Fullscreen)
                 .setCustomTitle(titleView)
                 .create();
 
@@ -90,19 +90,6 @@ public class Util {
                 alertDialogShowLargeImage.cancel();
             }
         });
-//        SimpleDraweeView imvLargePhoto = imgLargeView.findViewById(R.id.imv_online_large_photo);
-//        //设置图片到ImageView
-//        imvLargePhoto.setImageURI(imageUri);
-//        //定义dialog
-//        alertDialogShowLargeImage.setView(imgLargeView);
-//        alertDialogShowLargeImage.show();
-        //点击大图关闭dialog
-//        imgLargeView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                alertDialogShowLargeImage.cancel();
-//            }
-//        });
     }
 
     //选择日期
@@ -129,7 +116,6 @@ public class Util {
                 arrayList) {
             sum += Float.parseFloat(s);
         }
-//        float avg = sum / arrayList.size();
         float avg = sum / arrayList.size();
         return decimalFormat.format(avg);
     }

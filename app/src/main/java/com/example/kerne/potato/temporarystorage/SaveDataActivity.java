@@ -1,7 +1,6 @@
 package com.example.kerne.potato.temporarystorage;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,8 +13,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -39,11 +36,8 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.kerne.potato.BigfarmClickActivity;
 import com.example.kerne.potato.MainActivity;
 import com.example.kerne.potato.R;
-
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,7 +55,7 @@ import static com.example.kerne.potato.temporarystorage.Util.getGrowingDays;
 import static com.example.kerne.potato.temporarystorage.Util.showDatePickerDialog;
 import static com.example.kerne.potato.temporarystorage.Util.watchOnlineLargePhoto;
 
-public class SaveDataActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
+public class SaveDataActivity extends AppCompatActivity implements View.OnClickListener {
 
     //解析两位小数
     DecimalFormat decimalFormat = new DecimalFormat("0.00");
@@ -85,10 +79,15 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     ImageView rightOneButton;
     @BindView(R.id.right_one_layout)
     LinearLayout rightOneLayout;
+    @BindView(R.id.commit_info)
+    TextView commitInfo;
     //需要暂存的各字段
     //品种id
     private String speciesId;
     private String expType;
+    private String bigFarmName;
+    private String farmName;
+    private int year;
     EditText edtSpeciesID = null;
     //    private String commitId = "initial id";
     //实验类型
@@ -295,7 +294,6 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         sp = getSharedPreferences("update_flag", Context.MODE_PRIVATE);
         editor = sp.edit();
 
-        initToolBar();
 
         LinearLayout mLinearLayout = findViewById(R.id.mianliner);
         View view_basic = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_basicinfo, null);
@@ -334,6 +332,11 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         speciesId = intent_speciesId.getStringExtra("speciesId");
         expType = intent_speciesId.getStringExtra("expType");
         blockId = intent_speciesId.getStringExtra("blockId");
+        bigFarmName = intent_speciesId.getStringExtra("bigFarmName");
+        farmName = intent_speciesId.getStringExtra("farmName");
+        year = intent_speciesId.getIntExtra("year", 1970);
+
+        initToolBar();
 
         //品种Id
         edtSpeciesID = (EditText) findViewById(R.id.edt_species_id);
@@ -942,28 +945,11 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
             savaDataLocally();
         }
         cursor.close();
-
-//        Message msg = new Message();
-//        msg.what = 1;
-//        msg.obj = new JSONObject();
-//        uiHandler.sendMessage(msg);
     }
-
-//    @SuppressLint("HandlerLeak")
-//    private Handler uiHandler = new Handler() {
-//        @Override
-//        public void handleMessage(Message msg) {
-//            switch (msg.what) {
-//                case 1:
-//                    JSONObject jsonObject = (JSONObject)msg.obj;
-//
-//                    break;
-//            }
-//        }
-//    };
 
     private void initToolBar() {
         titleText.setText("品种信息采集");
+        commitInfo.setText("试验基地：" + bigFarmName+"   试验田：" + farmName+"   年份：" + year);
         leftOneButton.setBackgroundResource(R.drawable.left_back);
         rightOneButton.setBackgroundResource(R.drawable.ic_menu_home);
         rightTwoButton.setBackgroundResource(R.drawable.ic_menu_save);
@@ -977,15 +963,6 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
 
         switch (v.getId()) {
-            //将数据暂存到本地
-//            case R.id.save_offline:
-////                savaDataLocally();
-//                updateDataLocally();
-//                break;
-//            //更新本地暂存的数据
-//            case R.id.update_offline:
-//                updateDataLocally();
-//                break;
             //叶颜色拍照并显示
             case R.id.imb_colors:
                 String fileNameString = System.currentTimeMillis() + ".jpg";
@@ -1021,7 +998,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //叶颜色查看大图
             case R.id.imv_colors:
-                watchOnlineLargePhoto(this, imageUriColor,"叶颜色");
+                watchOnlineLargePhoto(this, imageUriColor, "叶颜色");
                 break;
             //花冠色拍照并显示
             case R.id.imb_corolla_colors:
@@ -1043,7 +1020,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //花冠色查看大图
             case R.id.imv_corolla_colors:
-                watchOnlineLargePhoto(this, imageUriCorollaColor,"花冠色");
+                watchOnlineLargePhoto(this, imageUriCorollaColor, "花冠色");
                 break;
             //从相册选择花冠色照片
             case R.id.btn_select_from_album_corolla_colors:
@@ -1066,7 +1043,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //花繁茂性查看大图
             case R.id.imv_plant_flourish:
-                watchOnlineLargePhoto(this, imageUriPlantFlourish,"花繁茂性");
+                watchOnlineLargePhoto(this, imageUriPlantFlourish, "花繁茂性");
                 break;
             //从相册选择花繁茂性照片
             case R.id.btn_select_from_album_plant_flourish:
@@ -1089,7 +1066,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //茎色查看大图
             case R.id.imv_stem_color:
-                watchOnlineLargePhoto(this, imageUriStemColors,"茎色");
+                watchOnlineLargePhoto(this, imageUriStemColors, "茎色");
                 break;
             //从相册选择茎色照片
             case R.id.btn_select_from_album_stem_color:
@@ -1112,7 +1089,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //天然结实性查看大图
             case R.id.imv_natural_fecundity:
-                watchOnlineLargePhoto(this, imageUriNaturalFecundity,"天然结实性");
+                watchOnlineLargePhoto(this, imageUriNaturalFecundity, "天然结实性");
                 break;
             //从相册选择天然结实性照片
             case R.id.btn_select_from_album_natural_fecundity:
@@ -1721,19 +1698,19 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        switch (v.getId()) {
-            case R.id.sowing_period_input:
-                showDatePickerDialog(SaveDataActivity.this, edtSowingPeriodInput);
-                break;
-            case R.id.emergence_period:
-                showDatePickerDialog(SaveDataActivity.this, edtEmergencePeriod);
-                break;
-            default:
-        }
-    }
+//
+//    @Override
+//    public void onFocusChange(View v, boolean hasFocus) {
+//        switch (v.getId()) {
+//            case R.id.sowing_period_input:
+//                showDatePickerDialog(SaveDataActivity.this, edtSowingPeriodInput);
+//                break;
+//            case R.id.emergence_period:
+//                showDatePickerDialog(SaveDataActivity.this, edtEmergencePeriod);
+//                break;
+//            default:
+//        }
+//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
