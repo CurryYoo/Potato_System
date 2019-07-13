@@ -14,12 +14,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,8 +82,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String img5;
     @BindView(R.id.title_text)
     TextView titleText;
+    @BindView(R.id.progress_horizontal)
+    ProgressBar progressHorizontal;
+    @BindView(R.id.progress_circular)
+    ProgressBar progressCircular;
+    @BindView(R.id.progress_tip)
+    TextView progressTip;
     @BindView(R.id.view_download)
-    LinearLayout viewDownload;
+    ConstraintLayout viewDownload;
 
     private SpeciesDBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
@@ -126,18 +134,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 switch (msg.what) {
                     case BIGFARMLIST_OK:
                         downloadSuccess_Num++;
+                        activity.progressHorizontal.setProgress(downloadSuccess_Num);
+                        activity.progressTip.setText("下载试验田数据");
                         Log.d("num0", "" + downloadSuccess_Num);
                         break;
                     case FARMLIST_OK:
                         downloadSuccess_Num++;
+                        activity.progressHorizontal.setProgress(downloadSuccess_Num);
+                        activity.progressTip.setText("下载试验田规划数据");
                         Log.d("num1", "" + downloadSuccess_Num);
                         break;
                     case EXPERIMENTFIELD_OK:
                         downloadSuccess_Num++;
+                        activity.progressHorizontal.setProgress(downloadSuccess_Num);
+                        activity.progressTip.setText("下载试验品种数据");
                         Log.d("num2", "" + downloadSuccess_Num);
                         break;
                     case SPECIESLIST_OK:
                         downloadSuccess_Num++;
+                        activity.progressHorizontal.setProgress(downloadSuccess_Num);
                         Log.d("num3", "" + downloadSuccess_Num);
                         break;
                 }
@@ -145,6 +160,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Log.d("download" + downloadSuccess_Num, "ok");
                     Toast.makeText(activity.getApplicationContext(), "下载成功", Toast.LENGTH_SHORT).show();
                     activity.viewDownload.setVisibility(View.GONE);
+                    activity.progressHorizontal.setProgress(0);
+                    activity.progressTip.setText("下载试验基地数据");
                     downloadSuccess_Num = 0;
                 }
             }
@@ -216,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             } while (cursor0.moveToNext());
                         }
                         cursor0.close();
-                        Toast.makeText(MainActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "品种规划数据上传成功", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(MainActivity.this, "请登录账号", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -495,7 +512,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 }.start();
 
                             } while (cursor.moveToNext());
-                            Toast.makeText(MainActivity.this, "数据上传成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "品种采集数据上传成功", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(MainActivity.this, "尚未采集数据", Toast.LENGTH_SHORT).show();
                         }
@@ -565,30 +582,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         networkChangeReceiver = new NetworkChangeReceiver();
         registerReceiver(networkChangeReceiver, intentFilter);
-
-//                View view = findViewById(R.id.list_commit);
-//                new QBadgeView(getBaseContext()).bindTarget(view)
-//                        .setBadgeText("");
-
-
-//        btn_farmland = (Button)findViewById(R.id.btn_farmland);
-//        btn_farmland.setOnClickListener(this);
-//        btn_shot = (Button)findViewById(R.id.btn_shot);
-//        btn_shot.setOnClickListener(this);
-//        btn_field = (Button)findViewById(R.id.btn_field);
-//        btn_field.setOnClickListener(this);
-
-///*       if (getSupportActionBar() != null) {
-//            getSupportActionBar().hide();
-//        }*/
-//
-///*        Button btnCommitData = (Button) findViewById(R.id.commit_data);
-//        btnCommitData.setOnClickListener(this);*/
-
     }
 
     private void initToolBar() {
-
+        progressHorizontal.setMax(4);
+        progressTip.setText("下载试验基地数据");
         titleText.setText("马铃薯育种信息管理系统");
         viewDownload.setOnClickListener(null);
     }
@@ -1044,13 +1042,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
             if (networkInfo != null && networkInfo.isAvailable()) {
                 isOnline = true;
                 Toast.makeText(context, "网络正常", Toast.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 isOnline = false;
                 Toast.makeText(context, "网络异常", Toast.LENGTH_SHORT).show();
             }
