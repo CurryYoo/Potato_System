@@ -1,11 +1,15 @@
 package com.example.kerne.potato;
 
+import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -99,6 +103,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private List<JSONObject> mBigFarmList = new ArrayList<>();
 
+    private IntentFilter intentFilter;
+    private NetworkChangeReceiver networkChangeReceiver;
+
+    private static boolean isOnline = false;
 
     //避免内存泄漏
     private MyHandler myHandler = new MyHandler(this);
@@ -148,6 +156,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.update_location_data:
+                    //检查网络状况
+                    if (!isOnline) {
+                        Toast.makeText(MainActivity.this, "请检查网络连接状况！", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+
                     editor.putBoolean("update_location_data", false);
                     editor.apply();
                     if (badge_location != null) {
@@ -210,13 +224,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     break;
                 case R.id.update_pick_data:
-                    //将暂存的数据从数据库取出并提交到远程服务器
+                    //检查网络状况
+                    if (!isOnline) {
+                        Toast.makeText(MainActivity.this, "请检查网络连接状况！", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+
                     btn_pick.setEnabled(false);
                     editor.putBoolean("update_pick_data", false);
                     editor.apply();
                     if (badge_pick != null) {
                         badge_pick.hide(false);
                     }
+                    //将暂存的数据从数据库取出并提交到远程服务器
                     userRole = UserRole.getUserRole();
                     if (!userRole.equals("farmer")) {
                         String sql = "select SpeciesTable.*, LocalSpecies.* from SpeciesTable, LocalSpecies " +
@@ -541,6 +561,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             badge_location = new QBadgeView(this).bindTarget(icon_update_location).setBadgeText("");
         }
 
+        intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        networkChangeReceiver = new NetworkChangeReceiver();
+        registerReceiver(networkChangeReceiver, intentFilter);
+
 //                View view = findViewById(R.id.list_commit);
 //                new QBadgeView(getBaseContext()).bindTarget(view)
 //                        .setBadgeText("");
@@ -591,6 +616,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //获取大田信息
         switch (v.getId()) {
             case R.id.btn_download:
+                //检查网络状况
+                if (!isOnline) {
+                    Toast.makeText(MainActivity.this, "请检查网络连接状况！", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 Toast.makeText(MainActivity.this, "开始下载数据", Toast.LENGTH_SHORT).show();
                 viewDownload.setVisibility(View.VISIBLE);
 //                cache = new File(Environment.getExternalStorageDirectory(), "cache");
@@ -1010,6 +1040,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    class NetworkChangeReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.isAvailable()) {
+                isOnline = true;
+                Toast.makeText(context, "网络正常", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                isOnline = false;
+                Toast.makeText(context, "网络异常", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -1019,6 +1066,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (db != null) {
             db.close();
         }
+        unregisterReceiver(networkChangeReceiver);
 //        dbHelper.close();
     }
 }

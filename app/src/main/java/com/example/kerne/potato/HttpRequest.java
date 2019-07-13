@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -45,7 +46,7 @@ public class HttpRequest {
     private static RequestQueue requestQueue;
 
     public static void HttpRequest_bigfarm(final String name, Context context, final HttpCallback callback) {
-        requestQueue = Volley.newRequestQueue(context);
+        requestQueue = SingleRequestQueue.getInstance(context).getRequestQueue();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "bigfarm/getAllBigfarm", new Response.Listener<String>() {
             @Override
@@ -137,7 +138,7 @@ public class HttpRequest {
 
     //获取试验田列表
     public static void HttpRequest_farm(final String name, Context context, final HttpCallback callback) {
-        requestQueue = Volley.newRequestQueue(context);
+        requestQueue = SingleRequestQueue.getInstance(context).getRequestQueue();
 
         JSONObject jsonObject = new JSONObject();
         if (name != null) {
@@ -170,7 +171,7 @@ public class HttpRequest {
 
     //获取种植图信息
     public static void HttpRequest_map(final String farmlandId, Context context, final HttpCallback callback) {
-        requestQueue = Volley.newRequestQueue(context);
+        requestQueue = SingleRequestQueue.getInstance(context).getRequestQueue();
 
         JSONObject jsonObject = new JSONObject();
         if (farmlandId != null) {
@@ -203,7 +204,7 @@ public class HttpRequest {
 
     //获取品种信息
     public static void HttpRequest_species(final String fieldId, Context context, final HttpCallback callback) {
-        requestQueue = Volley.newRequestQueue(context);
+        requestQueue = SingleRequestQueue.getInstance(context).getRequestQueue();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "Block/getInnerSpeciesByFieldId", new Response.Listener<String>() {
             @Override
@@ -237,7 +238,7 @@ public class HttpRequest {
 
     //下载品种位置信息
     public static void HttpRequest_Species(Context context, final HttpCallback callback) {
-        requestQueue = Volley.newRequestQueue(context);
+        requestQueue = SingleRequestQueue.getInstance(context).getRequestQueue();
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url + "Block/getAllInnerBlocks", new Response.Listener<String>() {
             @Override
@@ -261,7 +262,7 @@ public class HttpRequest {
 
     //下载本地品种数据
     public static void HttpRequest_LocalSpecies(final JSONObject jsonObject, Context context, final HttpCallback callback) {
-        requestQueue = Volley.newRequestQueue(context);
+        requestQueue = SingleRequestQueue.getInstance(context).getRequestQueue();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "localspecies/getLocalSpecies", jsonObject, new Response.Listener<JSONObject>() {
             @Override
@@ -289,7 +290,7 @@ public class HttpRequest {
 
     //上传品种采集信息
     public static void HttpRequest_SpeciesData(final JSONObject jsonObject, Context context, final HttpCallback callback) {
-        requestQueue = Volley.newRequestQueue(context);
+        requestQueue = SingleRequestQueue.getInstance(context).getRequestQueue();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "SpeciesCommontest/updateCommontest", jsonObject, new Response.Listener<JSONObject>() {
             @Override
@@ -322,7 +323,7 @@ public class HttpRequest {
 
     //上传图片信息
     public static void doUploadTest(String picPath, String speciesId, String picNo, Context context, final HttpCallback_Str callback) {
-        requestQueue = Volley.newRequestQueue(context);
+        requestQueue = SingleRequestQueue.getInstance(context).getRequestQueue();
 
         String path = picPath;
         Log.e("zb", "img=" + picPath);
@@ -365,7 +366,7 @@ public class HttpRequest {
 
     //上传品种位置规划数据
     public static void HttpRequest_SpeciesList(final JSONArray jsonArray, Context context, final HttpCallback callback) {
-        requestQueue = Volley.newRequestQueue(context);
+        requestQueue = SingleRequestQueue.getInstance(context).getRequestQueue();
 
 //        StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "/Block/putSpeciesPositionToBlock", new Response.Listener<String>() {
 //            @Override
@@ -398,7 +399,7 @@ public class HttpRequest {
 //            }
 //        };
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url + "/Block/putSpeciesPositionToBlock", jsonArray, new Response.Listener<JSONArray>() {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url + "Block/putSpeciesPositionToBlock", jsonArray, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 Log.d("SpeciesList_response", response.toString());
@@ -425,13 +426,16 @@ public class HttpRequest {
             }
         };
 
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
         requestQueue.add(jsonArrayRequest);
     }
 
     public static void HttpRequest_description(final String experimentFieldId, final String description, Context context, final HttpCallback callback) {
-        requestQueue = Volley.newRequestQueue(context);
+//        requestQueue = Volley.newRequestQueue(context);
+        requestQueue = SingleRequestQueue.getInstance(context).getRequestQueue();
 //        StringRequest s = new StringRequest()
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "/experimentfield/updateDesc", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url + "experimentfield/updateDesc", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("decription_response", response);
@@ -464,7 +468,7 @@ public class HttpRequest {
             e.printStackTrace();
         }
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "/experimentfield/updateDescForAndroid", jsonObject, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "experimentfield/updateDescForAndroid", jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("decription_response", response.toString());

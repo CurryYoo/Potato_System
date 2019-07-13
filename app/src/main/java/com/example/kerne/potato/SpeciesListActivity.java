@@ -92,7 +92,7 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Looper.prepare();
+
                 SpeciesDBHelper dbHelper = new SpeciesDBHelper(SpeciesListActivity.this, "SpeciesTable.db", null, 10);
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -115,7 +115,9 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
                             if (cursor1.moveToFirst()) {
                                 jsonObject0.put("expType", cursor1.getString(cursor1.getColumnIndex("expType")));
                             } else {
+                                Looper.prepare();
                                 Toast.makeText(SpeciesListActivity.this, "Do not have the fieldId '" + fieldId + "' in ExperimentField", Toast.LENGTH_SHORT).show();
+                                Looper.loop();
                             }
                             cursor1.close();
                             mList.add(jsonObject0);
@@ -148,7 +150,7 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
                 Message msg = new Message();
                 msg.what = 1;
                 uiHandler.sendMessage(msg);
-                Looper.loop();
+
             }
         }).start();
 
