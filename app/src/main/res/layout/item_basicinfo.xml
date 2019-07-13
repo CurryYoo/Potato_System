@@ -8,7 +8,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -21,7 +20,7 @@
         <EditText
             android:id="@+id/edt_species_id"
             style="@style/style_item_basicinfo_edittext"
-            android:textColor="@color/accent"
+            android:textColor="@color/colorBlue"
             android:layout_width="match_parent"
             android:focusable="false"/>
         <!--android:hint="每次提交请输入不同的数字"-->
@@ -47,7 +46,7 @@
         <EditText
             android:id="@+id/edt_experiment_type"
             style="@style/style_item_basicinfo_edittext"
-            android:textColor="@color/accent"
+            android:textColor="@color/colorBlue"
             android:layout_width="match_parent"
             android:focusable="false"/>
     </LinearLayout>
@@ -439,7 +438,7 @@
             android:layout_width="100dp"
             android:focusable="false"
             android:inputType="number"
-            android:textColor="@color/accent"/>
+            android:textColor="@color/colorBlue"/>
 
         <Button
             android:id="@+id/btn_compute_growing_days"
@@ -875,10 +874,10 @@
         <EditText
             android:id="@+id/rate_of_economic_potato"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="100dp"
+            android:layout_width="50dp"
             android:focusable="false"
             android:inputType="number"
-            android:textColor="@color/accent"/>
+            android:textColor="@color/colorBlue"/>
 
         <Button
             android:id="@+id/btn_compute_rate_of_economic_potato"
@@ -982,10 +981,10 @@
         <EditText
             android:id="@+id/per_mu_yield"
             style="@style/style_item_basicinfo_edittext"
-            android:layout_width="100dp"
+            android:layout_width="50dp"
             android:focusable="false"
             android:inputType="number"
-            android:textColor="@color/accent"/>
+            android:textColor="@color/colorBlue"/>
 
         <Button
             android:id="@+id/btn_compute_average_per_mu_yield"

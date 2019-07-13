@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -261,7 +262,6 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                     break;
                 case R.id.right_two_layout:
                     final AlertDialog.Builder saveDialog = new AlertDialog.Builder(SaveDataActivity.this);
-//                saveDialog.setIcon();
                     saveDialog.setTitle("提示");
                     saveDialog.setMessage("是否确定保存？");
                     saveDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -298,31 +298,31 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         LinearLayout mLinearLayout = findViewById(R.id.mianliner);
         View view_basic = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_basicinfo, null);
         InfoItemBar mbar_basic = new InfoItemBar(SaveDataActivity.this, "基本信息");
-        mbar_basic.setColor(getDrawable(R.color.colorBlue));
+        mbar_basic.setColor(getDrawable(R.drawable.bg_item_bar_basic_info));
         mbar_basic.addView(view_basic);
         mbar_basic.setShow(true);
         mLinearLayout.addView(mbar_basic);
         View view_height = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_height, null);
         InfoItemBar mbar_height = new InfoItemBar(SaveDataActivity.this, "十株株高");
-        mbar_height.setColor(getDrawable(R.color.colorGreen));
+        mbar_height.setColor(getDrawable(R.drawable.bg_item_bar_height));
         mbar_height.addView(view_height);
         mbar_height.setShow(true);
         mLinearLayout.addView(mbar_height);
         View view_branch = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_branch, null);
         InfoItemBar mbar_branch = new InfoItemBar(SaveDataActivity.this, "十株分支数");
-        mbar_branch.setColor(getDrawable(R.color.colorOrange));
+        mbar_branch.setColor(getDrawable(R.drawable.bg_item_bar_branch));
         mbar_branch.addView(view_branch);
         mbar_branch.setShow(true);
         mLinearLayout.addView(mbar_branch);
         View view_big = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_big, null);
         InfoItemBar mbar_big = new InfoItemBar(SaveDataActivity.this, "大薯十株测产");
-        mbar_big.setColor(getDrawable(R.color.colorGrey));
+        mbar_big.setColor(getDrawable(R.drawable.bg_item_bar_big));
         mbar_big.addView(view_big);
         mbar_big.setShow(true);
         mLinearLayout.addView(mbar_big);
         View view_small = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_small, null);
         InfoItemBar mbar_small = new InfoItemBar(SaveDataActivity.this, "小薯十株测产");
-        mbar_small.setColor(getDrawable(R.color.colorPink));
+        mbar_small.setColor(getDrawable(R.drawable.bg_item_bar_small));
         mbar_small.addView(view_small);
         mbar_small.setShow(true);
         mLinearLayout.addView(mbar_small);
@@ -349,12 +349,12 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
         //播种期
         edtSowingPeriodInput = (EditText) findViewById(R.id.sowing_period_input);
-        edtSowingPeriodInput.setInputType(InputType.TYPE_NULL);
+//        edtSowingPeriodInput.setInputType(InputType.TYPE_NULL);
         edtSowingPeriodInput.setOnClickListener(this);
 
         //出苗期
         edtEmergencePeriod = (EditText) findViewById(R.id.emergence_period);
-        edtEmergencePeriod.setInputType(InputType.TYPE_NULL);
+//        edtEmergencePeriod.setInputType(InputType.TYPE_NULL);
         edtEmergencePeriod.setOnClickListener(this);
 
         //出苗率
@@ -362,12 +362,12 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
         //现蕾期
         edtSquaringPeriod = (EditText) findViewById(R.id.squaring_period);
-        edtSquaringPeriod.setInputType(InputType.TYPE_NULL);
+//        edtSquaringPeriod.setInputType(InputType.TYPE_NULL);
         edtSquaringPeriod.setOnClickListener(this);
 
         //开花期
         edtFloweringPeriod = (EditText) findViewById(R.id.flowering_period);
-        edtFloweringPeriod.setInputType(InputType.TYPE_NULL);
+//        edtFloweringPeriod.setInputType(InputType.TYPE_NULL);
         edtFloweringPeriod.setOnClickListener(this);
 
         //叶颜色
@@ -427,7 +427,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
         //成熟期
         edtMaturePeriod = (EditText) findViewById(R.id.mature_period);
-        edtMaturePeriod.setInputType(InputType.TYPE_NULL);
+//        edtMaturePeriod.setInputType(InputType.TYPE_NULL);
         edtMaturePeriod.setOnClickListener(this);
 
         //生育日数

@@ -81,10 +81,11 @@
             android:id="@+id/tv_table_title_left"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_weight="3"
-            android:gravity="center"
-            android:maxLines="2"
-            android:padding="5dp"
+            android:layout_weight="4"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:padding="10dp"
             android:text="总标题"
             android:textColor="#000000"
             android:textSize="14sp" />
@@ -94,7 +95,7 @@
             android:id="@+id/title_horsv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:fillViewport="true"
             android:scrollbars="none">
 
@@ -135,6 +136,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:paddingStart="@dimen/dp_5"
                     android:scrollbars="none" />
 
 
@@ -143,7 +145,8 @@
                     android:id="@+id/content_horsv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_weight="2"
+                    android:paddingStart="5dp"
                     android:fillViewport="true"
                     android:scrollbars="none">
 
@@ -151,7 +154,8 @@
                         android:id="@+id/right_container_listview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#ffffff"
+                        android:background="@color/white"
+                        android:paddingEnd="@dimen/dp_5"
                         android:scrollbars="none" />
                 </com.example.kerne.potato.complextable.widget.SyncHorizontalScrollView>
             </LinearLayout>

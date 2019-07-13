@@ -5,17 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    android:gravity="center"
+    android:gravity="center_vertical"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv_table_content_item_left"
         android:layout_width="100dp"
         android:layout_height="40dp"
-        android:gravity="center"
-        android:padding="5dp"
+        android:gravity="center_vertical"
+        android:padding="10dp"
         android:maxLines="2"
-        android:textColor="#000000"
+        android:textColor="@color/colorGrey"
         android:textSize="14sp"
         tools:text="横标题"/>
 
