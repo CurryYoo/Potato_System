@@ -116,7 +116,7 @@
     <string name="info_eye">18-芽眼深浅</string>
     <string name="info_skin_color">19-皮色</string>
     <string name="info_flesh_color">20-肉色</string>
-    <string name="info_whether_to_be_included">是否入选</string>
+    <string name="info_whether_to_be_included">21-是否入选</string>
     <string name="info_remark">22-备注</string>
     <string name="info_num_of_harvested_plants">23-收获株数</string>
     <string name="info_num_of_large_and_medium_potatoes">24-大中薯数</string>
