@@ -5,10 +5,10 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.Objects;
 
 import me.relex.photodraweeview.OnPhotoTapListener;
+import me.relex.photodraweeview.OnViewTapListener;
 import me.relex.photodraweeview.PhotoDraweeView;
 
 public class Util {
@@ -89,9 +90,9 @@ public class Util {
                 alertDialogShowLargeImage.cancel();
             }
         });
-        imvLargePhoto.setOnPhotoTapListener(new OnPhotoTapListener() {
+        imvLargePhoto.setOnViewTapListener(new OnViewTapListener() {
             @Override
-            public void onPhotoTap(View view, float x, float y) {
+            public void onViewTap(View view, float x, float y) {
                 alertDialogShowLargeImage.cancel();
             }
         });
