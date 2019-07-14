@@ -211,7 +211,7 @@ public class TreeAdapter extends BaseAdapter {
             intent.putExtra(("farmName"),treePoint.getJsonObject().getString("farmName"));
             intent.putExtra(("year"),treePoint.getJsonObject().getInt("year"));
             mcontext.startActivity(intent);
-            Toast.makeText(mcontext, "实验类型:" + treePoint.getJsonObject().getString("expType"), Toast.LENGTH_SHORT).show();
+            Toast.makeText(mcontext, mcontext.getText(R.string.exp_type)+":" + treePoint.getJsonObject().getString("expType"), Toast.LENGTH_SHORT).show();
         } else {  //如果点击的是父类
             if (treePoint.isExpand()) {
                 for (TreePoint tempPoint : pointList) {

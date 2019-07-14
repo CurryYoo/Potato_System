@@ -34,7 +34,6 @@
             android:name=".temporarystorage.SaveDataActivity"
             android:label="采集数据"
             android:windowSoftInputMode="stateAlwaysHidden"/>
-        <activity android:name=".SpeciesClickActivity" />
         <activity
             android:name=".MultiLevelActivity"
             android:label="实验田列表"

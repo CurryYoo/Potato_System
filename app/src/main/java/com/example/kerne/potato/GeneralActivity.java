@@ -85,7 +85,7 @@ public class GeneralActivity extends AppCompatActivity {
                         layout.addView(view);
                         view.setOnTouchListener(touch);
                     } else {
-                        Toast.makeText(GeneralActivity.this, R.string.field_plan_null_error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GeneralActivity.this, R.string.toast_field_plan_null_error, Toast.LENGTH_SHORT).show();
                     }
 
                     break;
@@ -188,8 +188,8 @@ public class GeneralActivity extends AppCompatActivity {
         rightOneLayout.setOnClickListener(toolBarOnClickListener);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            leftOneLayout.setTooltipText(getResources().getText(R.string.back_left));
-            rightOneLayout.setTooltipText(getResources().getText(R.string.home_page));
+            leftOneLayout.setTooltipText(getText(R.string.back_left));
+            rightOneLayout.setTooltipText(getText(R.string.home_page));
         }
     }
 
@@ -222,7 +222,7 @@ public class GeneralActivity extends AppCompatActivity {
                 }
             } while (cursor.moveToNext());
         } else {
-            Toast.makeText(GeneralActivity.this, R.string.field_null_error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(GeneralActivity.this, R.string.toast_field_null_error, Toast.LENGTH_SHORT).show();
         }
         cursor.close();
         Log.d("mList.toString", mList.toString());
@@ -310,7 +310,7 @@ public class GeneralActivity extends AppCompatActivity {
                     for (int i = 0; i < mList.size(); i++) {
                         if (X > DrawView.coord[i][0] && X < DrawView.coord[i][2] && Y > DrawView.coord[i][1] && Y < DrawView.coord[i][3]) {
                             try {
-                                Toast.makeText(GeneralActivity.this, "试验类型：" + mList.get(i).getString("expType"), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(GeneralActivity.this, getText(R.string.exp_type)+"：" + mList.get(i).getString("expType"), Toast.LENGTH_SHORT).show();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

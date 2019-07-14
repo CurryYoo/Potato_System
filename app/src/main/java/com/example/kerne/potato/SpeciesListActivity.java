@@ -116,7 +116,7 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
                                 jsonObject0.put("expType", cursor1.getString(cursor1.getColumnIndex("expType")));
                             } else {
                                 Looper.prepare();
-                                Toast.makeText(SpeciesListActivity.this, "Do not have the fieldId '" + fieldId + "' in ExperimentField", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SpeciesListActivity.this, "实验田中无 '" + fieldId + "' 相关信息", Toast.LENGTH_SHORT).show();
                                 Looper.loop();
                             }
                             cursor1.close();
@@ -128,7 +128,7 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
                         }
                     } while (cursor.moveToNext());
                 } else {
-                    Toast.makeText(SpeciesListActivity.this, "品种不存在", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SpeciesListActivity.this, getText(R.string.toast_species_null_error), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(SpeciesListActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
@@ -138,7 +138,7 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
                     if (cursor.moveToFirst()) {
                         expType = cursor.getString(cursor.getColumnIndex("expType"));
                     } else {
-                        Toast.makeText(SpeciesListActivity.this, "实验田中无 " + fieldId +" 相关信息", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SpeciesListActivity.this, "实验田中无 '" + fieldId +"' 相关信息", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -214,6 +214,6 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
 
     @Override
     public void onItemClick(String content) {
-        Toast.makeText(this, "品种编号：" + content, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getText(R.string.species_id)+"：" + content, Toast.LENGTH_SHORT).show();
     }
 }

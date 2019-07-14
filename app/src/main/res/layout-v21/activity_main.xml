@@ -52,7 +52,7 @@
                     android:layout_marginLeft="5dp"
                     android:paddingTop="@dimen/dp_3"
                     android:paddingBottom="@dimen/dp_3"
-                    android:text="下载离线数据"
+                    android:text="@string/download_data"
                     android:textColor="@color/colorRed"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -86,7 +86,7 @@
                     android:layout_marginLeft="5dp"
                     android:paddingTop="@dimen/dp_3"
                     android:paddingBottom="@dimen/dp_3"
-                    android:text="试验田列表"
+                    android:text="@string/farm_list"
                     android:textColor="@color/colorGrey"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -119,7 +119,7 @@
                     android:layout_marginLeft="5dp"
                     android:paddingTop="@dimen/dp_3"
                     android:paddingBottom="@dimen/dp_3"
-                    android:text="试验田目录树"
+                    android:text="@string/farm_tree"
                     android:textColor="@color/colorOrange"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -152,7 +152,7 @@
                     android:layout_marginLeft="5dp"
                     android:paddingTop="@dimen/dp_3"
                     android:paddingBottom="@dimen/dp_3"
-                    android:text="精准搜索品种"
+                    android:text="@string/search_species"
                     android:textColor="@color/colorPink"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -186,7 +186,7 @@
                     android:layout_marginLeft="5dp"
                     android:paddingTop="@dimen/dp_3"
                     android:paddingBottom="@dimen/dp_3"
-                    android:text="上传品种位置规划数据"
+                    android:text="@string/update_plan"
                     android:textColor="@color/colorBlue"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -220,7 +220,7 @@
                     android:layout_marginLeft="5dp"
                     android:paddingTop="@dimen/dp_3"
                     android:paddingBottom="@dimen/dp_3"
-                    android:text="上传品种采集数据"
+                    android:text="@string/update_pick"
                     android:textColor="@color/colorGreen"
                     android:textSize="15sp"
                     android:textStyle="bold" />

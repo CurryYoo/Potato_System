@@ -137,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initToolBar() {
-        titleText.setText("账号登录");
+        titleText.setText(getText(R.string.account_log_in));
         leftOneButton.setBackgroundResource(R.drawable.left_back);
 
         leftOneLayout.setOnClickListener(toolBarOnClickListener);
@@ -199,12 +199,14 @@ public class LoginActivity extends AppCompatActivity {
 //                intent.putExtra("userRole", userRole);
                 setResult(RESULT_OK, intent);
                 finish();
+                Toast.makeText(LoginActivity.this, getText(R.string.log_in_success),
+                        Toast.LENGTH_SHORT).show();
 
             } else {
                 Log.d("Login4", body.toString());
                 //Looper解决闪退bug
                 Looper.prepare();
-                Toast.makeText(LoginActivity.this, "账号或密码无效",
+                Toast.makeText(LoginActivity.this, getText(R.string.account_password_error),
                         Toast.LENGTH_SHORT).show();
                 Looper.loop();
 //                is = jsonObject.getString("description");
@@ -217,31 +219,5 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
-
-//    private Handler handler=new Handler(){
-//        @Override
-//        public void handleMessage(Message msg) {
-//            switch (msg.what) {
-//
-//                case 1:
-//                    Toast.makeText(MainActivity.this, is,Toast.LENGTH_LONG).show();
-//                    break;
-//            }
-//        }
-//    };
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-//                Intent intent = new Intent(this, MainActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-            default:
-        }
-        return true;
-    }
-
 
 }

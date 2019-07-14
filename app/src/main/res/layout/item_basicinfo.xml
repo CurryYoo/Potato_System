@@ -13,7 +13,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="1-品种ID" />
+            android:text="@string/info_species_id" />
 
         <View style="@style/view_vertical_devider_style" />
 
@@ -38,7 +38,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="2-实验类型" />
+            android:text="@string/info_experiment_type" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -63,7 +63,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="3-播种期" />
+            android:text="@string/info_sowing_period_input" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -72,7 +72,7 @@
             android:id="@+id/sowing_period_input"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
-            android:hint="单击输入"
+            android:hint="@string/click_edit_hint"
             android:inputType="none" />
     </LinearLayout>
 
@@ -89,7 +89,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="4-出苗期" />
+            android:text="@string/info_emergence_period" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -98,7 +98,7 @@
             android:id="@+id/emergence_period"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
-            android:hint="单击输入"
+            android:hint="@string/click_edit_hint"
             android:inputType="none" />
     </LinearLayout>
 
@@ -114,7 +114,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="5-出苗率(%)" />
+            android:text="@string/info_rate_of_emergence" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -138,7 +138,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="6-现蕾期" />
+            android:text="@string/info_squaring_period" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -147,7 +147,7 @@
             android:id="@+id/squaring_period"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
-            android:hint="单击输入"
+            android:hint="@string/click_edit_hint"
             android:inputType="none" />
     </LinearLayout>
 
@@ -163,7 +163,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="7-开花期" />
+            android:text="@string/info_flowering_period" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -172,7 +172,7 @@
             android:id="@+id/flowering_period"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
-            android:hint="单击输入"
+            android:hint="@string/click_edit_hint"
             android:inputType="none" />
     </LinearLayout>
 
@@ -188,7 +188,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="8-叶颜色" />
+            android:text="@string/info_colors" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -207,7 +207,7 @@
 
         <Button
             android:id="@+id/btn_select_from_album_colors"
-            android:text="相册"
+            android:text="@string/album"
             style="@style/style_basic_album_btn" />
 
         <ImageView
@@ -229,7 +229,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="9-花冠色" />
+            android:text="@string/info_corolla_colors" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -247,7 +247,7 @@
 
         <Button
             android:id="@+id/btn_select_from_album_corolla_colors"
-            android:text="相册"
+            android:text="@string/album"
             style="@style/style_basic_album_btn" />
 
         <ImageView
@@ -268,7 +268,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="10-花繁茂性" />
+            android:text="@string/info_plant_flourish" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -286,7 +286,7 @@
 
         <Button
             android:id="@+id/btn_select_from_album_plant_flourish"
-            android:text="相册"
+            android:text="@string/album"
             style="@style/style_basic_album_btn"/>
 
         <ImageView
@@ -307,7 +307,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="11-茎色" />
+            android:text="@string/info_stem_color" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -325,7 +325,7 @@
 
         <Button
             android:id="@+id/btn_select_from_album_stem_color"
-            android:text="相册"
+            android:text="@string/album"
             style="@style/style_basic_album_btn"/>
 
         <ImageView
@@ -347,7 +347,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="12-天然结实性" />
+            android:text="@string/info_natural_fecundity" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -365,7 +365,7 @@
 
         <Button
             android:id="@+id/btn_select_from_album_natural_fecundity"
-            android:text="相册"
+            android:text="@string/album"
             style="@style/style_basic_album_btn" />
 
         <ImageView
@@ -387,7 +387,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="13-成熟期" />
+            android:text="@string/info_mature_period" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -396,7 +396,7 @@
             android:id="@+id/mature_period"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
-            android:hint="单击输入"
+            android:hint="@string/click_edit_hint"
             android:inputType="none" />
     </LinearLayout>
 
@@ -412,7 +412,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="14-生育日数" />
+            android:text="@string/info_growing_days" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -427,7 +427,7 @@
 
         <Button
             android:id="@+id/btn_compute_growing_days"
-            android:text="计算"
+            android:text="@string/calculate"
             android:layout_marginStart="@dimen/dp_10"
             style="@style/style_basic_album_btn"/>
     </LinearLayout>
@@ -444,7 +444,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="15-块茎整齐度" />
+            android:text="@string/info_tuber_uniformity" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -469,7 +469,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="16-薯型" />
+            android:text="@string/info_tuber_shape" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -504,7 +504,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="17-薯皮光滑度" />
+            android:text="@string/info_potato_skin_smoothness" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -539,7 +539,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="18-芽眼深浅" />
+            android:text="@string/info_eye" />
 
         <View
             style="@style/view_vertical_devider_style"/>
@@ -574,7 +574,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="19-皮色" />
+            android:text="@string/info_skin_color" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -609,7 +609,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="20-肉色" />
+            android:text="@string/info_flesh_color" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -644,7 +644,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="21-是否入选" />
+            android:text="@string/info_whether_to_be_included" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -685,7 +685,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="22-备注" />
+            android:text="@string/info_remark" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -709,7 +709,7 @@
 
         <TextView
             style="@style/style_item_basicinfo_textview"
-            android:text="23-收获株数" />
+            android:text="@string/info_num_of_harvested_plants" />
 
         <View
             style="@style/view_vertical_devider_style"/>
@@ -734,7 +734,7 @@
         <TextView
             style="@style/style_item_basicinfo_textview"
             android:layout_width="160dp"
-            android:text="24-大中薯数" />
+            android:text="@string/info_num_of_large_and_medium_potatoes" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -759,7 +759,7 @@
         <TextView
             style="@style/style_item_basicinfo_textview"
             android:layout_width="160dp"
-            android:text="25-大中薯重(0.00kg)" />
+            android:text="@string/info_weight_of_large_and_medium_potatoes" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -784,7 +784,7 @@
         <TextView
             style="@style/style_item_basicinfo_textview"
             android:layout_width="160dp"
-            android:text="26-小薯数" />
+            android:text="@string/info_num_of_small_potatoes" />
 
         <View
             style="@style/view_vertical_devider_style"/>
@@ -809,7 +809,7 @@
         <TextView
             style="@style/style_item_basicinfo_textview"
             android:layout_width="160dp"
-            android:text="27-小薯重(0.00kg)" />
+            android:text="@string/info_weight_of_small_potatoes" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -834,7 +834,7 @@
         <TextView
             style="@style/style_item_basicinfo_textview"
             android:layout_width="160dp"
-            android:text="28-商品薯率(%)" />
+            android:text="@string/info_rate_of_economic_potato" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -849,7 +849,7 @@
 
         <Button
             android:id="@+id/btn_compute_rate_of_economic_potato"
-            android:text="计算"
+            android:text="@string/calculate"
             android:layout_marginStart="@dimen/dp_10"
             style="@style/style_basic_album_btn"/>
     </LinearLayout>
@@ -867,7 +867,7 @@
         <TextView
             style="@style/style_item_basicinfo_textview"
             android:layout_width="160dp"
-            android:text="29-小区产量1(0.00kg)" />
+            android:text="@string/info_small_section_yield1" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -892,7 +892,7 @@
         <TextView
             style="@style/style_item_basicinfo_textview"
             android:layout_width="160dp"
-            android:text="30-小区产量2(0.00kg)" />
+            android:text="@string/info_small_section_yield2" />
 
         <View
             style="@style/view_vertical_devider_style"/>
@@ -917,7 +917,7 @@
         <TextView
             style="@style/style_item_basicinfo_textview"
             android:layout_width="160dp"
-            android:text="31-小区产量3(0.00kg)" />
+            android:text="@string/info_small_section_yield3" />
 
         <View
             style="@style/view_vertical_devider_style" />
@@ -942,7 +942,7 @@
         <TextView
             style="@style/style_item_basicinfo_textview"
             android:layout_width="160dp"
-            android:text="32-亩产量(0.00kg)" />
+            android:text="@string/info_per_mu_yield" />
 
         <View
             style="@style/view_vertical_devider_style"/>
@@ -957,7 +957,7 @@
 
         <Button
             android:id="@+id/btn_compute_average_per_mu_yield"
-            android:text="计算"
+            android:text="@string/calculate"
             android:layout_marginStart="@dimen/dp_10"
             style="@style/style_basic_album_btn" />
     </LinearLayout>

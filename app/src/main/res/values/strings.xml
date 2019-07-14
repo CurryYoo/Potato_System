@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Potato Plant</string>
+    <string name="app_name">种土豆</string>
     <string name="title_activity_login">Sign in</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -14,19 +14,134 @@
         completions."
     </string>
 
-    //错误Tip
-    <string name="bigFarm_null_error">"无试验基地信息"</string>
-    <string name="farm_null_error">"无试验田信息"</string>
-    <string name="shack_farm_null_error">"无棚内试验田信息"</string>
-    <string name="field_null_error">"无试验田规划信息"</string>
-    <string name="field_plan_null_error">"选择的试验田尚未规划种植图"</string>
-    <string name="species_null_error">"无试验品种信息"</string>
-    <string name="null_error">"未知错误"</string>
-    <string name="species_click_tip">请点击品种名称</string>
+    //Toast Tip
+    <string name="toast_null_error">"未知错误"</string>
+    <string name="toast_bigFarm_null_error">"无试验基地信息"</string>
+    <string name="toast_farm_null_error">"无试验田信息"</string>
+    <string name="toast_shack_farm_null_error">"无棚内试验田信息"</string>
+    <string name="toast_field_null_error">"无试验田规划信息"</string>
+    <string name="toast_field_plan_null_error">"选择的试验田尚未规划种植图"</string>
+    <string name="toast_species_null_error">"无试验品种信息"</string>
+    <string name="toast_species_click_tip">请填写品种编号</string>
+    <string name="toast_log_in">请登录账号</string>
+    <string name="toast_update_plan_complete">规划数据上传完成</string>
+    <string name="toast_update_pick_complete">采集数据上传完成</string>
+    <string name="toast_network_error">网络错误</string>
+    <string name="toast_check_network_state">请检查网络连接状态</string>
+    <string name="toast_null_plan_data">尚未规划</string>
+    <string name="toast_null_pick_data">尚未采集</string>
+    <string name="toast_start_download">开始下载</string>
 
-    //
+    //saveDataActivity Toast
+    <string name="toast_date_error">输入日期有误，请检查</string>
+    <string name="toast_input_error">输入有误，请检查</string>
+    <string name="toast_save_data_complete">保存完成，当手机在线时，请提交到远程服务器</string>
+    <string name="toast_rateOfEmergenceContentParseInt">出苗率输入有误</string>
+    <string name="toast_check_data_form">请检查输入数据的格式是否正确</string>
+    <string name="toast_no_permission">应用无权限</string>
+
+    //system string
+    <string name="system_name">马铃薯育种信息管理系统</string>
+    <string name="big_farm">试验基地</string>
+    <string name="farm">试验田</string>
+    <string name="exp_type">试验类型</string>
+    <string name="type">类型</string>
+    <string name="year">年份</string>
+
+    <string name="common">棚外</string>
+    <string name="greenhouse">棚内田</string>
+    <string name="common_farm">棚外试验田</string>
+    <string name="greenhouse_farm">棚内试验田</string>
+
+    <string name="species_id">品种编号</string>
+    <string name="block_id">所属试验田分块编号</string>
+
+
+    <string name="dialog_title_farm_image">试验田示意图</string>
+    <string name="dialog_picture_operate">双指缩放，单击退出</string>
+
+    <string name="download_data">下载离线数据</string>
+    <string name="farm_list">试验田列表</string>
+    <string name="farm_tree">试验田目录树</string>
+    <string name="search_species">搜索试验品种</string>
+    <string name="species_data">试验品种</string>
+    <string name="species_data_plan">品种规划</string>
+    <string name="species_data_pick">品种信息采集</string>
+    <string name="update_plan">上传品种规划信息</string>
+    <string name="update_pick">上传品种采集信息</string>
+    <string name="input_species_data">请输入品种编号</string>
+
+    <string name="download_big_farm_data">下载试验基地数据</string>
+    <string name="download_farm_plan_data">下载试验田规划数据</string>
+    <string name="download_farm_data">下载试验田数据</string>
+    <string name="download_species_data">下载试验品种数据</string>
+    <string name="download_complete">下载完成</string>
+
+    <string name="farm_info_hint">试验田信息</string>
+    <string name="farm_description">备注：</string>
+
+    <string name="enter_species_plan_mode">进入品种规划</string>
+    <string name="exit_species_plan_mode">保存完成，退出品种规划</string>
+
+    <string name="album">相册</string>
+    <string name="average_branch">平均分株数</string>
+    <string name="average_height">平均株高</string>
+    <string name="calculate">计算</string>
+
+    //item bar string
+    <string name="item_bar_basic">基本信息</string>
+    <string name="item_bar_height">十株株高</string>
+    <string name="item_bar_branch">十株分支数</string>
+    <string name="item_bar_big">大薯十株测产</string>
+    <string name="item_bar_small">小薯十株测产</string>
+
+    //item basic info string
+    <string name="info_species_id">1-品种ID</string>
+    <string name="info_experiment_type">2-实验类型</string>
+    <string name="info_sowing_period_input">3-播种期</string>
+    <string name="info_emergence_period">4-出苗期</string>
+    <string name="info_rate_of_emergence">5-出苗率(%)</string>
+    <string name="info_squaring_period">6-现蕾期</string>
+    <string name="info_flowering_period">7-开花期</string>
+    <string name="info_colors">8-叶颜色</string>
+    <string name="info_corolla_colors">9-花冠色</string>
+    <string name="info_plant_flourish">10-花繁茂性</string>
+    <string name="info_stem_color">11-茎色</string>
+    <string name="info_natural_fecundity">12-天然结实性</string>
+    <string name="info_mature_period">13-成熟期</string>
+    <string name="info_growing_days">14-生育日数</string>
+    <string name="info_tuber_uniformity">15-块茎整齐度</string>
+    <string name="info_tuber_shape">16-薯型</string>
+    <string name="info_potato_skin_smoothness">17-薯皮光滑度</string>
+    <string name="info_eye">18-芽眼深浅</string>
+    <string name="info_skin_color">19-皮色</string>
+    <string name="info_flesh_color">20-肉色</string>
+    <string name="info_whether_to_be_included">是否入选</string>
+    <string name="info_remark">22-备注</string>
+    <string name="info_num_of_harvested_plants">23-收获株数</string>
+    <string name="info_num_of_large_and_medium_potatoes">24-大中薯数</string>
+    <string name="info_weight_of_large_and_medium_potatoes">25-大中薯重(0.00kg)</string>
+    <string name="info_num_of_small_potatoes">26-小薯数</string>
+    <string name="info_weight_of_small_potatoes">27-小薯重(0.00kg)</string>
+    <string name="info_rate_of_economic_potato">28-商品薯率(%)</string>
+    <string name="info_small_section_yield1">29-小区产量1(0.00kg)</string>
+    <string name="info_small_section_yield2">30-小区产量2(0.00kg)</string>
+    <string name="info_small_section_yield3">31-小区产量3(0.00kg)</string>
+    <string name="info_per_mu_yield">32-亩产量(0.00kg)</string>
+
+    //app string
     <string name="home_page">主页</string>
     <string name="back_left">返回</string>
     <string name="save_data">保存</string>
-    <string name="click_edit">...</string>
+    <string name="click_edit_hint">...</string>
+    <string name="account_log_in">账号登录</string>
+    <string name="account">账号</string>
+    <string name="password">密码</string>
+    <string name="remember_password">记住密码</string>
+    <string name="log_in">登 录</string>
+    <string name="account_password_error">账号或密码无效</string>
+    <string name="log_in_success">登录成功</string>
+    <string name="network_normal">网络正常</string>
+    <string name="network_wrong">网络异常</string>
+    <string name="dialog_title_tip">提示</string>
 </resources>

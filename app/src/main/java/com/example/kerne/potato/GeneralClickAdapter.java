@@ -76,7 +76,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
         return new RcvClickViewHolder(view);
     }
 
-    @SuppressLint("ResourceAsColor")
+    @SuppressLint({"ResourceAsColor", "SetTextI18n"})
     @Override
     public void onBindViewHolder(@NonNull final RcvClickViewHolder holder, final int position) {
         final JSONObject jsonObject = mList.get(position);
@@ -87,8 +87,8 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
             type = jsonObject.getString("type");
 //            userRole = jsonObject.getString("userRole");
 //            holder.tvNum.setText("实验田序号：" + farmlandId);
-            holder.tvName.setText("实验田：" + name);
-            holder.tvType.setText("类型：" + type);
+            holder.tvName.setText(mContext.getText(R.string.farm)+"：" + name);
+            holder.tvType.setText(mContext.getText(R.string.type)+"：" + type);
             if (type.equals("greenhouse")) {
                 holder.is_shack.setVisibility(View.VISIBLE);
             }
@@ -131,7 +131,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                     intent.putExtra("bigFarmName", bigFarmName);
                     intent.putExtra("year", year);
                     mContext.startActivity(intent);
-                    Toast.makeText(mContext, "试验田：" + name, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, mContext.getText(R.string.farm)+"：" + name, Toast.LENGTH_SHORT).show();
                 } else if (type.equals("greenhouse")) {
                     try {
                         expType = jsonObject.getString("expType");
@@ -144,7 +144,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                         e.printStackTrace();
                     }
                     if (num == 0) {
-                        Toast.makeText(mContext, R.string.shack_farm_null_error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, R.string.toast_shack_farm_null_error, Toast.LENGTH_SHORT).show();
                     } else {
                         intent = new Intent(mContext, TableActivity.class);
 
@@ -159,7 +159,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                         finalIntent.putExtra("bigFarmName", bigFarmName);
                         finalIntent.putExtra("year", year);
                         mContext.startActivity(finalIntent);
-                        Toast.makeText(mContext, "试验田：" + name, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, mContext.getText(R.string.farm)+"：" + name, Toast.LENGTH_SHORT).show();
                     }
                 }
 //                //弹出输入年份的对话框

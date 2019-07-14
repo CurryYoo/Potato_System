@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -143,20 +142,20 @@ public class TableActivity extends AppCompatActivity {
                     if (status == STATUS_READ) {
                         status = STATUS_EDIT;
                         rightTwoButton.setBackgroundResource(R.drawable.ic_menu_no_save);
-                        titleText.setText("品种规划");
+                        titleText.setText(getText(R.string.species_data_plan));
                         titleText.setTextColor(getResources().getColor(R.color.colorOrange));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             rightTwoLayout.setTooltipText(getResources().getText(R.string.save_data));
                         }
                         tableDescription.setEnabled(true);
-                        Toast.makeText(TableActivity.this, "进入品种规划", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TableActivity.this, mContext.getText(R.string.enter_species_plan_mode), Toast.LENGTH_SHORT).show();
                     } else {
 
                         rightTwoButton.setBackgroundResource(R.drawable.ic_menu_plan);
-                        titleText.setText("品种种植");
+                        titleText.setText(getText(R.string.species_data));
                         titleText.setTextColor(getResources().getColor(R.color.primary_text));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            rightTwoLayout.setTooltipText("品种规划");
+                            rightTwoLayout.setTooltipText(getText(R.string.species_data_plan));
                         }
                         tableDescription.setEnabled(false);
 
@@ -201,7 +200,7 @@ public class TableActivity extends AppCompatActivity {
 //                }
                         Log.d("str_content", contentValuesList.get(0).getAsString("ContentofColumn") + "");
                         status = STATUS_READ;
-                        Toast.makeText(TableActivity.this, "保存完成，退出品种规划", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TableActivity.this, mContext.getText(R.string.exit_species_plan_mode), Toast.LENGTH_SHORT).show();
                         editor.putBoolean("update_location_data", true);
                         editor.apply();
                     }
@@ -281,7 +280,7 @@ public class TableActivity extends AppCompatActivity {
                         speciesNames.add(cursor.getString(cursor.getColumnIndex("name")));
                     } while (cursor.moveToNext());
                 } else {
-                    Toast.makeText(TableActivity.this, R.string.species_null_error, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TableActivity.this, R.string.toast_species_null_error, Toast.LENGTH_SHORT).show();
                 }
                 cursor.close();
 
@@ -353,7 +352,7 @@ public class TableActivity extends AppCompatActivity {
     }
 
     private void initToolBar() {
-        titleText.setText("品种种植");
+        titleText.setText(getText(R.string.species_data));
         leftOneButton.setBackgroundResource(R.drawable.left_back);
         rightOneButton.setBackgroundResource(R.drawable.ic_menu_home);
         rightTwoButton.setBackgroundResource(R.drawable.ic_menu_plan);
@@ -363,9 +362,9 @@ public class TableActivity extends AppCompatActivity {
         rightTwoLayout.setOnClickListener(toolBarOnClickListener);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            leftOneLayout.setTooltipText(getResources().getText(R.string.back_left));
-            rightOneLayout.setTooltipText(getResources().getText(R.string.home_page));
-            rightTwoLayout.setTooltipText("品种规划");
+            leftOneLayout.setTooltipText(getText(R.string.back_left));
+            rightOneLayout.setTooltipText(getText(R.string.home_page));
+            rightTwoLayout.setTooltipText(getText(R.string.species_data_plan));
         }
 
     }
@@ -432,9 +431,10 @@ public class TableActivity extends AppCompatActivity {
         return contentValuesList;
     }
 
+    @SuppressLint("SetTextI18n")
     public void init() {
         mContext = getApplicationContext();
-        tableInfo.setText("试验基地：" + bigFarmName+"   试验田：" + farmName+"   年份：" + year);
+        tableInfo.setText(getText(R.string.big_farm)+"：" + bigFarmName + "   "+getText(R.string.farm)+"：" + farmName + "   "+getText(R.string.year)+"：" + year);
         tableDescription.setText(description);
         findByid();
         setListener();
@@ -572,7 +572,7 @@ public class TableActivity extends AppCompatActivity {
                             if (status == STATUS_EDIT) {
                                 int x = pos + 1, y = finalI + 1;
                                 final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(TableActivity.this).builder()
-                                        .setTitle(x + "-" + y + ":请输入品种编号")
+                                        .setTitle(x + "-" + y + "  "+getString(R.string.input_species_data))
                                         .setEditText("");
                                 myAlertInputDialog.setPositiveButton("确认", new View.OnClickListener() {
                                     @Override
@@ -589,7 +589,7 @@ public class TableActivity extends AppCompatActivity {
                                             str[pos][finalI] = species;
                                             Toast.makeText(TableActivity.this, species, Toast.LENGTH_SHORT).show();
                                         } else {
-                                            Toast.makeText(TableActivity.this, R.string.species_null_error, Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(TableActivity.this, R.string.toast_species_null_error, Toast.LENGTH_SHORT).show();
                                         }
                                         myAlertInputDialog.dismiss();
                                     }
@@ -630,7 +630,7 @@ public class TableActivity extends AppCompatActivity {
                                 String blockId = null;
                                 String speciesId = tv.getText().toString();
                                 if (speciesId.equals("")) {
-                                    Toast.makeText(TableActivity.this, "请填写品种名称", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(TableActivity.this, mContext.getText(R.string.toast_species_click_tip), Toast.LENGTH_SHORT).show();
                                 } else {
                                     Cursor c = db.query("SpeciesList", null, "speciesId=? and fieldId=?",
                                             new String[]{speciesId, fieldId}, null, null, null);
@@ -652,12 +652,12 @@ public class TableActivity extends AppCompatActivity {
                                     }
 
                                     startActivity(intent);
-                                    Toast.makeText(TableActivity.this, "品种名称：" + tv.getText(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(TableActivity.this, mContext.getText(R.string.species_id)+"：" + tv.getText(), Toast.LENGTH_SHORT).show();
                                     c.close();
                                 }
 
                             } else {
-                                Toast.makeText(TableActivity.this, R.string.null_error, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(TableActivity.this, R.string.toast_null_error, Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -739,7 +739,7 @@ public class TableActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //跳转界面
-                Toast.makeText(TableActivity.this, R.string.species_click_tip, Toast.LENGTH_SHORT).show();
+                Toast.makeText(TableActivity.this, R.string.toast_species_click_tip, Toast.LENGTH_SHORT).show();
             }
         });
 //        rightListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -825,7 +825,7 @@ public class TableActivity extends AppCompatActivity {
                 //显示数据为空的视图
                 //                mEmpty.setShowErrorAndPic(getString(R.string.empty_null), 0);
             } else if (type == RefreshParams.LOAD_DATA) {
-                Toast.makeText(mContext, "请求json失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, mContext.getText(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
             }
         }
     }

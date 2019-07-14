@@ -116,7 +116,7 @@ public class InShackFragment extends Fragment {
                 }
             } while (cursor.moveToNext());
         } else {
-            Toast.makeText(getContext(), R.string.bigFarm_null_error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.toast_bigFarm_null_error, Toast.LENGTH_SHORT).show();
         }
         cursor.close();
 
@@ -140,7 +140,7 @@ public class InShackFragment extends Fragment {
                 }
             } while (cursor2.moveToNext());
         } else {
-            Toast.makeText(getContext(), R.string.farm_null_error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.toast_farm_null_error, Toast.LENGTH_SHORT).show();
         }
         cursor2.close();
 
@@ -170,7 +170,7 @@ public class InShackFragment extends Fragment {
                 }
             } while (cursor3.moveToNext());
         } else {
-            Toast.makeText(getContext(), R.string.farm_null_error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.toast_farm_null_error, Toast.LENGTH_SHORT).show();
         }
         cursor3.close();
 

@@ -67,8 +67,8 @@ public class BigfarmClickAdapter extends RecyclerView.Adapter<BigfarmClickAdapte
             year = jsonObject.getInt("year");
 //            userRole = jsonObject.getString("userRole");
 //            holder.tvNum.setText("大田序号：" + bigfarmId);
-            holder.tvName.setText("试验基地：" + name);
-            holder.tvYear.setText("年份：" + year);
+            holder.tvName.setText(mContext.getText(R.string.big_farm)+"："+ name);
+            holder.tvYear.setText(mContext.getText(R.string.year)+"：" + year);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -166,7 +166,7 @@ public class BigfarmClickAdapter extends RecyclerView.Adapter<BigfarmClickAdapte
 //                });
 //                builder.show();
 
-                Toast.makeText(mContext, "试验基地：" + name, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, mContext.getText(R.string.big_farm)+"：" + name, Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -1,5 +1,6 @@
 package com.example.kerne.potato;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -64,6 +65,7 @@ public class SpeciesListAdapter extends RecyclerView.Adapter<SpeciesListAdapter.
         return new RcvClickViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RcvClickViewHolder holder, final int position) {
         final JSONObject jsonObject = mList.get(position);
@@ -77,9 +79,9 @@ public class SpeciesListAdapter extends RecyclerView.Adapter<SpeciesListAdapter.
                 expType = "";
             }
 //            userRole = jsonObject.getString("userRole");
-            holder.tvPlotId.setText("试验类型：" + expType);
-            holder.tvSpeciesId.setText("品种编号：" + speciesId);
-            holder.tvFieldId.setText("所属试验田分块编号：" + fieldId);
+            holder.tvPlotId.setText(mContext.getText(R.string.exp_type)+"：" + expType);
+            holder.tvSpeciesId.setText(mContext.getText(R.string.species_id)+"：" + speciesId);
+            holder.tvFieldId.setText(mContext.getText(R.string.block_id)+"：" + fieldId);
         } catch (JSONException e) {
             e.printStackTrace();
         }

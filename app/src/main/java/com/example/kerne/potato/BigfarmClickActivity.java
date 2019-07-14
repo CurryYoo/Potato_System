@@ -72,7 +72,7 @@ public class BigfarmClickActivity extends AppCompatActivity implements BigfarmCl
     }
 
     private void initToolBar() {
-        titleText.setText("试验基地");
+        titleText.setText(getText(R.string.big_farm));
         leftOneButton.setBackgroundResource(R.drawable.left_back);
         leftOneLayout.setOnClickListener(toolBarOnClickListener);
     }
@@ -171,7 +171,7 @@ public class BigfarmClickActivity extends AppCompatActivity implements BigfarmCl
         rcvClick.setAdapter(adapter);
 
         if(mList.size()==0){
-            Toast.makeText(this,R.string.bigFarm_null_error,Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,R.string.toast_bigFarm_null_error,Toast.LENGTH_SHORT).show();
         }
         adapter.setRcvClickDataList(mList);
     }

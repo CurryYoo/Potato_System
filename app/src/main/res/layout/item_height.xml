@@ -98,8 +98,9 @@
                 android:layout_marginBottom="2dp"
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp"
+                android:layout_marginEnd="@dimen/dp_3"
                 android:gravity="center_vertical"
-                android:text="平均株高："
+                android:text="@string/average_height"
                 android:textColor="@color/colorGreen"
                 android:textSize="15sp" />
 
@@ -190,7 +191,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="@dimen/dp_10"
             android:background="@drawable/bg_caculate_btn_"
-            android:text="计 算"
+            android:text="@string/calculate"
             android:textColor="@color/secondary_text"
             android:textSize="15sp"
             android:textStyle="bold" />

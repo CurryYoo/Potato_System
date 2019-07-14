@@ -87,7 +87,7 @@ public class MultiLevelActivity extends AppCompatActivity {
     }
 
     private void initToolBar() {
-        titleText.setText("实验田目录树");
+        titleText.setText(getText(R.string.farm_tree));
         leftOneButton.setBackgroundResource(R.drawable.left_back);
 
         leftOneLayout.setOnClickListener(toolBarOnClickListener);

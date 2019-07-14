@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -79,7 +78,7 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
                     startActivity(intent);
                     break;
                 case R.id.right_two_layout:
-                    Util.watchOnlineLargePhoto(GeneralClickActivity.this, Uri.parse(uri), "实验田示意图");
+                    Util.watchOnlineLargePhoto(GeneralClickActivity.this, Uri.parse(uri), getResources().getString(R.string.dialog_title_farm_image));
                     break;
                 default:
                     break;
@@ -118,9 +117,9 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
         rightTwoLayout.setOnClickListener(toolBarOnClickListener);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            leftOneLayout.setTooltipText(getResources().getText(R.string.back_left));
-            rightOneLayout.setTooltipText(getResources().getText(R.string.home_page));
-            rightTwoLayout.setTooltipText("试验田示意图");
+            leftOneLayout.setTooltipText(getText(R.string.back_left));
+            rightOneLayout.setTooltipText(getText(R.string.home_page));
+            rightTwoLayout.setTooltipText(getText(R.string.dialog_title_farm_image));
         }
     }
 
@@ -248,7 +247,7 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
         rcvClick.setAdapter(adapter);
 
         if(mList.size()==0){
-            Toast.makeText(this,R.string.farm_null_error,Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,R.string.toast_farm_null_error,Toast.LENGTH_SHORT).show();
         }
         adapter.setRcvClickDataList(mList);
     }

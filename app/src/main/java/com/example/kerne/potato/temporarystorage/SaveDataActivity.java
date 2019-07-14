@@ -1,6 +1,7 @@
 package com.example.kerne.potato.temporarystorage;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -260,7 +261,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                     break;
                 case R.id.right_two_layout:
                     final AlertDialog.Builder saveDialog = new AlertDialog.Builder(SaveDataActivity.this);
-                    saveDialog.setTitle("提示");
+                    saveDialog.setTitle(getText(R.string.dialog_title_tip));
                     saveDialog.setMessage("是否确定保存？");
                     saveDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
@@ -295,31 +296,31 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
         LinearLayout mLinearLayout = findViewById(R.id.mianliner);
         View view_basic = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_basicinfo, null);
-        InfoItemBar mbar_basic = new InfoItemBar(SaveDataActivity.this, "基本信息");
+        InfoItemBar mbar_basic = new InfoItemBar(SaveDataActivity.this, getString(R.string.item_bar_basic));
         mbar_basic.setColor(getDrawable(R.drawable.bg_item_bar_basic_info));
         mbar_basic.addView(view_basic);
         mbar_basic.setShow(true);
         mLinearLayout.addView(mbar_basic);
         View view_height = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_height, null);
-        InfoItemBar mbar_height = new InfoItemBar(SaveDataActivity.this, "十株株高");
+        InfoItemBar mbar_height = new InfoItemBar(SaveDataActivity.this, getString(R.string.item_bar_height));
         mbar_height.setColor(getDrawable(R.drawable.bg_item_bar_height));
         mbar_height.addView(view_height);
         mbar_height.setShow(true);
         mLinearLayout.addView(mbar_height);
         View view_branch = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_branch, null);
-        InfoItemBar mbar_branch = new InfoItemBar(SaveDataActivity.this, "十株分支数");
+        InfoItemBar mbar_branch = new InfoItemBar(SaveDataActivity.this, getString(R.string.item_bar_branch));
         mbar_branch.setColor(getDrawable(R.drawable.bg_item_bar_branch));
         mbar_branch.addView(view_branch);
         mbar_branch.setShow(true);
         mLinearLayout.addView(mbar_branch);
         View view_big = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_big, null);
-        InfoItemBar mbar_big = new InfoItemBar(SaveDataActivity.this, "大薯十株测产");
+        InfoItemBar mbar_big = new InfoItemBar(SaveDataActivity.this, getString(R.string.item_bar_big));
         mbar_big.setColor(getDrawable(R.drawable.bg_item_bar_big));
         mbar_big.addView(view_big);
         mbar_big.setShow(true);
         mLinearLayout.addView(mbar_big);
         View view_small = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_small, null);
-        InfoItemBar mbar_small = new InfoItemBar(SaveDataActivity.this, "小薯十株测产");
+        InfoItemBar mbar_small = new InfoItemBar(SaveDataActivity.this, getString(R.string.item_bar_small));
         mbar_small.setColor(getDrawable(R.drawable.bg_item_bar_small));
         mbar_small.addView(view_small);
         mbar_small.setShow(true);
@@ -958,9 +959,10 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         cursor.close();
     }
 
+    @SuppressLint("SetTextI18n")
     private void initToolBar() {
-        titleText.setText("品种信息采集");
-        commitInfo.setText("试验基地：" + bigFarmName + "   试验田：" + farmName + "   年份：" + year);
+        titleText.setText(getText(R.string.species_data_pick));
+        commitInfo.setText(getText(R.string.big_farm)+"：" + bigFarmName + "   "+getText(R.string.farm)+"：" + farmName + "   "+getText(R.string.year)+"：" + year);
         leftOneButton.setBackgroundResource(R.drawable.left_back);
         rightOneButton.setBackgroundResource(R.drawable.ic_menu_home);
         rightTwoButton.setBackgroundResource(R.drawable.ic_menu_save);
@@ -1244,7 +1246,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 try {
                     edtGrowingDays.setText(getGrowingDays(SaveDataActivity.this, sowingDate, matureDate));
                 } catch (ParseException e) {
-                    Toast.makeText(SaveDataActivity.this, "输入日期有误，请检查！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SaveDataActivity.this, getText(R.string.toast_date_error), Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 } catch (Exception e) {
                     Toast.makeText(SaveDataActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -1307,7 +1309,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     private void savaDataLocally() {
         ContentValues contentValues = assembleData();
         if (contentValues == null) {
-            Toast.makeText(SaveDataActivity.this, "输入有误", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SaveDataActivity.this, getText(R.string.toast_input_error), Toast.LENGTH_SHORT).show();
             return;
         }
         sqLiteDatabase.insert("SpeciesTable", null, contentValues);
@@ -1324,7 +1326,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         sqLiteDatabase.insert("SpeciesTable", null, contentValues);
         contentValues.clear();
         Toast.makeText(this,
-                "更新完成，当手机在线时，请提交到远程服务器", Toast.LENGTH_LONG).show();
+                getText(R.string.toast_save_data_complete), Toast.LENGTH_LONG).show();
     }
 
     //组装数据
@@ -1360,7 +1362,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
             String edtRateOfEmergenceContent = edtRateOfEmergence.getText().toString();
             int edtRateOfEmergenceContentParseInt = Integer.parseInt(edtRateOfEmergenceContent.isEmpty() ? "0" : edtRateOfEmergenceContent);
             if (edtRateOfEmergenceContentParseInt > 100) {
-                Toast.makeText(SaveDataActivity.this, "出苗率输入有误！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SaveDataActivity.this, getText(R.string.toast_rateOfEmergenceContentParseInt), Toast.LENGTH_SHORT).show();
                 return null;
             } else {
                 contentValues.put("sproutRate", edtRateOfEmergenceContentParseInt);
@@ -1560,7 +1562,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
             contentValues.put("img5", pathNaturalFecundity);
 
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "请检查输入数据的格式是否正确", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getText(R.string.toast_check_data_form), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         return contentValues;
@@ -1739,7 +1741,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                     intent1.setType("image/*");
                     startActivityForResult(intent1, 6);
                 } else {
-                    Toast.makeText(SaveDataActivity.this, "你没有赋予应用权限", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SaveDataActivity.this, getText(R.string.toast_no_permission), Toast.LENGTH_SHORT).show();
                 }
         }
     }

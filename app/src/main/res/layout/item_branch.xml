@@ -101,7 +101,8 @@
                 android:layout_marginBottom="2dp"
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp"
-                android:text="平均分支数："
+                android:layout_marginEnd="@dimen/dp_3"
+                android:text="@string/average_branch"
                 android:textSize="15sp"
                 android:layout_marginStart="@dimen/dp_5"
                 android:textColor="@color/colorOrange" />
@@ -196,7 +197,7 @@
             android:layout_marginBottom="@dimen/dp_10"
             android:layout_marginStart="@dimen/dp_10"
             android:layout_marginEnd="5dp"
-            android:text="计 算"
+            android:text="@string/calculate"
             android:textStyle="bold"
             android:textSize="15sp"
             android:textColor="@color/secondary_text"
