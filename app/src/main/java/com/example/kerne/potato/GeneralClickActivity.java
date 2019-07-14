@@ -19,7 +19,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
 import com.example.kerne.potato.temporarystorage.Util;
@@ -33,6 +32,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.example.kerne.potato.Util.CustomToast.showShortToast;
 
 /**
  * Item 点击对应的 Activity
@@ -246,8 +247,8 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
         rcvClick.setHasFixedSize(true);
         rcvClick.setAdapter(adapter);
 
-        if(mList.size()==0){
-            Toast.makeText(this,R.string.toast_farm_null_error,Toast.LENGTH_SHORT).show();
+        if (mList.size() == 0) {
+            showShortToast(this, getString(R.string.toast_farm_null_error));
         }
         adapter.setRcvClickDataList(mList);
     }

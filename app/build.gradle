@@ -54,4 +54,6 @@ dependencies {
 
     //ViewPagerIndicator
     implementation 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
+
+    implementation 'com.github.f0ris.sweetalert:library:1.5.1'
 }

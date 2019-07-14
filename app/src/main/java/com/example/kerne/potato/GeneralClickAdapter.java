@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.kerne.potato.complextable.TableActivity;
 
@@ -19,6 +18,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.kerne.potato.Util.CustomToast.showShortToast;
 
 /**
  * Item 点击对应的 Adapter
@@ -87,8 +88,8 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
             type = jsonObject.getString("type");
 //            userRole = jsonObject.getString("userRole");
 //            holder.tvNum.setText("实验田序号：" + farmlandId);
-            holder.tvName.setText(mContext.getText(R.string.farm)+"：" + name);
-            holder.tvType.setText(mContext.getText(R.string.type)+"：" + type);
+            holder.tvName.setText(mContext.getText(R.string.farm) + "：" + name);
+            holder.tvType.setText(mContext.getText(R.string.type) + "：" + type);
             if (type.equals("greenhouse")) {
                 holder.is_shack.setVisibility(View.VISIBLE);
             }
@@ -131,7 +132,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                     intent.putExtra("bigFarmName", bigFarmName);
                     intent.putExtra("year", year);
                     mContext.startActivity(intent);
-                    Toast.makeText(mContext, mContext.getText(R.string.farm)+"：" + name, Toast.LENGTH_SHORT).show();
+                    showShortToast(mContext, mContext.getText(R.string.farm) + "：" + name);
                 } else if (type.equals("greenhouse")) {
                     try {
                         expType = jsonObject.getString("expType");
@@ -144,7 +145,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                         e.printStackTrace();
                     }
                     if (num == 0) {
-                        Toast.makeText(mContext, R.string.toast_shack_farm_null_error, Toast.LENGTH_SHORT).show();
+                        showShortToast(mContext, mContext.getString(R.string.toast_shack_farm_null_error));
                     } else {
                         intent = new Intent(mContext, TableActivity.class);
 
@@ -159,7 +160,7 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                         finalIntent.putExtra("bigFarmName", bigFarmName);
                         finalIntent.putExtra("year", year);
                         mContext.startActivity(finalIntent);
-                        Toast.makeText(mContext, mContext.getText(R.string.farm)+"：" + name, Toast.LENGTH_SHORT).show();
+                        showShortToast(mContext, mContext.getText(R.string.farm) + "：" + name);
                     }
                 }
 //                //弹出输入年份的对话框

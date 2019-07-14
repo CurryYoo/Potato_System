@@ -227,53 +227,5 @@
             </LinearLayout>
 
         </GridLayout>
-
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/view_download"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0.9"
-            android:background="@color/white"
-            android:enabled="false"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <ProgressBar
-                android:id="@+id/progress_horizontal"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="3dp"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_100"
-                android:padding="@dimen/dp_10"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:background="@drawable/bg_table_info"
-                android:gravity="center">
-
-                <ProgressBar
-                    android:id="@+id/progress_circular"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:tooltipText="下载离线数据..."
-                    android:layout_marginEnd="@dimen/dp_5"/>
-
-                <TextView
-                    android:id="@+id/progress_tip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="下载离线数据..."
-                    android:textColor="@color/primary_text"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-        </android.support.constraint.ConstraintLayout>
     </RelativeLayout>
 </LinearLayout>

@@ -1,9 +1,9 @@
 package com.example.kerne.potato;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -15,21 +15,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
 import com.facebook.stetho.Stetho;
-import com.hb.dialog.myDialog.MyAlertInputDialog;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -48,9 +44,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import q.rorbin.badgeview.Badge;
 import q.rorbin.badgeview.QBadgeView;
 
+import static com.example.kerne.potato.Util.CustomToast.showShortToast;
 import static com.example.kerne.potato.Util.ShowKeyBoard.delayShowSoftKeyBoard;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -75,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     SharedPreferences sp;
     SharedPreferences.Editor editor;
 
-    Button button;
+    SweetAlertDialog downloadDataDialog;
 
     String img1;
     String img2;
@@ -84,14 +82,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String img5;
     @BindView(R.id.title_text)
     TextView titleText;
-    @BindView(R.id.progress_horizontal)
-    ProgressBar progressHorizontal;
-    @BindView(R.id.progress_circular)
-    ProgressBar progressCircular;
-    @BindView(R.id.progress_tip)
-    TextView progressTip;
-    @BindView(R.id.view_download)
-    ConstraintLayout viewDownload;
 
     private SpeciesDBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
@@ -136,34 +126,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 switch (msg.what) {
                     case BIGFARMLIST_OK:
                         downloadSuccess_Num++;
-                        activity.progressHorizontal.setProgress(downloadSuccess_Num);
-                        activity.progressTip.setText(activity.getText(R.string.download_farm_data));
-                        Log.d("num0", "" + downloadSuccess_Num);
+                        activity.downloadDataDialog.setTitleText(activity.getString(R.string.download_farm_data));
                         break;
                     case FARMLIST_OK:
                         downloadSuccess_Num++;
-                        activity.progressHorizontal.setProgress(downloadSuccess_Num);
-                        activity.progressTip.setText(activity.getText(R.string.download_farm_plan_data));
-                        Log.d("num1", "" + downloadSuccess_Num);
+                        activity.downloadDataDialog.setTitleText(activity.getString(R.string.download_farm_plan_data));
                         break;
                     case EXPERIMENTFIELD_OK:
                         downloadSuccess_Num++;
-                        activity.progressHorizontal.setProgress(downloadSuccess_Num);
-                        activity.progressTip.setText(activity.getText(R.string.download_species_data));
-                        Log.d("num2", "" + downloadSuccess_Num);
+                        activity.downloadDataDialog.setTitleText(activity.getString(R.string.download_species_data));
                         break;
                     case SPECIESLIST_OK:
                         downloadSuccess_Num++;
-                        activity.progressHorizontal.setProgress(downloadSuccess_Num);
-                        activity.progressTip.setText(activity.getText(R.string.download_complete));
-                        Log.d("num3", "" + downloadSuccess_Num);
                         break;
                 }
                 if (downloadSuccess_Num == request_Num) {
-                    Log.d("download" + downloadSuccess_Num, "ok");
-                    Toast.makeText(activity.getApplicationContext(), activity.getText(R.string.download_complete), Toast.LENGTH_SHORT).show();
-                    activity.viewDownload.setVisibility(View.GONE);
-                    activity.progressHorizontal.setProgress(0);
+                    activity.downloadDataDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                    activity.downloadDataDialog.setCancelable(true);
+                    activity.downloadDataDialog.setTitleText(activity.getString(R.string.download_complete));
                     downloadSuccess_Num = 0;
                 }
             }
@@ -177,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case R.id.update_location_data:
                     //检查网络状况
                     if (!isOnline) {
-                        Toast.makeText(MainActivity.this, getText(R.string.toast_check_network_state), Toast.LENGTH_SHORT).show();
+                        showShortToast(MainActivity.this, getString(R.string.toast_check_network_state));
                         break;
                     }
 
@@ -215,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             });
 
                         } else {
-                            Toast.makeText(MainActivity.this, getText(R.string.toast_null_plan_data), Toast.LENGTH_SHORT).show();
+                            showShortToast(MainActivity.this, getString(R.string.toast_null_plan_data));
                         }
                         cursor0 = sqLiteDatabase.query("ExperimentField", null, null, null, null, null, null);
                         if (cursor0.moveToFirst()) {
@@ -237,9 +217,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             badge_location.hide(false);
                         }
 
-                        Toast.makeText(MainActivity.this, getText(R.string.toast_update_plan_complete), Toast.LENGTH_SHORT).show();
+                        showShortToast(MainActivity.this, getString(R.string.toast_update_plan_complete));
                     } else {
-                        Toast.makeText(MainActivity.this, getText(R.string.toast_log_in), Toast.LENGTH_SHORT).show();
+                        showShortToast(MainActivity.this, getString(R.string.toast_log_in));
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivityForResult(intent, 1);
                     }
@@ -247,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case R.id.update_pick_data:
                     //检查网络状况
                     if (!isOnline) {
-                        Toast.makeText(MainActivity.this, getText(R.string.toast_check_network_state), Toast.LENGTH_SHORT).show();
+                        showShortToast(MainActivity.this, getString(R.string.toast_check_network_state));
                         break;
                     }
 
@@ -516,14 +496,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 badge_pick.hide(false);
                             }
 
-                            Toast.makeText(MainActivity.this, getText(R.string.toast_update_pick_complete), Toast.LENGTH_SHORT).show();
+                            showShortToast(MainActivity.this, getString(R.string.toast_update_pick_complete));
                         } else {
-                            Toast.makeText(MainActivity.this, getText(R.string.toast_null_pick_data), Toast.LENGTH_SHORT).show();
+                            showShortToast(MainActivity.this, getString(R.string.toast_null_pick_data));
                         }
                         cursor.close();
                         btn_pick.setEnabled(true);
                     } else {
-                        Toast.makeText(MainActivity.this, getText(R.string.toast_log_in), Toast.LENGTH_SHORT).show();
+                        showShortToast(MainActivity.this, getString(R.string.toast_log_in));
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivityForResult(intent, 1);
                         btn_pick.setEnabled(true);
@@ -597,9 +577,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initToolBar() {
-        progressHorizontal.setMax(4);
         titleText.setText(getText(R.string.system_name));
-        viewDownload.setOnClickListener(null);
     }
 
     @Override
@@ -636,36 +614,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_download:
                 //检查网络状况
                 if (!isOnline) {
-                    Toast.makeText(MainActivity.this, getText(R.string.toast_check_network_state), Toast.LENGTH_SHORT).show();
+                    showShortToast(MainActivity.this, getString(R.string.toast_check_network_state));
                     break;
                 }
                 if (!sp.getBoolean("update_pick_data", false) && !sp.getBoolean("update_location_data", false)) {
                     downloadData();
                 } else {
-                    final AlertDialog.Builder saveDialog = new AlertDialog.Builder(MainActivity.this);
-                    saveDialog.setTitle(getText(R.string.dialog_title_tip));
-                    saveDialog.setMessage("本地数据库尚有未上传数据，下载服务器数据将覆盖本地数据，是否确定继续下载数据？");
-                    saveDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    final SweetAlertDialog downloadWarnDialog = new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE)
+                            .setContentText(getString(R.string.download_data_warn))
+                            .setConfirmText("确定")
+                            .setCancelText("取消")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismissWithAnimation();
+                                    editor.putBoolean("update_location_data", false);
+                                    editor.putBoolean("update_pick_data", false);
+                                    editor.apply();
+                                    if (badge_location != null) {
+                                        badge_location.hide(false);
+                                    }
+                                    if (badge_pick != null) {
+                                        badge_pick.hide(false);
+                                    }
+                                    downloadData();
+                                }
+                            });
+                    downloadWarnDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            editor.putBoolean("update_location_data", false);
-                            editor.putBoolean("update_pick_data", false);
-                            editor.apply();
-                            if (badge_location != null) {
-                                badge_location.hide(false);
-                            }
-                            if (badge_pick != null) {
-                                badge_pick.hide(false);
-                            }
-                            downloadData();
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
                         }
                     });
-                    saveDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    });
-                    saveDialog.show();
+                    downloadWarnDialog.show();
                 }
                 break;
             case R.id.btn_general:
@@ -674,64 +655,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent_general);
                 break;
             case R.id.btn_mutlilevel:
-//                Cursor cursor2 = db.query("BigfarmList", null, null, null, null, null, null);
-//
-//                if (cursor2.moveToFirst()) {
-//                    do {
-//                        JSONObject jsonObject0 = new JSONObject();
-//                        try {
-//                            jsonObject0.put("bigfarmId", cursor2.getString(cursor2.getColumnIndex("bigfarmId")));
-//                            jsonObject0.put("name", cursor2.getString(cursor2.getColumnIndex("name")));
-//                            jsonObject0.put("description", cursor2.getString(cursor2.getColumnIndex("description")));
-//                            jsonObject0.put("img", cursor2.getString(cursor2.getColumnIndex("img")));
-//                            jsonObject0.put("year", cursor2.getInt(cursor2.getColumnIndex("year")));
-//                            mBigFarmList.add(jsonObject0);
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                            Log.e("bigfarmId_error", cursor2.getString(cursor2.getColumnIndex("bigfarmId")));
-//                        }
-//                    } while (cursor2.moveToNext());
-//                }
-//                cursor2.close();
-//
-//                if (mBigFarmList.size() == 0) {
-//                    Toast.makeText(MainActivity.this, "数据为空，请下载数据后重试！", Toast.LENGTH_SHORT).show();
-//                } else {
                 Intent intent_mutlilevel = new Intent(MainActivity.this, MultiLevelActivity.class);
                 startActivity(intent_mutlilevel);
-//                }
                 break;
             case R.id.btn_data:
-                final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(MainActivity.this).builder()
-                        .setTitle(getString(R.string.input_species_data))
-                        .setEditText("");
-                myAlertInputDialog.setPositiveButton("确认", new View.OnClickListener() {
+                final SweetAlertDialog inputDialog = new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE);
+                LayoutInflater mlayoutInflater = LayoutInflater.from(this);
+                @SuppressLint("InflateParams") final View view = mlayoutInflater.inflate(R.layout.dialog_input, null);
+                final EditText dialog_input = view.findViewById(R.id.dialog_input);
+                inputDialog.addContentView(view, new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                inputDialog.setCustomView(view);
+                inputDialog.setConfirmText("确定");
+                inputDialog.setCancelText("取消");
+                inputDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        //showMsg(myAlertInputDialog.getResult());
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
                         String speciesId;
-                        speciesId = myAlertInputDialog.getResult();
+                        speciesId = dialog_input.getText().toString();
                         if ("".equals(speciesId)) {
-                            Toast.makeText(MainActivity.this, getText(R.string.input_species_data), Toast.LENGTH_SHORT).show();
+                            showShortToast(MainActivity.this, getString(R.string.input_species_data));
                         } else {
+                            sweetAlertDialog.dismiss();
+//                            db.close();
+//                            dbHelper.close();
                             Intent intent = new Intent(MainActivity.this, SpeciesListActivity.class);
                             intent.putExtra("speciesId", speciesId);
                             intent.putExtra("userRole", userRole);
                             startActivity(intent);
-                            dbHelper.close();
-                            myAlertInputDialog.dismiss();
                         }
                     }
-                }).setNegativeButton("取消", new View.OnClickListener() {
+                });
+                inputDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        //showMsg("取消");
-                        myAlertInputDialog.dismiss();
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismissWithAnimation();
                     }
                 });
-                myAlertInputDialog.show();
-                //弹出软键盘
-                delayShowSoftKeyBoard(myAlertInputDialog.getContentEditText());
+                inputDialog.show();
+                delayShowSoftKeyBoard(dialog_input);
                 break;
             default:
                 break;
@@ -739,12 +701,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void downloadData() {
-//        cache = new File(Environment.getExternalStorageDirectory(), "cache");
+        downloadDataDialog = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        downloadDataDialog.setTitleText(getString(R.string.download_big_farm_data));
+        downloadDataDialog.setCancelable(false);
+        downloadDataDialog.show();
 
-        Toast.makeText(MainActivity.this, getText(R.string.toast_start_download), Toast.LENGTH_SHORT).show();
-
-        progressTip.setText(getText(R.string.download_big_farm_data));
-        viewDownload.setVisibility(View.VISIBLE);
         HttpRequest.HttpRequest_bigfarm(null, MainActivity.this, new HttpRequest.HttpCallback() {
             @Override
             public void onSuccess(final JSONObject result) {
@@ -1098,10 +1059,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
             if (networkInfo != null && networkInfo.isAvailable()) {
                 isOnline = true;
-                Toast.makeText(context, getText(R.string.network_normal), Toast.LENGTH_SHORT).show();
+                showShortToast(context, getString(R.string.network_normal));
             } else {
                 isOnline = false;
-                Toast.makeText(context, getText(R.string.network_wrong), Toast.LENGTH_SHORT).show();
+                showShortToast(context, getString(R.string.network_wrong));
             }
         }
     }

@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.kerne.potato.temporarystorage.SaveDataActivity;
 
@@ -21,9 +20,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.kerne.potato.Util.CustomToast.showShortToast;
+
 /**
  * Item 点击对应的 Adapter
- *
+ * <p>
  * Created by Tnno Wu on 2018/03/05.
  */
 
@@ -79,9 +80,9 @@ public class SpeciesListAdapter extends RecyclerView.Adapter<SpeciesListAdapter.
                 expType = "";
             }
 //            userRole = jsonObject.getString("userRole");
-            holder.tvPlotId.setText(mContext.getText(R.string.exp_type)+"：" + expType);
-            holder.tvSpeciesId.setText(mContext.getText(R.string.species_id)+"：" + speciesId);
-            holder.tvFieldId.setText(mContext.getText(R.string.block_id)+"：" + fieldId);
+            holder.tvPlotId.setText(mContext.getText(R.string.exp_type) + "：" + expType);
+            holder.tvSpeciesId.setText(mContext.getText(R.string.species_id) + "：" + speciesId);
+            holder.tvFieldId.setText(mContext.getText(R.string.block_id) + "：" + fieldId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -112,38 +113,7 @@ public class SpeciesListAdapter extends RecyclerView.Adapter<SpeciesListAdapter.
                 intent.putExtra("blockId", blockId);
                 intent.putExtra("fieldId", fieldId);
                 mContext.startActivity(intent);
-
-//                    builder.setTitle("选择一个操作");
-//                    //    指定下拉列表的显示数据
-//                    final String[] options = {"进入"};
-//                    //    设置一个下拉的列表选择项
-//
-//                    builder.setItems(options, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            if (which == 0) {
-//                                Intent intent = new Intent(mContext, SaveDataActivity.class);
-//                                intent.putExtra("userRole", userRole);
-//                                intent.putExtra("speciesId", speciesId);
-//                                intent.putExtra("expType", SpeciesClickActivity.expType);
-//                                intent.putExtra("blockId", blockId);
-//                                intent.putExtra("fieldId", fieldId);
-//                                mContext.startActivity(intent);
-//                            } else {
-//                                mList.remove(position);
-//                                notifyItemRemoved(position);
-//                                Toast.makeText(mContext, "删除speciesId " + speciesId, Toast.LENGTH_SHORT).show();
-//                            }
-//                            //Toast.makeText(GeneralClickActivity.this, "选择的城市为：" + options[which], Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                    builder.show();
-
-                Toast.makeText(mContext, "你点击的fieldId是：" + fieldId, Toast.LENGTH_SHORT).show();
-//                } else {
-//                    Toast.makeText(mContext, "对不起，您没有该权限！", Toast.LENGTH_SHORT).show();
-//
-//                }
+                showShortToast(mContext, mContext.getString(R.string.block_id) + "：" + fieldId);
             }
         });
 

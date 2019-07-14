@@ -17,6 +17,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.kerne.potato.MainActivity;
 import com.example.kerne.potato.R;
@@ -39,7 +39,6 @@ import com.example.kerne.potato.complextable.widget.SyncHorizontalScrollView;
 import com.example.kerne.potato.complextable.widget.pullrefresh.AbPullToRefreshView;
 import com.example.kerne.potato.temporarystorage.SaveDataActivity;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
-import com.hb.dialog.myDialog.MyAlertInputDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,7 +50,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
+import static com.example.kerne.potato.Util.CustomToast.showShortToast;
 import static com.example.kerne.potato.Util.ShowKeyBoard.delayShowSoftKeyBoard;
 
 public class TableActivity extends AppCompatActivity {
@@ -148,7 +149,7 @@ public class TableActivity extends AppCompatActivity {
                             rightTwoLayout.setTooltipText(getResources().getText(R.string.save_data));
                         }
                         tableDescription.setEnabled(true);
-                        Toast.makeText(TableActivity.this, mContext.getText(R.string.enter_species_plan_mode), Toast.LENGTH_SHORT).show();
+                        showShortToast(TableActivity.this, mContext.getString(R.string.enter_species_plan_mode));
                     } else {
 
                         rightTwoButton.setBackgroundResource(R.drawable.ic_menu_plan);
@@ -200,7 +201,7 @@ public class TableActivity extends AppCompatActivity {
 //                }
                         Log.d("str_content", contentValuesList.get(0).getAsString("ContentofColumn") + "");
                         status = STATUS_READ;
-                        Toast.makeText(TableActivity.this, mContext.getText(R.string.exit_species_plan_mode), Toast.LENGTH_SHORT).show();
+                        showShortToast(TableActivity.this, mContext.getString(R.string.exit_species_plan_mode));
                         editor.putBoolean("update_location_data", true);
                         editor.apply();
                     }
@@ -280,7 +281,7 @@ public class TableActivity extends AppCompatActivity {
                         speciesNames.add(cursor.getString(cursor.getColumnIndex("name")));
                     } while (cursor.moveToNext());
                 } else {
-                    Toast.makeText(TableActivity.this, R.string.toast_species_null_error, Toast.LENGTH_SHORT).show();
+                    showShortToast(TableActivity.this, getString(R.string.toast_species_null_error));
                 }
                 cursor.close();
 
@@ -434,7 +435,7 @@ public class TableActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     public void init() {
         mContext = getApplicationContext();
-        tableInfo.setText(getText(R.string.big_farm)+"：" + bigFarmName + "   "+getText(R.string.farm)+"：" + farmName + "   "+getText(R.string.year)+"：" + year);
+        tableInfo.setText(getText(R.string.big_farm) + "：" + bigFarmName + "   " + getText(R.string.farm) + "：" + farmName + "   " + getText(R.string.year) + "：" + year);
         tableDescription.setText(description);
         findByid();
         setListener();
@@ -571,13 +572,20 @@ public class TableActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             if (status == STATUS_EDIT) {
                                 int x = pos + 1, y = finalI + 1;
-                                final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(TableActivity.this).builder()
-                                        .setTitle(x + "-" + y + "  "+getString(R.string.input_species_data))
-                                        .setEditText("");
-                                myAlertInputDialog.setPositiveButton("确认", new View.OnClickListener() {
+
+                                final SweetAlertDialog inputDialog = new SweetAlertDialog(TableActivity.this, SweetAlertDialog.NORMAL_TYPE);
+                                LayoutInflater mlayoutInflater = LayoutInflater.from(TableActivity.this);
+                                @SuppressLint("InflateParams") final View view = mlayoutInflater.inflate(R.layout.dialog_input, null);
+                                final EditText dialog_input = view.findViewById(R.id.dialog_input);
+                                dialog_input.setHint(x + "-" + y + "  " + getString(R.string.input_species_data));
+                                inputDialog.addContentView(view, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                                inputDialog.setCustomView(view);
+                                inputDialog.setConfirmText("确定");
+                                inputDialog.setCancelText("取消");
+                                inputDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                     @Override
-                                    public void onClick(View v) {
-                                        String species = myAlertInputDialog.getResult();
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        String species = dialog_input.getText().toString();
                                         boolean isExist = false;
                                         for (int j = 0; j < speciesNames.size(); j++) {
                                             if (species.equals(speciesNames.get(j))) {
@@ -587,29 +595,29 @@ public class TableActivity extends AppCompatActivity {
                                         if (isExist) {
                                             tv.setText(species);
                                             str[pos][finalI] = species;
-                                            Toast.makeText(TableActivity.this, species, Toast.LENGTH_SHORT).show();
+                                            showShortToast(TableActivity.this, species);
                                         } else {
-                                            Toast.makeText(TableActivity.this, R.string.toast_species_null_error, Toast.LENGTH_SHORT).show();
+                                            showShortToast(TableActivity.this, getString(R.string.toast_species_null_error));
                                         }
-                                        myAlertInputDialog.dismiss();
-                                    }
-                                }).setNegativeButton("取消", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        //showMsg("取消");
-                                        myAlertInputDialog.dismiss();
+                                        inputDialog.dismiss();
                                     }
                                 });
-                                myAlertInputDialog.show();
-                                //弹出软键盘
-                                delayShowSoftKeyBoard(myAlertInputDialog.getContentEditText());
-
-//                                AlertDialog.Builder inputDialog = new AlertDialog.Builder(TableActivity.this);
-//                                inputDialog.setTitle(finalI+1 + "-" + pos+1 + ":请输入品种编号").setView(editText);
-//                                inputDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                inputDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        sweetAlertDialog.dismissWithAnimation();
+                                    }
+                                });
+                                inputDialog.show();
+                                delayShowSoftKeyBoard(dialog_input);
+//
+//                                final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(TableActivity.this).builder()
+//                                        .setTitle(x + "-" + y + "  "+getString(R.string.input_species_data))
+//                                        .setEditText("");
+//                                myAlertInputDialog.setPositiveButton("确认", new View.OnClickListener() {
 //                                    @Override
-//                                    public void onClick(DialogInterface dialog, int which) {
-//                                        String species = editText.getText().toString();
+//                                    public void onClick(View v) {
+//                                        String species = myAlertInputDialog.getResult();
 //                                        boolean isExist = false;
 //                                        for (int j = 0; j < speciesNames.size(); j++) {
 //                                            if (species.equals(speciesNames.get(j))) {
@@ -620,17 +628,26 @@ public class TableActivity extends AppCompatActivity {
 //                                            tv.setText(species);
 //                                            str[pos][finalI] = species;
 //                                            Toast.makeText(TableActivity.this, species, Toast.LENGTH_SHORT).show();
+//                                        } else {
+//                                            Toast.makeText(TableActivity.this, R.string.toast_species_null_error, Toast.LENGTH_SHORT).show();
 //                                        }
-//                                        else {
-//                                            Toast.makeText(TableActivity.this, "该品种不存在", Toast.LENGTH_SHORT).show();
-//                                        }
+//                                        myAlertInputDialog.dismiss();
 //                                    }
-//                                }).show();
+//                                }).setNegativeButton("取消", new View.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(View v) {
+//                                        //showMsg("取消");
+//                                        myAlertInputDialog.dismiss();
+//                                    }
+//                                });
+//                                myAlertInputDialog.show();
+//                                //弹出软键盘
+//                                delayShowSoftKeyBoard(myAlertInputDialog.getContentEditText());
                             } else if (status == STATUS_READ) {
                                 String blockId = null;
                                 String speciesId = tv.getText().toString();
                                 if (speciesId.equals("")) {
-                                    Toast.makeText(TableActivity.this, mContext.getText(R.string.toast_species_click_tip), Toast.LENGTH_SHORT).show();
+                                    showShortToast(TableActivity.this, mContext.getString(R.string.toast_species_click_tip));
                                 } else {
                                     Cursor c = db.query("SpeciesList", null, "speciesId=? and fieldId=?",
                                             new String[]{speciesId, fieldId}, null, null, null);
@@ -642,9 +659,9 @@ public class TableActivity extends AppCompatActivity {
                                     intent.putExtra("speciesId", speciesId);
                                     intent.putExtra("expType", expType);
                                     //备注信息
-                                    intent.putExtra("bigFarmName",bigFarmName);
-                                    intent.putExtra("farmName",farmName);
-                                    intent.putExtra("year",year);
+                                    intent.putExtra("bigFarmName", bigFarmName);
+                                    intent.putExtra("farmName", farmName);
+                                    intent.putExtra("year", year);
                                     if (blockId != null) {
                                         intent.putExtra("blockId", blockId);
                                     } else {
@@ -652,12 +669,12 @@ public class TableActivity extends AppCompatActivity {
                                     }
 
                                     startActivity(intent);
-                                    Toast.makeText(TableActivity.this, mContext.getText(R.string.species_id)+"：" + tv.getText(), Toast.LENGTH_SHORT).show();
+                                    showShortToast(TableActivity.this, mContext.getText(R.string.species_id) + "：" + tv.getText());
                                     c.close();
                                 }
 
                             } else {
-                                Toast.makeText(TableActivity.this, R.string.toast_null_error, Toast.LENGTH_SHORT).show();
+                                showShortToast(TableActivity.this, getString(R.string.toast_null_error));
                             }
                         }
                     });
@@ -739,7 +756,7 @@ public class TableActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //跳转界面
-                Toast.makeText(TableActivity.this, R.string.toast_species_click_tip, Toast.LENGTH_SHORT).show();
+                showShortToast(TableActivity.this, getString(R.string.toast_species_click_tip));
             }
         });
 //        rightListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -825,7 +842,7 @@ public class TableActivity extends AppCompatActivity {
                 //显示数据为空的视图
                 //                mEmpty.setShowErrorAndPic(getString(R.string.empty_null), 0);
             } else if (type == RefreshParams.LOAD_DATA) {
-                Toast.makeText(mContext, mContext.getText(R.string.toast_network_error), Toast.LENGTH_SHORT).show();
+                showShortToast(mContext, mContext.getString(R.string.toast_network_error));
             }
         }
     }

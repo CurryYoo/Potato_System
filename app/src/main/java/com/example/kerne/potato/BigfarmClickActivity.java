@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
 
@@ -28,6 +27,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.example.kerne.potato.Util.CustomToast.showShortToast;
 
 public class BigfarmClickActivity extends AppCompatActivity implements BigfarmClickAdapter.OnItemClickListener {
 
@@ -170,8 +171,8 @@ public class BigfarmClickActivity extends AppCompatActivity implements BigfarmCl
         rcvClick.setHasFixedSize(true);
         rcvClick.setAdapter(adapter);
 
-        if(mList.size()==0){
-            Toast.makeText(this,R.string.toast_bigFarm_null_error,Toast.LENGTH_SHORT).show();
+        if (mList.size() == 0) {
+            showShortToast(this, getString(R.string.toast_bigFarm_null_error));
         }
         adapter.setRcvClickDataList(mList);
     }

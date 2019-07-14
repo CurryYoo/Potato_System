@@ -9,13 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.kerne.potato.Util.CustomToast.showShortToast;
 
 public class BigfarmClickAdapter extends RecyclerView.Adapter<BigfarmClickAdapter.RcvClickViewHolder> {
 
@@ -67,8 +68,8 @@ public class BigfarmClickAdapter extends RecyclerView.Adapter<BigfarmClickAdapte
             year = jsonObject.getInt("year");
 //            userRole = jsonObject.getString("userRole");
 //            holder.tvNum.setText("大田序号：" + bigfarmId);
-            holder.tvName.setText(mContext.getText(R.string.big_farm)+"："+ name);
-            holder.tvYear.setText(mContext.getText(R.string.year)+"：" + year);
+            holder.tvName.setText(mContext.getText(R.string.big_farm) + "：" + name);
+            holder.tvYear.setText(mContext.getText(R.string.year) + "：" + year);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -84,7 +85,7 @@ public class BigfarmClickAdapter extends RecyclerView.Adapter<BigfarmClickAdapte
                     img = jsonObject.getString("img");
                     year = jsonObject.getInt("year");
                     uri = jsonObject.getString("uri");
-                    name=jsonObject.getString("name");
+                    name = jsonObject.getString("name");
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -94,7 +95,7 @@ public class BigfarmClickAdapter extends RecyclerView.Adapter<BigfarmClickAdapte
                 intent.putExtra("img", img);
                 intent.putExtra("year", year);
                 intent.putExtra("uri", uri);
-                intent.putExtra("name",name);
+                intent.putExtra("name", name);
                 mContext.startActivity(intent);
 
 //                //弹出输入年份的对话框
@@ -166,7 +167,7 @@ public class BigfarmClickAdapter extends RecyclerView.Adapter<BigfarmClickAdapte
 //                });
 //                builder.show();
 
-                Toast.makeText(mContext, mContext.getText(R.string.big_farm)+"：" + name, Toast.LENGTH_SHORT).show();
+                showShortToast(mContext, mContext.getText(R.string.big_farm) + "：" + name);
             }
         });
 

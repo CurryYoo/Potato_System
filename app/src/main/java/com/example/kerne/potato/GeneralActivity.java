@@ -19,7 +19,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.kerne.potato.complextable.TableActivity;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
@@ -32,6 +31,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.example.kerne.potato.Util.CustomToast.showShortToast;
 
 public class GeneralActivity extends AppCompatActivity {
 
@@ -54,8 +55,8 @@ public class GeneralActivity extends AppCompatActivity {
     private int length;  //试验田的长
     private int width;  //试验田的宽
     private String type;
-    private String farmName;
     private String bigFarmName;
+    private String farmName;
     private int year;
     private String userRole;
     private int flag = 0;
@@ -85,7 +86,7 @@ public class GeneralActivity extends AppCompatActivity {
                         layout.addView(view);
                         view.setOnTouchListener(touch);
                     } else {
-                        Toast.makeText(GeneralActivity.this, R.string.toast_field_plan_null_error, Toast.LENGTH_SHORT).show();
+                        showShortToast(GeneralActivity.this, getString(R.string.toast_field_plan_null_error));
                     }
 
                     break;
@@ -123,7 +124,7 @@ public class GeneralActivity extends AppCompatActivity {
         length = getIntent().getIntExtra("length", 0);
         width = getIntent().getIntExtra("width", 0);
         type = getIntent().getStringExtra("type");
-        farmName=getIntent().getStringExtra("farmName");
+        farmName = getIntent().getStringExtra("farmName");
         bigFarmName = getIntent().getStringExtra("bigFarmName");
         year = getIntent().getIntExtra("year", 1970);
 
@@ -179,6 +180,7 @@ public class GeneralActivity extends AppCompatActivity {
 //        textView.setText(intent.getStringExtra("option"));
 
     }
+
     private void initToolBar() {
         titleText.setText(farmName);
         leftOneButton.setBackgroundResource(R.drawable.left_back);
@@ -222,7 +224,7 @@ public class GeneralActivity extends AppCompatActivity {
                 }
             } while (cursor.moveToNext());
         } else {
-            Toast.makeText(GeneralActivity.this, R.string.toast_field_null_error, Toast.LENGTH_SHORT).show();
+            showShortToast(GeneralActivity.this, getString(R.string.toast_field_null_error));
         }
         cursor.close();
         Log.d("mList.toString", mList.toString());
@@ -310,7 +312,7 @@ public class GeneralActivity extends AppCompatActivity {
                     for (int i = 0; i < mList.size(); i++) {
                         if (X > DrawView.coord[i][0] && X < DrawView.coord[i][2] && Y > DrawView.coord[i][1] && Y < DrawView.coord[i][3]) {
                             try {
-                                Toast.makeText(GeneralActivity.this, getText(R.string.exp_type)+"：" + mList.get(i).getString("expType"), Toast.LENGTH_SHORT).show();
+                                showShortToast(GeneralActivity.this, getText(R.string.exp_type) + "：" + mList.get(i).getString("expType"));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -328,7 +330,7 @@ public class GeneralActivity extends AppCompatActivity {
                             intent.putExtra("expType", expType);
                             intent.putExtra("farmlandId", farmlandId);
                             intent.putExtra("type", type);
-                            intent.putExtra("farmName",farmName);
+                            intent.putExtra("farmName", farmName);
                             intent.putExtra("bigFarmName", bigFarmName);
                             intent.putExtra("year", year);
 //                                        intent.putExtra("userRole", userRole);

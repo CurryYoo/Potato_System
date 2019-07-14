@@ -7,7 +7,6 @@ import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.OkHttpClient;
@@ -31,6 +29,7 @@ import java.io.IOException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.kerne.potato.Util.CustomToast.showShortToast;
 import static com.example.kerne.potato.Util.ShowKeyBoard.delayShowSoftKeyBoard;
 
 public class LoginActivity extends AppCompatActivity {
@@ -70,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("LoginActivity", "hello");
@@ -199,15 +199,13 @@ public class LoginActivity extends AppCompatActivity {
 //                intent.putExtra("userRole", userRole);
                 setResult(RESULT_OK, intent);
                 finish();
-                Toast.makeText(LoginActivity.this, getText(R.string.log_in_success),
-                        Toast.LENGTH_SHORT).show();
+                showShortToast(LoginActivity.this, getString(R.string.log_in_success));
 
             } else {
                 Log.d("Login4", body.toString());
                 //Looper解决闪退bug
                 Looper.prepare();
-                Toast.makeText(LoginActivity.this, getText(R.string.account_password_error),
-                        Toast.LENGTH_SHORT).show();
+                showShortToast(LoginActivity.this, getString(R.string.account_password_error));
                 Looper.loop();
 //                is = jsonObject.getString("description");
             }

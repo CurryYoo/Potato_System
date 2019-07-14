@@ -36,7 +36,7 @@ public class MultiLevelActivity extends AppCompatActivity {
     ViewPager viewpager;
     private TabPageIndicatorAdapter mAdpter;
     private int currentPage = 0;
-    public String titles[] = new String[]{"棚外", "棚内"};
+    public String titles[] = new String[]{"棚外试验田","棚内试验田" };
 
     View.OnClickListener toolBarOnClickListener = new View.OnClickListener() {
         @Override

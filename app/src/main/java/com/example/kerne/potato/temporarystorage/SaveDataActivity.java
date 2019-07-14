@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -20,7 +19,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,7 +45,9 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
+import static com.example.kerne.potato.Util.CustomToast.showShortToast;
 import static com.example.kerne.potato.Util.ThumbImage.getImageThumbnail;
 import static com.example.kerne.potato.temporarystorage.RealPath.getRealPathFromUri;
 import static com.example.kerne.potato.temporarystorage.Util.getAverage;
@@ -83,6 +83,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     TextView commitInfo;
     //需要暂存的各字段
     //品种id
+    private String fieldId;
     private String speciesId;
     private String expType;
     private String bigFarmName;
@@ -260,21 +261,24 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                     startActivity(intent);
                     break;
                 case R.id.right_two_layout:
-                    final AlertDialog.Builder saveDialog = new AlertDialog.Builder(SaveDataActivity.this);
-                    saveDialog.setTitle(getText(R.string.dialog_title_tip));
-                    saveDialog.setMessage("是否确定保存？");
-                    saveDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            updateDataLocally();
-                            editor.putBoolean("update_pick_data", true);
-                            editor.apply();
-                        }
-                    });
-                    saveDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
 
+                    final SweetAlertDialog saveDialog = new SweetAlertDialog(SaveDataActivity.this, SweetAlertDialog.NORMAL_TYPE)
+                            .setContentText(getString(R.string.save_data_tip))
+                            .setConfirmText("确定")
+                            .setCancelText("取消")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismissWithAnimation();
+                                    updateDataLocally();
+                                    editor.putBoolean("update_pick_data", true);
+                                    editor.apply();
+                                }
+                            });
+                    saveDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
                         }
                     });
                     saveDialog.show();
@@ -328,6 +332,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
 
         //从上一层品种id和实验类型
         Intent intent_speciesId = getIntent();
+        fieldId=intent_speciesId.getStringExtra("fieldId");
         speciesId = intent_speciesId.getStringExtra("speciesId");
         expType = intent_speciesId.getStringExtra("expType");
         blockId = intent_speciesId.getStringExtra("blockId");
@@ -962,7 +967,11 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     @SuppressLint("SetTextI18n")
     private void initToolBar() {
         titleText.setText(getText(R.string.species_data_pick));
-        commitInfo.setText(getText(R.string.big_farm)+"：" + bigFarmName + "   "+getText(R.string.farm)+"：" + farmName + "   "+getText(R.string.year)+"：" + year);
+        if (bigFarmName == null && farmName == null) {
+            commitInfo.setText(getString(R.string.block_id) + "：" + fieldId);
+        } else {
+            commitInfo.setText(getText(R.string.big_farm) + "：" + bigFarmName + "   " + getText(R.string.farm) + "：" + farmName + "   "+getText(R.string.year) + "：" + year);
+        }
         leftOneButton.setBackgroundResource(R.drawable.left_back);
         rightOneButton.setBackgroundResource(R.drawable.ic_menu_home);
         rightTwoButton.setBackgroundResource(R.drawable.ic_menu_save);
@@ -1246,10 +1255,10 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                 try {
                     edtGrowingDays.setText(getGrowingDays(SaveDataActivity.this, sowingDate, matureDate));
                 } catch (ParseException e) {
-                    Toast.makeText(SaveDataActivity.this, getText(R.string.toast_date_error), Toast.LENGTH_SHORT).show();
+                    showShortToast(SaveDataActivity.this, getString(R.string.toast_date_error));
                     e.printStackTrace();
                 } catch (Exception e) {
-                    Toast.makeText(SaveDataActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    showShortToast(SaveDataActivity.this, e.getMessage());
                     e.printStackTrace();
                 }
                 break;
@@ -1309,13 +1318,11 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     private void savaDataLocally() {
         ContentValues contentValues = assembleData();
         if (contentValues == null) {
-            Toast.makeText(SaveDataActivity.this, getText(R.string.toast_input_error), Toast.LENGTH_SHORT).show();
+            showShortToast(SaveDataActivity.this, getString(R.string.toast_input_error));
             return;
         }
         sqLiteDatabase.insert("SpeciesTable", null, contentValues);
         contentValues.clear();
-//        Toast.makeText(this,
-//                "暂存成功，当手机在线时，请提交到远程服务器", Toast.LENGTH_LONG).show();
     }
 
     //更新本地数据
@@ -1325,8 +1332,8 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         sqLiteDatabase.delete("SpeciesTable", "blockId=?", new String[]{blockId});
         sqLiteDatabase.insert("SpeciesTable", null, contentValues);
         contentValues.clear();
-        Toast.makeText(this,
-                getText(R.string.toast_save_data_complete), Toast.LENGTH_LONG).show();
+        showShortToast(this,
+                getString(R.string.toast_save_data_complete));
     }
 
     //组装数据
@@ -1362,7 +1369,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
             String edtRateOfEmergenceContent = edtRateOfEmergence.getText().toString();
             int edtRateOfEmergenceContentParseInt = Integer.parseInt(edtRateOfEmergenceContent.isEmpty() ? "0" : edtRateOfEmergenceContent);
             if (edtRateOfEmergenceContentParseInt > 100) {
-                Toast.makeText(SaveDataActivity.this, getText(R.string.toast_rateOfEmergenceContentParseInt), Toast.LENGTH_SHORT).show();
+                showShortToast(SaveDataActivity.this, getString(R.string.toast_rateOfEmergenceContentParseInt));
                 return null;
             } else {
                 contentValues.put("sproutRate", edtRateOfEmergenceContentParseInt);
@@ -1562,7 +1569,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
             contentValues.put("img5", pathNaturalFecundity);
 
         } catch (NumberFormatException e) {
-            Toast.makeText(this, getText(R.string.toast_check_data_form), Toast.LENGTH_SHORT).show();
+            showShortToast(this, getString(R.string.toast_check_data_form));
             e.printStackTrace();
         }
         return contentValues;
@@ -1741,7 +1748,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
                     intent1.setType("image/*");
                     startActivityForResult(intent1, 6);
                 } else {
-                    Toast.makeText(SaveDataActivity.this, getText(R.string.toast_no_permission), Toast.LENGTH_SHORT).show();
+                    showShortToast(SaveDataActivity.this, getString(R.string.toast_no_permission));
                 }
         }
     }

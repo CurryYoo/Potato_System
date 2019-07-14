@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,15 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
-import com.example.kerne.potato.temporarystorage.Util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,6 +28,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.example.kerne.potato.Util.CustomToast.showShortToast;
 
 /**
  * Item 点击对应的 Activity
@@ -48,7 +46,7 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
     LinearLayout leftOneLayout;
     @BindView(R.id.title_text)
     TextView titleText;
-    private  Thread thread;
+    private Thread thread;
 
     private List<JSONObject> mList = new ArrayList<>();
     private List<JSONObject> jList = new ArrayList<>();
@@ -70,6 +68,7 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
             }
         }
     };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,16 +82,19 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
 
         initData();
     }
+
     private void initToolBar() {
         titleText.setText(speciesId);
         leftOneButton.setBackgroundResource(R.drawable.left_back);
+
+        leftOneLayout.setOnClickListener(toolBarOnClickListener);
     }
 
     private void initData() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-
+                Looper.prepare();
                 SpeciesDBHelper dbHelper = new SpeciesDBHelper(SpeciesListActivity.this, "SpeciesTable.db", null, 10);
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -116,7 +118,7 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
                                 jsonObject0.put("expType", cursor1.getString(cursor1.getColumnIndex("expType")));
                             } else {
                                 Looper.prepare();
-                                Toast.makeText(SpeciesListActivity.this, "实验田中无 '" + fieldId + "' 相关信息", Toast.LENGTH_SHORT).show();
+                                showShortToast(SpeciesListActivity.this, "实验田中无 '" + fieldId + "' 相关信息");
                                 Looper.loop();
                             }
                             cursor1.close();
@@ -128,9 +130,8 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
                         }
                     } while (cursor.moveToNext());
                 } else {
-                    Toast.makeText(SpeciesListActivity.this, getText(R.string.toast_species_null_error), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(SpeciesListActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    showShortToast(getBaseContext(), getString(R.string.toast_species_null_error));
+                    finish();
                 }
 
                 if (fieldId != null) {
@@ -138,7 +139,7 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
                     if (cursor.moveToFirst()) {
                         expType = cursor.getString(cursor.getColumnIndex("expType"));
                     } else {
-                        Toast.makeText(SpeciesListActivity.this, "实验田中无 '" + fieldId +"' 相关信息", Toast.LENGTH_SHORT).show();
+                        showShortToast(SpeciesListActivity.this, "实验田中无 '" + fieldId + "' 相关信息");
                     }
                 }
 
@@ -146,11 +147,10 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
                 db.close();
                 dbHelper.close();
                 //Log.d("mList.toString", mList.toString());
-
                 Message msg = new Message();
                 msg.what = 1;
                 uiHandler.sendMessage(msg);
-
+                Looper.loop();
             }
         }).start();
 
@@ -214,6 +214,6 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
 
     @Override
     public void onItemClick(String content) {
-        Toast.makeText(this, getText(R.string.species_id)+"：" + content, Toast.LENGTH_SHORT).show();
+        showShortToast(this, getText(R.string.block_id) + "：" + content);
     }
 }

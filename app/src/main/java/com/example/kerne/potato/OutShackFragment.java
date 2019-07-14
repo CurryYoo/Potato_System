@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.kerne.potato.complextable.widget.multilevellist.TreeAdapter;
 import com.example.kerne.potato.complextable.widget.multilevellist.TreePoint;
@@ -29,6 +28,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.example.kerne.potato.Util.CustomToast.showShortToast;
 
 public class OutShackFragment extends Fragment {
 
@@ -52,7 +53,14 @@ public class OutShackFragment extends Fragment {
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            if (msg.what == COMPLETED) adapter.notifyDataSetChanged();
+            if (msg.what == COMPLETED) {
+                try {
+                    initData();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                adapter.notifyDataSetChanged();
+            }
         }
     };
 
@@ -76,11 +84,6 @@ public class OutShackFragment extends Fragment {
             public void run() {
                 Looper.prepare();
                 getData();
-                try {
-                    initData();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
                 Message msg = new Message();
                 msg.what = COMPLETED;
                 handler.sendMessage(msg);
@@ -115,7 +118,7 @@ public class OutShackFragment extends Fragment {
                 }
             } while (cursor.moveToNext());
         } else {
-            Toast.makeText(getContext(), R.string.toast_bigFarm_null_error, Toast.LENGTH_SHORT).show();
+            showShortToast(getContext(), getString(R.string.toast_bigFarm_null_error));
         }
         cursor.close();
 
@@ -139,7 +142,7 @@ public class OutShackFragment extends Fragment {
                 }
             } while (cursor2.moveToNext());
         } else {
-            Toast.makeText(getContext(), R.string.toast_farm_null_error, Toast.LENGTH_SHORT).show();
+            showShortToast(getContext(), getString(R.string.toast_farm_null_error));
         }
         cursor2.close();
 
@@ -169,7 +172,7 @@ public class OutShackFragment extends Fragment {
                 }
             } while (cursor3.moveToNext());
         } else {
-            Toast.makeText(getContext(), R.string.toast_field_null_error, Toast.LENGTH_SHORT).show();
+            showShortToast(getContext(), getString(R.string.toast_field_null_error));
         }
         cursor3.close();
 
@@ -195,7 +198,7 @@ public class OutShackFragment extends Fragment {
                 if (j == 0) {
                     parentId2 = id;
                 }
-                if (mFarmList.get(j).getString("bigfarmId").equals(mBigFarmList.get(i).getString("bigfarmId"))&&mFarmList.get(j).getString("type").equals("common")) {
+                if (mFarmList.get(j).getString("bigfarmId").equals(mBigFarmList.get(i).getString("bigfarmId")) && mFarmList.get(j).getString("type").equals("common")) {
                     id++;
                     pointList.add(new TreePoint("" + id, "" + mFarmList.get(j).getString("name"), "" + parentId2, "0", order_i++));
                     int order_j = 1;
@@ -205,11 +208,11 @@ public class OutShackFragment extends Fragment {
                         }
                         if (mFieldList.get(k).getString("farmlandId").equals(mFarmList.get(j).getString("farmlandId"))) {
                             id++;
-                            TreePoint treePoint=new TreePoint("" + id, "" + mFieldList.get(k).getString("expType"), "" + parentId3, "1", order_j++);
-                            mFieldList.get(k).put("type","common");
-                            mFieldList.get(k).put("bigFarmName",mBigFarmList.get(i).getString("name"));
-                            mFieldList.get(k).put("farmName",mFarmList.get(j).getString("name"));
-                            mFieldList.get(k).put("year",mBigFarmList.get(i).getInt("year"));
+                            TreePoint treePoint = new TreePoint("" + id, "" + mFieldList.get(k).getString("expType"), "" + parentId3, "1", order_j++);
+                            mFieldList.get(k).put("type", "common");
+                            mFieldList.get(k).put("bigFarmName", mBigFarmList.get(i).getString("name"));
+                            mFieldList.get(k).put("farmName", mFarmList.get(j).getString("name"));
+                            mFieldList.get(k).put("year", mBigFarmList.get(i).getInt("year"));
                             treePoint.setJsonObject(mFieldList.get(k));
                             pointList.add(treePoint);
                         }

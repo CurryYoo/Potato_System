@@ -20,7 +20,7 @@
     <string name="toast_farm_null_error">"无试验田信息"</string>
     <string name="toast_shack_farm_null_error">"无棚内试验田信息"</string>
     <string name="toast_field_null_error">"无试验田规划信息"</string>
-    <string name="toast_field_plan_null_error">"选择的试验田尚未规划种植图"</string>
+    <string name="toast_field_plan_null_error">"试验田尚未规划种植图"</string>
     <string name="toast_species_null_error">"无试验品种信息"</string>
     <string name="toast_species_click_tip">请填写品种编号</string>
     <string name="toast_log_in">请登录账号</string>
@@ -34,8 +34,8 @@
 
     //saveDataActivity Toast
     <string name="toast_date_error">输入日期有误，请检查</string>
-    <string name="toast_input_error">输入有误，请检查</string>
-    <string name="toast_save_data_complete">保存完成，当手机在线时，请提交到远程服务器</string>
+    <string name="toast_input_error">输入数据有误，请检查</string>
+    <string name="toast_save_data_complete">保存完成,请及时上传到云端</string>
     <string name="toast_rateOfEmergenceContentParseInt">出苗率输入有误</string>
     <string name="toast_check_data_form">请检查输入数据的格式是否正确</string>
     <string name="toast_no_permission">应用无权限</string>
@@ -48,19 +48,19 @@
     <string name="type">类型</string>
     <string name="year">年份</string>
 
-    <string name="common">棚外</string>
-    <string name="greenhouse">棚内田</string>
+    <string name="out_shack">棚外</string>
+    <string name="in_shack">棚内</string>
     <string name="common_farm">棚外试验田</string>
     <string name="greenhouse_farm">棚内试验田</string>
 
     <string name="species_id">品种编号</string>
-    <string name="block_id">所属试验田分块编号</string>
+    <string name="block_id">试验田分块编号</string>
 
 
     <string name="dialog_title_farm_image">试验田示意图</string>
     <string name="dialog_picture_operate">双指缩放，单击退出</string>
 
-    <string name="download_data">下载离线数据</string>
+    <string name="download_data">下载云端数据</string>
     <string name="farm_list">试验田列表</string>
     <string name="farm_tree">试验田目录树</string>
     <string name="search_species">搜索试验品种</string>
@@ -70,6 +70,8 @@
     <string name="update_plan">上传品种规划信息</string>
     <string name="update_pick">上传品种采集信息</string>
     <string name="input_species_data">请输入品种编号</string>
+    <string name="download_data_warn">本地数据未上传，下载云端数据将覆盖本地数据，是否继续下载数据？</string>
+    <string name="save_data_tip">确定保存？</string>
 
     <string name="download_big_farm_data">下载试验基地数据</string>
     <string name="download_farm_plan_data">下载试验田规划数据</string>
