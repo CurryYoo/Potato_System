@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         Toast.makeText(MainActivity.this, getText(R.string.toast_update_plan_complete), Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(MainActivity.this, getText(R.string.toast_log_in), Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, getText(R.string.toast_log_in), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivityForResult(intent, 1);
                     }
