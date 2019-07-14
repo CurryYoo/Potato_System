@@ -23,7 +23,7 @@ public class InfoItemBar extends LinearLayout {
         this.mitembar= view.findViewById(R.id.itembar);
         this.Image =  view.findViewById(R.id.item_img_title);
         TextView titleTextView =  view.findViewById(R.id.itemBar_title);
-        titleTextView.setText(title + " :");
+        titleTextView.setText(title);
 
         mitembar.setOnClickListener(new OnClickListener() {
             @Override

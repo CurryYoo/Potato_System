@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,14 +20,13 @@
         <EditText
             android:id="@+id/edt_species_id"
             style="@style/style_item_basicinfo_edittext"
-            android:textColor="@color/primary_text"
             android:layout_width="match_parent"
-            android:focusable="false"/>
+            android:focusable="false"
+            android:textColor="@color/primary_text" />
         <!--android:hint="每次提交请输入不同的数字"-->
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style" />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,19 +39,17 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_experiment_type" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/edt_experiment_type"
             style="@style/style_item_basicinfo_edittext"
-            android:textColor="@color/primary_text"
             android:layout_width="match_parent"
-            android:focusable="false"/>
+            android:focusable="false"
+            android:textColor="@color/primary_text" />
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -65,8 +62,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_sowing_period_input" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
         <TextView
             android:id="@+id/sowing_period_input"
@@ -76,8 +72,7 @@
             android:inputType="none" />
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style" />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -91,8 +86,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_emergence_period" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
         <TextView
             android:id="@+id/emergence_period"
@@ -102,8 +96,7 @@
             android:inputType="none" />
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -116,18 +109,16 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_rate_of_emergence" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/edt_rate_of_emergence"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
-            android:inputType="number"/>
+            android:inputType="number" />
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -140,8 +131,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_squaring_period" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
         <TextView
             android:id="@+id/squaring_period"
@@ -151,8 +141,7 @@
             android:inputType="none" />
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -165,8 +154,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_flowering_period" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
         <TextView
             android:id="@+id/flowering_period"
@@ -176,8 +164,7 @@
             android:inputType="none" />
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style" />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -190,36 +177,44 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_colors" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
-        <Spinner
-            android:id="@+id/spn_colors"
-            android:layout_width="100dp"
-            android:entries="@array/colors"
-            style="@style/style_spinner" />
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp_15"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical">
+
+                <Spinner
+                    android:id="@+id/spn_colors"
+                    style="@style/style_basic_spinner1"
+                    android:layout_width="100dp"
+                    android:entries="@array/colors" />
 
 
-        <ImageButton
-            android:id="@+id/imb_colors"
-            android:src="@android:drawable/ic_menu_camera"
-            style="@style/style_basic_camera_btn" />
+                <ImageButton
+                    android:id="@+id/imb_colors"
+                    style="@style/style_basic_camera_btn"
+                    android:src="@android:drawable/ic_menu_camera" />
 
-        <Button
-            android:id="@+id/btn_select_from_album_colors"
-            android:text="@string/album"
-            style="@style/style_basic_album_btn" />
+                <Button
+                    android:id="@+id/btn_select_from_album_colors"
+                    style="@style/style_basic_album_btn"
+                    android:text="@string/album" />
 
-        <ImageView
-            android:id="@+id/imv_colors"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical" />
-
+                <ImageView
+                    android:id="@+id/imv_colors"
+                    style="@style/style_basic_info_image" />
+            </LinearLayout>
+        </HorizontalScrollView>
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -231,34 +226,43 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_corolla_colors" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
-        <Spinner
-            android:id="@+id/corolla_colors"
-            android:layout_width="100dp"
-            android:entries="@array/corolla_colors"
-            style="@style/style_spinner" />
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp_15"
+            android:scrollbars="none">
 
-        <ImageButton
-            android:id="@+id/imb_corolla_colors"
-            style="@style/style_basic_camera_btn"
-            android:src="@android:drawable/ic_menu_camera"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical">
 
-        <Button
-            android:id="@+id/btn_select_from_album_corolla_colors"
-            android:text="@string/album"
-            style="@style/style_basic_album_btn" />
+                <Spinner
+                    android:id="@+id/corolla_colors"
+                    style="@style/style_basic_spinner1"
+                    android:layout_width="100dp"
+                    android:entries="@array/corolla_colors" />
 
-        <ImageView
-            android:id="@+id/imv_corolla_colors"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical" />
+                <ImageButton
+                    android:id="@+id/imb_corolla_colors"
+                    style="@style/style_basic_camera_btn"
+                    android:src="@android:drawable/ic_menu_camera" />
+
+                <Button
+                    android:id="@+id/btn_select_from_album_corolla_colors"
+                    style="@style/style_basic_album_btn"
+                    android:text="@string/album" />
+
+                <ImageView
+                    android:id="@+id/imv_corolla_colors"
+                    style="@style/style_basic_info_image" />
+            </LinearLayout>
+        </HorizontalScrollView>
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -270,33 +274,43 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_plant_flourish" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
-        <Spinner
-            android:id="@+id/plant_flourish"
-            android:layout_width="100dp"
-            android:entries="@array/plant_flourish"
-            style="@style/style_spinner" />
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp_15"
+            android:scrollbars="none">
 
-        <ImageButton
-            android:id="@+id/imb_plant_flourish"
-            android:src="@android:drawable/ic_menu_camera"
-            style="@style/style_basic_camera_btn"  />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical">
 
-        <Button
-            android:id="@+id/btn_select_from_album_plant_flourish"
-            android:text="@string/album"
-            style="@style/style_basic_album_btn"/>
+                <Spinner
+                    android:id="@+id/plant_flourish"
+                    style="@style/style_basic_spinner1"
+                    android:layout_width="100dp"
+                    android:entries="@array/plant_flourish" />
 
-        <ImageView
-            android:id="@+id/imv_plant_flourish"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
+                <ImageButton
+                    android:id="@+id/imb_plant_flourish"
+                    style="@style/style_basic_camera_btn"
+                    android:src="@android:drawable/ic_menu_camera" />
+
+                <Button
+                    android:id="@+id/btn_select_from_album_plant_flourish"
+                    style="@style/style_basic_album_btn"
+                    android:text="@string/album" />
+
+                <ImageView
+                    android:id="@+id/imv_plant_flourish"
+                    style="@style/style_basic_info_image" />
+            </LinearLayout>
+        </HorizontalScrollView>
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -309,34 +323,43 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_stem_color" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
-        <Spinner
-            android:id="@+id/stem_color"
-            android:layout_width="100dp"
-            android:entries="@array/stem_colors"
-            style="@style/style_spinner"/>
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp_15"
+            android:scrollbars="none">
 
-        <ImageButton
-            android:id="@+id/imb_stem_color"
-            android:src="@android:drawable/ic_menu_camera"
-            style="@style/style_basic_camera_btn" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical">
 
-        <Button
-            android:id="@+id/btn_select_from_album_stem_color"
-            android:text="@string/album"
-            style="@style/style_basic_album_btn"/>
+                <Spinner
+                    android:id="@+id/stem_color"
+                    style="@style/style_basic_spinner1"
+                    android:layout_width="100dp"
+                    android:entries="@array/stem_colors" />
 
-        <ImageView
-            android:id="@+id/imv_stem_color"
-            android:layout_width="@dimen/dp_30"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical" />
+                <ImageButton
+                    android:id="@+id/imb_stem_color"
+                    style="@style/style_basic_camera_btn"
+                    android:src="@android:drawable/ic_menu_camera" />
+
+                <Button
+                    android:id="@+id/btn_select_from_album_stem_color"
+                    style="@style/style_basic_album_btn"
+                    android:text="@string/album" />
+
+                <ImageView
+                    android:id="@+id/imv_stem_color"
+                    style="@style/style_basic_info_image" />
+            </LinearLayout>
+        </HorizontalScrollView>
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -349,34 +372,43 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_natural_fecundity" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
-        <Spinner
-            android:id="@+id/natural_fecundity"
-            android:layout_width="100dp"
-            android:entries="@array/natural_fecundity_arr"
-            style="@style/style_spinner"/>
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp_15"
+            android:scrollbars="none">
 
-        <ImageButton
-            android:id="@+id/imb_natural_fecundity"
-            android:src="@android:drawable/ic_menu_camera"
-            style="@style/style_basic_camera_btn" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical">
 
-        <Button
-            android:id="@+id/btn_select_from_album_natural_fecundity"
-            android:text="@string/album"
-            style="@style/style_basic_album_btn" />
+                <Spinner
+                    android:id="@+id/natural_fecundity"
+                    style="@style/style_basic_spinner1"
+                    android:layout_width="100dp"
+                    android:entries="@array/natural_fecundity_arr" />
 
-        <ImageView
-            android:id="@+id/imv_natural_fecundity"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical" />
+                <ImageButton
+                    android:id="@+id/imb_natural_fecundity"
+                    style="@style/style_basic_camera_btn"
+                    android:src="@android:drawable/ic_menu_camera" />
+
+                <Button
+                    android:id="@+id/btn_select_from_album_natural_fecundity"
+                    style="@style/style_basic_album_btn"
+                    android:text="@string/album" />
+
+                <ImageView
+                    android:id="@+id/imv_natural_fecundity"
+                    style="@style/style_basic_info_image" />
+            </LinearLayout>
+        </HorizontalScrollView>
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style" />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -389,8 +421,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_mature_period" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
         <TextView
             android:id="@+id/mature_period"
@@ -400,8 +431,7 @@
             android:inputType="none" />
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -414,8 +444,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_growing_days" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/growing_days"
@@ -423,17 +452,16 @@
             android:layout_width="100dp"
             android:focusable="false"
             android:inputType="number"
-            android:textColor="@color/primary_text"/>
+            android:textColor="@color/primary_text" />
 
         <Button
             android:id="@+id/btn_compute_growing_days"
-            android:text="@string/calculate"
+            style="@style/style_basic_album_btn"
             android:layout_marginStart="@dimen/dp_10"
-            style="@style/style_basic_album_btn"/>
+            android:text="@string/calculate" />
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style" />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -446,19 +474,17 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_tuber_uniformity" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
         <Spinner
             android:id="@+id/tuber_uniformity"
+            style="@style/style_basic_spinner2"
             android:layout_width="100dp"
-            android:entries="@array/tuber_uniformity_arr"
-            style="@style/style_spinner" />
+            android:entries="@array/tuber_uniformity_arr" />
 
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -471,14 +497,13 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_tuber_shape" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
         <Spinner
             android:id="@+id/tuber_shape"
+            style="@style/style_basic_spinner2"
             android:layout_width="100dp"
-            android:entries="@array/potato_types"
-            style="@style/style_spinner"/>
+            android:entries="@array/potato_types" />
         <!--
         <ImageButton
             android:id="@+id/imb_tuber_shape"
@@ -492,8 +517,7 @@
             android:layout_height="50dp" />-->
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -506,14 +530,13 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_potato_skin_smoothness" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
         <Spinner
             android:id="@+id/potato_skin_smoothness"
+            style="@style/style_basic_spinner2"
             android:layout_width="100dp"
-            android:entries="@array/potato_skin_smoothness_arr"
-            style="@style/style_spinner"/>
+            android:entries="@array/potato_skin_smoothness_arr" />
         <!--
         <ImageButton
             android:id="@+id/imb_potato_skin_smoothness"
@@ -527,8 +550,7 @@
             android:layout_height="50dp" />-->
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -541,14 +563,13 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_eye" />
 
-        <View
-            style="@style/view_vertical_devider_style"/>
+        <View style="@style/view_vertical_devider_style" />
 
         <Spinner
             android:id="@+id/eye"
+            style="@style/style_basic_spinner2"
             android:layout_width="100dp"
-            android:entries="@array/eye_arr"
-            style="@style/style_spinner"/>
+            android:entries="@array/eye_arr" />
         <!--
         <ImageButton
             android:id="@+id/imb_eye"
@@ -562,8 +583,7 @@
             android:layout_height="50dp" />-->
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -576,14 +596,13 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_skin_color" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
         <Spinner
             android:id="@+id/skin_color"
+            style="@style/style_basic_spinner2"
             android:layout_width="100dp"
-            android:entries="@array/skin_colors"
-            style="@style/style_spinner"/>
+            android:entries="@array/skin_colors" />
         <!--
         <ImageButton
             android:id="@+id/imb_skin_color"
@@ -597,8 +616,7 @@
             android:layout_height="50dp" />-->
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -611,14 +629,13 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_flesh_color" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
         <Spinner
             android:id="@+id/flesh_color"
+            style="@style/style_basic_spinner2"
             android:layout_width="100dp"
-            android:entries="@array/flesh_colors"
-            style="@style/style_spinner" />
+            android:entries="@array/flesh_colors" />
         <!--
         <ImageButton
             android:id="@+id/imb_flesh_color"
@@ -632,8 +649,7 @@
             android:layout_height="50dp" />-->
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -646,8 +662,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_whether_to_be_included" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
         <RadioGroup
             android:id="@+id/whether_to_be_included"
@@ -673,8 +688,7 @@
         </RadioGroup>
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -687,8 +701,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_remark" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/remark"
@@ -697,8 +710,7 @@
             android:layout_weight="1" />
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style" />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -711,8 +723,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_num_of_harvested_plants" />
 
-        <View
-            style="@style/view_vertical_devider_style"/>
+        <View style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/num_of_harvested_plants"
@@ -721,8 +732,7 @@
             android:inputType="number" />
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style" />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -736,8 +746,7 @@
             android:layout_width="160dp"
             android:text="@string/info_num_of_large_and_medium_potatoes" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/num_of_large_and_medium_potatoes"
@@ -746,8 +755,7 @@
             android:inputType="number" />
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -761,8 +769,7 @@
             android:layout_width="160dp"
             android:text="@string/info_weight_of_large_and_medium_potatoes" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/weight_of_large_and_medium_potatoes"
@@ -771,8 +778,7 @@
             android:inputType="number" />
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -786,18 +792,16 @@
             android:layout_width="160dp"
             android:text="@string/info_num_of_small_potatoes" />
 
-        <View
-            style="@style/view_vertical_devider_style"/>
+        <View style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/num_of_small_potatoes"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
-            android:inputType="number"/>
+            android:inputType="number" />
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -811,8 +815,7 @@
             android:layout_width="160dp"
             android:text="@string/info_weight_of_small_potatoes" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/weight_of_small_potatoes"
@@ -821,8 +824,7 @@
             android:inputType="number" />
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style" />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -836,8 +838,7 @@
             android:layout_width="160dp"
             android:text="@string/info_rate_of_economic_potato" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/rate_of_economic_potato"
@@ -845,17 +846,16 @@
             android:layout_width="50dp"
             android:focusable="false"
             android:inputType="number"
-            android:textColor="@color/primary_text"/>
+            android:textColor="@color/primary_text" />
 
         <Button
             android:id="@+id/btn_compute_rate_of_economic_potato"
-            android:text="@string/calculate"
+            style="@style/style_basic_album_btn"
             android:layout_marginStart="@dimen/dp_10"
-            style="@style/style_basic_album_btn"/>
+            android:text="@string/calculate" />
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -869,8 +869,7 @@
             android:layout_width="160dp"
             android:text="@string/info_small_section_yield1" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/small_section_yield1"
@@ -879,8 +878,7 @@
             android:inputType="number" />
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -894,8 +892,7 @@
             android:layout_width="160dp"
             android:text="@string/info_small_section_yield2" />
 
-        <View
-            style="@style/view_vertical_devider_style"/>
+        <View style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/small_section_yield2"
@@ -904,8 +901,7 @@
             android:inputType="number" />
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -919,8 +915,7 @@
             android:layout_width="160dp"
             android:text="@string/info_small_section_yield3" />
 
-        <View
-            style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/small_section_yield3"
@@ -929,8 +924,7 @@
             android:inputType="number" />
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style" />
+    <View style="@style/view_divider_style" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -944,8 +938,7 @@
             android:layout_width="160dp"
             android:text="@string/info_per_mu_yield" />
 
-        <View
-            style="@style/view_vertical_devider_style"/>
+        <View style="@style/view_vertical_devider_style" />
 
         <EditText
             android:id="@+id/per_mu_yield"
@@ -953,15 +946,14 @@
             android:layout_width="50dp"
             android:focusable="false"
             android:inputType="number"
-            android:textColor="@color/primary_text"/>
+            android:textColor="@color/primary_text" />
 
         <Button
             android:id="@+id/btn_compute_average_per_mu_yield"
-            android:text="@string/calculate"
+            style="@style/style_basic_album_btn"
             android:layout_marginStart="@dimen/dp_10"
-            style="@style/style_basic_album_btn" />
+            android:text="@string/calculate" />
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style"  />
+    <View style="@style/view_divider_style" />
 </LinearLayout>

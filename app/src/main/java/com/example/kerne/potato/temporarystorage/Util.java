@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 import me.relex.photodraweeview.OnPhotoTapListener;
 import me.relex.photodraweeview.PhotoDraweeView;
@@ -59,12 +60,10 @@ public class Util {
 
         TextView dialog_title = titleView.findViewById(R.id.dialog_picture_title);
         dialog_title.setText(title);
-        imgLargeView.setFitsSystemWindows(true);
         final AlertDialog alertDialogShowLargeImage = new AlertDialog.Builder(context, R.style.Dialog_Fullscreen)
                 .setCustomTitle(titleView)
                 .create();
-
-        alertDialogShowLargeImage.getWindow().setWindowAnimations(R.style.dialogWindowAnim);
+        Objects.requireNonNull(alertDialogShowLargeImage.getWindow()).setWindowAnimations(R.style.dialogWindowAnim);
         //获取ImageView
         final PhotoDraweeView imvLargePhoto = imgLargeView.findViewById(R.id.imv_online_large_photo);
         alertDialogShowLargeImage.setView(imgLargeView);
@@ -76,7 +75,7 @@ public class Util {
             @Override
             public void onFinalImageSet(String id, ImageInfo imageInfo, Animatable animatable) {
                 super.onFinalImageSet(id, imageInfo, animatable);
-                if (imageInfo == null || imvLargePhoto == null) {
+                if (imageInfo == null) {
                     return;
                 }
                 imvLargePhoto.update(imageInfo.getWidth(), imageInfo.getHeight());
@@ -84,6 +83,12 @@ public class Util {
         });
         imvLargePhoto.setController(controller.build());
 
+        titleView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialogShowLargeImage.cancel();
+            }
+        });
         imvLargePhoto.setOnPhotoTapListener(new OnPhotoTapListener() {
             @Override
             public void onPhotoTap(View view, float x, float y) {
