@@ -28,4 +28,5 @@
     <string name="home_page">主页</string>
     <string name="back_left">返回</string>
     <string name="save_data">保存</string>
+    <string name="click_edit">...</string>
 </resources>

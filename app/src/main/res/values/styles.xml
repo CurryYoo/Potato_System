@@ -3,7 +3,8 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-         <item name="colorPrimary">@color/secondary_text</item>
+         
+        <item name="colorPrimary">@color/secondary_text</item>
         <item name="colorPrimaryDark">@color/secondary_text</item>
         <item name="colorAccent">@color/colorBlue</item> 
     </style>
@@ -22,11 +23,25 @@
         <item name="android:layout_width">100dp</item>
         <item name="android:layout_height">40dp</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:paddingLeft">4dp</item>
         <item name="android:paddingRight">4dp</item>
         <item name="android:maxLines">2</item>
         <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textColorHint">@color/actionsheet_gray</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="TextView_Table_Right_title">
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:visibility">gone</item>
     </style>
 
@@ -73,6 +88,7 @@
 
 
     //indicator的style
+
     <style name="StyledIndicators" parent="@android:style/Theme.Light">
         <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator</item>
     </style>
@@ -95,6 +111,7 @@
         <item name="android:textColor">@drawable/selector_tabtext</item>
     </style>
     //编辑页面的拍照按钮
+
     <style name="style_basic_camera_btn">
         <item name="android:layout_width">50dp</item>
         <item name="android:layout_height">@dimen/dp_30</item>
@@ -104,6 +121,7 @@
     </style>
 
     //编辑页面的相册按钮
+
     <style name="style_basic_album_btn">
         <item name="android:layout_width">50dp</item>
         <item name="android:layout_height">30dp</item>
@@ -114,18 +132,21 @@
     </style>
 
     //图片dialog全屏显示
+
     <style name="Dialog_Fullscreen">
         <item name="android:windowCloseOnTouchOutside">true</item>
         <item name="android:fitsSystemWindows">true</item>
     </style>
 
     //dialog动画
+
     <style name="dialogWindowAnim" parent="android:Animation">
-        <item name="android:windowEnterAnimation" >@anim/dialog_anmi</item>
-        <item name="android:windowExitAnimation" >@anim/dialog_anmi_exit</item>
+        <item name="android:windowEnterAnimation">@anim/dialog_anmi</item>
+        <item name="android:windowExitAnimation">@anim/dialog_anmi_exit</item>
     </style>
 
     //edittext dialog样式（自动显示软键盘）
+
     <style name="inputDialog" parent="@android:style/Theme.Holo.Light.Dialog">
         <item name="android:windowFrame">@android:color/transparent</item><!-- 边框 -->
         <item name="android:windowIsFloating">true</item><!-- 是否浮现在activity之上 -->

@@ -5,57 +5,57 @@
        android:layout_height="match_parent">
 
     <TextView android:id="@+id/tv_table_title_0"
-              style="@style/TextView_Table_Right"
+              style="@style/TextView_Table_Right_title"
               android:text="品种名称Ⅰ"
         android:textSize="14sp"/>
 
     <TextView android:id="@+id/tv_table_title_1"
-              style="@style/TextView_Table_Right"
+              style="@style/TextView_Table_Right_title"
               android:text="品种名称Ⅱ"
         android:textSize="14sp"/>
 
     <TextView android:id="@+id/tv_table_title_2"
-              style="@style/TextView_Table_Right"
+              style="@style/TextView_Table_Right_title"
               android:text="品种名称Ⅲ"/>
 
     <TextView android:id="@+id/tv_table_title_3"
-              style="@style/TextView_Table_Right"
+              style="@style/TextView_Table_Right_title"
               android:text="品种名称Ⅳ"/>
 
     <TextView android:id="@+id/tv_table_title_4"
-              style="@style/TextView_Table_Right"
+              style="@style/TextView_Table_Right_title"
               android:text="品种名称Ⅴ"/>
 
     <TextView android:id="@+id/tv_table_title_5"
-              style="@style/TextView_Table_Right"
+              style="@style/TextView_Table_Right_title"
               android:text="品种名称6"/>
 
     <TextView android:id="@+id/tv_table_title_6"
-              style="@style/TextView_Table_Right"
+              style="@style/TextView_Table_Right_title"
               android:text="品种名称7"/>
 
     <TextView android:id="@+id/tv_table_title_7"
-              style="@style/TextView_Table_Right"
+              style="@style/TextView_Table_Right_title"
               android:text="品种名称8"/>
 
     <TextView android:id="@+id/tv_table_title_8"
-              style="@style/TextView_Table_Right"
+              style="@style/TextView_Table_Right_title"
               android:text="品种名称9"/>
 
     <TextView android:id="@+id/tv_table_title_9"
-              style="@style/TextView_Table_Right"
+              style="@style/TextView_Table_Right_title"
               android:text="品种名称10"/>
 
     <TextView android:id="@+id/tv_table_title_10"
-              style="@style/TextView_Table_Right"
+              style="@style/TextView_Table_Right_title"
               android:text="品种名称11"/>
 
     <TextView android:id="@+id/tv_table_title_11"
-              style="@style/TextView_Table_Right"
+              style="@style/TextView_Table_Right_title"
               android:text="品种名称12"/>
 
     <TextView android:id="@+id/tv_table_title_12"
-              style="@style/TextView_Table_Right"
+              style="@style/TextView_Table_Right_title"
               android:text="品种名称13"/>
 
     <!--<TextView android:id="@+id/tv_table_title_13"-->

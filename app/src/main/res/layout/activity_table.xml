@@ -87,8 +87,9 @@
             android:padding="10dp"
             android:paddingStart="@dimen/dp_15"
             android:text="总标题"
+            android:textStyle="bold"
             android:textColor="#000000"
-            android:textSize="14sp" />
+            android:textSize="15sp" />
 
         <!-- 右侧标题的父容器可实现水平滚动 -->
         <com.example.kerne.potato.complextable.widget.SyncHorizontalScrollView

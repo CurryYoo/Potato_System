@@ -16,7 +16,7 @@
         android:padding="10dp"
         android:maxLines="2"
         android:textColor="@color/primary_text"
-        android:textSize="14sp"
+        android:textSize="15sp"
         tools:text="横标题"/>
 
 </LinearLayout>

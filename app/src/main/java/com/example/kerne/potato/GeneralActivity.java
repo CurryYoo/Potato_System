@@ -117,8 +117,6 @@ public class GeneralActivity extends AppCompatActivity {
         setContentView(R.layout.activity_general);
         ButterKnife.bind(this);
 
-        initToolBar();
-
 
         //获取farmlandId、year
         farmlandId = getIntent().getStringExtra("farmlandId");
@@ -128,6 +126,8 @@ public class GeneralActivity extends AppCompatActivity {
         farmName=getIntent().getStringExtra("farmName");
         bigFarmName = getIntent().getStringExtra("bigFarmName");
         year = getIntent().getIntExtra("year", 1970);
+
+        initToolBar();
 
         //获取权限角色
 //        userRole = getIntent().getStringExtra("userRole");
@@ -180,7 +180,7 @@ public class GeneralActivity extends AppCompatActivity {
 
     }
     private void initToolBar() {
-        titleText.setText("种植图");
+        titleText.setText(farmName);
         leftOneButton.setBackgroundResource(R.drawable.left_back);
         rightOneButton.setBackgroundResource(R.drawable.ic_menu_home);
 

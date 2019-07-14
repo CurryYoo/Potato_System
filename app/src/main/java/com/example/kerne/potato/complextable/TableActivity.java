@@ -144,12 +144,21 @@ public class TableActivity extends AppCompatActivity {
                         status = STATUS_EDIT;
                         rightTwoButton.setBackgroundResource(R.drawable.ic_menu_no_save);
                         titleText.setText("品种规划");
+                        titleText.setTextColor(getResources().getColor(R.color.colorOrange));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             rightTwoLayout.setTooltipText(getResources().getText(R.string.save_data));
                         }
                         tableDescription.setEnabled(true);
                         Toast.makeText(TableActivity.this, "进入品种规划", Toast.LENGTH_SHORT).show();
                     } else {
+
+                        rightTwoButton.setBackgroundResource(R.drawable.ic_menu_plan);
+                        titleText.setText("品种种植");
+                        titleText.setTextColor(getResources().getColor(R.color.primary_text));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            rightTwoLayout.setTooltipText("品种规划");
+                        }
+                        tableDescription.setEnabled(false);
 
                         //保存操作 sqlite
                         List<ContentValues> contentValuesList = assembleData(str);
@@ -192,12 +201,6 @@ public class TableActivity extends AppCompatActivity {
 //                }
                         Log.d("str_content", contentValuesList.get(0).getAsString("ContentofColumn") + "");
                         status = STATUS_READ;
-                        rightTwoButton.setBackgroundResource(R.drawable.ic_menu_plan);
-                        titleText.setText("品种种植");
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            rightTwoLayout.setTooltipText("品种规划");
-                        }
-                        tableDescription.setEnabled(false);
                         Toast.makeText(TableActivity.this, "保存完成，退出品种规划", Toast.LENGTH_SHORT).show();
                         editor.putBoolean("update_location_data", true);
                         editor.apply();
@@ -443,7 +446,7 @@ public class TableActivity extends AppCompatActivity {
 //        pulltorefreshview.setPullRefreshEnable(false);
         tv_table_title_left = (TextView) findViewById(R.id.tv_table_title_left);
         tv_table_title_left.setText(expType);
-        tv_table_title_left.setTextColor(Color.RED);
+        tv_table_title_left.setTextColor(getResources().getColor(R.color.colorOrange));
         leftListView = (ListView) findViewById(R.id.left_container_listview);
         rightListView = (ListView) findViewById(R.id.right_container_listview);
         right_title_container = (LinearLayout) findViewById(R.id.right_title_container);
