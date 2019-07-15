@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MultiSwipeRefreshLayout">
+        <attr name="foreground" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="SwipeBackLayout">
+        <attr name="edge_size" format="dimension" />
+        <attr name="edge_flag">
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+            <enum name="bottom" value="2" />
+            <enum name="all" value="3" />
+        </attr>
+        <attr name="shadow_left" format="reference" />
+        <attr name="shadow_right" format="reference" />
+        <attr name="shadow_bottom" format="reference" />
+    </declare-styleable>
+    <attr name="SwipeBackLayoutStyle" format="reference" />
+
+    //banner layout
+    <declare-styleable name="BannerLayoutStyle">
+        <attr name="selectedIndicatorColor" format="color|reference" />
+        <attr name="unSelectedIndicatorColor" format="color|reference" />
+        <attr name="indicatorShape" format="enum">
+            <enum name="rect" value="0" />
+            <enum name="oval" value="1" />
+        </attr>
+
+        <attr name="selectedIndicatorHeight" format="dimension|reference" />
+        <attr name="selectedIndicatorWidth" format="dimension|reference" />
+
+        <attr name="unSelectedIndicatorHeight" format="dimension|reference" />
+        <attr name="unSelectedIndicatorWidth" format="dimension|reference" />
+
+        <attr name="indicatorPosition" format="enum">
+            <enum name="centerBottom" value="0" />
+            <enum name="rightBottom" value="1" />
+            <enum name="leftBottom" value="2" />
+            <enum name="centerTop" value="3" />
+            <enum name="rightTop" value="4" />
+            <enum name="leftTop" value="5" />
+        </attr>
+
+        <attr name="indicatorSpace" format="dimension|reference" />
+        <attr name="indicatorMargin" format="dimension|reference" />
+        <attr name="autoPlayDuration" format="integer|reference" />
+        <attr name="scrollDuration" format="integer|reference" />
+        <attr name="isAutoPlay" format="boolean"/>
+        <attr name="defaultImage" format="integer|reference"/>
+    </declare-styleable>
+
+    //navigation bar
+    <declare-styleable name="navigationbar">
+        <attr name="iv_back" format="reference" />
+        <attr name="tv_title_color" format="color" />
+        <attr name="tv_title_size" format="dimension" />
+        <attr name="tv_next_color" format="color" />
+        <attr name="tv_next_size" format="dimension" />
+        <attr name="tv_next_show" format="boolean" />
+        <attr name="mkithead1_color" format="reference" />
+    </declare-styleable>
+
+    <!-- 带分割线的网格布局  inScrollView：是否放在可滚动的GroupView中 -->
+    <declare-styleable name="LineGridView">
+        <attr name="dividerWidth" format="dimension" />
+        <attr name="dividerColor" format="color" />
+        <attr name="showBottomLine" format="boolean"/>
+        <attr name="showTopLine" format="boolean"/>
+        <attr name="inScrollView" format="boolean"/>
+    </declare-styleable>
+</resources>

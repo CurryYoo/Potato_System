@@ -12,8 +12,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -24,7 +26,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.kerne.potato.complextable.widget.BannerCommom.BannerLayout;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
+import com.example.kerne.potato.temporarystorage.Util;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.stetho.Stetho;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -57,8 +62,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //    private static final String URL = "file:///android_asset/www/index.html";
 //    private static final String URL = "file:///android_asset/vue/index.html";
     LinearLayout btn_general;
-    LinearLayout btn_download;
-    LinearLayout btn_data;
+    //    LinearLayout btn_download;
+//    LinearLayout btn_data;
     LinearLayout btn_mutlilevel;
     LinearLayout btn_location;
     LinearLayout btn_pick;
@@ -82,6 +87,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String img5;
     @BindView(R.id.title_text)
     TextView titleText;
+    @BindView(R.id.main_banner)
+    BannerLayout mainBanner;
+    @BindView(R.id.right_two_button)
+    ImageView rightTwoButton;
+    @BindView(R.id.right_two_layout)
+    LinearLayout rightTwoLayout;
+    @BindView(R.id.right_one_button)
+    ImageView rightOneButton;
+    @BindView(R.id.right_one_layout)
+    LinearLayout rightOneLayout;
+    @BindView(R.id.left_one_button)
+    ImageView leftOneButton;
+    @BindView(R.id.left_one_layout)
+    LinearLayout leftOneLayout;
+
+    //banner 的数据
+    private List<JSONObject> bannerPoints = new ArrayList<>();
+    private List<String> bannerUri=new ArrayList<>();
+    private List<String> bannerTitle=new ArrayList<>();
+    private String bigfarmId;
+    private String name;
+    private String img;
+    private int year;
+    private String uri;
 
     private SpeciesDBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
@@ -94,6 +123,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int FARMLIST_OK = 1;
     private static final int EXPERIMENTFIELD_OK = 2;
     private static final int SPECIESLIST_OK = 3;
+
+    private static final int Banner_info_OK = 5;
 
     private static int downloadSuccess_Num = 0;
     private static int request_Num = 4;
@@ -127,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case BIGFARMLIST_OK:
                         downloadSuccess_Num++;
                         activity.downloadDataDialog.setTitleText(activity.getString(R.string.download_farm_data));
+                        activity.getBigfarmData();
                         break;
                     case FARMLIST_OK:
                         downloadSuccess_Num++;
@@ -139,11 +171,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case SPECIESLIST_OK:
                         downloadSuccess_Num++;
                         break;
+                    case Banner_info_OK:
+                        activity.initBanner();
+                        break;
                 }
                 if (downloadSuccess_Num == request_Num) {
                     activity.downloadDataDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                     activity.downloadDataDialog.setCancelable(true);
                     activity.downloadDataDialog.setTitleText(activity.getString(R.string.download_complete));
+                    activity.downloadDataDialog.setContentText(null);
                     downloadSuccess_Num = 0;
                 }
             }
@@ -518,6 +554,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("MainActivity", "hello main");
+        Fresco.initialize(getApplicationContext());
         super.onCreate(savedInstanceState);
         sp = getSharedPreferences("update_flag", Context.MODE_PRIVATE);
         editor = sp.edit();
@@ -526,22 +563,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        userRole = getIntent().getStringExtra("userRole");
         Stetho.initializeWithDefaults(this);
 
-//        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initToolBar();
 
-        btn_download = findViewById(R.id.btn_download);
-        btn_download.setOnClickListener(this);
+//        btn_download = findViewById(R.id.btn_download);
+//        btn_download.setOnClickListener(this);
 
         btn_general = findViewById(R.id.btn_general);
         btn_general.setOnClickListener(this);
 
         btn_mutlilevel = findViewById(R.id.btn_mutlilevel);
         btn_mutlilevel.setOnClickListener(this);
-
-        btn_data = findViewById(R.id.btn_data);
-        btn_data.setOnClickListener(this);
+//
+//        btn_data = findViewById(R.id.btn_data);
+//        btn_data.setOnClickListener(this);
 
         btn_location = findViewById(R.id.update_location_data);
         btn_location.setOnClickListener(onClickListener);
@@ -578,6 +614,109 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initToolBar() {
         titleText.setText(getText(R.string.system_name));
+
+        leftOneButton.setBackgroundResource(R.drawable.download);
+        rightOneButton.setBackgroundResource(R.drawable.search_input);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            leftOneLayout.setTooltipText(getString(R.string.download_data));
+            rightOneButton.setTooltipText(getString(R.string.search_species));
+        }
+        leftOneLayout.setOnClickListener(this);
+        rightOneLayout.setOnClickListener(this);
+        getBigfarmData();
+
+    }
+
+    private void getBigfarmData() {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Looper.prepare();
+                //获取数据库中数据
+                bannerPoints.clear();
+                SpeciesDBHelper dbHelper = new SpeciesDBHelper(MainActivity.this, "SpeciesTable.db", null, 10);
+                SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+                Cursor cursor = db.query("BigfarmList", null, null, null, null, null, null);
+                if (cursor.moveToFirst()) {
+                    do {
+                        JSONObject jsonObject0 = new JSONObject();
+                        try {
+                            jsonObject0.put("bigfarmId", cursor.getString(cursor.getColumnIndex("bigfarmId")));
+                            jsonObject0.put("name", cursor.getString(cursor.getColumnIndex("name")));
+                            jsonObject0.put("description", cursor.getString(cursor.getColumnIndex("description")));
+                            jsonObject0.put("img", cursor.getString(cursor.getColumnIndex("img")));
+                            jsonObject0.put("year", cursor.getInt(cursor.getColumnIndex("year")));
+                            jsonObject0.put("uri", cursor.getString(cursor.getColumnIndex("uri")));
+
+//                    jsonObject0.put("userRole", userRole);
+                            bannerPoints.add(jsonObject0);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Log.e("bigfarmId_error", cursor.getString(cursor.getColumnIndex("bigfarmId")));
+                        }
+                    } while (cursor.moveToNext());
+                }
+                cursor.close();
+                db.close();
+                dbHelper.close();
+
+                Message msg = new Message();
+                msg.what = Banner_info_OK;
+                myHandler.sendMessage(msg);
+                Looper.loop();
+            }
+        }).start();
+    }
+
+    //显示banner
+    private void initBanner(){
+        bannerTitle.clear();
+        bannerUri.clear();
+        for(int i=0;i<bannerPoints.size();i++){
+            try {
+                bannerTitle.add(bannerPoints.get(i).getString("name"));
+                bannerUri.add(bannerPoints.get(i).getString("uri"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        mainBanner.removeAllViews();
+        mainBanner.setViewUrls(bannerTitle, bannerUri);
+        mainBanner.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                try {
+                    name = bannerPoints.get(position).getString("name");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Util.watchOnlineLargePhoto(MainActivity.this, Uri.parse(bannerUri.get(position)), name);
+            }
+        });
+        mainBanner.setOnBannerTitleClickListener(new BannerLayout.OnBannerTitleClickListener() {
+            @Override
+            public void onTitleClick(int position) {
+                try {
+                    bigfarmId = bannerPoints.get(position).getString("bigfarmId");
+                    img = bannerPoints.get(position).getString("img");
+                    year = bannerPoints.get(position).getInt("year");
+                    uri = bannerPoints.get(position).getString("uri");
+                    name = bannerPoints.get(position).getString("name");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Intent intent = new Intent(getBaseContext(), GeneralClickActivity.class);
+                intent.putExtra("bigfarmId", bigfarmId);
+                intent.putExtra("img", img);
+                intent.putExtra("year", year);
+                intent.putExtra("uri", uri);
+                intent.putExtra("name", name);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -611,7 +750,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         //获取大田信息
         switch (v.getId()) {
-            case R.id.btn_download:
+            case R.id.left_one_layout:
                 //检查网络状况
                 if (!isOnline) {
                     showShortToast(MainActivity.this, getString(R.string.toast_check_network_state));
@@ -658,7 +797,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent_mutlilevel = new Intent(MainActivity.this, MultiLevelActivity.class);
                 startActivity(intent_mutlilevel);
                 break;
-            case R.id.btn_data:
+            case R.id.right_one_layout:
                 final SweetAlertDialog inputDialog = new SweetAlertDialog(this, SweetAlertDialog.NORMAL_TYPE);
                 LayoutInflater mlayoutInflater = LayoutInflater.from(this);
                 @SuppressLint("InflateParams") final View view = mlayoutInflater.inflate(R.layout.dialog_input, null);
@@ -703,6 +842,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void downloadData() {
         downloadDataDialog = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.PROGRESS_TYPE);
         downloadDataDialog.setTitleText(getString(R.string.download_big_farm_data));
+        downloadDataDialog.setContentText("下载云端数据耗时较长，请勿中途退出，以免造成数据缺失");
         downloadDataDialog.setCancelable(false);
         downloadDataDialog.show();
 

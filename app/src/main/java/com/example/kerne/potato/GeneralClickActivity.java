@@ -195,34 +195,6 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
             }
         }).start();
 
-//        initView();
-
-//        new Thread(){
-//            @Override
-//            public void run(){
-//                HttpRequest.HttpRequest_farm(bigFarmName, GeneralClickActivity.this, new HttpRequest.HttpCallback() {
-//                    @Override
-//                    public void onSuccess(JSONObject result) {
-//                        try {
-//                            JSONArray rows = new JSONArray();
-//                            rows = result.getJSONArray("rows");
-//                            int total = result.getInt("total");
-//                            for(int i = 0; i < total; i++){
-//                                JSONObject jsonObject0 = rows.getJSONObject(i);
-//                                jsonObject0.put("userRole", userRole);
-//                                mList.add(jsonObject0);
-//                            }
-//                            Log.d("GeneralJsonList", mList.toString());
-//
-//                            initView();
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                });
-//            }
-//        }.start();
-
     }
 
     @SuppressLint("HandlerLeak")
