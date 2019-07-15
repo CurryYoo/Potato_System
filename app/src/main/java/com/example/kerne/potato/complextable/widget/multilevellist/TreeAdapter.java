@@ -178,7 +178,7 @@ public class TreeAdapter extends BaseAdapter {
         } else {   //如果叶子节点，不占位显示
             holder.icon.setImageResource(R.drawable.outline_list_expand);
             holder.icon.setVisibility(View.INVISIBLE);
-            holder.text.setTextColor(mcontext.getResources().getColor(R.color.colorOrange));
+            holder.text.setTextColor(mcontext.getResources().getColor(R.color.secondary_text));
         }
 
 
@@ -187,7 +187,7 @@ public class TreeAdapter extends BaseAdapter {
             int index = tempPoint.getNNAME().indexOf(keyword);
             int len = keyword.length();
             Spanned temp = Html.fromHtml(tempPoint.getNNAME().substring(0, index)
-                    + "<font color=#FF0000>"
+                    + "<font color=#E64A19>"
                     + tempPoint.getNNAME().substring(index, index + len) + "</font>"
                     + tempPoint.getNNAME().substring(index + len));
 

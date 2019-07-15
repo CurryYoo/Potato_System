@@ -16,6 +16,7 @@
         android:drawablePadding="8dp"
         android:hint="请输入关键字"
         android:maxLines="1"
+        android:singleLine="true"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:textColor="@color/normalcolor"

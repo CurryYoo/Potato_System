@@ -11,6 +11,8 @@
         android:gravity="center"
         android:hint="请输入品种编号"
         android:background="@null"
+        android:maxLines="1"
+        android:singleLine="true"
         android:textColor="@color/secondary_text"
         android:textSize="17sp"/>
 </LinearLayout>

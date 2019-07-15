@@ -4,9 +4,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/style_toast_customer"
     android:elevation="5dp"
-    >
+    android:background="@drawable/style_toast_customer">
 
     <TextView
         android:id="@+id/tvToastContent"

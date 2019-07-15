@@ -30,6 +30,7 @@
             android:textColor="@color/primary_text"
             android:hint="@string/click_edit_hint"
             android:maxLines="1"
+            android:singleLine="true"
             android:background="@null"/>
     </LinearLayout>
 
@@ -59,6 +60,7 @@
             android:textColor="@color/primary_text"
             android:hint="@string/click_edit_hint"
             android:maxLines="1"
+            android:singleLine="true"
             android:inputType="textPassword"
             android:background="@null"/>
     </LinearLayout>
