@@ -28,7 +28,6 @@ import android.widget.TextView;
 
 import com.example.kerne.potato.complextable.widget.BannerCommom.BannerLayout;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
-import com.example.kerne.potato.temporarystorage.Util;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.stetho.Stetho;
 import com.squareup.okhttp.OkHttpClient;
@@ -55,6 +54,7 @@ import q.rorbin.badgeview.QBadgeView;
 
 import static com.example.kerne.potato.Util.CustomToast.showShortToast;
 import static com.example.kerne.potato.Util.ShowKeyBoard.delayShowSoftKeyBoard;
+import static com.example.kerne.potato.temporarystorage.Util.watchBannerLargePhoto;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -104,8 +104,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //banner 的数据
     private List<JSONObject> bannerPoints = new ArrayList<>();
-    private List<String> bannerUri=new ArrayList<>();
-    private List<String> bannerTitle=new ArrayList<>();
+    private List<String> bannerUri = new ArrayList<>();
+    private List<String> bannerTitle = new ArrayList<>();
     private String bigfarmId;
     private String name;
     private String img;
@@ -672,13 +672,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     //显示banner
-    private void initBanner(){
+    private void initBanner() {
         bannerTitle.clear();
         bannerUri.clear();
-        for(int i=0;i<bannerPoints.size();i++){
+        for (int i = 0; i < bannerPoints.size(); i++) {
             try {
                 year = bannerPoints.get(i).getInt("year");
-                bannerTitle.add(bannerPoints.get(i).getString("name")+" ("+year+")");
+                bannerTitle.add(bannerPoints.get(i).getString("name") + " (" + year + ")");
                 bannerUri.add(bannerPoints.get(i).getString("uri"));
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -689,13 +689,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainBanner.setOnBannerItemClickListener(new BannerLayout.OnBannerItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                mainBanner.stopAutoPlay();
                 try {
                     name = bannerPoints.get(position).getString("name");
                     year = bannerPoints.get(position).getInt("year");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Util.watchOnlineLargePhoto(MainActivity.this, Uri.parse(bannerUri.get(position)), name+" ("+year+")");
+                watchBannerLargePhoto(MainActivity.this, mainBanner, Uri.parse(bannerUri.get(position)), name + " (" + year + ")");
             }
         });
         mainBanner.setOnBannerTitleClickListener(new BannerLayout.OnBannerTitleClickListener() {
