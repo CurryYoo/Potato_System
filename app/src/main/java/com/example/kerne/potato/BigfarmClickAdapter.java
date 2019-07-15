@@ -98,7 +98,7 @@ public class BigfarmClickAdapter extends RecyclerView.Adapter<BigfarmClickAdapte
                 intent.putExtra("name", name);
                 mContext.startActivity(intent);
 
-                showShortToast(mContext, mContext.getText(R.string.big_farm) + "：" + name);
+                showShortToast(mContext, mContext.getText(R.string.big_farm) + "：" + name+" ("+year+")");
             }
         });
 

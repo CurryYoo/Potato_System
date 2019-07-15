@@ -677,7 +677,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bannerUri.clear();
         for(int i=0;i<bannerPoints.size();i++){
             try {
-                bannerTitle.add(bannerPoints.get(i).getString("name"));
+                year = bannerPoints.get(i).getInt("year");
+                bannerTitle.add(bannerPoints.get(i).getString("name")+" ("+year+")");
                 bannerUri.add(bannerPoints.get(i).getString("uri"));
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -690,10 +691,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onItemClick(int position) {
                 try {
                     name = bannerPoints.get(position).getString("name");
+                    year = bannerPoints.get(position).getInt("year");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Util.watchOnlineLargePhoto(MainActivity.this, Uri.parse(bannerUri.get(position)), name);
+                Util.watchOnlineLargePhoto(MainActivity.this, Uri.parse(bannerUri.get(position)), name+" ("+year+")");
             }
         });
         mainBanner.setOnBannerTitleClickListener(new BannerLayout.OnBannerTitleClickListener() {
