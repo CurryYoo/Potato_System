@@ -89,7 +89,8 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
 //            userRole = jsonObject.getString("userRole");
 //            holder.tvNum.setText("实验田序号：" + farmlandId);
             holder.tvName.setText(mContext.getText(R.string.farm) + "：" + name);
-            holder.tvType.setText(mContext.getText(R.string.type) + "：" + type);
+            String Stype = type.equals("greenhouse")?"大棚区域":"棚外区域";
+            holder.tvType.setText(mContext.getText(R.string.type) + "：" + Stype);
             if (type.equals("greenhouse")) {
                 holder.is_shack.setVisibility(View.VISIBLE);
             }

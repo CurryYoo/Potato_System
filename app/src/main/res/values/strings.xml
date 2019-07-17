@@ -55,7 +55,7 @@
 
     <string name="species_id">品种编号</string>
     <string name="block_id">试验田分块编号</string>
-
+    <string name="block_name">上层分块名称</string>
 
     <string name="dialog_title_farm_image">试验田示意图</string>
     <string name="dialog_picture_operate">双指缩放，单击退出</string>

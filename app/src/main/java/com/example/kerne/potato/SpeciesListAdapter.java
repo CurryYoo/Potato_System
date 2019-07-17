@@ -44,6 +44,7 @@ public class SpeciesListAdapter extends RecyclerView.Adapter<SpeciesListAdapter.
     private String userRole;
     private String blockId;
     private String expType;
+    private String fieldName;
 
     public SpeciesListAdapter(Context context, OnItemClickListener listener) {
         mContext = context;
@@ -76,13 +77,14 @@ public class SpeciesListAdapter extends RecyclerView.Adapter<SpeciesListAdapter.
             blockId = jsonObject.getString("blockId");
             fieldId = jsonObject.getString("fieldId");
             expType = jsonObject.getString("expType");
+            fieldName = jsonObject.getString("fieldName");
             if (expType == null) {
                 expType = "";
             }
 //            userRole = jsonObject.getString("userRole");
             holder.tvPlotId.setText(mContext.getText(R.string.exp_type) + "：" + expType);
             holder.tvSpeciesId.setText(mContext.getText(R.string.species_id) + "：" + speciesId);
-            holder.tvFieldId.setText(mContext.getText(R.string.block_id) + "：" + fieldId);
+            holder.tvFieldId.setText(mContext.getText(R.string.block_name) + "：" + fieldName);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -101,6 +103,7 @@ public class SpeciesListAdapter extends RecyclerView.Adapter<SpeciesListAdapter.
                     blockId = jsonObject.getString("blockId");
                     fieldId = jsonObject.getString("fieldId");
                     expType = jsonObject.getString("expType");
+                    fieldName = jsonObject.getString("fieldName");
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -112,8 +115,9 @@ public class SpeciesListAdapter extends RecyclerView.Adapter<SpeciesListAdapter.
                 intent.putExtra("expType", expType);
                 intent.putExtra("blockId", blockId);
                 intent.putExtra("fieldId", fieldId);
+                intent.putExtra("fieldName", fieldName);
                 mContext.startActivity(intent);
-                showShortToast(mContext, mContext.getString(R.string.block_id) + "：" + fieldId);
+                showShortToast(mContext, mContext.getString(R.string.block_name) + "：" + fieldName);
             }
         });
 

@@ -116,6 +116,7 @@ public class SpeciesListActivity extends AppCompatActivity implements SpeciesLis
                             Cursor cursor1 = db.query("ExperimentField", null, "id=?", new String[]{fieldId}, null, null, null);
                             if (cursor1.moveToFirst()) {
                                 jsonObject0.put("expType", cursor1.getString(cursor1.getColumnIndex("expType")));
+                                jsonObject0.put("fieldName", cursor1.getString(cursor1.getColumnIndex("name")));
                             } else {
                                 Looper.prepare();
                                 showShortToast(SpeciesListActivity.this, "实验田中无 '" + fieldId + "' 相关信息");

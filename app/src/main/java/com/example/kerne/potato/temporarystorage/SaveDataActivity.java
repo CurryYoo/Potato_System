@@ -84,6 +84,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     //需要暂存的各字段
     //品种id
     private String fieldId;
+    private String fieldName;
     private String speciesId;
     private String expType;
     private String bigFarmName;
@@ -333,6 +334,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
         //从上一层品种id和实验类型
         Intent intent_speciesId = getIntent();
         fieldId=intent_speciesId.getStringExtra("fieldId");
+        fieldName = intent_speciesId.getStringExtra("fieldName");
         speciesId = intent_speciesId.getStringExtra("speciesId");
         expType = intent_speciesId.getStringExtra("expType");
         blockId = intent_speciesId.getStringExtra("blockId");
@@ -968,7 +970,7 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     private void initToolBar() {
         titleText.setText(getText(R.string.species_data_pick));
         if (bigFarmName == null && farmName == null) {
-            commitInfo.setText(getString(R.string.block_id) + "：" + fieldId);
+            commitInfo.setText(getString(R.string.block_name) + "：" + fieldName);
         } else {
             commitInfo.setText(getText(R.string.big_farm) + "：" + bigFarmName + "   " + getText(R.string.farm) + "：" + farmName + "   "+getText(R.string.year) + "：" + year);
         }
