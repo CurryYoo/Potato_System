@@ -620,7 +620,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             leftOneLayout.setTooltipText(getString(R.string.download_data));
-            rightOneButton.setTooltipText(getString(R.string.search_species));
+            rightOneLayout.setTooltipText(getString(R.string.search_species));
         }
         leftOneLayout.setOnClickListener(this);
         rightOneLayout.setOnClickListener(this);

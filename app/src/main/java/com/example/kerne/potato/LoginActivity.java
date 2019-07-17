@@ -162,7 +162,9 @@ public class LoginActivity extends AppCompatActivity {
                     Response response = client.newCall(request).execute();
                     result = response.body().string();           //获得值
                     Log.d("Login2", result.toString());
+                    Looper.prepare();
                     JX(result);    //解析
+                    Looper.loop();
 
                 } catch (IOException e) {
                     e.printStackTrace();
