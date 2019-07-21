@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.kerne.potato.Util.UserRole;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -124,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
 //                        editor.clear();
 //                    }
 //                    editor.apply();
-//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                    Intent intent = new Intent(LoginActivity.this, MainActivtiy_old.class);
 //                    intent.putExtra("userRole", userRole);
 //                    startActivity(intent);
 //                    finish();

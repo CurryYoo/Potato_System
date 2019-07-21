@@ -9,41 +9,49 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        tools:replace="android:icon"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".SplashActivity" >
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:replace="android:icon">
+        <activity
+            android:name=".MainActivity"
+            android:label="首页"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".LoginActivity" />
+
         <activity
             android:name=".GeneralActivity"
-            android:label="种植图"/>
+            android:label="种植图" />
+
         <activity
             android:name=".GeneralClickActivity"
             android:label="试验田" />
+
         <activity
             android:name=".temporarystorage.SaveDataActivity"
             android:label="采集数据"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
         <activity
-            android:name=".MultiLevelActivity"
-            android:label="实验田列表"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:name=".SpeciesListActivity"
+            android:label="品种搜索" />
+
         <activity
-            android:name=".MainActivity"
-            android:label="首页"
-            android:launchMode="singleTask"
-            />
+            android:name=".TableActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="品种种植"
+            android:windowSoftInputMode="stateAlwaysHidden" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -55,18 +63,6 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity
-            android:name=".SpeciesListActivity"
-            android:label="品种搜索"/>
-        <activity android:name=".TestActivity" />
-        <activity
-            android:name=".complextable.TableActivity"
-            android:label="品种种植"
-            android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
-        <activity
-            android:name=".BigfarmClickActivity"
-            android:label="试验基地"/>
     </application>
 
 </manifest>

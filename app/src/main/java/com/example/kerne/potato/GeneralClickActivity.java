@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.kerne.potato.Adapter.GeneralClickAdapter;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
 import com.example.kerne.potato.temporarystorage.Util;
 import com.facebook.drawee.backends.pipeline.Fresco;

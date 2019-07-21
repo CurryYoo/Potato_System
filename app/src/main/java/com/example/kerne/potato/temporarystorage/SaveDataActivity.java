@@ -32,7 +32,6 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.kerne.potato.MainActivity;
 import com.example.kerne.potato.R;
@@ -79,8 +78,6 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     ImageView rightOneButton;
     @BindView(R.id.right_one_layout)
     LinearLayout rightOneLayout;
-    @BindView(R.id.commit_info)
-    TextView commitInfo;
     //需要暂存的各字段
     //品种id
     private String fieldId;
@@ -969,11 +966,6 @@ public class SaveDataActivity extends AppCompatActivity implements View.OnClickL
     @SuppressLint("SetTextI18n")
     private void initToolBar() {
         titleText.setText(getText(R.string.species_data_pick));
-        if (bigFarmName == null && farmName == null) {
-            commitInfo.setText(getString(R.string.block_name) + "：" + fieldName);
-        } else {
-            commitInfo.setText(getText(R.string.big_farm) + "：" + bigFarmName + "   " + getText(R.string.farm) + "：" + farmName + "   "+getText(R.string.year) + "：" + year);
-        }
         leftOneButton.setBackgroundResource(R.drawable.left_back);
         rightOneButton.setBackgroundResource(R.drawable.ic_menu_home);
         rightTwoButton.setBackgroundResource(R.drawable.ic_menu_save);

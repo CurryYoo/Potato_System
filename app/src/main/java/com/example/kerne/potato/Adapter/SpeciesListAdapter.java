@@ -1,4 +1,4 @@
-package com.example.kerne.potato;
+package com.example.kerne.potato.Adapter;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.kerne.potato.R;
 import com.example.kerne.potato.temporarystorage.SaveDataActivity;
 
 import org.json.JSONException;

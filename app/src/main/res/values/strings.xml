@@ -24,8 +24,7 @@
     <string name="toast_species_null_error">"无试验品种信息"</string>
     <string name="toast_species_click_tip">请填写品种编号</string>
     <string name="toast_log_in">请登录账号</string>
-    <string name="toast_update_plan_complete">规划数据上传完成</string>
-    <string name="toast_update_pick_complete">采集数据上传完成</string>
+    <string name="toast_upload_data_complete">数据上传完成</string>
     <string name="toast_network_error">网络错误</string>
     <string name="toast_check_network_state">请检查网络连接状态</string>
     <string name="toast_null_plan_data">尚未规划</string>
@@ -67,8 +66,7 @@
     <string name="species_data">试验品种</string>
     <string name="species_data_plan">品种规划</string>
     <string name="species_data_pick">品种信息采集</string>
-    <string name="update_plan">上传品种规划信息</string>
-    <string name="update_pick">上传品种采集信息</string>
+    <string name="update_plan">上传本地数据</string>
     <string name="input_species_data">请输入品种编号</string>
     <string name="download_data_warn">本地数据未上传，下载云端数据将覆盖本地数据，是否继续下载数据？</string>
     <string name="save_data_tip">确定保存？</string>

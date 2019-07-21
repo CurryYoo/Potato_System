@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/backGroundColor"
     android:orientation="vertical">
 
     <LinearLayout
@@ -182,8 +182,8 @@
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/dp_15"
-            android:scrollbars="none">
+            android:scrollbars="none"
+            android:layout_marginStart="@dimen/dp_10">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -231,7 +231,7 @@
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/dp_15"
+            android:layout_marginStart="@dimen/dp_10"
             android:scrollbars="none">
 
             <LinearLayout
@@ -279,7 +279,7 @@
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/dp_15"
+            android:layout_marginStart="@dimen/dp_10"
             android:scrollbars="none">
 
             <LinearLayout
@@ -328,7 +328,7 @@
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/dp_15"
+            android:layout_marginStart="@dimen/dp_10"
             android:scrollbars="none">
 
             <LinearLayout
@@ -377,7 +377,7 @@
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/dp_15"
+            android:layout_marginStart="@dimen/dp_10"
             android:scrollbars="none">
 
             <LinearLayout

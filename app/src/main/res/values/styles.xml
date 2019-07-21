@@ -76,12 +76,12 @@
 
     <style name="view_divider_style">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">0.1dp</item>
+        <item name="android:layout_height">0.01dp</item>
         <item name="android:background">@color/line_grey</item>
     </style>
 
     <style name="view_vertical_devider_style">
-        <item name="android:layout_width">0.1dp</item>
+        <item name="android:layout_width">0.01dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:background">@drawable/bg_devider</item>
     </style>
@@ -141,6 +141,7 @@
 
     <style name="style_basic_spinner1">
         <item name="android:layout_height">30dp</item>
+        <item name="android:layout_marginStart">5dp</item>
         <item name="android:layout_marginEnd">@dimen/dp_10</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">15sp</item>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="@color/backGroundColor"
     android:gravity="center_vertical"
     android:orientation="vertical">
 
@@ -17,6 +17,7 @@
         android:maxLines="2"
         android:textColor="@color/primary_text"
         android:textSize="15sp"
-        tools:text="横标题"/>
+        tools:text="横标题"
+        android:background="@color/backGroundColor"/>
 
 </LinearLayout>

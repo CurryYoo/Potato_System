@@ -1,4 +1,4 @@
-package com.example.kerne.potato;
+package com.example.kerne.potato.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.kerne.potato.complextable.TableActivity;
+import com.example.kerne.potato.GeneralActivity;
+import com.example.kerne.potato.R;
+import com.example.kerne.potato.TableActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -86,8 +88,6 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
             farmlandId = jsonObject.getString("farmlandId");
             name = jsonObject.getString("name");
             type = jsonObject.getString("type");
-//            userRole = jsonObject.getString("userRole");
-//            holder.tvNum.setText("实验田序号：" + farmlandId);
             holder.tvName.setText(mContext.getText(R.string.farm) + "：" + name);
             String Stype = type.equals("greenhouse")?"大棚区域":"棚外区域";
             holder.tvType.setText(mContext.getText(R.string.type) + "：" + Stype);
@@ -102,8 +102,6 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                //builder.setIcon(R.drawable.ic_launcher_background);
                 try {
                     farmlandId = jsonObject.getString("farmlandId");
                     type = jsonObject.getString("type");
@@ -164,85 +162,8 @@ public class GeneralClickAdapter extends RecyclerView.Adapter<GeneralClickAdapte
                         showShortToast(mContext, mContext.getText(R.string.farm) + "：" + name);
                     }
                 }
-//                //弹出输入年份的对话框
-//                final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(mContext).builder()
-//                        .setTitle("请输入年份：")
-//                        .setEditText("");
-//                myAlertInputDialog.setPositiveButton("确认", new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        //showMsg(myAlertInputDialog.getResult());
-//                        year = myAlertInputDialog.getResult();
-//
-//                        Intent intent = new Intent(mContext, GeneralActivity.class);
-//                        intent.putExtra("farmlandId", farmlandId);
-//                        intent.putExtra("year", Integer.parseInt(year));
-////                        intent.putExtra("userRole", userRole);
-//                        mContext.startActivity(intent);
-//                        myAlertInputDialog.dismiss();
-//                    }
-//                }).setNegativeButton("取消", new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        //showMsg("取消");
-//                        myAlertInputDialog.dismiss();
-//                    }
-//                });
-//                myAlertInputDialog.show();
-
-//                builder.setTitle("选择一个操作");
-//                //    指定下拉列表的显示数据
-//                final String[] options = {"进入"};
-//                //    设置一个下拉的列表选择项
-//                builder.setItems(options, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        if(which == 0){ //点击"进入"操作时
-//                            final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(mContext).builder()
-//                                .setTitle("请输入年份：")
-//                                .setEditText("");
-//                            myAlertInputDialog.setPositiveButton("确认", new View.OnClickListener() {
-//                                @Override
-//                                public void onClick(View v) {
-//                                    //showMsg(myAlertInputDialog.getResult());
-//                                    year = myAlertInputDialog.getResult();
-//
-//                                    Intent intent = new Intent(mContext, GeneralActivity.class);
-//                                    intent.putExtra("farmlandId", farmlandId);
-//                                    intent.putExtra("year", Integer.parseInt(year));
-//                                    intent.putExtra("userRole", userRole);
-//                                    mContext.startActivity(intent);
-//                                    myAlertInputDialog.dismiss();
-//                                }
-//                            }).setNegativeButton("取消", new View.OnClickListener() {
-//                                @Override
-//                                public void onClick(View v) {
-//                                    //showMsg("取消");
-//                                    myAlertInputDialog.dismiss();
-//                                }
-//                            });
-//                            myAlertInputDialog.show();
-//
-//                        }
-//                        else{ //点击"删除"操作时
-//                            mList.remove(position);
-//                            notifyItemRemoved(position);
-//                            Toast.makeText(mContext, "删除farmlandId " + farmlandId, Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                });
-//                builder.show();
-
             }
         });
-
-        // 第二种写法：将点击事件传到 Activity 里去写
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mListener.onItemClick(content);
-//            }
-//        });
     }
 
     @Override

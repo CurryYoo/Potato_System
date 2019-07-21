@@ -1,4 +1,4 @@
-package com.example.kerne.potato;
+package com.example.kerne.potato.Util;
 
 import android.content.Context;
 import android.net.Uri;
@@ -16,6 +16,8 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.example.kerne.potato.MultipartRequest;
+import com.example.kerne.potato.SingleRequestQueue;
 import com.squareup.okhttp.OkHttpClient;
 
 import org.json.JSONArray;

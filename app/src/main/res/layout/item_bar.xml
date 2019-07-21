@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/backGroundColor">
 
     <LinearLayout
         android:id="@+id/itembar"
@@ -15,6 +15,7 @@
         android:padding="10dp"
         android:layout_marginStart="@dimen/dp_10"
         android:layout_marginEnd="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_5"
         android:elevation="2dp">
 
 
@@ -40,7 +41,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_5"
-        android:background="@color/white"/>
+        android:background="@color/backGroundColor"/>
 
     <LinearLayout
         android:id="@+id/itemBar_content"
@@ -52,6 +53,7 @@
         android:layout_marginStart="@dimen/dp_10"
         android:layout_marginEnd="@dimen/dp_10"
         android:paddingBottom="15dp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:background="@color/backGroundColor"/>
 
 </LinearLayout>

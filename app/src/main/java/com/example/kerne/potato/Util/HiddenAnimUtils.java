@@ -1,4 +1,4 @@
-package com.example.kerne.potato;
+package com.example.kerne.potato.Util;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

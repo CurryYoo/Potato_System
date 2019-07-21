@@ -1,4 +1,4 @@
-package com.example.kerne.potato;
+package com.example.kerne.potato.Util;
 
 public class UserRole {
     private static String userRole = "farmer";

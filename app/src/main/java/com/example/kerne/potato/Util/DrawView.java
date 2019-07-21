@@ -1,4 +1,4 @@
-package com.example.kerne.potato;
+package com.example.kerne.potato.Util;
 
 import android.content.Context;
 import android.graphics.Bitmap;

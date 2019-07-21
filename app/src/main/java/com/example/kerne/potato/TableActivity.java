@@ -1,4 +1,4 @@
-package com.example.kerne.potato.complextable;
+package com.example.kerne.potato;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -27,8 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.kerne.potato.MainActivity;
-import com.example.kerne.potato.R;
 import com.example.kerne.potato.complextable.base.RefreshParams;
 import com.example.kerne.potato.complextable.base.adapter.AbsCommonAdapter;
 import com.example.kerne.potato.complextable.base.adapter.AbsViewHolder;
@@ -57,6 +55,10 @@ import static com.example.kerne.potato.Util.ShowKeyBoard.delayShowSoftKeyBoard;
 
 public class TableActivity extends AppCompatActivity {
 
+    public static final int STATUS_EDIT = 0;
+    public static final int STATUS_READ = 1;
+    public static final int STATUS_INIT = 2;
+    public static final int STATUS_UPDATE = 3;
     @BindView(R.id.left_one_button)
     ImageView leftOneButton;
     @BindView(R.id.left_one_layout)
@@ -71,10 +73,10 @@ public class TableActivity extends AppCompatActivity {
     ImageView rightOneButton;
     @BindView(R.id.right_one_layout)
     LinearLayout rightOneLayout;
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
     @BindView(R.id.table_description)
     EditText tableDescription;
-    @BindView(R.id.table_info)
-    TextView tableInfo;
     /**
      * 用于存放标题的id,与textview引用
      */
@@ -91,14 +93,8 @@ public class TableActivity extends AppCompatActivity {
     private int pageNo = 0;
     private WeakHandler mHandler = new WeakHandler();
     private Context mContext;
-
     private List<String> speciesNames = new ArrayList<>();
     private List<TextView> textViews = new ArrayList<>();
-
-    public static final int STATUS_EDIT = 0;
-    public static final int STATUS_READ = 1;
-    public static final int STATUS_INIT = 2;
-    public static final int STATUS_UPDATE = 3;
     private int status = STATUS_READ;
     private JSONObject fields_json;
     private String fieldId;
@@ -109,25 +105,16 @@ public class TableActivity extends AppCompatActivity {
     private String farmlandId;
     private int year;
     private String description;
-
     private int column;
     private JSONArray rows = new JSONArray();
     private JSONArray fieldArray = new JSONArray();
-
     private int column_num;
     private int row_num;
-
     private String[][] str = null;
-
     private int maxRows; //最大行数
     private int maxColumns; //最大列数
-
     private SpeciesDBHelper dbHelper;
     private SQLiteDatabase db;
-    SharedPreferences sp;
-    SharedPreferences.Editor editor;
-    private MenuItem editItem;
-
     View.OnClickListener toolBarOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -168,7 +155,6 @@ public class TableActivity extends AppCompatActivity {
                             //更新备注description
                             Log.d("fieldArray", fieldArray.toString());
                             description = tableDescription.getText().toString();
-                            Log.d("description", description);
                             for (int k = 0; k < fieldArray.length(); k++) {
                                 ContentValues contentValues = new ContentValues();
                                 contentValues.put("description", description);
@@ -188,25 +174,33 @@ public class TableActivity extends AppCompatActivity {
                                     int id = lastRows + j;
                                     db.update("SpeciesList", contentValuesList.get(id), "fieldId=? and x=? and y=?",
                                             new String[]{contentValuesList.get(id).getAsString("fieldId"), contentValuesList.get(id).getAsString("x"), contentValuesList.get(id).getAsString("y")});
-//                                    Log.d("fieldId,x,y", contentValuesList.get(id).getAsString("fieldId") + "," + contentValuesList.get(id).getAsString("x") + "," + contentValuesList.get(id).getAsString("y"));
                                 }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
-//                for(int i = 0; i < maxRows; i++){
-//                    db.update("SpeciesList", contentValuesList.get(i), "fieldId=? and x=? and y=?", new String[]{fieldId, contentValuesList.get(i).getAsString("x"), contentValuesList.get(i).getAsString("y")});
-////                    db.insert("SpeciesList", null, contentValuesList.get(i));
-//                }
                         Log.d("str_content", contentValuesList.get(0).getAsString("ContentofColumn") + "");
                         status = STATUS_READ;
                         showShortToast(TableActivity.this, mContext.getString(R.string.exit_species_plan_mode));
-                        editor.putBoolean("update_location_data", true);
+                        editor.putBoolean("upload_data", true);
                         editor.apply();
                     }
                     break;
                 default:
+                    break;
+            }
+        }
+    };
+    private MenuItem editItem;
+    @SuppressLint("HandlerLeak")
+    private Handler uiHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    Log.i("TableActivity", "init data ok");
+                    init();
                     break;
             }
         }
@@ -314,15 +308,8 @@ public class TableActivity extends AppCompatActivity {
                         y = cursor0.getInt(cursor0.getColumnIndex("y")) - 1; //从0开始
 
                         str[y][x] = cursor0.getString(cursor0.getColumnIndex("speciesId"));
-//                Log.d("x,y,str", x + "," + y + "," + str[y][x]);
                     } while (cursor0.moveToNext());
                 } else {
-//            List<ContentValues> contentValuesList = assembleData(str, STATUS_INIT);
-//            for(int i = 0; i < maxColumns; i++){
-//                db.insert("SpeciesSequence", null, contentValuesList.get(i));
-//            }
-//            Log.d("str_", "111");
-//            Toast.makeText(TableActivity.this, "创建成功", Toast.LENGTH_SHORT).show();
                 }
                 cursor0.close();
                 Looper.loop();
@@ -333,19 +320,6 @@ public class TableActivity extends AppCompatActivity {
         msg.what = 1;
         uiHandler.sendMessage(msg);
     }
-
-    @SuppressLint("HandlerLeak")
-    private Handler uiHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 1:
-                    Log.i("TableActivity", "init data ok");
-                    init();
-                    break;
-            }
-        }
-    };
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -393,49 +367,12 @@ public class TableActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-//        for(int i = 0; i < maxColumns; i++){
-//            for (int j = 0; j < maxRows; j++) {
-//                ContentValues contentValues = new ContentValues();
-//                contentValues.put("fieldId", fieldId);
-//                contentValues.put("speciesId", str[j][i]);
-//                contentValues.put("x", i + 1);
-//                contentValues.put("y", j + 1);
-//                Log.d("contentValues", contentValues.toString());
-//                contentValuesList.add(contentValues);
-//                Log.d("contentvaluesList0", contentValuesList.toString());
-//            }
-//
-////            contentValues.put("NumofRows", maxRows);
-////            if(status == STATUS_INIT){
-////                contentValues.put("ContentofColumn", "");
-////            }
-////            else if(status == STATUS_UPDATE){
-////                //将一行的所有数据存为json格式
-////                JSONObject jsonObject = new JSONObject();
-////                for (int j = 0; j < maxRows; j++){
-////                    try {
-////                        if(str[j][i] != null){
-////                            jsonObject.put("row_" + j, str[j][i]);
-////                        }
-////                        else {
-////                            jsonObject.put("row_" + j, "");
-////                        }
-////
-////                    } catch (JSONException e) {
-////                        e.printStackTrace();
-////                    }
-////                }
-////                contentValues.put("ContentofColumn", jsonObject.toString());
-////            }
-//        }
-
         return contentValuesList;
     }
 
     @SuppressLint("SetTextI18n")
     public void init() {
         mContext = getApplicationContext();
-        tableInfo.setText(getText(R.string.big_farm) + "：" + bigFarmName + "   " + getText(R.string.farm) + "：" + farmName + "   " + getText(R.string.year) + "：" + year);
         tableDescription.setText(description);
         findByid();
         setListener();
@@ -443,16 +380,14 @@ public class TableActivity extends AppCompatActivity {
     }
 
     public void findByid() {
-        pulltorefreshview = (AbPullToRefreshView) findViewById(R.id.pulltorefreshview);
-//        pulltorefreshview.setPullRefreshEnable(false);
-        tv_table_title_left = (TextView) findViewById(R.id.tv_table_title_left);
+        pulltorefreshview = findViewById(R.id.pulltorefreshview);
+        tv_table_title_left = findViewById(R.id.tv_table_title_left);
         tv_table_title_left.setText(expType);
         tv_table_title_left.setTextColor(getResources().getColor(R.color.colorOrange));
-        leftListView = (ListView) findViewById(R.id.left_container_listview);
-        rightListView = (ListView) findViewById(R.id.right_container_listview);
-        right_title_container = (LinearLayout) findViewById(R.id.right_title_container);
+        leftListView = findViewById(R.id.left_container_listview);
+        rightListView = findViewById(R.id.right_container_listview);
+        right_title_container = findViewById(R.id.right_title_container);
 
-        //right_title_container.addView(textView);
 
         getLayoutInflater().inflate(R.layout.table_right_title, right_title_container);
         for (int i = 0; i < maxColumns; i++) {
@@ -460,8 +395,8 @@ public class TableActivity extends AppCompatActivity {
             view.setVisibility(View.VISIBLE);
         }
 
-        titleHorScv = (SyncHorizontalScrollView) findViewById(R.id.title_horsv);
-        contentHorScv = (SyncHorizontalScrollView) findViewById(R.id.content_horsv);
+        titleHorScv = findViewById(R.id.title_horsv);
+        contentHorScv = findViewById(R.id.content_horsv);
         // 设置两个水平控件的联动
         titleHorScv.setScrollView(contentHorScv);
         contentHorScv.setScrollView(titleHorScv);
@@ -495,24 +430,6 @@ public class TableActivity extends AppCompatActivity {
 
             }
         };
-
-//        TextView textView = new TextView(TableActivity.this);
-//        textView.setId(R.id.tv_test1);
-//        textView.setText("test");
-//        textView.setWidth(80);
-//        textView.setHeight(40);
-//        textView.setGravity(Gravity.CENTER);
-//        textView.setTextSize(12);
-//        textView.setPadding(4, 0, 4, 0);
-//        textView.setMaxLines(2);
-//        textView.setTextColor(Color.parseColor("#000000"));
-//        textView.setBackgroundColor(Color.RED);
-//        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(80,40);
-//        textView.setLayoutParams(lp);
-//        View view1 = LayoutInflater.from(TableActivity.this).inflate(R.layout.table_right_item, null);
-//        LinearLayout linearLayout = view1.findViewById(R.id.linear_right_item);
-//        linearLayout.addView(textView);
-////        view1.setId(R.layout.ttt);
 
         mRightAdapter = new AbsCommonAdapter<TableModel>(mContext, R.layout.table_right_item) {
             @Override
@@ -610,39 +527,6 @@ public class TableActivity extends AppCompatActivity {
                                 });
                                 inputDialog.show();
                                 delayShowSoftKeyBoard(dialog_input);
-//
-//                                final MyAlertInputDialog myAlertInputDialog = new MyAlertInputDialog(TableActivity.this).builder()
-//                                        .setTitle(x + "-" + y + "  "+getString(R.string.input_species_data))
-//                                        .setEditText("");
-//                                myAlertInputDialog.setPositiveButton("确认", new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View v) {
-//                                        String species = myAlertInputDialog.getResult();
-//                                        boolean isExist = false;
-//                                        for (int j = 0; j < speciesNames.size(); j++) {
-//                                            if (species.equals(speciesNames.get(j))) {
-//                                                isExist = true;
-//                                            }
-//                                        }
-//                                        if (isExist) {
-//                                            tv.setText(species);
-//                                            str[pos][finalI] = species;
-//                                            Toast.makeText(TableActivity.this, species, Toast.LENGTH_SHORT).show();
-//                                        } else {
-//                                            Toast.makeText(TableActivity.this, R.string.toast_species_null_error, Toast.LENGTH_SHORT).show();
-//                                        }
-//                                        myAlertInputDialog.dismiss();
-//                                    }
-//                                }).setNegativeButton("取消", new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View v) {
-//                                        //showMsg("取消");
-//                                        myAlertInputDialog.dismiss();
-//                                    }
-//                                });
-//                                myAlertInputDialog.show();
-//                                //弹出软键盘
-//                                delayShowSoftKeyBoard(myAlertInputDialog.getContentEditText());
                             } else if (status == STATUS_READ) {
                                 String blockId = null;
                                 String speciesId = tv.getText().toString();
@@ -680,44 +564,9 @@ public class TableActivity extends AppCompatActivity {
                     });
                 }
 
-//                tv_table_content_right_item0.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        if(status == STATUS_EDIT){
-//                            final EditText editText = new EditText(TableActivity.this);
-//                            editText.setGravity(Gravity.CENTER); //文字居中
-//                            AlertDialog.Builder inputDialog = new AlertDialog.Builder(TableActivity.this);
-//                            inputDialog.setTitle("我是一个输入Dialog" + pos).setView(editText);
-//                            inputDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    tv_table_content_right_item0.setText(editText.getText().toString());
-//                                    str[pos][0] = editText.getText().toString();
-//                                    Toast.makeText(TableActivity.this, editText.getText().toString(), Toast.LENGTH_SHORT).show();
-//                                }
-//                            }).show();
-//                        }
-//                        else if(status == STATUS_READ) {
-//                            Toast.makeText(TableActivity.this, "next--->" + tv_table_content_right_item0.getText(), Toast.LENGTH_SHORT).show();
-//                        }
-//                        else {
-//                            Toast.makeText(TableActivity.this, "ERROR", Toast.LENGTH_SHORT).show();
-//                        }
-//
-//                    }
-//                });
-
-//                //部分行设置颜色凸显
-//                item.setTextColor(tv_table_content_right_item0, item.getText0());
-//                item.setTextColor(tv_table_content_right_item5, item.getText5());
-//                item.setTextColor(tv_table_content_right_item10, item.getText10());
-//                item.setTextColor(tv_table_content_right_item14, item.getText14());
-
                 for (int i = 0; i < maxColumns; i++) {
                     View view = ((LinearLayout) helper.getConvertView()).getChildAt(i);
                     view.setVisibility(View.VISIBLE);
-
-//                    Log.d("width" + i, view.getX() + "");
                 }
                 textViews.clear();
             }
@@ -728,30 +577,7 @@ public class TableActivity extends AppCompatActivity {
 
 
     public void setListener() {
-//        pulltorefreshview.setOnHeaderRefreshListener(new AbPullToRefreshView.OnHeaderRefreshListener() {
-//            @Override
-//            public void onHeaderRefresh(AbPullToRefreshView view) {
-//                mHandler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        pageNo = 0;
-//                        doGetDatas(0, RefreshParams.REFRESH_DATA);
-//                    }
-//                }, 1000);
-//            }
-//        });
-//        pulltorefreshview.setOnFooterLoadListener(new AbPullToRefreshView.OnFooterLoadListener() {
-//            @Override
-//            public void onFooterLoad(AbPullToRefreshView view) {
-//                mHandler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        doGetDatas(pageNo, RefreshParams.LOAD_DATA);
-//                    }
-//                }, 1000);
-//            }
-//
-//        });
+
         leftListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -759,13 +585,6 @@ public class TableActivity extends AppCompatActivity {
                 showShortToast(TableActivity.this, getString(R.string.toast_species_click_tip));
             }
         });
-//        rightListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Log.d("TestItemClick", view.getMatrix().toString() + " || " + i + " || " + l);
-////                view.setVisibility(View.INVISIBLE);
-//            }
-//        });
     }
 
     public void setData() {
@@ -778,11 +597,6 @@ public class TableActivity extends AppCompatActivity {
         for (int i = 0 + pageno * maxRows; i < maxRows * (pageno + 1); i++) {
             onlineSaleBeanList.add(new OnlineSaleBean("品种行" + (i + 1)));
         }
-//        if(state == RefreshParams.REFRESH_DATA){
-//            pulltorefreshview.onHeaderRefreshFinish();
-//        }else{
-//            pulltorefreshview.onFooterLoadFinish();
-//        }
         setDatas(onlineSaleBeanList, state);
     }
 
@@ -802,22 +616,6 @@ public class TableActivity extends AppCompatActivity {
                         tableMode.setText(str[i][j], j);
                     }
                 }
-
-//                tableMode.setText0(str[i][0] + "");//列0内容
-//                tableMode.setText1(str[i][1] + "");//列1内容
-//                tableMode.setText2(str[i][2] + "");//列2内容
-//                tableMode.setText3(onlineSaleBean.getSaleAllOneNow() + "");
-//                tableMode.setText4(onlineSaleBean.getSaleAllLast() + "");
-//                tableMode.setText5(onlineSaleBean.getSaleAllOneNowLast() + "");//
-//                tableMode.setText6(onlineSaleBean.getSaleAllRate() + "");//
-//                tableMode.setText7(onlineSaleBean.getSaleAllOneNowRate() + "");//
-//                tableMode.setText8(onlineSaleBean.getRetailSale() + "");//
-//                tableMode.setText9(onlineSaleBean.getRetailSaleOneNow() + "");//
-//                tableMode.setText10(onlineSaleBean.getRetailSaleLast() + "");//
-//                tableMode.setText11(onlineSaleBean.getRetailSaleOneNowLast() + "");//
-//                tableMode.setText12(onlineSaleBean.getRetailSaleRate() + "");//
-//                tableMode.setText13(onlineSaleBean.getRetailSaleOneNowRate() + "");//
-//                tableMode.setText14(onlineSaleBean.getOnlineSale() + "");//
                 mDatas.add(tableMode);
             }
             boolean isMore;

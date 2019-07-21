@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="2dp"
+    android:elevation="2dp"
+    android:background="@drawable/bg_main_button"
+    android:layout_margin="@dimen/dp_5">
+
+    <TextView
+        android:id="@+id/rv_item"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="5dp"
+        android:textColor="@color/dialog_black"
+        tools:text="选择"/>
+
+
+</LinearLayout>

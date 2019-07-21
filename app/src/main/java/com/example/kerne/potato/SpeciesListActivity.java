@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.kerne.potato.Adapter.SpeciesListAdapter;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
 
 import org.json.JSONException;

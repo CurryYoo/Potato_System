@@ -5,14 +5,5 @@
     <!-- 填充的颜色 -->
     <solid android:color="@color/white" />
     <!-- 设置按钮的四个角为弧形 -->
-    <corners android:radius="5dp" />
-
-    <!--<gradient-->
-        <!--android:angle="270"-->
-        <!--android:endColor="@color/white"-->
-        <!--android:startColor="@color/line_grey" />-->
-    <stroke
-        android:width="0.01dp"
-        android:color="@color/actionsheet_gray">
-    </stroke>
+    <corners android:radius="8dp" />
 </shape>
