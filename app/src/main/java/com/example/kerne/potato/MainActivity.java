@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         downloadSuccess_Num++;
                         break;
                     case Banner_info_OK:
-                        activity.initBanner();
+//                        activity.initBanner();
                         break;
                 }
                 if (downloadSuccess_Num == request_Num) {
