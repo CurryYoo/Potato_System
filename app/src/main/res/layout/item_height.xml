@@ -75,7 +75,7 @@
             android:layout_marginStart="5dp"
             android:layout_marginTop="@dimen/dp_10"
             android:layout_marginBottom="@dimen/dp_10"
-            android:background="@drawable/bg_main_button"
+            android:background="@drawable/bg_main"
             android:orientation="horizontal"
             android:padding="5dp">
 
@@ -83,11 +83,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_5"
+                android:layout_marginEnd="@dimen/dp_3"
                 android:layout_marginBottom="2dp"
+                android:gravity="center_vertical"
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp"
-                android:layout_marginEnd="@dimen/dp_3"
-                android:gravity="center_vertical"
                 android:text="@string/average_height"
                 android:textColor="@color/colorGreen"
                 android:textSize="15sp" />
@@ -178,7 +178,7 @@
             android:layout_marginTop="@dimen/dp_10"
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="@dimen/dp_10"
-            android:background="@drawable/bg_caculate_btn_"
+            android:background="@drawable/selector_10_button"
             android:text="@string/calculate"
             android:textColor="@color/secondary_text"
             android:textSize="15sp"

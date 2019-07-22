@@ -24,11 +24,11 @@
         <item name="android:layout_height">40dp</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:paddingLeft">4dp</item>
-        <item name="android:paddingRight">4dp</item>
+        <item name="android:layout_margin">3dp</item>
         <item name="android:maxLines">2</item>
         <item name="android:textColor">@color/secondary_text</item>
-        <item name="android:textColorHint">@color/actionsheet_gray</item>
+        <item name="android:textColorHint">@color/ColorDarkGrey</item>
+        <item name="android:background">@drawable/selector_button</item>
         <item name="android:visibility">gone</item>
     </style>
 
@@ -45,13 +45,6 @@
         <item name="android:visibility">gone</item>
     </style>
 
-    <style name="listviewstyle">
-        <item name="android:cacheColorHint">@null</item>
-        <item name="android:divider">@color/line_color</item>
-        <item name="android:dividerHeight">1px</item>
-        <item name="android:fadingEdge">none</item>
-        <item name="android:listSelector">@android:color/transparent</item>
-    </style>
 
     <style name="style_item_basicinfo_textview">
         <item name="android:layout_width">110dp</item>
@@ -87,8 +80,7 @@
     </style>
 
 
-    //indicator的style
-
+    //一般的indicator的style
     <style name="StyledIndicators" parent="@android:style/Theme.Light">
         <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator</item>
     </style>
@@ -96,7 +88,7 @@
     <style name="CustomTabPageIndicator" parent="Widget.TabPageIndicator">
         <item name="android:background">@drawable/tab_indicator</item>
         <item name="android:textAppearance">@style/CustomTabPageIndicator.Text</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:dividerPadding">8dp</item>
         <item name="android:showDividers">middle</item>
@@ -108,7 +100,30 @@
 
     <style name="CustomTabPageIndicator.Text" parent="android:TextAppearance.Medium">
         <item name="android:typeface">monospace</item>
-        <item name="android:textColor">@drawable/selector_tabtext</item>
+        <item name="android:textColor">@drawable/selector_tab_text_color1</item>
+    </style>
+
+    //首页的indicator的style
+    <style name="StyledIndicators_main" parent="@android:style/Theme.Light">
+        <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator_main</item>
+    </style>
+
+    <style name="CustomTabPageIndicator_main" parent="Widget.TabPageIndicator">
+        <item name="android:background">@drawable/tab_indicator_main</item>
+        <item name="android:textAppearance">@style/CustomTabPageIndicator.Text_main</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:dividerPadding">8dp</item>
+        <item name="android:showDividers">middle</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:fadingEdge">horizontal</item>
+        <item name="android:fadingEdgeLength">8dp</item>
+    </style>
+
+    <style name="CustomTabPageIndicator.Text_main" parent="android:TextAppearance.Medium">
+        <item name="android:typeface">monospace</item>
+        <item name="android:textColor">@drawable/selector_tab_text_color</item>
     </style>
 
     //图片dialog全屏显示
@@ -146,7 +161,7 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/secondary_text</item>
-        <item name="android:background">@drawable/bg_spinner</item>
+        <item name="android:background">@drawable/selector_10_button</item>
         <item name="android:elevation">2dp</item>
         <item name="android:scrollbars">none</item>
     </style>
@@ -158,7 +173,7 @@
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/secondary_text</item>
-        <item name="android:background">@drawable/bg_spinner</item>
+        <item name="android:background">@drawable/selector_10_button</item>
         <item name="android:elevation">2dp</item>
         <item name="android:scrollbars">none</item>
     </style>
@@ -168,7 +183,7 @@
         <item name="android:layout_height">30dp</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:padding">3dp</item>
-        <item name="android:background">@drawable/bg_basic_info_btn</item>
+        <item name="android:background">@drawable/selector_5_button</item>
         <item name="android:elevation">2dp</item>
     </style>
 
@@ -178,7 +193,7 @@
         <item name="android:layout_width">50dp</item>
         <item name="android:layout_height">@dimen/dp_30</item>
         <item name="android:layout_marginEnd">@dimen/dp_10</item>
-        <item name="android:background">@drawable/bg_basic_info_btn</item>
+        <item name="android:background">@drawable/selector_5_button</item>
         <item name="android:elevation">2dp</item>
     </style>
 
@@ -190,7 +205,7 @@
         <item name="android:layout_marginEnd">@dimen/dp_10</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/secondary_text</item>
-        <item name="android:background">@drawable/bg_basic_info_btn</item>
+        <item name="android:background">@drawable/selector_5_button</item>
     </style>
 
 

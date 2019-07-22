@@ -5,5 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
-    tools:text="title" />
+    tools:text="title"
+    android:textSize="14sp"
+    android:textColor="@color/secondary_text"/>
 

@@ -111,7 +111,7 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
         titleText.setText(bigFarmName);
         leftOneButton.setBackgroundResource(R.drawable.left_back);
         rightOneButton.setBackgroundResource(R.drawable.ic_menu_home);
-        rightTwoButton.setBackgroundResource(R.drawable.ic_menu_map);
+        rightTwoButton.setBackgroundResource(R.drawable.firm_plan);
 
 
         leftOneLayout.setOnClickListener(toolBarOnClickListener);

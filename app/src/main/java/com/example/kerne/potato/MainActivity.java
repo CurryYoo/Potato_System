@@ -21,14 +21,13 @@ public class MainActivity extends AppCompatActivity implements HomepageFragment.
 
     public static Fragment homepageFragment;
     public static Fragment firmSurveyFragment;
+    public String titles[] = new String[]{"试验田", "试验调查"};
     @BindView(R.id.main_indicator)
     TabPageIndicator mainIndicator;
     @BindView(R.id.main_viewpager)
     ViewPager mainViewpager;
-
     private TabPageIndicatorAdapter mAdpter;
     private int currentPage = 0;
-    public String titles[] = new String[]{"首页", "田间试验调查"};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements HomepageFragment.
 
             @Override
             public void onPageSelected(int i) {
-
+                currentPage = i;
             }
 
             @Override
@@ -64,6 +63,21 @@ public class MainActivity extends AppCompatActivity implements HomepageFragment.
 
             }
         });
+        mainIndicator.setOnTabReselectedListener(new TabPageIndicator.OnTabReselectedListener() {
+            @Override
+            public void onTabReselected(int position) {
+            }
+        });
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (currentPage == 0) {
+            super.onBackPressed();
+        } else {
+            mainIndicator.setCurrentItem(0);
+        }
     }
 
     @Override
@@ -106,7 +120,8 @@ public class MainActivity extends AppCompatActivity implements HomepageFragment.
 
         @Override
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-            super.destroyItem(container, position, object);//不销毁fragment
+            //不销毁fragment
+//            super.destroyItem(container, position, object);
         }
     }
 }

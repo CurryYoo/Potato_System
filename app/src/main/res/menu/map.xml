@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/map_bigfarm"
-        android:icon="@drawable/ic_menu_map"
+        android:icon="@drawable/firm_plan"
         android:title="地图"
         app:showAsAction="always" />
 

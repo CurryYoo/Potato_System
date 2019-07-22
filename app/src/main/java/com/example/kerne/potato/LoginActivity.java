@@ -140,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
     private void initToolBar() {
         titleText.setText(getText(R.string.account_log_in));
         leftOneButton.setBackgroundResource(R.drawable.left_back);
-
+        leftOneLayout.setBackgroundResource(R.drawable.selector_button);
         leftOneLayout.setOnClickListener(toolBarOnClickListener);
     }
 

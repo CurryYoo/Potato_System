@@ -1,32 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backGroundColor"
     android:orientation="vertical">
-    <EditText
-        android:id="@+id/et_filter"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/bg_input_filter"
-        android:drawableLeft="@drawable/ic_search"
-        android:drawablePadding="8dp"
-        android:hint="请输入关键字"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:textColor="@color/normalcolor"
-        android:textSize="14sp"
-        android:visibility="visible"/>
 
-    <ListView
-        android:id="@+id/listView"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"/>
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:background="@drawable/bg_in_shack">
+
+        <LinearLayout
+            android:id="@+id/save_plan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/in_shack_firm"
+            android:layout_alignTop="@id/in_shack_firm"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/selector_10_button"
+            android:elevation="2dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_margin="5dp"
+                android:src="@drawable/ic_menu_no_save" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dp_5"
+                android:text="@string/save"
+                android:textColor="@color/colorOrange"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/in_shack_firm"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:background="@color/backGroundColor" />
+    </RelativeLayout>
 </LinearLayout>

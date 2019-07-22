@@ -18,6 +18,8 @@
         android:textColor="@color/primary_text"
         android:textSize="15sp"
         tools:text="横标题"
+        android:layout_marginTop="@dimen/dp_3"
+        android:layout_marginBottom="@dimen/dp_3"
         android:background="@color/backGroundColor"/>
 
 </LinearLayout>

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
@@ -14,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kerne.potato.R;
-import com.example.kerne.potato.complextable.widget.BannerCommom.BannerLayout;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
 import com.facebook.drawee.controller.BaseControllerListener;
@@ -27,7 +25,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-import me.relex.photodraweeview.OnPhotoTapListener;
 import me.relex.photodraweeview.OnViewTapListener;
 import me.relex.photodraweeview.PhotoDraweeView;
 
@@ -102,60 +99,6 @@ public class Util {
             @Override
             public void onCancel(DialogInterface dialog) {
 
-            }
-        });
-    }
-
-
-    //查看网络大图
-    public static void watchBannerLargePhoto(Context context, final BannerLayout bannerLayout, Uri imageUri, String title) {
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        LayoutInflater layoutInflater_2 = LayoutInflater.from(context);
-
-        View imgLargeView = layoutInflater.inflate(R.layout.dialog_watch_online_big_photo, null);
-        View titleView = layoutInflater_2.inflate(R.layout.dialog_custom_title, null);
-
-        TextView dialog_title = titleView.findViewById(R.id.dialog_picture_title);
-        dialog_title.setText(title);
-        final AlertDialog alertDialogShowLargeImage = new AlertDialog.Builder(context, R.style.Dialog_Fullscreen)
-                .setCustomTitle(titleView)
-                .create();
-        Objects.requireNonNull(alertDialogShowLargeImage.getWindow()).setWindowAnimations(R.style.dialogWindowAnim);
-        //获取ImageView
-        final PhotoDraweeView imvLargePhoto = imgLargeView.findViewById(R.id.imv_online_large_photo);
-        alertDialogShowLargeImage.setView(imgLargeView);
-        alertDialogShowLargeImage.show();
-        PipelineDraweeControllerBuilder controller = Fresco.newDraweeControllerBuilder();
-        controller.setUri(imageUri);//设置图片url
-        controller.setOldController(imvLargePhoto.getController());
-        controller.setControllerListener(new BaseControllerListener<ImageInfo>() {
-            @Override
-            public void onFinalImageSet(String id, ImageInfo imageInfo, Animatable animatable) {
-                super.onFinalImageSet(id, imageInfo, animatable);
-                if (imageInfo == null) {
-                    return;
-                }
-                imvLargePhoto.update(imageInfo.getWidth(), imageInfo.getHeight());
-            }
-        });
-        imvLargePhoto.setController(controller.build());
-
-        titleView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialogShowLargeImage.cancel();
-            }
-        });
-        imvLargePhoto.setOnViewTapListener(new OnViewTapListener() {
-            @Override
-            public void onViewTap(View view, float x, float y) {
-                alertDialogShowLargeImage.cancel();
-            }
-        });
-        alertDialogShowLargeImage.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                bannerLayout.startAutoPlay();
             }
         });
     }

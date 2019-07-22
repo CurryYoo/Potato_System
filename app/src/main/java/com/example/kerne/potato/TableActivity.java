@@ -123,27 +123,23 @@ public class TableActivity extends AppCompatActivity {
                     finish();
                     break;
                 case R.id.right_one_layout:
-                    Intent intent = new Intent(TableActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.right_two_layout:
                     if (status == STATUS_READ) {
                         status = STATUS_EDIT;
-                        rightTwoButton.setBackgroundResource(R.drawable.ic_menu_no_save);
+                        rightOneButton.setBackgroundResource(R.drawable.ic_menu_no_save);
                         titleText.setText(getText(R.string.species_data_plan));
                         titleText.setTextColor(getResources().getColor(R.color.colorOrange));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            rightTwoLayout.setTooltipText(getResources().getText(R.string.save_data));
+                            rightOneLayout.setTooltipText(getResources().getText(R.string.save_data));
                         }
                         tableDescription.setEnabled(true);
                         showShortToast(TableActivity.this, mContext.getString(R.string.enter_species_plan_mode));
                     } else {
 
-                        rightTwoButton.setBackgroundResource(R.drawable.ic_menu_plan);
+                        rightOneButton.setBackgroundResource(R.drawable.ic_menu_plan);
                         titleText.setText(getText(R.string.species_data));
                         titleText.setTextColor(getResources().getColor(R.color.primary_text));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            rightTwoLayout.setTooltipText(getText(R.string.species_data_plan));
+                            rightOneLayout.setTooltipText(getText(R.string.species_data_plan));
                         }
                         tableDescription.setEnabled(false);
 
@@ -199,7 +195,6 @@ public class TableActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
-                    Log.i("TableActivity", "init data ok");
                     init();
                     break;
             }
@@ -226,99 +221,24 @@ public class TableActivity extends AppCompatActivity {
         farmName = getIntent().getStringExtra("farmName");
         year = getIntent().getIntExtra("year", 1970);
         farmlandId = getIntent().getStringExtra("farmlandId");
-        Log.d("farmlandId", farmlandId);
 
-        new Thread(new Runnable() {
+//        new Thread(new Runnable() {
+////            @Override
+////            public void run() {
+////                Looper.prepare();
+////                initData();
+////                Looper.loop();
+////            }
+////        }).start();
+
+        //延迟加载视图
+        new Handler().postDelayed(new Runnable() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public void run() {
-                Looper.prepare();
-                if (type.equals("common")) {
-                    try {
-                        Cursor cursor = db.query("ExperimentField", null, "farmlandId=? and expType=?",
-                                new String[]{farmlandId, expType}, null, null, "moveX");
-                        maxColumns = cursor.getCount();
-                        if (maxColumns > 0) {
-                            cursor.moveToFirst();
-                            for (int i = 0; i < maxColumns; i++) {
-                                fieldArray.put(i, cursor.getString(cursor.getColumnIndex("id")));
-                                int num = cursor.getInt(cursor.getColumnIndex("num"));
-                                rows.put(i, num);
-                                maxRows = (num > maxRows ? num : maxRows);
-                                column = 1;
-                                cursor.moveToNext();
-                            }
-                        }
-                        cursor.close();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    str = new String[maxRows][maxColumns];
-                } else {
-                    column = getIntent().getIntExtra("rows", 2);
-                    maxRows = getIntent().getIntExtra("num", 0) / column;
-                    maxColumns = getIntent().getIntExtra("rows", 0);
-                    Log.d("num,rows", maxRows + "," + maxColumns);
-                    str = new String[maxRows][maxColumns];
-
-                    try {
-                        fieldArray.put(0, fieldId);
-                        rows.put(0, maxRows);
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                Cursor cursor = db.query("LocalSpecies", null, null, null, null, null, null);
-                if (cursor.moveToFirst()) {
-                    do {
-                        speciesNames.add(cursor.getString(cursor.getColumnIndex("name")));
-                    } while (cursor.moveToNext());
-                } else {
-                    showShortToast(TableActivity.this, getString(R.string.toast_species_null_error));
-                }
-                cursor.close();
-
-                String sql;
-                if (type.equals("common")) {
-                    sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
-                            "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
-                            "' and ExperimentField.farmlandId='" + farmlandId + "' order by ExperimentField.moveX";
-                } else {
-                    sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
-                            "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
-                            "' and ExperimentField.id='" + fieldId + "' order by ExperimentField.moveX";
-                }
-
-                Cursor cursor0 = db.rawQuery(sql, null);
-                if (cursor0.moveToFirst()) {
-                    String fieldId = "";
-                    int x = 0, y = 0;
-                    int columns = 0;
-                    description = cursor0.getString(cursor0.getColumnIndex("description"));
-                    fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
-                    do {
-                        if (!fieldId.equals(cursor0.getString(cursor0.getColumnIndex("id")))) {
-                            Log.d("columns,fieldId,id", columns + "," + fieldId + "," + cursor0.getString(cursor0.getColumnIndex("id")));
-                            columns++;
-                            fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
-                        }
-                        Log.d("x,y", x + "," + y + "," + columns + "," + column);
-                        x = cursor0.getInt(cursor0.getColumnIndex("x")) + columns * column - 1; //从0开始
-                        y = cursor0.getInt(cursor0.getColumnIndex("y")) - 1; //从0开始
-
-                        str[y][x] = cursor0.getString(cursor0.getColumnIndex("speciesId"));
-                    } while (cursor0.moveToNext());
-                } else {
-                }
-                cursor0.close();
-                Looper.loop();
+                initData();
             }
-        }).start();
-
-        Message msg = new Message();
-        msg.what = 1;
-        uiHandler.sendMessage(msg);
+        }, 10); //延迟ms
     }
 
     @Override
@@ -326,20 +246,105 @@ public class TableActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
     }
 
+    private void initData(){
+        if (type.equals("common")) {
+            try {
+                Cursor cursor = db.query("ExperimentField", null, "farmlandId=? and expType=?",
+                        new String[]{farmlandId, expType}, null, null, "moveX");
+                maxColumns = cursor.getCount();
+                if (maxColumns > 0) {
+                    cursor.moveToFirst();
+                    for (int i = 0; i < maxColumns; i++) {
+                        fieldArray.put(i, cursor.getString(cursor.getColumnIndex("id")));
+                        int num = cursor.getInt(cursor.getColumnIndex("num"));
+                        rows.put(i, num);
+                        maxRows = (num > maxRows ? num : maxRows);
+                        column = 1;
+                        cursor.moveToNext();
+                    }
+                }
+                cursor.close();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            str = new String[maxRows][maxColumns];
+        } else {
+            column = getIntent().getIntExtra("rows", 2);
+            maxRows = getIntent().getIntExtra("num", 0) / column;
+            maxColumns = getIntent().getIntExtra("rows", 0);
+            Log.d("num,rows", maxRows + "," + maxColumns);
+            str = new String[maxRows][maxColumns];
+
+            try {
+                fieldArray.put(0, fieldId);
+                rows.put(0, maxRows);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Cursor cursor = db.query("LocalSpecies", null, null, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                speciesNames.add(cursor.getString(cursor.getColumnIndex("name")));
+            } while (cursor.moveToNext());
+        } else {
+            showShortToast(TableActivity.this, getString(R.string.toast_species_null_error));
+        }
+        cursor.close();
+
+        String sql;
+        if (type.equals("common")) {
+            sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
+                    "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
+                    "' and ExperimentField.farmlandId='" + farmlandId + "' order by ExperimentField.moveX";
+        } else {
+            sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
+                    "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
+                    "' and ExperimentField.id='" + fieldId + "' order by ExperimentField.moveX";
+        }
+
+        Cursor cursor0 = db.rawQuery(sql, null);
+        if (cursor0.moveToFirst()) {
+            String fieldId = "";
+            int x = 0, y = 0;
+            int columns = 0;
+            description = cursor0.getString(cursor0.getColumnIndex("description"));
+            fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
+            do {
+                if (!fieldId.equals(cursor0.getString(cursor0.getColumnIndex("id")))) {
+                    Log.d("columns,fieldId,id", columns + "," + fieldId + "," + cursor0.getString(cursor0.getColumnIndex("id")));
+                    columns++;
+                    fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
+                }
+                Log.d("x,y", x + "," + y + "," + columns + "," + column);
+                x = cursor0.getInt(cursor0.getColumnIndex("x")) + columns * column - 1; //从0开始
+                y = cursor0.getInt(cursor0.getColumnIndex("y")) - 1; //从0开始
+
+                str[y][x] = cursor0.getString(cursor0.getColumnIndex("speciesId"));
+            } while (cursor0.moveToNext());
+        } else {
+        }
+        cursor0.close();
+
+        Message msg = new Message();
+        msg.what = 1;
+        uiHandler.sendMessage(msg);
+    }
     private void initToolBar() {
         titleText.setText(getText(R.string.species_data));
         leftOneButton.setBackgroundResource(R.drawable.left_back);
-        rightOneButton.setBackgroundResource(R.drawable.ic_menu_home);
-        rightTwoButton.setBackgroundResource(R.drawable.ic_menu_plan);
+        rightOneButton.setBackgroundResource(R.drawable.ic_menu_plan);
 
+        leftOneLayout.setBackgroundResource(R.drawable.selector_button);
+        rightOneLayout.setBackgroundResource(R.drawable.selector_button);
         leftOneLayout.setOnClickListener(toolBarOnClickListener);
         rightOneLayout.setOnClickListener(toolBarOnClickListener);
-        rightTwoLayout.setOnClickListener(toolBarOnClickListener);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             leftOneLayout.setTooltipText(getText(R.string.back_left));
-            rightOneLayout.setTooltipText(getText(R.string.home_page));
-            rightTwoLayout.setTooltipText(getText(R.string.species_data_plan));
+            rightOneLayout.setTooltipText(getText(R.string.species_data_plan));
         }
 
     }
@@ -551,9 +556,7 @@ public class TableActivity extends AppCompatActivity {
                                     } else {
                                         intent.putExtra("blockId", "test");
                                     }
-
                                     startActivity(intent);
-                                    showShortToast(TableActivity.this, mContext.getText(R.string.species_id) + "：" + tv.getText());
                                     c.close();
                                 }
 

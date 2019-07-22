@@ -4,7 +4,7 @@
         android:end="@dimen/dp_100"
         android:start="@dimen/dp_100">
         <shape>
-            <solid android:color="@color/colorOrange" />
+            <solid android:color="@color/primary_text" />
 
             <corners android:radius="8dp" />
         </shape>

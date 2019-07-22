@@ -5,14 +5,17 @@
     android:background="@color/ColorWhite"
     android:orientation="vertical">
 
+    <include layout="@layout/tool_bar" />
+
     <com.viewpagerindicator.TabPageIndicator
-        android:id="@+id/main_indicator"
-        android:layout_width="wrap_content"
+        android:id="@+id/plan_indicator"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/StyledIndicators_main" />
+        android:theme="@style/StyledIndicators"
+        android:background="@color/ColorWhite"/>
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/main_viewpager"
+        android:id="@+id/plan_viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />

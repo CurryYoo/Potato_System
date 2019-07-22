@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.kerne.potato.R;
 import com.example.kerne.potato.complextable.widget.GridRecyclerView.holder.ItemViewHolder;
 import com.example.kerne.potato.complextable.widget.GridRecyclerView.holder.TitleViewHolder;
 

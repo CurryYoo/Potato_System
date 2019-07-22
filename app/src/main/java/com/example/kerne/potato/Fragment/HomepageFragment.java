@@ -23,7 +23,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.example.kerne.potato.FirmPlanActivity;
 import com.example.kerne.potato.LoginActivity;
 import com.example.kerne.potato.MainActivity;
 import com.example.kerne.potato.R;
@@ -52,55 +54,43 @@ import static android.app.Activity.RESULT_OK;
 import static com.example.kerne.potato.Util.CustomToast.showShortToast;
 
 public class HomepageFragment extends Fragment {
-    public static HomepageFragment newInstance() {
-        HomepageFragment fragment = new HomepageFragment();
-        return fragment;
-    }
-
-    private View view;
-    private Context self;
-
-    LinearLayout btnDownload;
-    ImageView uploadIcon;
-    LinearLayout btnUpload;
-    Spinner homepageYears;
-
+    private static final int BIGFARMLIST_OK = 0;
+    private static final int FARMLIST_OK = 1;
+    private static final int EXPERIMENTFIELD_OK = 2;
+    private static final int SPECIESLIST_OK = 3;
+    private static final int Banner_info_OK = 5;
+    private static int downloadSuccess_Num = 0;
+    private static int request_Num = 4;
+    private static int uploadSuccess_Num = 0;
+    private static boolean isOnline = false;
+    public SweetAlertDialog downloadDataDialog;
     String img1;
     String img2;
     String img3;
     String img4;
     String img5;
-
     Badge badge;
     SharedPreferences sp;
     SharedPreferences.Editor editor;
-
-    public SweetAlertDialog downloadDataDialog;
-
+    //用户角色字段
+    String userRole = "farmer";
+    private View view;
+    private Context self;
+    private LinearLayout btnDownload;
+    private ImageView uploadIcon;
+    private LinearLayout btnUpload;
+    private Spinner homepageYears;
+    private LinearLayout planFirm;
+    private LinearLayout changeFirmView;
+    private TextView farmType;
+    private int farm_flag = 0;//标识当前的firm视图
     private SpeciesDBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
     private SQLiteDatabase db;
-
-    //用户角色字段
-    String userRole = "farmer";
-
-    private static final int BIGFARMLIST_OK = 0;
-    private static final int FARMLIST_OK = 1;
-    private static final int EXPERIMENTFIELD_OK = 2;
-    private static final int SPECIESLIST_OK = 3;
-
-    private static final int Banner_info_OK = 5;
-
-    private static int downloadSuccess_Num = 0;
-    private static int request_Num = 4;
-    private static int uploadSuccess_Num = 0;
-
     private String Fid[] = new String[5000];
 
     private IntentFilter intentFilter;
     private NetworkChangeReceiver networkChangeReceiver;
-
-    private static boolean isOnline = false;
     @SuppressLint("HandlerLeak")
     private Handler myHandler = new Handler() {
         @SuppressLint("SetTextI18n")
@@ -130,12 +120,11 @@ public class HomepageFragment extends Fragment {
                 downloadDataDialog.setTitleText(getContext().getString(R.string.download_complete));
                 downloadDataDialog.setContentText(null);
                 downloadSuccess_Num = 0;
-                MainActivity mainActivity=new MainActivity();
+                MainActivity mainActivity = new MainActivity();
                 mainActivity.updateData(true);
             }
         }
     };
-
     //监听事件
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -147,9 +136,7 @@ public class HomepageFragment extends Fragment {
                         showShortToast(self, getString(R.string.toast_check_network_state));
                         break;
                     }
-                    if (!sp.getBoolean("update_pick_data", false) && !sp.getBoolean("update_location_data", false)) {
-                        downloadData();
-                    } else {
+                    if (sp.getBoolean("upload_data", false)) {
                         final SweetAlertDialog downloadWarnDialog = new SweetAlertDialog(self, SweetAlertDialog.NORMAL_TYPE)
                                 .setContentText(getString(R.string.download_data_warn))
                                 .setConfirmText("确定")
@@ -173,6 +160,8 @@ public class HomepageFragment extends Fragment {
                             }
                         });
                         downloadWarnDialog.show();
+                    } else {
+                        downloadData();
                     }
                     break;
                 case R.id.btn_upload:
@@ -185,6 +174,9 @@ public class HomepageFragment extends Fragment {
                     //将暂存的数据从数据库取出并提交到远程服务器
                     userRole = UserRole.getUserRole();
                     if (!userRole.equals("farmer")) {
+                        if (badge!=null){
+                            badge.hide(false);
+                        }
                         uploadPlanData();
                         uploadSurveyData();
                         showShortToast(self, getString(R.string.toast_upload_data_complete));
@@ -195,8 +187,18 @@ public class HomepageFragment extends Fragment {
                     }
                     editor.putBoolean("upload_data", false);
                     editor.apply();
-                    if (badge != null) {
-                        badge.hide(false);
+                    break;
+                case R.id.plan_firm:
+                    Intent intent = new Intent(self, FirmPlanActivity.class);
+                    self.startActivity(intent);
+                    break;
+                case R.id.change_firm_view:
+                    if (farm_flag == 0) {
+                        farmType.setText(self.getString(R.string.shack_farm));
+                        farm_flag = 1;
+                    } else if (farm_flag == 1) {
+                        farmType.setText(self.getString(R.string.farm));
+                        farm_flag = 0;
                     }
                     break;
                 default:
@@ -204,6 +206,10 @@ public class HomepageFragment extends Fragment {
             }
         }
     };
+
+    public static HomepageFragment newInstance() {
+        return new HomepageFragment();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -222,10 +228,16 @@ public class HomepageFragment extends Fragment {
         btnUpload = view.findViewById(R.id.btn_upload);
         uploadIcon = view.findViewById(R.id.upload_icon);
         homepageYears = view.findViewById(R.id.homepage_years);
+        planFirm = view.findViewById(R.id.plan_firm);
+        changeFirmView = view.findViewById(R.id.change_firm_view);
+        farmType = view.findViewById(R.id.firm_type);
+
         homepageYears.setPopupBackgroundResource(R.drawable.bg_spinner_drop_down2);
 
         btnDownload.setOnClickListener(onClickListener);
         btnUpload.setOnClickListener(onClickListener);
+        planFirm.setOnClickListener(onClickListener);
+        changeFirmView.setOnClickListener(onClickListener);
 
 
         intentFilter = new IntentFilter();
@@ -848,11 +860,6 @@ public class HomepageFragment extends Fragment {
         cursor.close();
     }
 
-    //与firmsurveyfragment进行通信，通知下载了数据
-    public interface updateData{
-        void updateData(Boolean update_flag);
-    }
-
     @Override
     public void onStart() {
         super.onStart();
@@ -879,23 +886,6 @@ public class HomepageFragment extends Fragment {
         }
     }
 
-
-    class NetworkChangeReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            ConnectivityManager connectivityManager = (ConnectivityManager) self.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-            if (networkInfo != null && networkInfo.isAvailable()) {
-                isOnline = true;
-                showShortToast(context, getString(R.string.network_normal));
-            } else {
-                isOnline = false;
-                showShortToast(context, getString(R.string.network_wrong));
-            }
-        }
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -911,7 +901,6 @@ public class HomepageFragment extends Fragment {
 
     }
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -923,5 +912,26 @@ public class HomepageFragment extends Fragment {
             db.close();
         }
         self.unregisterReceiver(networkChangeReceiver);
+    }
+
+    //与firmsurveyfragment进行通信，通知下载了数据
+    public interface updateData {
+        void updateData(Boolean update_flag);
+    }
+
+    class NetworkChangeReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ConnectivityManager connectivityManager = (ConnectivityManager) self.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.isAvailable()) {
+                isOnline = true;
+                showShortToast(context, getString(R.string.network_normal));
+            } else {
+                isOnline = false;
+                showShortToast(context, getString(R.string.network_wrong));
+            }
+        }
     }
 }

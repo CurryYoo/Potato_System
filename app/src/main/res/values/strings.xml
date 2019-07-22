@@ -43,6 +43,7 @@
     <string name="system_name">马铃薯育种信息管理系统</string>
     <string name="big_farm">试验基地</string>
     <string name="farm">试验田</string>
+    <string name="shack_farm">棚区试验田</string>
     <string name="exp_type">试验类型</string>
     <string name="type">类型</string>
     <string name="year">年份</string>
@@ -51,10 +52,10 @@
     <string name="in_shack">棚内</string>
     <string name="common_farm">棚外试验田</string>
     <string name="greenhouse_farm">棚内试验田</string>
+    <string name="farm_plan">试验田规划</string>
 
     <string name="species_id">品种编号</string>
     <string name="block_id">试验田分块编号</string>
-    <string name="block_name">上层分块名称</string>
 
     <string name="dialog_title_farm_image">试验田示意图</string>
     <string name="dialog_picture_operate">双指缩放，单击退出</string>

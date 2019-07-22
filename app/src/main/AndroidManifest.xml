@@ -43,9 +43,7 @@
             android:label="采集数据"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
-        <activity
-            android:name=".SpeciesListActivity"
-            android:label="品种搜索" />
+        <activity android:name=".FirmPlanActivity" />
 
         <activity
             android:name=".TableActivity"
