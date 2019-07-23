@@ -16,6 +16,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/description_layout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/dp_10"
@@ -25,9 +26,7 @@
             android:layout_weight="2"
             android:background="@drawable/selector_10_button"
             android:elevation="2dp"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true">
+            android:gravity="center">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -50,7 +49,8 @@
                     android:elevation="@dimen/dp_2"
                     android:maxWidth="180dp"
                     android:textColor="@color/secondary_text"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:enabled="false"/>
             </ScrollView>
 
         </LinearLayout>
@@ -63,7 +63,7 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/plan_coloum"
+                android:id="@+id/plan_column"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_5"
@@ -77,7 +77,8 @@
                 android:inputType="number"
                 android:padding="@dimen/dp_10"
                 android:textColor="@color/secondary_text"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:enabled="false"/>
 
             <EditText
                 android:id="@+id/plan_row"
@@ -93,7 +94,8 @@
                 android:inputType="number"
                 android:padding="@dimen/dp_10"
                 android:textColor="@color/secondary_text"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:enabled="false"/>
         </LinearLayout>
     </LinearLayout>
 

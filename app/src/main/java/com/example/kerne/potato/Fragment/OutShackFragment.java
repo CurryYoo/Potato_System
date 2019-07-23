@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,6 +28,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static com.example.kerne.potato.Util.CustomToast.showShortToast;
+
 public class OutShackFragment extends Fragment {
     private static final String TAG = "CheatGZ";
     @BindView(R.id.save_plan)
@@ -34,8 +37,15 @@ public class OutShackFragment extends Fragment {
     @BindView(R.id.out_shack_firm)
     RelativeLayout outShackFirm;
     Unbinder unbinder;
+    @BindView(R.id.out_image)
+    ImageView outImage;
+    @BindView(R.id.out_text)
+    TextView outText;
+    @BindView(R.id.cover_view)
+    View coverView;
     private View view;
     private Context self;
+    private Boolean flag=false;//开始时处于不可编辑状态
     private View.OnTouchListener moveTouchListenr = new View.OnTouchListener() {
         int lastX, lastY;
 
@@ -45,6 +55,8 @@ public class OutShackFragment extends Fragment {
             int ea = event.getAction();
             switch (ea) {
                 case MotionEvent.ACTION_DOWN:
+                    v.setElevation(5);
+                    v.setBackgroundResource(R.drawable.bg_item_bar_basic_info);
                     lastX = (int) event.getRawX();//获取触摸事件触摸位置的原始X坐标
                     lastY = (int) event.getRawY();
                 case MotionEvent.ACTION_MOVE:
@@ -80,6 +92,8 @@ public class OutShackFragment extends Fragment {
                     v.postInvalidate();
                     break;
                 case MotionEvent.ACTION_UP:
+                    v.setElevation(0);
+                    v.setBackgroundResource(R.drawable.bg_homepage_firm);
                     int m = 0, n = 0, main_width = 0, main_height;
                     m = v.getLeft();
                     n = v.getTop();
@@ -92,13 +106,28 @@ public class OutShackFragment extends Fragment {
             return true;
         }
     };
-    private View.OnClickListener onClickListener=new View.OnClickListener() {
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
+            switch (v.getId()) {
                 case R.id.save_plan:
+                    if(!flag){
+                        coverView.setVisibility(View.GONE);
+                        outImage.setBackgroundResource(R.drawable.ic_menu_save);
+                        outText.setText(getString(R.string.save));
+                        flag=true;
+                    }
+                    else {
+                        coverView.setVisibility(View.VISIBLE);
+                        outImage.setBackgroundResource(R.drawable.ic_menu_plan);
+                        outText.setText(getString(R.string.edit));
+                        flag=false;
+                        showShortToast(self,"保存完成");
+                        //TODO 保存
+                    }
                     break;
-                default:break;
+                default:
+                    break;
             }
         }
     };
@@ -115,6 +144,9 @@ public class OutShackFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_out_shack, container, false);
         self = getContext();
         unbinder = ButterKnife.bind(this, view);
+        outImage.setBackgroundResource(R.drawable.ic_menu_plan);
+
+        coverView.setOnClickListener(null);
         savePlan.setOnClickListener(onClickListener);
         initView();
         return view;
@@ -147,6 +179,7 @@ public class OutShackFragment extends Fragment {
                     textViewList = farmPlanView.createField("common");
                     for (int i = 0; i < textViewList.size(); i++) {
                         textViewList.get(i).setOnTouchListener(moveTouchListenr);
+                        textViewList.get(i).setBackgroundResource(R.drawable.bg_homepage_firm);
                     }
                 }
             }

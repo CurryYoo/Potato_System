@@ -11,14 +11,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -52,6 +50,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import static com.example.kerne.potato.Util.CustomToast.showShortToast;
 import static com.example.kerne.potato.Util.ShowKeyBoard.delayShowSoftKeyBoard;
+import static java.lang.Integer.getInteger;
 
 public class TableActivity extends AppCompatActivity {
 
@@ -77,6 +76,12 @@ public class TableActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
     @BindView(R.id.table_description)
     EditText tableDescription;
+    @BindView(R.id.plan_column)
+    EditText planColumn;
+    @BindView(R.id.plan_row)
+    EditText planRow;
+    @BindView(R.id.description_layout)
+    LinearLayout descriptionLayout;
     /**
      * 用于存放标题的id,与textview引用
      */
@@ -132,9 +137,11 @@ public class TableActivity extends AppCompatActivity {
                             rightOneLayout.setTooltipText(getResources().getText(R.string.save_data));
                         }
                         tableDescription.setEnabled(true);
+                        planColumn.setEnabled(true);
+                        planRow.setEnabled(true);
+                        descriptionLayout.setClickable(true);
                         showShortToast(TableActivity.this, mContext.getString(R.string.enter_species_plan_mode));
                     } else {
-
                         rightOneButton.setBackgroundResource(R.drawable.ic_menu_plan);
                         titleText.setText(getText(R.string.species_data));
                         titleText.setTextColor(getResources().getColor(R.color.primary_text));
@@ -142,6 +149,19 @@ public class TableActivity extends AppCompatActivity {
                             rightOneLayout.setTooltipText(getText(R.string.species_data_plan));
                         }
                         tableDescription.setEnabled(false);
+                        planColumn.setEnabled(false);
+                        planRow.setEnabled(false);
+                        descriptionLayout.setClickable(false);
+                        if (planColumn.getText() != null && planRow.getText() != null) {
+                            if (Integer.parseInt(planColumn.getText().toString()) < 0 || Integer.parseInt(planRow.getText().toString()) < 0) {
+                                showShortToast(getBaseContext(), getString(R.string.toast_input_error));
+                            } else {
+                                maxColumns = Integer.parseInt(planColumn.getText().toString());
+                                maxRows = Integer.parseInt(planRow.getText().toString());
+                            }
+                        }
+                        //TODO 更新行和列数,保存行数和列数
+
 
                         //保存操作 sqlite
                         List<ContentValues> contentValuesList = assembleData(str);
@@ -188,7 +208,6 @@ public class TableActivity extends AppCompatActivity {
             }
         }
     };
-    private MenuItem editItem;
     @SuppressLint("HandlerLeak")
     private Handler uiHandler = new Handler() {
         @Override
@@ -222,21 +241,12 @@ public class TableActivity extends AppCompatActivity {
         year = getIntent().getIntExtra("year", 1970);
         farmlandId = getIntent().getStringExtra("farmlandId");
 
-//        new Thread(new Runnable() {
-////            @Override
-////            public void run() {
-////                Looper.prepare();
-////                initData();
-////                Looper.loop();
-////            }
-////        }).start();
-
         //延迟加载视图
         new Handler().postDelayed(new Runnable() {
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public void run() {
-                initData();
+                initTable();
             }
         }, 10); //延迟ms
     }
@@ -245,8 +255,7 @@ public class TableActivity extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
-
-    private void initData(){
+    private void initTable(){
         if (type.equals("common")) {
             try {
                 Cursor cursor = db.query("ExperimentField", null, "farmlandId=? and expType=?",
@@ -278,12 +287,14 @@ public class TableActivity extends AppCompatActivity {
             try {
                 fieldArray.put(0, fieldId);
                 rows.put(0, maxRows);
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+        initData();
+    }
 
+    private void initData() {
         Cursor cursor = db.query("LocalSpecies", null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
@@ -332,8 +343,9 @@ public class TableActivity extends AppCompatActivity {
         msg.what = 1;
         uiHandler.sendMessage(msg);
     }
+
     private void initToolBar() {
-        titleText.setText(getText(R.string.species_data));
+        titleText.setText(getText(R.string.exp_type));
         leftOneButton.setBackgroundResource(R.drawable.left_back);
         rightOneButton.setBackgroundResource(R.drawable.ic_menu_plan);
 

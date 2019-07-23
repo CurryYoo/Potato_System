@@ -83,6 +83,7 @@
 
     <string name="enter_species_plan_mode">进入品种规划</string>
     <string name="exit_species_plan_mode">保存完成，退出品种规划</string>
+    <string name="edit">编辑</string>
 
     <string name="album">相册</string>
     <string name="average_branch">平均分株数</string>

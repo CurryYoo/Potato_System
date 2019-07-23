@@ -147,7 +147,7 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
             intent.putExtra("bigFarmName", bigFarmName);
             intent.putExtra("year", year);
             mContext.startActivity(intent);
-            showShortToast(mContext, mContext.getText(R.string.farm) + "：" + name);
+//            showShortToast(mContext, mContext.getText(R.string.farm) + "：" + name);
         }else {
 
 
@@ -178,7 +178,7 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
             finalIntent.putExtra("bigFarmName", bigFarmName);
             finalIntent.putExtra("year", year);
             mContext.startActivity(finalIntent);
-            showShortToast(mContext, mContext.getText(R.string.farm) + "：" + name);
+//            showShortToast(mContext, mContext.getText(R.string.farm) + "：" + name);
         }
     }
 }
