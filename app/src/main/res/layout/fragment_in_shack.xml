@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backGroundColor"
+    android:background="@color/ColorWhite"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/dp_5"
-        android:layout_marginEnd="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_5"
         android:layout_marginBottom="@dimen/dp_5"
         android:background="@drawable/bg_in_shack">
 
@@ -17,10 +17,10 @@
             android:id="@+id/save_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@id/in_shack_firm"
+            android:layout_alignEnd="@id/in_shack_firm"
             android:layout_alignTop="@id/in_shack_firm"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="3dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/selector_10_button"
             android:elevation="2dp"
             android:orientation="horizontal">
@@ -30,15 +30,6 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_margin="5dp" />
-
-            <TextView
-                android:id="@+id/in_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dp_5"
-                android:text="@string/edit"
-                android:textColor="@color/colorOrange"
-                android:textSize="14sp" />
         </LinearLayout>
 
         <RelativeLayout

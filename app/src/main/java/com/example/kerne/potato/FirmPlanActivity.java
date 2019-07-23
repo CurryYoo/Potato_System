@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -95,7 +94,7 @@ public class FirmPlanActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int i) {
-                currentPage=i;
+                currentPage = i;
             }
 
             @Override
@@ -110,10 +109,11 @@ public class FirmPlanActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (currentPage == 0) {
             super.onBackPressed();
-        }else {
+        } else {
             planIndicator.setCurrentItem(0);
         }
     }
+
     //adapter
     class TabPageIndicatorAdapter extends FragmentPagerAdapter {
         Bundle args = new Bundle();

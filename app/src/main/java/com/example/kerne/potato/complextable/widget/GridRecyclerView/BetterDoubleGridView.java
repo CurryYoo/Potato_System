@@ -131,8 +131,6 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
                 farmlandId = mTopGridData.get(position).getString("farmlandId");
                 type = mTopGridData.get(position).getString("type");
                 name = mTopGridData.get(position).getString("name");
-                bigFarmName = mTopGridData.get(position).getString("bigFarmName");
-                year = mTopGridData.get(position).getInt("year");
                 length = mTopGridData.get(position).getInt("length");
                 width = mTopGridData.get(position).getInt("width");
             } catch (JSONException e) {
@@ -147,21 +145,15 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
             intent.putExtra("bigFarmName", bigFarmName);
             intent.putExtra("year", year);
             mContext.startActivity(intent);
-//            showShortToast(mContext, mContext.getText(R.string.farm) + "：" + name);
         }else {
-
-
             try {
                 farmlandId = mBottomGridList.get(position-mTopGridData.size()).getString("farmlandId");
                 type = mBottomGridList.get(position-mTopGridData.size()).getString("type");
-                bigFarmName = mBottomGridList.get(position-mTopGridData.size()).getString("bigFarmName");
-                year = mBottomGridList.get(position-mTopGridData.size()).getInt("year");
                 expType = mBottomGridList.get(position-mTopGridData.size()).getString("expType");
                 fieldId = mBottomGridList.get(position-mTopGridData.size()).getString("fieldId");
                 num = mBottomGridList.get(position-mTopGridData.size()).getInt("num");
                 rows = mBottomGridList.get(position-mTopGridData.size()).getInt("rows");
                 name = mBottomGridList.get(position-mTopGridData.size()).getString("name");
-                Log.d("pengnei2", num + "," + rows);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -175,10 +167,7 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
             finalIntent.putExtra("farmlandId", farmlandId);
             finalIntent.putExtra("type", type);
             finalIntent.putExtra("farmName", name);
-            finalIntent.putExtra("bigFarmName", bigFarmName);
-            finalIntent.putExtra("year", year);
             mContext.startActivity(finalIntent);
-//            showShortToast(mContext, mContext.getText(R.string.farm) + "：" + name);
         }
     }
 }

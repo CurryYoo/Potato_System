@@ -2,8 +2,12 @@ package com.example.kerne.potato.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +21,7 @@ import android.widget.TextView;
 
 import com.example.kerne.potato.R;
 import com.example.kerne.potato.Util.FarmPlanView;
+import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +38,7 @@ import static com.example.kerne.potato.Util.CustomToast.showShortToast;
 public class InShackFragment extends Fragment {
 
     private static final String TAG = "CheatGZ";
+    private static final int DATA_OK = 0;
     @BindView(R.id.in_shack_firm)
     RelativeLayout inShackFirm;
     @BindView(R.id.save_plan)
@@ -40,14 +46,13 @@ public class InShackFragment extends Fragment {
     Unbinder unbinder;
     @BindView(R.id.in_image)
     ImageView inImage;
-    @BindView(R.id.in_text)
-    TextView inText;
     @BindView(R.id.cover_view)
     View coverView;
     private View view;
     private Context self;
     private Boolean flag = false;//开始时处于不可编辑状态
-
+    private String bigfarmId;
+    private List<JSONObject> mFieldList = new ArrayList<>();
     private View.OnTouchListener moveTouchListenr = new View.OnTouchListener() {
         int lastX, lastY;
 
@@ -57,8 +62,8 @@ public class InShackFragment extends Fragment {
             int ea = event.getAction();
             switch (ea) {
                 case MotionEvent.ACTION_DOWN:
-                    v.setElevation(5);
-                    v.setBackgroundResource(R.drawable.bg_item_bar_basic_info);
+                    v.setBackgroundResource(R.drawable.bg_farm_p);
+                    v.setElevation(10);
                     lastX = (int) event.getRawX();//获取触摸事件触摸位置的原始X坐标
                     lastY = (int) event.getRawY();
                     int x = 0, y = 0;
@@ -98,8 +103,8 @@ public class InShackFragment extends Fragment {
                     v.postInvalidate();
                     break;
                 case MotionEvent.ACTION_UP:
+                    v.setBackgroundResource(R.drawable.bg_farm);
                     v.setElevation(0);
-                    v.setBackgroundResource(R.drawable.bg_homepage_firm);
                     int m = 0, n = 0, main_width = 0, main_height;
                     m = v.getLeft();
                     n = v.getTop();
@@ -117,18 +122,17 @@ public class InShackFragment extends Fragment {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.save_plan:
-                    if(!flag){
+                    if (!flag) {
                         coverView.setVisibility(View.GONE);
                         inImage.setBackgroundResource(R.drawable.ic_menu_no_save);
-                        inText.setText(getString(R.string.save));
-                        flag=true;
-                    }
-                    else {
+                        road.setText("编辑模式");
+                        flag = true;
+                    } else {
                         coverView.setVisibility(View.VISIBLE);
                         inImage.setBackgroundResource(R.drawable.in_plan);
-                        inText.setText(getString(R.string.edit));
-                        flag=false;
-                        showShortToast(self,"保存完成");
+                        road.setText("田间小路");
+                        flag = false;
+                        showShortToast(self, "保存完成");
                         //TODO 保存
                     }
                     break;
@@ -138,8 +142,21 @@ public class InShackFragment extends Fragment {
         }
     };
     private List<JSONObject> mJsonList = null;
+    private TextView road;
     private List<TextView> textViewList;
-
+    @SuppressLint("HandlerLeak")
+    private Handler myHandler = new Handler() {
+        @SuppressLint("SetTextI18n")
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case DATA_OK:
+                    initView();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     public static InShackFragment newInstance() {
         InShackFragment fragment = new InShackFragment();
@@ -155,43 +172,68 @@ public class InShackFragment extends Fragment {
 
         coverView.setOnClickListener(null);
         savePlan.setOnClickListener(onClickListener);
+        initData();
         initView();
         return view;
     }
 
+    private void initData() {
+        bigfarmId = getActivity().getIntent().getStringExtra("bigfarmId");
 
-    private void initView() {
-        mJsonList = new ArrayList<>();
-        try {
-            for (int i = 0; i < 4; i++) {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("num", 200);
-                jsonObject.put("row", 100);
-                jsonObject.put("x", 0.2);
-                jsonObject.put("y", 0.3);
-                mJsonList.add(jsonObject);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        new Handler().postDelayed(new Runnable() {
-            @SuppressLint("ClickableViewAccessibility")
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                if (inShackFirm != null) {
+                Looper.prepare();
+                //获取数据库中数据
+                SpeciesDBHelper dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 10);
+                SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-                    Log.d("cheatGZ_main", inShackFirm.getWidth() + "," + inShackFirm.getHeight());
-                    FarmPlanView farmPlanView = new FarmPlanView(getContext(), inShackFirm, inShackFirm.getWidth(), inShackFirm.getHeight(), mJsonList);
-                    farmPlanView.createRoad("greenhouse");
-                    textViewList = farmPlanView.createField("greenhouse");
-                    for (int i = 0; i < textViewList.size(); i++) {
-                        textViewList.get(i).setOnTouchListener(moveTouchListenr);
-                        textViewList.get(i).setBackgroundResource(R.drawable.bg_homepage_firm);
-                    }
+                //获取大棚区域
+                Cursor cursor = db.query("ExperimentField", null, "farmlandId=?", new String[]{bigfarmId}, null, null, null);
+                if (cursor.moveToFirst()) {
+                    do {
+                        JSONObject jsonObject0 = new JSONObject();
+                        try {
+                            jsonObject0.put("fieldId", cursor.getString(cursor.getColumnIndex("id")));
+                            jsonObject0.put("name", cursor.getString(cursor.getColumnIndex("name")));
+                            jsonObject0.put("expType", cursor.getString(cursor.getColumnIndex("expType")));
+                            jsonObject0.put("num", cursor.getInt(cursor.getColumnIndex("num")));
+                            jsonObject0.put("farmlandId", cursor.getString(cursor.getColumnIndex("farmlandId")));
+                            jsonObject0.put("rows", cursor.getInt(cursor.getColumnIndex("rows")));
+                            jsonObject0.put("x", cursor.getInt(cursor.getColumnIndex("moveX")));
+                            jsonObject0.put("y", cursor.getInt(cursor.getColumnIndex("moveY")));
+                            jsonObject0.put("type", "greenhouse");
+                            mFieldList.add(jsonObject0);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } while (cursor.moveToNext());
                 }
+                cursor.close();
+
+                db.close();
+                dbHelper.close();
+
+                Message msg = new Message();
+                msg.what = DATA_OK;
+                myHandler.sendMessage(msg);
             }
-        }, 1000); //延迟ms
+        }).start();
+    }
+
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void initView() {
+        if (inShackFirm != null) {
+            Log.d("cheatGZ_main", inShackFirm.getWidth() + "," + inShackFirm.getHeight());
+            FarmPlanView farmPlanView = new FarmPlanView(getContext(), inShackFirm, inShackFirm.getWidth(), inShackFirm.getHeight(), mFieldList);
+            road=farmPlanView.createRoad("greenhouse");
+            textViewList = farmPlanView.createField("greenhouse");
+            for (int i = 0; i < textViewList.size(); i++) {
+                textViewList.get(i).setOnTouchListener(moveTouchListenr);
+                textViewList.get(i).setBackgroundResource(R.drawable.bg_farm);
+            }
+        }
     }
 
     @Override

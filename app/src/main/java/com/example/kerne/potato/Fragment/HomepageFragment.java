@@ -89,6 +89,10 @@ public class HomepageFragment extends Fragment {
     private SQLiteDatabase db;
     private String Fid[] = new String[5000];
 
+
+    private String bigfarmId = "bigfarm1562662936758970";
+    private int year = 2016;
+
     private IntentFilter intentFilter;
     private NetworkChangeReceiver networkChangeReceiver;
     @SuppressLint("HandlerLeak")
@@ -190,6 +194,7 @@ public class HomepageFragment extends Fragment {
                     break;
                 case R.id.plan_firm:
                     Intent intent = new Intent(self, FirmPlanActivity.class);
+                    intent.putExtra("bigfarmId",bigfarmId);
                     self.startActivity(intent);
                     break;
                 case R.id.change_firm_view:

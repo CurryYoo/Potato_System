@@ -105,10 +105,8 @@ public class TableActivity extends AppCompatActivity {
     private String fieldId;
     private String expType;
     private String type;
-    private String bigFarmName;
     private String farmName;
     private String farmlandId;
-    private int year;
     private String description;
     private int column;
     private JSONArray rows = new JSONArray();
@@ -236,9 +234,7 @@ public class TableActivity extends AppCompatActivity {
         fieldId = getIntent().getStringExtra("fieldId");
         expType = getIntent().getStringExtra("expType");
         type = getIntent().getStringExtra("type");
-        bigFarmName = getIntent().getStringExtra("bigFarmName");
         farmName = getIntent().getStringExtra("farmName");
-        year = getIntent().getIntExtra("year", 1970);
         farmlandId = getIntent().getStringExtra("farmlandId");
 
         //延迟加载视图
@@ -560,9 +556,7 @@ public class TableActivity extends AppCompatActivity {
                                     intent.putExtra("speciesId", speciesId);
                                     intent.putExtra("expType", expType);
                                     //备注信息
-                                    intent.putExtra("bigFarmName", bigFarmName);
                                     intent.putExtra("farmName", farmName);
-                                    intent.putExtra("year", year);
                                     if (blockId != null) {
                                         intent.putExtra("blockId", blockId);
                                     } else {

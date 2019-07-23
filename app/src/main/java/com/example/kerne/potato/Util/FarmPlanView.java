@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.Gravity;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,6 +23,7 @@ public class FarmPlanView {
     public static final double SHACK_FARM_COLUMN = 14D;//棚列数
     public static final double ROAD_ROW = 10D;//道路行数
     public static final double SHACK_ROAD_ROW = 13.5D;//棚道路行数
+    public static final int RATIO = 1000000;
     public List<TextView> textViewList;//试验区域块
     public TextView roadTextView;//道路
     private Context mContext;
@@ -41,7 +41,7 @@ public class FarmPlanView {
     }
 
 
-    public void createRoad(String type) {
+    public TextView createRoad(String type) {
         //type==0,棚外
         RelativeLayout.LayoutParams layoutParams;
 
@@ -69,8 +69,10 @@ public class FarmPlanView {
         roadTextView.setBackgroundColor(mContext.getResources().getColor(R.color.ColorDarkGrey));
         roadTextView.setText("田间小路");
         roadTextView.setTextColor(Color.WHITE);
-        roadTextView.setTextSize(10);
+        roadTextView.setTextSize(8);
         roadTextView.setGravity(Gravity.CENTER);
+
+        return roadTextView;
     }
 
     public List<TextView> createField(String type) {
@@ -80,22 +82,22 @@ public class FarmPlanView {
                 case "common":
                     for (int i = 0; i < mJsonList.size(); i++) {
                         TextView textView = new TextView(mContext);
-                        double btn_width = (double) mJsonList.get(i).getInt("num") / mJsonList.get(i).getInt("row");
-                        double btn_height = (double) mJsonList.get(i).getInt("row");
-                        double btn_x = Double.valueOf(mJsonList.get(i).get("x").toString());
-                        double btn_y = Double.valueOf(mJsonList.get(i).get("y").toString());
+                        double btn_row = (double) mJsonList.get(i).getInt("num") / mJsonList.get(i).getInt("rows");
+                        double btn_column = (double) mJsonList.get(i).getInt("rows");
+                        double btn_x = Double.valueOf(mJsonList.get(i).get("x").toString()) / RATIO;
+                        double btn_y = Double.valueOf(mJsonList.get(i).get("y").toString()) / RATIO;
 
                         mRelativeLayout.addView(textView);
                         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) textView.getLayoutParams();
-                        layoutParams.height = (int) ((btn_height / FARM_ROW) * (farmHeight - 20));
-                        layoutParams.width = (int) ((btn_width / FARM_COLUMN) * (farmWidth - 20));
+                        layoutParams.height = (int) (( btn_row/ FARM_ROW) * (farmHeight - 20));
+                        layoutParams.width = (int) ((btn_column/ FARM_COLUMN) * (farmWidth - 20));
 
                         layoutParams.topMargin = (int) (btn_y * farmHeight);
                         layoutParams.leftMargin = (int) (btn_x * farmWidth);
                         Log.d("cheatGZ common field", "" + layoutParams.height + "," + layoutParams.width + "," + layoutParams.topMargin + "," + layoutParams.leftMargin);
                         textView.setLayoutParams(layoutParams);
                         textView.setBackgroundColor(mContext.getResources().getColor(R.color.ColorDarkGrey));
-                        textView.setText("加工鉴定");
+                        textView.setText(mJsonList.get(i).getString("name"));
                         textView.setTextColor(Color.WHITE);
                         textView.setTextSize(10);
                         textView.setGravity(Gravity.CENTER);
@@ -105,22 +107,29 @@ public class FarmPlanView {
                 case "greenhouse":
                     for (int i = 0; i < mJsonList.size(); i++) {
                         TextView textView = new TextView(mContext);
-                        double btn_width = (double) mJsonList.get(i).getInt("num") / mJsonList.get(i).getInt("row");
-                        double btn_height = (double) mJsonList.get(i).getInt("row");
-                        double btn_x = Double.valueOf(mJsonList.get(i).get("x").toString());
-                        double btn_y = Double.valueOf(mJsonList.get(i).get("y").toString());
+                        double btn_row = (double) mJsonList.get(i).getInt("num") / mJsonList.get(i).getInt("rows");
+                        double btn_column= (double) mJsonList.get(i).getInt("rows");
+                        double btn_x = Double.valueOf(mJsonList.get(i).get("x").toString()) / RATIO;
+                        double btn_y = Double.valueOf(mJsonList.get(i).get("y").toString()) / RATIO;
 
                         mRelativeLayout.addView(textView);
                         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) textView.getLayoutParams();
-                        layoutParams.height = (int) ((btn_height / SHACK_FARM_ROW) * (farmHeight - 20));
-                        layoutParams.width = (int) ((btn_width / SHACK_FARM_COLUMN) * (farmWidth - 20));
+                        layoutParams.width = (int) ((btn_column / SHACK_FARM_COLUMN) * (farmWidth - 20));
+                        layoutParams.height = (int) ((btn_row / SHACK_FARM_ROW) * (farmHeight - 20));
 
                         layoutParams.topMargin = (int) (btn_y * farmHeight);
                         layoutParams.leftMargin = (int) (btn_x * farmWidth);
-                        Log.d("cheatGZ gh field", "" + layoutParams.height + "," + layoutParams.width + "," + layoutParams.topMargin + "," + layoutParams.leftMargin);
+                        Log.d("cheatGZ gh field", "Jnum " + mJsonList.get(i).getInt("num")
+                                + ",Jrows " + mJsonList.get(i).getInt("rows")
+                                +",column "+btn_column
+                                +",row "+btn_row
+                                + ",height " + layoutParams.height
+                                + ",wight " + layoutParams.width
+                                + ",top " + layoutParams.topMargin
+                                + ",left " + layoutParams.leftMargin);
                         textView.setLayoutParams(layoutParams);
                         textView.setBackgroundColor(mContext.getResources().getColor(R.color.ColorDarkGrey));
-                        textView.setText("加工鉴定");
+                        textView.setText(mJsonList.get(i).getString("expType"));
                         textView.setTextColor(Color.WHITE);
                         textView.setTextSize(10);
                         textView.setGravity(Gravity.CENTER);

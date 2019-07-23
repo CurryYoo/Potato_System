@@ -39,13 +39,11 @@ public class OutShackFragment extends Fragment {
     Unbinder unbinder;
     @BindView(R.id.out_image)
     ImageView outImage;
-    @BindView(R.id.out_text)
-    TextView outText;
     @BindView(R.id.cover_view)
     View coverView;
     private View view;
     private Context self;
-    private Boolean flag=false;//开始时处于不可编辑状态
+    private Boolean flag = false;//开始时处于不可编辑状态
     private View.OnTouchListener moveTouchListenr = new View.OnTouchListener() {
         int lastX, lastY;
 
@@ -55,8 +53,8 @@ public class OutShackFragment extends Fragment {
             int ea = event.getAction();
             switch (ea) {
                 case MotionEvent.ACTION_DOWN:
-                    v.setElevation(5);
-                    v.setBackgroundResource(R.drawable.bg_item_bar_basic_info);
+                    v.setBackgroundResource(R.drawable.bg_farm_p);
+                    v.setElevation(10);
                     lastX = (int) event.getRawX();//获取触摸事件触摸位置的原始X坐标
                     lastY = (int) event.getRawY();
                 case MotionEvent.ACTION_MOVE:
@@ -92,8 +90,8 @@ public class OutShackFragment extends Fragment {
                     v.postInvalidate();
                     break;
                 case MotionEvent.ACTION_UP:
+                    v.setBackgroundResource(R.drawable.bg_farm);
                     v.setElevation(0);
-                    v.setBackgroundResource(R.drawable.bg_homepage_firm);
                     int m = 0, n = 0, main_width = 0, main_height;
                     m = v.getLeft();
                     n = v.getTop();
@@ -111,18 +109,17 @@ public class OutShackFragment extends Fragment {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.save_plan:
-                    if(!flag){
+                    if (!flag) {
                         coverView.setVisibility(View.GONE);
                         outImage.setBackgroundResource(R.drawable.ic_menu_save);
-                        outText.setText(getString(R.string.save));
-                        flag=true;
-                    }
-                    else {
+                        road.setText("编辑模式");
+                        flag = true;
+                    } else {
                         coverView.setVisibility(View.VISIBLE);
                         outImage.setBackgroundResource(R.drawable.ic_menu_plan);
-                        outText.setText(getString(R.string.edit));
-                        flag=false;
-                        showShortToast(self,"保存完成");
+                        road.setText("田间小路");
+                        flag = false;
+                        showShortToast(self, "保存完成");
                         //TODO 保存
                     }
                     break;
@@ -132,6 +129,7 @@ public class OutShackFragment extends Fragment {
         }
     };
     private List<JSONObject> mJsonList = null;
+    private TextView road;
     private List<TextView> textViewList;
 
     public static OutShackFragment newInstance() {
@@ -157,10 +155,11 @@ public class OutShackFragment extends Fragment {
         try {
             for (int i = 0; i < 3; i++) {
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("num", 100 * (i + 4));
-                jsonObject.put("row", 100);
-                jsonObject.put("x", 0.2);
-                jsonObject.put("y", 0.3);
+                jsonObject.put("num", 500);
+                jsonObject.put("rows", 10);
+                jsonObject.put("x", 500000);
+                jsonObject.put("y", 500000);
+                jsonObject.put("name", "加工鉴定");
                 mJsonList.add(jsonObject);
             }
         } catch (JSONException e) {
@@ -172,14 +171,13 @@ public class OutShackFragment extends Fragment {
             @Override
             public void run() {
                 if (outShackFirm != null) {
-
                     Log.d("cheatGZ_main", outShackFirm.getWidth() + "," + outShackFirm.getHeight());
                     FarmPlanView farmPlanView = new FarmPlanView(getContext(), outShackFirm, outShackFirm.getWidth(), outShackFirm.getHeight(), mJsonList);
-                    farmPlanView.createRoad("common");
+                    road=farmPlanView.createRoad("common");
                     textViewList = farmPlanView.createField("common");
                     for (int i = 0; i < textViewList.size(); i++) {
                         textViewList.get(i).setOnTouchListener(moveTouchListenr);
-                        textViewList.get(i).setBackgroundResource(R.drawable.bg_homepage_firm);
+                        textViewList.get(i).setBackgroundResource(R.drawable.bg_farm);
                     }
                 }
             }
