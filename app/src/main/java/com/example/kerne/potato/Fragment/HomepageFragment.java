@@ -14,14 +14,17 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -29,6 +32,7 @@ import com.example.kerne.potato.FirmPlanActivity;
 import com.example.kerne.potato.LoginActivity;
 import com.example.kerne.potato.MainActivity;
 import com.example.kerne.potato.R;
+import com.example.kerne.potato.Util.FarmPlanView;
 import com.example.kerne.potato.Util.HttpRequest;
 import com.example.kerne.potato.Util.UserRole;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
@@ -45,6 +49,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import q.rorbin.badgeview.Badge;
@@ -58,7 +64,8 @@ public class HomepageFragment extends Fragment {
     private static final int FARMLIST_OK = 1;
     private static final int EXPERIMENTFIELD_OK = 2;
     private static final int SPECIESLIST_OK = 3;
-    private static final int Banner_info_OK = 5;
+    private static final int DATA_OK = 5;
+    private static final int FIELD_DATA_OK = 6;
     private static int downloadSuccess_Num = 0;
     private static int request_Num = 4;
     private static int uploadSuccess_Num = 0;
@@ -74,24 +81,33 @@ public class HomepageFragment extends Fragment {
     SharedPreferences.Editor editor;
     //用户角色字段
     String userRole = "farmer";
+    private LinearLayout farmButton;
     private View view;
     private Context self;
     private LinearLayout btnDownload;
     private ImageView uploadIcon;
     private LinearLayout btnUpload;
     private Spinner homepageYears;
-    private LinearLayout planFirm;
-    private LinearLayout changeFirmView;
+    private LinearLayout planFarm;
+    private LinearLayout changeFarmView;
+    private RelativeLayout homepageFarm;
     private TextView farmType;
-    private int farm_flag = 0;//标识当前的firm视图
+    private int farm_flag = 0;//标识当前的firm视图 0,棚外  1,棚内
     private SpeciesDBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
     private SQLiteDatabase db;
     private String Fid[] = new String[5000];
+    private List<JSONObject> mBigFarmList = new ArrayList<>();
+    private List<JSONObject> mOutShackList = new ArrayList<>();
+    private List<JSONObject> mInShackList = new ArrayList<>();
+    private List<TextView> mOutList = new ArrayList<>();
+    private List<TextView> mInList = new ArrayList<>();
+    private List<String> mYears = new ArrayList<>();
 
 
-    private String bigfarmId = "bigfarm1562662936758970";
-    private int year = 2016;
+//    private String bigfarmId = "bigfarm1562662936758970";
+
+    private String bigfarmId;
 
     private IntentFilter intentFilter;
     private NetworkChangeReceiver networkChangeReceiver;
@@ -114,6 +130,32 @@ public class HomepageFragment extends Fragment {
                     break;
                 case SPECIESLIST_OK:
                     downloadSuccess_Num++;
+                    break;
+                case DATA_OK:
+                    try {
+                        bigfarmId = mBigFarmList.get(0).getString("bigfarmId");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    //spinner加载
+                    try {
+                        for (int i = 0; i < mBigFarmList.size(); i++) {
+                            mYears.add(mBigFarmList.get(i).getString("year"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.spinner_textview, mYears);
+                    homepageYears.setAdapter(adapter);
+
+                    MainActivity mainActivity = new MainActivity();
+                    try {
+                        mainActivity.selectFarm(mBigFarmList.get(0).getString("bigfarmId"));
+                        mainActivity.updateData(true);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    initView(farm_flag);
                     break;
                 default:
                     break;
@@ -178,7 +220,7 @@ public class HomepageFragment extends Fragment {
                     //将暂存的数据从数据库取出并提交到远程服务器
                     userRole = UserRole.getUserRole();
                     if (!userRole.equals("farmer")) {
-                        if (badge!=null){
+                        if (badge != null) {
                             badge.hide(false);
                         }
                         uploadPlanData();
@@ -192,23 +234,44 @@ public class HomepageFragment extends Fragment {
                     editor.putBoolean("upload_data", false);
                     editor.apply();
                     break;
-                case R.id.plan_firm:
+                case R.id.plan_farm:
                     Intent intent = new Intent(self, FirmPlanActivity.class);
-                    intent.putExtra("bigfarmId",bigfarmId);
+                    intent.putExtra("bigfarmId", bigfarmId);
                     self.startActivity(intent);
                     break;
-                case R.id.change_firm_view:
+                case R.id.change_farm_view:
                     if (farm_flag == 0) {
                         farmType.setText(self.getString(R.string.shack_farm));
                         farm_flag = 1;
+                        initView(farm_flag);
                     } else if (farm_flag == 1) {
                         farmType.setText(self.getString(R.string.farm));
                         farm_flag = 0;
+                        initView(farm_flag);
                     }
                     break;
                 default:
                     break;
             }
+        }
+    };
+    private AdapterView.OnItemSelectedListener onItemSelectedListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            try {
+                bigfarmId = mBigFarmList.get(position).getString("bigfarmId");
+                initView(farm_flag);
+                MainActivity mainActivity = new MainActivity();
+                mainActivity.selectFarm(bigfarmId);
+                mainActivity.updateData(true);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
         }
     };
 
@@ -221,11 +284,11 @@ public class HomepageFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_homepage, container, false);
         self = getContext();
         Stetho.initializeWithDefaults(self);
-        initView();
+        init();
         return view;
     }
 
-    private void initView() {
+    private void init() {
         sp = self.getSharedPreferences("update_flag", Context.MODE_PRIVATE);
         editor = sp.edit();
 
@@ -233,22 +296,144 @@ public class HomepageFragment extends Fragment {
         btnUpload = view.findViewById(R.id.btn_upload);
         uploadIcon = view.findViewById(R.id.upload_icon);
         homepageYears = view.findViewById(R.id.homepage_years);
-        planFirm = view.findViewById(R.id.plan_firm);
-        changeFirmView = view.findViewById(R.id.change_firm_view);
+        planFarm = view.findViewById(R.id.plan_farm);
+        changeFarmView = view.findViewById(R.id.change_farm_view);
         farmType = view.findViewById(R.id.firm_type);
+        farmButton = view.findViewById(R.id.farm_button);
+        homepageFarm = view.findViewById(R.id.homepage_farm);
+
+        farmButton.getBackground().setAlpha(100);
+        planFarm.getBackground().setAlpha(20);
+        changeFarmView.getBackground().setAlpha(20);
 
         homepageYears.setPopupBackgroundResource(R.drawable.bg_spinner_drop_down2);
 
         btnDownload.setOnClickListener(onClickListener);
         btnUpload.setOnClickListener(onClickListener);
-        planFirm.setOnClickListener(onClickListener);
-        changeFirmView.setOnClickListener(onClickListener);
+        planFarm.setOnClickListener(onClickListener);
+        changeFarmView.setOnClickListener(onClickListener);
+        homepageYears.setOnItemSelectedListener(onItemSelectedListener);
+        initData();
 
 
         intentFilter = new IntentFilter();
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         networkChangeReceiver = new NetworkChangeReceiver();
         self.registerReceiver(networkChangeReceiver, intentFilter);
+    }
+
+    private void initView(int flag) {
+        initFieldData();
+        switch (flag) {
+            case 0:
+                //加载棚外
+                homepageFarm.removeAllViews();
+                mOutShackList = new ArrayList<>();
+                try {
+                    for (int i = 0; i < 3; i++) {
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObject.put("num", 500);
+                        jsonObject.put("rows", 10);
+                        jsonObject.put("x", 500000);
+                        jsonObject.put("y", 500000);
+                        jsonObject.put("name", "加工鉴定");
+                        mOutShackList.add(jsonObject);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                if (homepageFarm != null) {
+                    FarmPlanView farmPlanView = new FarmPlanView(getContext(), homepageFarm, homepageFarm.getWidth(), homepageFarm.getHeight(), mOutShackList);
+                    farmPlanView.createRoad("common");
+                    mOutList = farmPlanView.createField("common");
+                    for (int i = 0; i < mOutShackList.size(); i++) {
+//                            mOutList.get(i).setTag(mOutShackList.get(i));
+                        mOutList.get(i).setBackgroundResource(R.drawable.bg_farm);
+                    }
+                }
+
+                break;
+            case 1:
+                //加载棚内
+                homepageFarm.removeAllViews();
+                if (homepageFarm != null) {
+                    FarmPlanView farmPlanView = new FarmPlanView(getContext(), homepageFarm, homepageFarm.getWidth(), homepageFarm.getHeight(), mInShackList);
+                    farmPlanView.createRoad("greenhouse");
+                    mInList = farmPlanView.createField("greenhouse");
+                    for (int i = 0; i < mInList.size(); i++) {
+                        mInList.get(i).setBackgroundResource(R.drawable.bg_farm);
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    private void initFieldData() {
+
+        //获取棚外数据
+        //TODO
+        //获取大棚区域
+        Cursor cursor2 = db.query("ExperimentField", null, "farmlandId=?", new String[]{bigfarmId}, null, null, null);
+        if (cursor2.moveToFirst()) {
+            do {
+                JSONObject jsonObject0 = new JSONObject();
+                try {
+                    jsonObject0.put("fieldId", cursor2.getString(cursor2.getColumnIndex("id")));
+                    jsonObject0.put("name", cursor2.getString(cursor2.getColumnIndex("name")));
+                    jsonObject0.put("expType", cursor2.getString(cursor2.getColumnIndex("expType")));
+                    jsonObject0.put("num", cursor2.getInt(cursor2.getColumnIndex("num")));
+                    jsonObject0.put("farmlandId", cursor2.getString(cursor2.getColumnIndex("farmlandId")));
+                    jsonObject0.put("rows", cursor2.getInt(cursor2.getColumnIndex("rows")));
+                    jsonObject0.put("x", cursor2.getInt(cursor2.getColumnIndex("moveX")));
+                    jsonObject0.put("y", cursor2.getInt(cursor2.getColumnIndex("moveY")));
+                    jsonObject0.put("type", "greenhouse");
+                    mInShackList.add(jsonObject0);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } while (cursor2.moveToNext());
+        }
+        cursor2.close();
+    }
+
+    private void initData() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Looper.prepare();
+                //获取数据库中数据
+                SpeciesDBHelper dbHelper = new SpeciesDBHelper(getContext(), "SpeciesTable.db", null, 10);
+                SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+                Cursor cursor = db.query("BigfarmList", null, null, null, null, null, null);
+                if (cursor.moveToFirst()) {
+                    do {
+                        JSONObject jsonObject0 = new JSONObject();
+                        try {
+                            jsonObject0.put("bigfarmId", cursor.getString(cursor.getColumnIndex("bigfarmId")));
+                            jsonObject0.put("name", cursor.getString(cursor.getColumnIndex("name")));
+                            jsonObject0.put("description", cursor.getString(cursor.getColumnIndex("description")));
+                            jsonObject0.put("img", cursor.getString(cursor.getColumnIndex("img")));
+                            jsonObject0.put("year", cursor.getInt(cursor.getColumnIndex("year")));
+                            jsonObject0.put("uri", cursor.getString(cursor.getColumnIndex("uri")));
+                            mBigFarmList.add(jsonObject0);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } while (cursor.moveToNext());
+                }
+                cursor.close();
+
+                Message msg = new Message();
+                msg.what = DATA_OK;
+                myHandler.sendMessage(msg);
+                Looper.loop();
+            }
+        }).start();
     }
 
     private void downloadData() {
@@ -286,11 +471,9 @@ public class HomepageFragment extends Fragment {
                                 }
 
                                 Uri uri = getImageURI(HttpRequest.serverUrl + jsonObject0.getString("img"), cache);
-                                Log.d("getImageURI", uri.toString());
                                 contentValues.put("uri", uri.toString());
 
                                 db.insert("BigfarmList", null, contentValues);
-                                Log.d("db end--", "BigfarmList");
                                 contentValues.clear();
                             }
 
@@ -339,7 +522,6 @@ public class HomepageFragment extends Fragment {
                                 contentValues.put("bigfarmId", jsonObject0.getString("bigfarmId"));
 
                                 db.insert("FarmList", null, contentValues);
-                                Log.d("db end--", "FarmList");
                                 contentValues.clear();
                             }
 
@@ -408,14 +590,11 @@ public class HomepageFragment extends Fragment {
                                 contentValues.put("description", jsonObject0.getString("description"));
                                 contentValues.put("speciesList", jsonObject0.getString("speciesList"));
 
-                                Log.d("db begin", "ExperimentField");
                                 db.insert("ExperimentField", null, contentValues);
-                                Log.d("db end--", "ExperimentField");
 //                                    contentValues.clear();
                             }
 
                         } catch (Exception e) {
-//                            Log.e("HttpRequest_map", "");
                             e.printStackTrace();
                         }
 
@@ -458,13 +637,10 @@ public class HomepageFragment extends Fragment {
                                     }
                                 }
 
-//                                        Log.d("db begin", "SpeciesList");
                                 db.insert("SpeciesList", null, contentValues);
-//                                        Log.d("db end--", "SpeciesList");
 //                                        updateSqlite("SpeciesList", "blockId", contentValues); //缓存数据到本地sqlite
                                 contentValues.clear();
                             }
-                            //Log.d("GeneralJsonList", mList.toString());
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -496,9 +672,7 @@ public class HomepageFragment extends Fragment {
                                 contentValues.put("speciesid", jsonObject0.getString("speciesId"));
                                 contentValues.put("name", jsonObject0.getString("name"));
 
-                                Log.d("db begin", "LocalSpecies");
                                 db.insert("LocalSpecies", null, contentValues);
-                                Log.d("db end--", "LocalSpecies");
 
                                 contentValues.clear();
                             }
@@ -534,7 +708,6 @@ public class HomepageFragment extends Fragment {
                     .build();
             Response response = okHttpClient.newCall(request).execute();
 
-            Log.d("response.code", response.code() + "");
             if (response.code() == 200) {
 
 //                InputStream is = conn.getInputStream();
@@ -577,7 +750,6 @@ public class HomepageFragment extends Fragment {
                 }
                 jsonArray.put(jsonObject0);
 
-                Log.d("json_SpeciesList", jsonObject0.toString());
 
             } while (cursor0.moveToNext());
             HttpRequest.HttpRequest_SpeciesList(jsonArray, self, new HttpRequest.HttpCallback() {
@@ -603,6 +775,7 @@ public class HomepageFragment extends Fragment {
         }
         cursor0.close();
     }
+
 
     private void uploadSurveyData() {
         String sql = "select SpeciesTable.*, LocalSpecies.* from SpeciesTable, LocalSpecies " +
@@ -804,8 +977,6 @@ public class HomepageFragment extends Fragment {
                     jsonObject.put("commontest", jsonObject_common);
                     jsonObject.put("localSpecies", jsonObject_local);
 
-                    Log.d("testJson", jsonObject.toString());
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -816,42 +987,36 @@ public class HomepageFragment extends Fragment {
                         HttpRequest.HttpRequest_SpeciesData(jsonObject, self, new HttpRequest.HttpCallback() {
                             @Override
                             public void onSuccess(JSONObject result) {
-                                Log.d("response_update", result.toString());
                             }
                         });
                         if (img1 != null)
                             HttpRequest.doUploadTest(img1, speciesId, "1", self, new HttpRequest.HttpCallback_Str() {
                                 @Override
                                 public void onSuccess(String result) {
-                                    Log.d("response_pic1", result);
                                 }
                             });
                         if (img2 != null)
                             HttpRequest.doUploadTest(img2, speciesId, "2", self, new HttpRequest.HttpCallback_Str() {
                                 @Override
                                 public void onSuccess(String result) {
-                                    Log.d("response_pic2", result);
                                 }
                             });
                         if (img3 != null)
                             HttpRequest.doUploadTest(img3, speciesId, "3", self, new HttpRequest.HttpCallback_Str() {
                                 @Override
                                 public void onSuccess(String result) {
-                                    Log.d("response_pic3", result);
                                 }
                             });
                         if (img4 != null)
                             HttpRequest.doUploadTest(img4, speciesId, "4", self, new HttpRequest.HttpCallback_Str() {
                                 @Override
                                 public void onSuccess(String result) {
-                                    Log.d("response_pic4", result);
                                 }
                             });
                         if (img5 != null)
                             HttpRequest.doUploadTest(img5, speciesId, "5", self, new HttpRequest.HttpCallback_Str() {
                                 @Override
                                 public void onSuccess(String result) {
-                                    Log.d("response_pic5", result);
                                 }
                             });
                         //sqLiteDatabase.delete("SpeciesTable", null, null);
@@ -888,6 +1053,9 @@ public class HomepageFragment extends Fragment {
             } else {
                 badge.setBadgeText("");
             }
+            if (bigfarmId != null) {
+                initView(farm_flag);
+            }
         }
     }
 
@@ -897,7 +1065,6 @@ public class HomepageFragment extends Fragment {
             case 1:
                 if (resultCode == RESULT_OK) {
 //                    userRole = data.getStringExtra("userRole");
-//                    Log.d("userRole", userRole);
                 }
                 break;
             default:
@@ -922,6 +1089,10 @@ public class HomepageFragment extends Fragment {
     //与firmsurveyfragment进行通信，通知下载了数据
     public interface updateData {
         void updateData(Boolean update_flag);
+    }
+
+    public interface selectFarm {
+        void selectFarm(String bigFarmId);
     }
 
     class NetworkChangeReceiver extends BroadcastReceiver {

@@ -2,6 +2,7 @@ package com.example.kerne.potato.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -51,6 +52,9 @@ public class InShackFragment extends Fragment {
     private View view;
     private Context self;
     private Boolean flag = false;//开始时处于不可编辑状态
+
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
     private String bigfarmId;
     private List<JSONObject> mFieldList = new ArrayList<>();
     private View.OnTouchListener moveTouchListenr = new View.OnTouchListener() {
@@ -69,7 +73,6 @@ public class InShackFragment extends Fragment {
                     int x = 0, y = 0;
                     x = v.getLeft();
                     y = v.getTop();
-                    Log.d(TAG + "初始位置", x + "," + y);
                 case MotionEvent.ACTION_MOVE:
                     //event.getRawX();获得移动的位置
                     int dx = (int) event.getRawX() - lastX;
@@ -97,7 +100,6 @@ public class InShackFragment extends Fragment {
                         t = b - v.getHeight();
                     }
                     v.layout(l, t, r, b);
-                    Log.d(TAG, "onTouch: " + l + "==" + t + "==" + r + "==" + b);
                     lastX = (int) event.getRawX();
                     lastY = (int) event.getRawY();
                     v.postInvalidate();
@@ -125,13 +127,20 @@ public class InShackFragment extends Fragment {
                     if (!flag) {
                         coverView.setVisibility(View.GONE);
                         inImage.setBackgroundResource(R.drawable.ic_menu_no_save);
-                        road.setText("编辑模式");
+                        savePlan.getBackground().setAlpha(50);
+                        if(road!=null){
+                        road.setText("编辑模式");}
                         flag = true;
                     } else {
                         coverView.setVisibility(View.VISIBLE);
-                        inImage.setBackgroundResource(R.drawable.in_plan);
-                        road.setText("田间小路");
+                        inImage.setBackgroundResource(R.drawable.ic_menu_plan);
+                        savePlan.setBackgroundResource(R.drawable.selector_10_button);
+                        if(road!=null) {
+                            road.setText("田间小路");
+                        }
                         flag = false;
+                        editor.putBoolean("upload_data", true);
+                        editor.apply();
                         showShortToast(self, "保存完成");
                         //TODO 保存
                     }
@@ -167,8 +176,10 @@ public class InShackFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_in_shack, container, false);
         self = getContext();
+        sp = self.getSharedPreferences("update_flag", Context.MODE_PRIVATE);
+        editor = sp.edit();
         unbinder = ButterKnife.bind(this, view);
-        inImage.setBackgroundResource(R.drawable.in_plan);
+        inImage.setBackgroundResource(R.drawable.ic_menu_plan);
 
         coverView.setOnClickListener(null);
         savePlan.setOnClickListener(onClickListener);
@@ -225,7 +236,6 @@ public class InShackFragment extends Fragment {
     @SuppressLint("ClickableViewAccessibility")
     private void initView() {
         if (inShackFirm != null) {
-            Log.d("cheatGZ_main", inShackFirm.getWidth() + "," + inShackFirm.getHeight());
             FarmPlanView farmPlanView = new FarmPlanView(getContext(), inShackFirm, inShackFirm.getWidth(), inShackFirm.getHeight(), mFieldList);
             road=farmPlanView.createRoad("greenhouse");
             textViewList = farmPlanView.createField("greenhouse");

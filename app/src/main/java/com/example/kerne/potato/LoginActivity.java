@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -35,29 +34,16 @@ import static com.example.kerne.potato.Util.ShowKeyBoard.delayShowSoftKeyBoard;
 
 public class LoginActivity extends AppCompatActivity {
 
+    public String result;
     @BindView(R.id.left_one_button)
     ImageView leftOneButton;
     @BindView(R.id.left_one_layout)
     LinearLayout leftOneLayout;
     @BindView(R.id.title_text)
     TextView titleText;
-    private SharedPreferences pref;
-
-    private SharedPreferences.Editor editor;
-
-    private EditText accountEdit;
-
-    private EditText passwordEdit;
-
-    private Button login;
-
-    private CheckBox rememberPass;
-
     String account_input;
     String password_input;
     String userRole;
-
-    public String result;
     View.OnClickListener toolBarOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -70,10 +56,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     };
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
+    private EditText accountEdit;
+    private EditText passwordEdit;
+    private Button login;
+    private CheckBox rememberPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("LoginActivity", "hello");
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
@@ -94,7 +85,6 @@ public class LoginActivity extends AppCompatActivity {
             accountEdit.setText(pref.getString("account", ""));
             passwordEdit.setText(pref.getString("password", ""));
             rememberPass.setChecked(true);
-            Log.d("Login_isremember", isRemember ? "true" : "false");
         }
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +95,6 @@ public class LoginActivity extends AppCompatActivity {
                 //登录到后台进行验证，若验证通过则获取用户角色
                 login(account_input, password_input);
 //                JSONObject jsonObject = HttpRequest.HttpLogin(LoginActivity.this, account_input, password_input);
-                Log.d("Login1", "after okHttp is invoked");
 
 //                String account_remote = "admin";
 //                String password_remote = "admin";
@@ -113,7 +102,6 @@ public class LoginActivity extends AppCompatActivity {
 //                String userRole = "farmer";
 //                String userRole = "admin";
 //                String userRole = "experimenter";
-//                Log.d("LoginActivity", String.valueOf(isAuthorizedUser));
                 //记住密码
 //                if (isAuthorizedUser) {
 //                    editor = pref.edit();
@@ -162,7 +150,6 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     Response response = client.newCall(request).execute();
                     result = response.body().string();           //获得值
-                    Log.d("Login2", result.toString());
                     Looper.prepare();
                     JX(result);    //解析
                     Looper.loop();
@@ -180,23 +167,17 @@ public class LoginActivity extends AppCompatActivity {
         try {
             JSONObject jsonObject = new JSONObject(body);
             if (jsonObject.getBoolean("success")) {
-                Log.d("Login3", body.toString());
                 userRole = jsonObject.getJSONObject("data").getString("role");
-                Log.d("Login_userRole", userRole);
 
                 editor = pref.edit();
                 if (rememberPass.isChecked()) { // 检查复选框是否被选中
                     editor.putBoolean("remember_password", true);
                     editor.putString("account", account_input);
                     editor.putString("password", password_input);
-                    Log.d("Login_pref_editor", "checked");
                 } else {
                     editor.clear();
-                    Log.d("Login_pref_editor", "not checked");
                 }
                 editor.apply();
-                Log.d("Login_pre_test", pref.getString("account", ""));
-                Log.d("Login_pre_test", pref.getString("account", ""));
                 Intent intent = new Intent();
                 UserRole.setUserRole(userRole);
 //                intent.putExtra("userRole", userRole);
@@ -205,7 +186,6 @@ public class LoginActivity extends AppCompatActivity {
                 showShortToast(LoginActivity.this, getString(R.string.log_in_success));
 
             } else {
-                Log.d("Login4", body.toString());
                 //Looper解决闪退bug
                 Looper.prepare();
                 showShortToast(LoginActivity.this, getString(R.string.account_password_error));

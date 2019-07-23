@@ -17,7 +17,7 @@ import com.viewpagerindicator.TabPageIndicator;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements HomepageFragment.updateData {
+public class MainActivity extends AppCompatActivity implements HomepageFragment.updateData, HomepageFragment.selectFarm {
 
     public static Fragment homepageFragment;
     public static Fragment firmSurveyFragment;
@@ -83,6 +83,11 @@ public class MainActivity extends AppCompatActivity implements HomepageFragment.
     @Override
     public void updateData(Boolean update_flag) {
         ((FirmSurveyFragment) firmSurveyFragment).setUpdate_flag(update_flag);
+    }
+
+    @Override
+    public void selectFarm(String bigFarmId) {
+        ((FirmSurveyFragment) firmSurveyFragment).selectFarm(bigFarmId);
     }
 
     //adapter

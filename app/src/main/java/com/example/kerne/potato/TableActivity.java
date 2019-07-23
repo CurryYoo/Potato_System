@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,7 +49,6 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import static com.example.kerne.potato.Util.CustomToast.showShortToast;
 import static com.example.kerne.potato.Util.ShowKeyBoard.delayShowSoftKeyBoard;
-import static java.lang.Integer.getInteger;
 
 public class TableActivity extends AppCompatActivity {
 
@@ -72,8 +70,6 @@ public class TableActivity extends AppCompatActivity {
     ImageView rightOneButton;
     @BindView(R.id.right_one_layout)
     LinearLayout rightOneLayout;
-    SharedPreferences sp;
-    SharedPreferences.Editor editor;
     @BindView(R.id.table_description)
     EditText tableDescription;
     @BindView(R.id.plan_column)
@@ -82,6 +78,9 @@ public class TableActivity extends AppCompatActivity {
     EditText planRow;
     @BindView(R.id.description_layout)
     LinearLayout descriptionLayout;
+
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
     /**
      * 用于存放标题的id,与textview引用
      */
@@ -150,7 +149,7 @@ public class TableActivity extends AppCompatActivity {
                         planColumn.setEnabled(false);
                         planRow.setEnabled(false);
                         descriptionLayout.setClickable(false);
-                        if (planColumn.getText() != null && planRow.getText() != null) {
+                        if (!planColumn.getText().toString().equals("") && !planRow.getText().toString().equals("")) {
                             if (Integer.parseInt(planColumn.getText().toString()) < 0 || Integer.parseInt(planRow.getText().toString()) < 0) {
                                 showShortToast(getBaseContext(), getString(R.string.toast_input_error));
                             } else {
@@ -167,7 +166,6 @@ public class TableActivity extends AppCompatActivity {
 //                db.delete("SpeciesList", "fieldId=?", new String[]{fieldId});
                         try {
                             //更新备注description
-                            Log.d("fieldArray", fieldArray.toString());
                             description = tableDescription.getText().toString();
                             for (int k = 0; k < fieldArray.length(); k++) {
                                 ContentValues contentValues = new ContentValues();
@@ -194,7 +192,6 @@ public class TableActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-                        Log.d("str_content", contentValuesList.get(0).getAsString("ContentofColumn") + "");
                         status = STATUS_READ;
                         showShortToast(TableActivity.this, mContext.getString(R.string.exit_species_plan_mode));
                         editor.putBoolean("upload_data", true);
@@ -251,7 +248,8 @@ public class TableActivity extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
-    private void initTable(){
+
+    private void initTable() {
         if (type.equals("common")) {
             try {
                 Cursor cursor = db.query("ExperimentField", null, "farmlandId=? and expType=?",
@@ -277,7 +275,6 @@ public class TableActivity extends AppCompatActivity {
             column = getIntent().getIntExtra("rows", 2);
             maxRows = getIntent().getIntExtra("num", 0) / column;
             maxColumns = getIntent().getIntExtra("rows", 0);
-            Log.d("num,rows", maxRows + "," + maxColumns);
             str = new String[maxRows][maxColumns];
 
             try {
@@ -321,11 +318,9 @@ public class TableActivity extends AppCompatActivity {
             fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
             do {
                 if (!fieldId.equals(cursor0.getString(cursor0.getColumnIndex("id")))) {
-                    Log.d("columns,fieldId,id", columns + "," + fieldId + "," + cursor0.getString(cursor0.getColumnIndex("id")));
                     columns++;
                     fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
                 }
-                Log.d("x,y", x + "," + y + "," + columns + "," + column);
                 x = cursor0.getInt(cursor0.getColumnIndex("x")) + columns * column - 1; //从0开始
                 y = cursor0.getInt(cursor0.getColumnIndex("y")) - 1; //从0开始
 
@@ -359,7 +354,6 @@ public class TableActivity extends AppCompatActivity {
 
     //组装数据
     private List<ContentValues> assembleData(String[][] str) {
-        Log.d("str_save", str[0][0] + "");
         List<ContentValues> contentValuesList = new ArrayList<>();
         try {
             for (int i = 0; i < fieldArray.length() * column; i++) {
@@ -371,9 +365,7 @@ public class TableActivity extends AppCompatActivity {
 
                     contentValues.put("x", i % column + 1);
                     contentValues.put("y", j + 1);
-                    Log.d("contentValues", contentValues.toString());
                     contentValuesList.add(contentValues);
-                    Log.d("contentvaluesList0", contentValuesList.toString());
                 }
             }
         } catch (JSONException e) {

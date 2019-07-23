@@ -2,7 +2,6 @@ package com.example.kerne.potato.Util;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,10 +18,10 @@ public class FarmPlanView {
 
     public static final double FARM_ROW = 410D;//棚外试验田行，包括中间道路的行数
     public static final double FARM_COLUMN = 40D;//棚外试验田列数
-    public static final double SHACK_FARM_ROW = 580D;//棚行数，包括中间道路的行数
+    public static final double SHACK_FARM_ROW = 554D;//棚行数，包括中间道路的行数
     public static final double SHACK_FARM_COLUMN = 14D;//棚列数
     public static final double ROAD_ROW = 10D;//道路行数
-    public static final double SHACK_ROAD_ROW = 13.5D;//棚道路行数
+    public static final double SHACK_ROAD_ROW = 14D;//棚道路行数
     public static final int RATIO = 1000000;
     public List<TextView> textViewList;//试验区域块
     public TextView roadTextView;//道路
@@ -60,7 +59,6 @@ public class FarmPlanView {
                 layoutParams.width = farmWidth;
                 layoutParams.leftMargin = 0;
                 layoutParams.topMargin = (int) ((((SHACK_FARM_ROW - SHACK_ROAD_ROW) / 2) / SHACK_FARM_ROW) * farmHeight);
-                Log.d("cheatGZ road greenhouse", "" + layoutParams.height + "," + layoutParams.width + "," + layoutParams.topMargin + "," + layoutParams.leftMargin);
                 break;
             default:
                 break;
@@ -89,12 +87,11 @@ public class FarmPlanView {
 
                         mRelativeLayout.addView(textView);
                         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) textView.getLayoutParams();
-                        layoutParams.height = (int) (( btn_row/ FARM_ROW) * (farmHeight - 20));
-                        layoutParams.width = (int) ((btn_column/ FARM_COLUMN) * (farmWidth - 20));
+                        layoutParams.height = (int) ((btn_row / FARM_ROW) * (farmHeight - 20));
+                        layoutParams.width = (int) ((btn_column / FARM_COLUMN) * (farmWidth - 20));
 
                         layoutParams.topMargin = (int) (btn_y * farmHeight);
                         layoutParams.leftMargin = (int) (btn_x * farmWidth);
-                        Log.d("cheatGZ common field", "" + layoutParams.height + "," + layoutParams.width + "," + layoutParams.topMargin + "," + layoutParams.leftMargin);
                         textView.setLayoutParams(layoutParams);
                         textView.setBackgroundColor(mContext.getResources().getColor(R.color.ColorDarkGrey));
                         textView.setText(mJsonList.get(i).getString("name"));
@@ -108,7 +105,7 @@ public class FarmPlanView {
                     for (int i = 0; i < mJsonList.size(); i++) {
                         TextView textView = new TextView(mContext);
                         double btn_row = (double) mJsonList.get(i).getInt("num") / mJsonList.get(i).getInt("rows");
-                        double btn_column= (double) mJsonList.get(i).getInt("rows");
+                        double btn_column = (double) mJsonList.get(i).getInt("rows");
                         double btn_x = Double.valueOf(mJsonList.get(i).get("x").toString()) / RATIO;
                         double btn_y = Double.valueOf(mJsonList.get(i).get("y").toString()) / RATIO;
 
@@ -119,14 +116,6 @@ public class FarmPlanView {
 
                         layoutParams.topMargin = (int) (btn_y * farmHeight);
                         layoutParams.leftMargin = (int) (btn_x * farmWidth);
-                        Log.d("cheatGZ gh field", "Jnum " + mJsonList.get(i).getInt("num")
-                                + ",Jrows " + mJsonList.get(i).getInt("rows")
-                                +",column "+btn_column
-                                +",row "+btn_row
-                                + ",height " + layoutParams.height
-                                + ",wight " + layoutParams.width
-                                + ",top " + layoutParams.topMargin
-                                + ",left " + layoutParams.leftMargin);
                         textView.setLayoutParams(layoutParams);
                         textView.setBackgroundColor(mContext.getResources().getColor(R.color.ColorDarkGrey));
                         textView.setText(mJsonList.get(i).getString("expType"));

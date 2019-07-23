@@ -2,6 +2,7 @@ package com.example.kerne.potato.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -43,6 +44,9 @@ public class OutShackFragment extends Fragment {
     View coverView;
     private View view;
     private Context self;
+
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
     private Boolean flag = false;//开始时处于不可编辑状态
     private View.OnTouchListener moveTouchListenr = new View.OnTouchListener() {
         int lastX, lastY;
@@ -84,7 +88,6 @@ public class OutShackFragment extends Fragment {
                         t = b - v.getHeight();
                     }
                     v.layout(l, t, r, b);
-                    Log.d(TAG, "onTouch: " + l + "==" + t + "==" + r + "==" + b);
                     lastX = (int) event.getRawX();
                     lastY = (int) event.getRawY();
                     v.postInvalidate();
@@ -111,14 +114,22 @@ public class OutShackFragment extends Fragment {
                 case R.id.save_plan:
                     if (!flag) {
                         coverView.setVisibility(View.GONE);
-                        outImage.setBackgroundResource(R.drawable.ic_menu_save);
-                        road.setText("编辑模式");
+                        outImage.setBackgroundResource(R.drawable.ic_menu_no_save);
+                        savePlan.getBackground().setAlpha(50);
+                        if(road!=null) {
+                            road.setText("编辑模式");
+                        }
                         flag = true;
                     } else {
                         coverView.setVisibility(View.VISIBLE);
                         outImage.setBackgroundResource(R.drawable.ic_menu_plan);
-                        road.setText("田间小路");
+                        savePlan.setBackgroundResource(R.drawable.selector_10_button);
+                        if(road!=null) {
+                            road.setText("田间小路");
+                        }
                         flag = false;
+                        editor.putBoolean("upload_data", true);
+                        editor.apply();
                         showShortToast(self, "保存完成");
                         //TODO 保存
                     }
@@ -141,6 +152,8 @@ public class OutShackFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_out_shack, container, false);
         self = getContext();
+        sp = self.getSharedPreferences("update_flag", Context.MODE_PRIVATE);
+        editor = sp.edit();
         unbinder = ButterKnife.bind(this, view);
         outImage.setBackgroundResource(R.drawable.ic_menu_plan);
 
@@ -171,7 +184,6 @@ public class OutShackFragment extends Fragment {
             @Override
             public void run() {
                 if (outShackFirm != null) {
-                    Log.d("cheatGZ_main", outShackFirm.getWidth() + "," + outShackFirm.getHeight());
                     FarmPlanView farmPlanView = new FarmPlanView(getContext(), outShackFirm, outShackFirm.getWidth(), outShackFirm.getHeight(), mJsonList);
                     road=farmPlanView.createRoad("common");
                     textViewList = farmPlanView.createField("common");
@@ -183,6 +195,7 @@ public class OutShackFragment extends Fragment {
             }
         }, 1000); //延迟ms
     }
+
 
     @Override
     public void onDestroyView() {

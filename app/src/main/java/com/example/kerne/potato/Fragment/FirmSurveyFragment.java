@@ -9,11 +9,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Spinner;
 
 import com.example.kerne.potato.R;
 import com.example.kerne.potato.complextable.widget.GridRecyclerView.BetterDoubleGridView;
@@ -25,20 +23,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-
 public class FirmSurveyFragment extends Fragment {
 
     private static final int DATA_OK = 0;
     public static Boolean update_flag = false;
-    @BindView(R.id.firm_survey_years)
-    Spinner firmSurveyYears;
+    private static String bigfarmId;
     private View view;
     private Context self;
     private BetterDoubleGridView betterDoubleGridView;
-    private String bigfarmId = "bigfarm1562662936758970";
-    private int year = 2016;
-    private String bigFarmName = "0709lian";
     private List<JSONObject> mFieldList = new ArrayList<>();
     @SuppressLint("HandlerLeak")
     private Handler myHandler = new Handler() {
@@ -63,6 +55,10 @@ public class FirmSurveyFragment extends Fragment {
         FirmSurveyFragment.update_flag = update_flag;
     }
 
+    public void selectFarm(String bigFarmId) {
+        FirmSurveyFragment.bigfarmId = bigFarmId;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_firm_survey, container, false);
@@ -73,9 +69,9 @@ public class FirmSurveyFragment extends Fragment {
 
     private void initView() {
         betterDoubleGridView = view.findViewById(R.id.expType_list);
-        firmSurveyYears = view.findViewById(R.id.firm_survey_years);
-        firmSurveyYears.setPopupBackgroundResource(R.drawable.bg_spinner_drop_down2);
-        initData();
+        if (bigfarmId != null) {
+            initData();
+        }
     }
 
     private void initData() {
@@ -106,7 +102,6 @@ public class FirmSurveyFragment extends Fragment {
                             mFieldList.add(jsonObject0);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Log.e("farmlandId_error", cursor.getString(cursor.getColumnIndex("farmlandId")));
                         }
                     } while (cursor.moveToNext());
                 }
@@ -131,7 +126,6 @@ public class FirmSurveyFragment extends Fragment {
                             mFieldList.add(jsonObject0);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Log.e("greenhouse_error", cursor2.getString(cursor2.getColumnIndex("farmlandId")));
                         }
                     } while (cursor2.moveToNext());
                 }
@@ -166,22 +160,26 @@ public class FirmSurveyFragment extends Fragment {
         betterDoubleGridView.setmTopGridData(outShack).setmBottomGridList(inShack).build();
     }
 
-    //设置在前一页下载数据后，本页可以刷新数据
+    //设置在前一页更新数据后，本页可以刷新数据
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             // 相当于Fragment的onResume
-            Log.d("cheatGZ",update_flag+"");
-            if(update_flag){
+            if (update_flag) {
                 initData();
-                update_flag=false;
+                update_flag = false;
             }
         } else {
             // 相当于Fragment的onPause
         }
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
     @Override
     public void onDestroyView() {
