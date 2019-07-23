@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.kerne.potato.R;
 import com.example.kerne.potato.complextable.widget.GridRecyclerView.holder.ItemViewHolder;
 import com.example.kerne.potato.complextable.widget.GridRecyclerView.holder.TitleViewHolder;
 
@@ -74,14 +73,14 @@ public class DoubleGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             case TYPE_ITEM:
                 ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
                 try {
-                if (position < topGridData.size() + 1) {
-                        itemViewHolder.bind(topGridData.get(position-1).getString("name"), position - 1);
-                } else {
-                    itemViewHolder.bind(bottomGridData.get(position - topGridData.size() - 2).getString("expType"), position - 2);
-                }
+                    if (position < topGridData.size() + 1) {
+                        itemViewHolder.bind(topGridData.get(position - 1).getString("name"), position - 1);
+                    } else {
+                        itemViewHolder.bind(bottomGridData.get(position - topGridData.size() - 2).getString("expType"), position - 2);
+                    }
                 } catch (JSONException e) {
-                e.printStackTrace();
-            }
+                    e.printStackTrace();
+                }
                 break;
         }
     }

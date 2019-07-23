@@ -17,6 +17,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,10 +104,7 @@ public class HomepageFragment extends Fragment {
     private List<TextView> mOutList = new ArrayList<>();
     private List<TextView> mInList = new ArrayList<>();
     private List<String> mYears = new ArrayList<>();
-
-
-//    private String bigfarmId = "bigfarm1562662936758970";
-
+    private ArrayAdapter<String> spinnerAdapter;
     private String bigfarmId;
 
     private IntentFilter intentFilter;
@@ -132,30 +130,31 @@ public class HomepageFragment extends Fragment {
                     downloadSuccess_Num++;
                     break;
                 case DATA_OK:
-                    try {
-                        bigfarmId = mBigFarmList.get(0).getString("bigfarmId");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    //spinner加载
-                    try {
-                        for (int i = 0; i < mBigFarmList.size(); i++) {
-                            mYears.add(mBigFarmList.get(i).getString("year"));
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.spinner_textview, mYears);
-                    homepageYears.setAdapter(adapter);
+                    if(mBigFarmList.size()>0) {
 
-                    MainActivity mainActivity = new MainActivity();
-                    try {
-                        mainActivity.selectFarm(mBigFarmList.get(0).getString("bigfarmId"));
-                        mainActivity.updateData(true);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                        //spinner加载
+                        try {
+                            bigfarmId = mBigFarmList.get(0).getString("bigfarmId");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        mYears.clear();
+                        try {
+                            for (int i = 0; i < mBigFarmList.size(); i++) {
+                                mYears.add(mBigFarmList.get(i).getString("year"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if(spinnerAdapter==null) {
+                            spinnerAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_textview, mYears);
+                            homepageYears.setAdapter(spinnerAdapter);
+                        }else {
+                            Log.d("cheatGZ spinner ","big "+mBigFarmList.size()+" year"+mYears.size());
+                            spinnerAdapter.notifyDataSetChanged();
+                        }
+                        initView(farm_flag);
                     }
-                    initView(farm_flag);
                     break;
                 default:
                     break;
@@ -166,8 +165,10 @@ public class HomepageFragment extends Fragment {
                 downloadDataDialog.setTitleText(getContext().getString(R.string.download_complete));
                 downloadDataDialog.setContentText(null);
                 downloadSuccess_Num = 0;
+                initData();
                 MainActivity mainActivity = new MainActivity();
                 mainActivity.updateData(true);
+                mainActivity.selectFarm(bigfarmId);
             }
         }
     };
@@ -207,6 +208,7 @@ public class HomepageFragment extends Fragment {
                         });
                         downloadWarnDialog.show();
                     } else {
+                        mBigFarmList.clear();
                         downloadData();
                     }
                     break;
@@ -347,7 +349,7 @@ public class HomepageFragment extends Fragment {
                     FarmPlanView farmPlanView = new FarmPlanView(getContext(), homepageFarm, homepageFarm.getWidth(), homepageFarm.getHeight(), mOutShackList);
                     farmPlanView.createRoad("common");
                     mOutList = farmPlanView.createField("common");
-                    for (int i = 0; i < mOutShackList.size(); i++) {
+                    for (int i = 0; i < mOutList.size(); i++) {
 //                            mOutList.get(i).setTag(mOutShackList.get(i));
                         mOutList.get(i).setBackgroundResource(R.drawable.bg_farm);
                     }
@@ -369,35 +371,6 @@ public class HomepageFragment extends Fragment {
             default:
                 break;
         }
-    }
-
-
-    private void initFieldData() {
-
-        //获取棚外数据
-        //TODO
-        //获取大棚区域
-        Cursor cursor2 = db.query("ExperimentField", null, "farmlandId=?", new String[]{bigfarmId}, null, null, null);
-        if (cursor2.moveToFirst()) {
-            do {
-                JSONObject jsonObject0 = new JSONObject();
-                try {
-                    jsonObject0.put("fieldId", cursor2.getString(cursor2.getColumnIndex("id")));
-                    jsonObject0.put("name", cursor2.getString(cursor2.getColumnIndex("name")));
-                    jsonObject0.put("expType", cursor2.getString(cursor2.getColumnIndex("expType")));
-                    jsonObject0.put("num", cursor2.getInt(cursor2.getColumnIndex("num")));
-                    jsonObject0.put("farmlandId", cursor2.getString(cursor2.getColumnIndex("farmlandId")));
-                    jsonObject0.put("rows", cursor2.getInt(cursor2.getColumnIndex("rows")));
-                    jsonObject0.put("x", cursor2.getInt(cursor2.getColumnIndex("moveX")));
-                    jsonObject0.put("y", cursor2.getInt(cursor2.getColumnIndex("moveY")));
-                    jsonObject0.put("type", "greenhouse");
-                    mInShackList.add(jsonObject0);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } while (cursor2.moveToNext());
-        }
-        cursor2.close();
     }
 
     private void initData() {
@@ -436,6 +409,35 @@ public class HomepageFragment extends Fragment {
         }).start();
     }
 
+    private void initFieldData() {
+
+        //获取棚外数据
+        mOutShackList.clear();
+        //TODO
+        //获取大棚区域
+        mInShackList.clear();
+        Cursor cursor2 = db.query("ExperimentField", null, "farmlandId=?", new String[]{bigfarmId}, null, null, null);
+        if (cursor2.moveToFirst()) {
+            do {
+                JSONObject jsonObject0 = new JSONObject();
+                try {
+                    jsonObject0.put("fieldId", cursor2.getString(cursor2.getColumnIndex("id")));
+                    jsonObject0.put("name", cursor2.getString(cursor2.getColumnIndex("name")));
+                    jsonObject0.put("expType", cursor2.getString(cursor2.getColumnIndex("expType")));
+                    jsonObject0.put("num", cursor2.getInt(cursor2.getColumnIndex("num")));
+                    jsonObject0.put("farmlandId", cursor2.getString(cursor2.getColumnIndex("farmlandId")));
+                    jsonObject0.put("rows", cursor2.getInt(cursor2.getColumnIndex("rows")));
+                    jsonObject0.put("x", cursor2.getInt(cursor2.getColumnIndex("moveX")));
+                    jsonObject0.put("y", cursor2.getInt(cursor2.getColumnIndex("moveY")));
+                    jsonObject0.put("type", "greenhouse");
+                    mInShackList.add(jsonObject0);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } while (cursor2.moveToNext());
+        }
+        cursor2.close();
+    }
     private void downloadData() {
         downloadDataDialog = new SweetAlertDialog(self, SweetAlertDialog.PROGRESS_TYPE);
         downloadDataDialog.setTitleText(getString(R.string.download_data));

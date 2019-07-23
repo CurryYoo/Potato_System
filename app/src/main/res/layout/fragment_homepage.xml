@@ -36,7 +36,8 @@
                 android:layout_height="@dimen/dp_35"
                 android:layout_marginStart="@dimen/dp_5"
                 android:background="@drawable/selector_10_button"
-                android:orientation="horizontal" />
+                android:orientation="horizontal"
+                android:scrollbars="none"/>
         </LinearLayout>
 
 

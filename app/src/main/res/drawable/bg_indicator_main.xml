@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:end="@dimen/dp_100"
-        android:start="@dimen/dp_100">
+    <item>
         <shape>
             <solid android:color="@color/primary_text" />
-
-            <corners android:radius="8dp" />
         </shape>
     </item>
     <item
-        android:bottom="2dp"
-        android:end="@dimen/dp_100"
-        android:start="@dimen/dp_100">
+        android:bottom="1dp">
         <shape>
             <solid android:color="@color/ColorWhite" />
         </shape>

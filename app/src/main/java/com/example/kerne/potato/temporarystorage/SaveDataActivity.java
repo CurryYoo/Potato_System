@@ -36,6 +36,7 @@ import android.widget.TextView;
 
 import com.example.kerne.potato.MainActivity;
 import com.example.kerne.potato.R;
+import com.facebook.drawee.backends.pipeline.Fresco;
 
 import java.io.File;
 import java.io.IOException;
@@ -326,7 +327,7 @@ public class SaveDataActivity extends AppCompatActivity {
                     break;
                 //叶颜色查看大图
                 case R.id.imv_colors:
-                    watchOnlineLargePhoto(getBaseContext(), imageUriColor, "叶颜色");
+                    watchOnlineLargePhoto(SaveDataActivity.this, imageUriColor, "叶颜色");
                     break;
                 //花冠色拍照并显示
                 case R.id.imb_corolla_colors:
@@ -348,7 +349,7 @@ public class SaveDataActivity extends AppCompatActivity {
                     break;
                 //花冠色查看大图
                 case R.id.imv_corolla_colors:
-                    watchOnlineLargePhoto(getBaseContext(), imageUriCorollaColor, "花冠色");
+                    watchOnlineLargePhoto(SaveDataActivity.this, imageUriCorollaColor, "花冠色");
                     break;
                 //从相册选择花冠色照片
                 case R.id.btn_select_from_album_corolla_colors:
@@ -371,7 +372,7 @@ public class SaveDataActivity extends AppCompatActivity {
                     break;
                 //花繁茂性查看大图
                 case R.id.imv_plant_flourish:
-                    watchOnlineLargePhoto(getBaseContext(), imageUriPlantFlourish, "花繁茂性");
+                    watchOnlineLargePhoto(SaveDataActivity.this, imageUriPlantFlourish, "花繁茂性");
                     break;
                 //从相册选择花繁茂性照片
                 case R.id.btn_select_from_album_plant_flourish:
@@ -394,7 +395,7 @@ public class SaveDataActivity extends AppCompatActivity {
                     break;
                 //茎色查看大图
                 case R.id.imv_stem_color:
-                    watchOnlineLargePhoto(getBaseContext(), imageUriStemColors, "茎色");
+                    watchOnlineLargePhoto(SaveDataActivity.this, imageUriStemColors, "茎色");
                     break;
                 //从相册选择茎色照片
                 case R.id.btn_select_from_album_stem_color:
@@ -417,7 +418,7 @@ public class SaveDataActivity extends AppCompatActivity {
                     break;
                 //天然结实性查看大图
                 case R.id.imv_natural_fecundity:
-                    watchOnlineLargePhoto(getBaseContext(), imageUriNaturalFecundity, "天然结实性");
+                    watchOnlineLargePhoto(SaveDataActivity.this, imageUriNaturalFecundity, "天然结实性");
                     break;
                 //从相册选择天然结实性照片
                 case R.id.btn_select_from_album_natural_fecundity:
@@ -616,6 +617,7 @@ public class SaveDataActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Fresco.initialize(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_commit);
         ButterKnife.bind(this);

@@ -3,108 +3,145 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backGroundColor"
-    android:orientation="horizontal">
-
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="@color/backGroundColor"
+        android:orientation="horizontal">
 
-
-        <EditText
-            android:id="@+id/branch_num_of_ten_plant1"
-            android:layout_marginTop="@dimen/dp_20"
-            style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp"
-            android:inputType="number" />
-
-        <View
-            style="@style/view_divider_style"
-        android:layout_marginStart="5dp" />
-
-
-
-        <EditText
-            android:id="@+id/branch_num_of_ten_plant3"
-            android:layout_marginTop="@dimen/dp_20"
-            style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp"
-            android:inputType="number" />
-
-        <View
-            style="@style/view_divider_style"
-            android:layout_marginStart="5dp" />
-
-
-
-        <EditText
-            android:id="@+id/branch_num_of_ten_plant5"
-            android:layout_marginTop="@dimen/dp_20"
-            style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp"
-            android:inputType="number" />
-
-        <View
-            style="@style/view_divider_style"
-            android:layout_marginStart="5dp" />
-
-
-
-        <EditText
-            android:id="@+id/branch_num_of_ten_plant7"
-            android:layout_marginTop="@dimen/dp_20"
-            style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp"
-            android:inputType="number"/>
-
-        <View
-            style="@style/view_divider_style"
-            android:layout_marginStart="5dp"/>
-
-
-        <EditText
-            android:id="@+id/branch_num_of_ten_plant9"
-            android:layout_marginTop="@dimen/dp_20"
-            style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp"
-            android:inputType="number" />
-
-        <View
-            style="@style/view_divider_style"
-            android:layout_marginStart="5dp" />
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_marginBottom="@dimen/dp_10"
-            android:background="@drawable/bg_main"
-            android:orientation="horizontal"
-            android:padding="5dp">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="2dp"
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
-                android:layout_marginEnd="@dimen/dp_3"
-                android:text="@string/average_branch"
-                android:textSize="15sp"
-                android:layout_marginStart="@dimen/dp_5"
-                android:textColor="@color/colorOrange" />
 
             <EditText
-                android:id="@+id/average_branch_num"
+                android:id="@+id/branch_num_of_ten_plant1"
                 style="@style/style_item_basicinfo_edittext"
-                android:layout_width="wrap_content"
-                android:layout_marginStart="@dimen/dp_5"
-                android:inputType="number"
-                android:focusable="false"
-                android:textColor="@color/colorOrange"/>
+                android:layout_width="150dp"
+                android:layout_marginTop="@dimen/dp_20"
+                android:inputType="number" />
 
+            <View
+                style="@style/view_divider_style"
+                android:layout_marginStart="5dp" />
+
+
+            <EditText
+                android:id="@+id/branch_num_of_ten_plant3"
+                style="@style/style_item_basicinfo_edittext"
+                android:layout_width="150dp"
+                android:layout_marginTop="@dimen/dp_20"
+                android:inputType="number" />
+
+            <View
+                style="@style/view_divider_style"
+                android:layout_marginStart="5dp" />
+
+
+            <EditText
+                android:id="@+id/branch_num_of_ten_plant5"
+                style="@style/style_item_basicinfo_edittext"
+                android:layout_width="150dp"
+                android:layout_marginTop="@dimen/dp_20"
+                android:inputType="number" />
+
+            <View
+                style="@style/view_divider_style"
+                android:layout_marginStart="5dp" />
+
+
+            <EditText
+                android:id="@+id/branch_num_of_ten_plant7"
+                style="@style/style_item_basicinfo_edittext"
+                android:layout_width="150dp"
+                android:layout_marginTop="@dimen/dp_20"
+                android:inputType="number" />
+
+            <View
+                style="@style/view_divider_style"
+                android:layout_marginStart="5dp" />
+
+
+            <EditText
+                android:id="@+id/branch_num_of_ten_plant9"
+                style="@style/style_item_basicinfo_edittext"
+                android:layout_width="150dp"
+                android:layout_marginTop="@dimen/dp_20"
+                android:inputType="number" />
+
+            <View
+                style="@style/view_divider_style"
+                android:layout_marginStart="5dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <EditText
+                android:id="@+id/branch_num_of_ten_plant2"
+                style="@style/style_item_basicinfo_edittext"
+                android:layout_width="150dp"
+                android:layout_marginTop="@dimen/dp_20"
+                android:inputType="number" />
+
+            <View
+                style="@style/view_divider_style"
+                android:layout_marginStart="5dp" />
+
+
+            <EditText
+                android:id="@+id/branch_num_of_ten_plant4"
+                style="@style/style_item_basicinfo_edittext"
+                android:layout_width="150dp"
+                android:layout_marginTop="@dimen/dp_20"
+                android:inputType="number" />
+
+            <View
+                style="@style/view_divider_style"
+                android:layout_marginStart="5dp" />
+
+
+            <EditText
+                android:id="@+id/branch_num_of_ten_plant6"
+                style="@style/style_item_basicinfo_edittext"
+                android:layout_width="150dp"
+                android:layout_marginTop="@dimen/dp_20"
+                android:inputType="number" />
+
+            <View
+                style="@style/view_divider_style"
+                android:layout_marginStart="5dp" />
+
+
+            <EditText
+                android:id="@+id/branch_num_of_ten_plant8"
+                style="@style/style_item_basicinfo_edittext"
+                android:layout_width="150dp"
+                android:layout_marginTop="@dimen/dp_20"
+                android:inputType="number" />
+
+            <View
+                style="@style/view_divider_style"
+                android:layout_marginStart="5dp" />
+
+
+            <EditText
+                android:id="@+id/branch_num_of_ten_plant10"
+                style="@style/style_item_basicinfo_edittext"
+                android:layout_width="150dp"
+                android:layout_marginTop="@dimen/dp_20"
+                android:inputType="number" />
+
+            <View
+                style="@style/view_divider_style"
+                android:layout_marginStart="5dp" />
 
 
         </LinearLayout>
@@ -112,87 +149,60 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@drawable/bg_main"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-
-
-        <EditText
-            android:id="@+id/branch_num_of_ten_plant2"
-            style="@style/style_item_basicinfo_edittext"
-            android:layout_marginTop="@dimen/dp_20"
-            android:layout_width="150dp"
-            android:inputType="number"/>
-
-        <View
-            style="@style/view_divider_style"
-            android:layout_marginStart="5dp" />
-
-
-        <EditText
-            android:id="@+id/branch_num_of_ten_plant4"
-            style="@style/style_item_basicinfo_edittext"
-            android:layout_marginTop="@dimen/dp_20"
-            android:layout_width="150dp"
-            android:inputType="number"/>
-
-        <View
-            style="@style/view_divider_style"
-            android:layout_marginStart="5dp" />
-
-
-        <EditText
-            android:id="@+id/branch_num_of_ten_plant6"
-            android:layout_marginTop="@dimen/dp_20"
-            style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp"
-            android:inputType="number"/>
-
-        <View
-            style="@style/view_divider_style"
-            android:layout_marginStart="5dp"/>
-
-
-
-        <EditText
-            android:id="@+id/branch_num_of_ten_plant8"
-            android:layout_marginTop="@dimen/dp_20"
-            style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp"
-            android:inputType="number"/>
-
-        <View
-            style="@style/view_divider_style"
-            android:layout_marginStart="5dp" />
-
-
-
-        <EditText
-            android:id="@+id/branch_num_of_ten_plant10"
-            android:layout_marginTop="@dimen/dp_20"
-            style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp"
-            android:inputType="number"/>
-
-        <View
-            style="@style/view_divider_style"
-            android:layout_marginStart="5dp" />
-        <Button
-            android:id="@+id/btn_compute_average_branch_num"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="45dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="@dimen/dp_10"
             android:layout_marginBottom="@dimen/dp_10"
-            android:layout_marginStart="@dimen/dp_10"
-            android:layout_marginEnd="5dp"
-            android:text="@string/calculate"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:textColor="@color/secondary_text"
-            android:background="@drawable/selector_10_button"/>
+            android:background="@drawable/bg_main"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_5"
+                android:layout_marginEnd="@dimen/dp_3"
+                android:gravity="center_vertical"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:text="@string/average_branch"
+                android:textColor="@color/colorOrange"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/average_branch_num"
+                style="@style/style_item_basicinfo_edittext"
+                android:layout_width="120dp"
+                android:layout_marginStart="@dimen/dp_5"
+                android:focusable="false"
+                android:inputType="number"
+                android:textColor="@color/colorOrange" />
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0.01dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:background="@color/ColorDarkGrey" />
+
+        <Button
+            android:id="@+id/btn_compute_average_branch_num"
+            style="@style/save_data_activity_calculate"
+            android:text="@string/calculate" />
 
     </LinearLayout>
-
 
 </LinearLayout>

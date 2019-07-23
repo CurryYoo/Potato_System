@@ -157,12 +157,11 @@
     <style name="style_basic_spinner1">
         <item name="android:layout_height">30dp</item>
         <item name="android:layout_marginStart">5dp</item>
-        <item name="android:layout_marginEnd">@dimen/dp_10</item>
+        <item name="android:layout_marginEnd">@dimen/dp_3</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/secondary_text</item>
         <item name="android:background">@drawable/selector_10_button</item>
-        <item name="android:elevation">2dp</item>
         <item name="android:scrollbars">none</item>
     </style>
 
@@ -183,8 +182,9 @@
         <item name="android:layout_height">30dp</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:padding">3dp</item>
+        <item name="android:layout_marginStart">3dp</item>
+        <item name="android:layout_marginEnd">3dp</item>
         <item name="android:background">@drawable/selector_5_button</item>
-        <item name="android:elevation">2dp</item>
     </style>
 
     //item_basic_info页面拍照style
@@ -192,20 +192,45 @@
     <style name="style_basic_camera_btn">
         <item name="android:layout_width">50dp</item>
         <item name="android:layout_height">@dimen/dp_30</item>
-        <item name="android:layout_marginEnd">@dimen/dp_10</item>
+        <item name="android:layout_marginStart">3dp</item>
+        <item name="android:layout_marginEnd">3dp</item>
         <item name="android:background">@drawable/selector_5_button</item>
-        <item name="android:elevation">2dp</item>
     </style>
 
     //item_basic_info页面相册style
 
-    <style name="style_basic_album_btn">
+    <style name="style_basic_album_btn" parent="@style/Widget.AppCompat.Button.Borderless">
         <item name="android:layout_width">50dp</item>
         <item name="android:layout_height">30dp</item>
-        <item name="android:layout_marginEnd">@dimen/dp_10</item>
+        <item name="android:layout_marginStart">3dp</item>
+        <item name="android:layout_marginEnd">3dp</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/secondary_text</item>
         <item name="android:background">@drawable/selector_5_button</item>
+    </style>
+
+    <style name="style_basic_calculate">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_marginStart">3dp</item>
+        <item name="android:layout_marginEnd">3dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:background">@drawable/selector_5_button</item>
+        <item name="android:elevation">2dp</item>
+    </style>
+
+    <style name="save_data_activity_calculate" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:layout_marginTop">@dimen/dp_10</item>
+        <item name="android:layout_marginBottom">@dimen/dp_10</item>
+        <item name="android:layout_marginStart">@dimen/dp_10</item>
+        <item name="android:layout_marginEnd">5dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:background">@drawable/selector_10_button</item>
     </style>
 
 
