@@ -140,8 +140,8 @@ public class TableActivity extends AppCompatActivity {
                         showShortToast(TableActivity.this, mContext.getString(R.string.enter_species_plan_mode));
                     } else {
                         rightOneButton.setBackgroundResource(R.drawable.ic_menu_plan);
-                        titleText.setText(getText(R.string.species_data));
-                        titleText.setTextColor(getResources().getColor(R.color.primary_text));
+                        titleText.setText(getString(R.string.species_data));
+                        titleText.setTextColor(getResources().getColor(R.color.secondary_text));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             rightOneLayout.setTooltipText(getText(R.string.species_data_plan));
                         }
@@ -336,7 +336,7 @@ public class TableActivity extends AppCompatActivity {
     }
 
     private void initToolBar() {
-        titleText.setText(getText(R.string.exp_type));
+        titleText.setText(getString(R.string.species_data));
         leftOneButton.setBackgroundResource(R.drawable.left_back);
         rightOneButton.setBackgroundResource(R.drawable.ic_menu_plan);
 

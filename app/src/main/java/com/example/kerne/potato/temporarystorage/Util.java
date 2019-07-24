@@ -106,7 +106,7 @@ public class Util {
     //选择日期
     public static void showDatePickerDialog(Context context, final TextView textView) {
         Calendar calendar = Calendar.getInstance();
-        new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+        new DatePickerDialog(context, AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 String zeroMonth = "";

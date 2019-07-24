@@ -2,6 +2,8 @@ package com.example.kerne.potato.Util;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -67,7 +69,12 @@ public class FarmPlanView {
         roadTextView.setBackgroundColor(mContext.getResources().getColor(R.color.ColorDarkGrey));
         roadTextView.setText("田间小路");
         roadTextView.setTextColor(Color.WHITE);
-        roadTextView.setTextSize(8);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            roadTextView.setAutoSizeTextTypeUniformWithConfiguration(8,16,1, TypedValue.COMPLEX_UNIT_SP);
+        }else {
+            roadTextView.setTextSize(8);
+        }
         roadTextView.setGravity(Gravity.CENTER);
 
         return roadTextView;
@@ -96,7 +103,11 @@ public class FarmPlanView {
                         textView.setBackgroundColor(mContext.getResources().getColor(R.color.ColorDarkGrey));
                         textView.setText(mJsonList.get(i).getString("name"));
                         textView.setTextColor(Color.WHITE);
-                        textView.setTextSize(10);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            textView.setAutoSizeTextTypeUniformWithConfiguration(8,15,1, TypedValue.COMPLEX_UNIT_SP);
+                        }else {
+                            textView.setTextSize(9);
+                        }
                         textView.setGravity(Gravity.CENTER);
                         textViewList.add(textView);
                     }
@@ -120,7 +131,11 @@ public class FarmPlanView {
                         textView.setBackgroundColor(mContext.getResources().getColor(R.color.ColorDarkGrey));
                         textView.setText(mJsonList.get(i).getString("expType"));
                         textView.setTextColor(Color.WHITE);
-                        textView.setTextSize(10);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            textView.setAutoSizeTextTypeUniformWithConfiguration(8,15,1, TypedValue.COMPLEX_UNIT_SP);
+                        }else {
+                            textView.setTextSize(9);
+                        }
                         textView.setGravity(Gravity.CENTER);
                         textViewList.add(textView);
                     }
