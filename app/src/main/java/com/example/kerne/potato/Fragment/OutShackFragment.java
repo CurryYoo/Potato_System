@@ -168,10 +168,10 @@ public class OutShackFragment extends Fragment {
         try {
             for (int i = 0; i < 3; i++) {
                 JSONObject jsonObject = new JSONObject();
-                jsonObject.put("num", 500);
-                jsonObject.put("rows", 10);
-                jsonObject.put("x", 500000);
-                jsonObject.put("y", 500000);
+                jsonObject.put("num", 50+i*10);
+                jsonObject.put("rows", 1+i);
+                jsonObject.put("x", 300000+i*100000);
+                jsonObject.put("y", 300000+i*100000);
                 jsonObject.put("name", "加工鉴定");
                 mJsonList.add(jsonObject);
             }

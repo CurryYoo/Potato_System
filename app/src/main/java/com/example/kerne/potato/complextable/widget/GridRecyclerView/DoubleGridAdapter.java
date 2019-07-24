@@ -75,8 +75,10 @@ public class DoubleGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 try {
                     if (position < topGridData.size() + 1) {
                         itemViewHolder.bind(topGridData.get(position - 1).getString("name"), position - 1);
+                        itemViewHolder.setRv_divider(position - 1, topGridData.size());
                     } else {
                         itemViewHolder.bind(bottomGridData.get(position - topGridData.size() - 2).getString("expType"), position - 2);
+                        itemViewHolder.setRv_divider(position - topGridData.size() - 2, bottomGridData.size());
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
