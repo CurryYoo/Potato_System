@@ -4,7 +4,6 @@ package com.example.kerne.potato.Util;
 import android.content.Context;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -89,10 +88,12 @@ public class PowerFullLayout extends FrameLayout {
 
     public PowerFullLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
+        init(context);
     }
 
     public PowerFullLayout(Context context) {
         this(context, null);
+        init(context);
     }
 
     private void init(Context context) {
@@ -120,22 +121,22 @@ public class PowerFullLayout extends FrameLayout {
     public boolean onTouchEvent(MotionEvent event) {
         int pointerCount = event.getPointerCount(); // 获得多少点
         this.getParent().requestDisallowInterceptTouchEvent(true);
-        if (pointerCount == 2) {// 2点触控，
-            switch (event.getAction()) {
+        if (pointerCount > 1) {// 多点触控，
+            switch (event.getActionMasked()) {
                 case MotionEvent.ACTION_DOWN:
-                    needToHandle = true;
+                    needToHandle = false;
                     break;
                 case MotionEvent.ACTION_MOVE:
 
                     break;
-                case MotionEvent.ACTION_POINTER_UP://第二个手指抬起的时候
+                case MotionEvent.ACTION_UP://第二个手指抬起的时候
                     needToHandle = true;
                     break;
                 default:
                     break;
             }
             return mScaleGestureDetector.onTouchEvent(event);//让mScaleGestureDetector处理触摸事件
-        } else if (pointerCount == 1) {
+        } else {
             long currentTimeMillis = System.currentTimeMillis();
             if (currentTimeMillis - lastMultiTouchTime > 200 && needToHandle) {
 //              多点触控全部手指抬起后要等待200毫秒才能执行单指触控的操作，避免多点触控后出现颤抖的情况
