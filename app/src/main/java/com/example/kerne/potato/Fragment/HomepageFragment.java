@@ -19,6 +19,7 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -35,6 +36,7 @@ import com.example.kerne.potato.MainActivity;
 import com.example.kerne.potato.R;
 import com.example.kerne.potato.Util.FarmPlanView;
 import com.example.kerne.potato.Util.HttpRequest;
+import com.example.kerne.potato.Util.PowerFullLayout;
 import com.example.kerne.potato.Util.UserRole;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
 import com.facebook.stetho.Stetho;
@@ -92,6 +94,7 @@ public class HomepageFragment extends Fragment {
     private LinearLayout planFarm;
     private LinearLayout changeFarmView;
     private RelativeLayout homepageFarm;
+    private PowerFullLayout scaleLayout;
     private TextView farmType;
     private int farm_flag = 0;//标识当前的firm视图 0,棚外  1,棚内
     private SpeciesDBHelper dbHelper;
@@ -130,7 +133,7 @@ public class HomepageFragment extends Fragment {
                     downloadSuccess_Num++;
                     break;
                 case DATA_OK:
-                    if(mBigFarmList.size()>0) {
+                    if (mBigFarmList.size() > 0) {
 
                         //spinner加载
                         try {
@@ -146,11 +149,11 @@ public class HomepageFragment extends Fragment {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        if(spinnerAdapter==null) {
+                        if (spinnerAdapter == null) {
                             spinnerAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_textview, mYears);
                             homepageYears.setAdapter(spinnerAdapter);
-                        }else {
-                            Log.d("cheatGZ spinner ","big "+mBigFarmList.size()+" year"+mYears.size());
+                        } else {
+                            Log.d("cheatGZ spinner ", "big " + mBigFarmList.size() + " year" + mYears.size());
                             spinnerAdapter.notifyDataSetChanged();
                         }
                         initView(farm_flag);
@@ -243,12 +246,14 @@ public class HomepageFragment extends Fragment {
                     break;
                 case R.id.change_farm_view:
                     if (farm_flag == 0) {
-                        farmType.setText(self.getString(R.string.shack_farm));
+                        farmType.setText(self.getString(R.string.farm));
                         farm_flag = 1;
+
                         initView(farm_flag);
                     } else if (farm_flag == 1) {
-                        farmType.setText(self.getString(R.string.farm));
+                        farmType.setText(self.getString(R.string.shack_farm));
                         farm_flag = 0;
+
                         initView(farm_flag);
                     }
                     break;
@@ -257,6 +262,7 @@ public class HomepageFragment extends Fragment {
             }
         }
     };
+
     private AdapterView.OnItemSelectedListener onItemSelectedListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -301,10 +307,8 @@ public class HomepageFragment extends Fragment {
         planFarm = view.findViewById(R.id.plan_farm);
         changeFarmView = view.findViewById(R.id.change_farm_view);
         farmType = view.findViewById(R.id.firm_type);
-        farmButton = view.findViewById(R.id.farm_button);
         homepageFarm = view.findViewById(R.id.homepage_farm);
-
-        farmButton.getBackground().setAlpha(50);
+        scaleLayout = view.findViewById(R.id.scale_layout);
 
         homepageYears.setPopupBackgroundResource(R.drawable.bg_spinner_drop_down2);
 
@@ -332,10 +336,10 @@ public class HomepageFragment extends Fragment {
                 try {
                     for (int i = 0; i < 3; i++) {
                         JSONObject jsonObject = new JSONObject();
-                        jsonObject.put("num", 50+i*10);
-                        jsonObject.put("rows", 1+i);
-                        jsonObject.put("x", 300000+i*100000);
-                        jsonObject.put("y", 300000+i*100000);
+                        jsonObject.put("num", 50 + i * 10);
+                        jsonObject.put("rows", 1 + i);
+                        jsonObject.put("x", 300000 + i * 100000);
+                        jsonObject.put("y", 300000 + i * 100000);
                         jsonObject.put("name", "加工鉴定");
                         mOutShackList.add(jsonObject);
                     }
@@ -349,7 +353,7 @@ public class HomepageFragment extends Fragment {
                     mOutList = farmPlanView.createField("common");
                     for (int i = 0; i < mOutList.size(); i++) {
 //                            mOutList.get(i).setTag(mOutShackList.get(i));
-                        mOutList.get(i).setBackgroundResource(R.drawable.bg_farm);
+                        mOutList.get(i).setBackgroundResource(R.drawable.bg_field);
                     }
                 }
 
@@ -362,7 +366,7 @@ public class HomepageFragment extends Fragment {
                     farmPlanView.createRoad("greenhouse");
                     mInList = farmPlanView.createField("greenhouse");
                     for (int i = 0; i < mInList.size(); i++) {
-                        mInList.get(i).setBackgroundResource(R.drawable.bg_farm);
+                        mInList.get(i).setBackgroundResource(R.drawable.bg_field);
                     }
                 }
                 break;
@@ -436,6 +440,7 @@ public class HomepageFragment extends Fragment {
         }
         cursor2.close();
     }
+
     private void downloadData() {
         downloadDataDialog = new SweetAlertDialog(self, SweetAlertDialog.PROGRESS_TYPE);
         downloadDataDialog.setTitleText(getString(R.string.download_data));

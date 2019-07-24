@@ -45,7 +45,7 @@
     <string name="system_name">马铃薯育种信息管理系统</string>
     <string name="big_farm">试验基地</string>
     <string name="farm">试验田</string>
-    <string name="shack_farm">棚区试验田</string>
+    <string name="shack_farm">棚区</string>
     <string name="exp_type">试验类型</string>
     <string name="type">类型</string>
     <string name="year">年份</string>

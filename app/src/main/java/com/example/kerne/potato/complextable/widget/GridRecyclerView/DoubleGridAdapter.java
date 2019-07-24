@@ -67,7 +67,7 @@ public class DoubleGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 if (position == 0) {
                     titleViewHolder.bind("试验田");
                 } else {
-                    titleViewHolder.bind("棚区试验田");
+                    titleViewHolder.bind("棚区");
                 }
                 break;
             case TYPE_ITEM:

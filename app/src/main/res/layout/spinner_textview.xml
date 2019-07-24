@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:textColor="@color/secondary_text"
     android:textSize="14sp"
+    android:textStyle="bold"
     android:paddingStart="@dimen/dp_5"
     android:paddingTop="@dimen/dp_5"
     android:paddingBottom="@dimen/dp_5"

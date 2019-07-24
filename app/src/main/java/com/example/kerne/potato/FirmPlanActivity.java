@@ -26,7 +26,7 @@ public class FirmPlanActivity extends AppCompatActivity {
 
     public static Fragment outShackFragment;
     public static Fragment inShackFragment;
-    public String titles[] = new String[]{"试验田", "棚区试验田"};
+    public String titles[] = new String[]{"试验田", "棚区"};
     @BindView(R.id.left_one_button)
     ImageView leftOneButton;
     @BindView(R.id.left_one_layout)

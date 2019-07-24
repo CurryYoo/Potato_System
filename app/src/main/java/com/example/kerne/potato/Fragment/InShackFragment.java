@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.kerne.potato.MainActivity;
 import com.example.kerne.potato.R;
 import com.example.kerne.potato.Util.FarmPlanView;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
@@ -49,12 +50,11 @@ public class InShackFragment extends Fragment {
     ImageView inImage;
     @BindView(R.id.cover_view)
     View coverView;
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
     private View view;
     private Context self;
     private Boolean flag = false;//开始时处于不可编辑状态
-
-    SharedPreferences sp;
-    SharedPreferences.Editor editor;
     private String bigfarmId;
     private List<JSONObject> mFieldList = new ArrayList<>();
     private View.OnTouchListener moveTouchListenr = new View.OnTouchListener() {
@@ -66,7 +66,7 @@ public class InShackFragment extends Fragment {
             int ea = event.getAction();
             switch (ea) {
                 case MotionEvent.ACTION_DOWN:
-                    v.setBackgroundResource(R.drawable.bg_farm_p);
+                    v.setBackgroundResource(R.drawable.bg_field_p);
                     v.setElevation(10);
                     lastX = (int) event.getRawX();//获取触摸事件触摸位置的原始X坐标
                     lastY = (int) event.getRawY();
@@ -105,7 +105,7 @@ public class InShackFragment extends Fragment {
                     v.postInvalidate();
                     break;
                 case MotionEvent.ACTION_UP:
-                    v.setBackgroundResource(R.drawable.bg_farm);
+                    v.setBackgroundResource(R.drawable.bg_field);
                     v.setElevation(0);
                     int m = 0, n = 0, main_width = 0, main_height;
                     m = v.getLeft();
@@ -119,6 +119,8 @@ public class InShackFragment extends Fragment {
             return true;
         }
     };
+    private List<JSONObject> mJsonList = null;
+    private TextView road;
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -127,15 +129,16 @@ public class InShackFragment extends Fragment {
                     if (!flag) {
                         coverView.setVisibility(View.GONE);
                         inImage.setBackgroundResource(R.drawable.ic_menu_no_save);
-                        savePlan.getBackground().setAlpha(50);
-                        if(road!=null){
-                        road.setText("编辑模式");}
+//                        savePlan.getBackground().setAlpha(50);
+                        if (road != null) {
+                            road.setText("编辑模式");
+                        }
                         flag = true;
                     } else {
                         coverView.setVisibility(View.VISIBLE);
                         inImage.setBackgroundResource(R.drawable.ic_menu_plan);
-                        savePlan.getBackground().setAlpha(255);
-                        if(road!=null) {
+//                        savePlan.getBackground().setAlpha(255);
+                        if (road != null) {
                             road.setText("田间小路");
                         }
                         flag = false;
@@ -150,8 +153,6 @@ public class InShackFragment extends Fragment {
             }
         }
     };
-    private List<JSONObject> mJsonList = null;
-    private TextView road;
     private List<TextView> textViewList;
     @SuppressLint("HandlerLeak")
     private Handler myHandler = new Handler() {
@@ -237,11 +238,11 @@ public class InShackFragment extends Fragment {
     private void initView() {
         if (inShackFirm != null) {
             FarmPlanView farmPlanView = new FarmPlanView(getContext(), inShackFirm, inShackFirm.getWidth(), inShackFirm.getHeight(), mFieldList);
-            road=farmPlanView.createRoad("greenhouse");
+            road = farmPlanView.createRoad("greenhouse");
             textViewList = farmPlanView.createField("greenhouse");
             for (int i = 0; i < textViewList.size(); i++) {
                 textViewList.get(i).setOnTouchListener(moveTouchListenr);
-                textViewList.get(i).setBackgroundResource(R.drawable.bg_farm);
+                textViewList.get(i).setBackgroundResource(R.drawable.bg_field);
             }
         }
     }

@@ -5,15 +5,16 @@
     android:background="@color/backGroundColor"
     android:orientation="vertical">
 
-    <GridLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dp_5"
         android:background="@drawable/bg_main"
-        android:columnCount="5"
+        android:columnCount="9"
         android:elevation="@dimen/dp_2">
 
         <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_35"
             android:layout_marginStart="@dimen/dp_5"
             android:layout_marginTop="@dimen/dp_5"
@@ -32,23 +33,24 @@
 
             <Spinner
                 android:id="@+id/homepage_years"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_35"
                 android:layout_marginStart="@dimen/dp_5"
                 android:background="@drawable/selector_10_button"
                 android:orientation="horizontal"
-                android:scrollbars="none"/>
+                android:scrollbars="none" />
         </LinearLayout>
 
 
         <View
+            style="@style/divider_color"
             android:layout_width="0.1dp"
-            android:layout_height="@dimen/dp_35"
-            android:layout_gravity="center_vertical"
-            style="@style/divider_color"/>
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical" />
 
         <LinearLayout
             android:id="@+id/btn_download"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_35"
             android:layout_marginStart="@dimen/dp_5"
             android:layout_marginTop="@dimen/dp_5"
@@ -68,20 +70,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:text="@string/download_data"
+                android:text="下载"
                 android:textColor="@color/colorRed"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textSize="14sp" />
         </LinearLayout>
 
         <View
+            style="@style/divider_color"
             android:layout_width="0.1dp"
-            android:layout_height="@dimen/dp_35"
-            android:layout_gravity="center_vertical"
-            style="@style/divider_color" />
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical" />
+
 
         <LinearLayout
             android:id="@+id/btn_upload"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_35"
             android:layout_marginStart="@dimen/dp_5"
             android:layout_marginTop="@dimen/dp_5"
@@ -102,12 +105,78 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:text="@string/update_plan"
+                android:text="上传"
                 android:textColor="@color/colorBlue"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textSize="14sp" />
         </LinearLayout>
-    </GridLayout>
+
+        <View
+            style="@style/divider_color"
+            android:layout_width="0.1dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical" />
+
+        <LinearLayout
+            android:id="@+id/plan_farm"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_35"
+            android:layout_marginStart="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/selector_10_button"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/dp_5">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/firm_plan" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="规划"
+                android:textColor="@color/colorGreen"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <View
+            style="@style/divider_color"
+            android:layout_width="0.1dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical" />
+
+        <LinearLayout
+            android:id="@+id/change_farm_view"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_35"
+            android:layout_marginStart="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/selector_10_button"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/dp_5">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/firm" />
+
+            <TextView
+                android:id="@+id/firm_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/shack_farm"
+                android:textColor="@color/colorGrey"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -115,86 +184,20 @@
         android:layout_marginStart="@dimen/dp_5"
         android:layout_marginEnd="@dimen/dp_5"
         android:layout_marginBottom="@dimen/dp_5"
+        android:padding="@dimen/dp_5"
         android:background="@drawable/bg_homepage_firm">
 
-
-        <RelativeLayout
-            android:id="@+id/homepage_farm"
+        <com.example.kerne.potato.Util.PowerFullLayout
+            android:id="@+id/scale_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/dp_5"
-            android:background="@color/backGroundColor" />
-        <LinearLayout
-            android:id="@+id/farm_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@id/homepage_farm"
-            android:layout_alignTop="@id/homepage_farm"
-            android:layout_marginStart="@dimen/dp_3"
-            android:layout_marginTop="@dimen/dp_3"
-            android:layout_marginEnd="@dimen/dp_3"
-            android:background="@drawable/bg_main"
-            android:elevation="2dp"
-            android:orientation="horizontal">
+            android:layout_centerInParent="true">
 
-            <LinearLayout
-                android:id="@+id/plan_farm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dp_3"
-                android:background="@drawable/selector_trans_button"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:src="@drawable/firm_plan" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dp_5"
-                    android:text="规划"
-                    android:textColor="@color/colorGreen"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="0.1dp"
+            <RelativeLayout
+                android:id="@+id/homepage_farm"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dp_3"
-                android:layout_marginBottom="@dimen/dp_3"
-                style="@style/divider_color" />
-
-            <LinearLayout
-                android:id="@+id/change_farm_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dp_3"
-                android:background="@drawable/selector_trans_button"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:src="@drawable/firm" />
-
-                <TextView
-                    android:id="@+id/firm_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dp_5"
-                    android:text="@string/farm"
-                    android:textColor="@color/colorGrey"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </LinearLayout>
-
+                android:background="@drawable/bg_farm" />
+        </com.example.kerne.potato.Util.PowerFullLayout>
     </RelativeLayout>
 </LinearLayout>

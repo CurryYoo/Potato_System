@@ -57,7 +57,7 @@ public class OutShackFragment extends Fragment {
             int ea = event.getAction();
             switch (ea) {
                 case MotionEvent.ACTION_DOWN:
-                    v.setBackgroundResource(R.drawable.bg_farm_p);
+                    v.setBackgroundResource(R.drawable.bg_field_p);
                     v.setElevation(10);
                     lastX = (int) event.getRawX();//获取触摸事件触摸位置的原始X坐标
                     lastY = (int) event.getRawY();
@@ -93,7 +93,7 @@ public class OutShackFragment extends Fragment {
                     v.postInvalidate();
                     break;
                 case MotionEvent.ACTION_UP:
-                    v.setBackgroundResource(R.drawable.bg_farm);
+                    v.setBackgroundResource(R.drawable.bg_field);
                     v.setElevation(0);
                     int m = 0, n = 0, main_width = 0, main_height;
                     m = v.getLeft();
@@ -115,7 +115,7 @@ public class OutShackFragment extends Fragment {
                     if (!flag) {
                         coverView.setVisibility(View.GONE);
                         outImage.setBackgroundResource(R.drawable.ic_menu_no_save);
-                        savePlan.getBackground().setAlpha(50);
+//                        savePlan.getBackground().setAlpha(50);
                         if(road!=null) {
                             road.setText("编辑模式");
                         }
@@ -123,7 +123,7 @@ public class OutShackFragment extends Fragment {
                     } else {
                         coverView.setVisibility(View.VISIBLE);
                         outImage.setBackgroundResource(R.drawable.ic_menu_plan);
-                        savePlan.getBackground().setAlpha(255);
+//                        savePlan.getBackground().setAlpha(255);
                         if(road!=null) {
                             road.setText("田间小路");
                         }
@@ -189,7 +189,7 @@ public class OutShackFragment extends Fragment {
                     textViewList = farmPlanView.createField("common");
                     for (int i = 0; i < textViewList.size(); i++) {
                         textViewList.get(i).setOnTouchListener(moveTouchListenr);
-                        textViewList.get(i).setBackgroundResource(R.drawable.bg_farm);
+                        textViewList.get(i).setBackgroundResource(R.drawable.bg_field);
                     }
                 }
             }

@@ -8,7 +8,5 @@
         android:id="@+id/expType_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_main"
-        android:layout_margin="@dimen/dp_5"
-        android:elevation="@dimen/dp_2"/>
+        android:background="@color/transparent"/>
 </LinearLayout>
