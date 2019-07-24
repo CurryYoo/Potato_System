@@ -81,6 +81,10 @@ public class TableActivity extends AppCompatActivity {
 
     SharedPreferences sp;
     SharedPreferences.Editor editor;
+    @BindView(R.id.confirm_view)
+    View confirmView;
+    @BindView(R.id.confirm_button)
+    TextView confirmButton;
     /**
      * 用于存放标题的id,与textview引用
      */
@@ -134,8 +138,6 @@ public class TableActivity extends AppCompatActivity {
                             rightOneLayout.setTooltipText(getResources().getText(R.string.save_data));
                         }
                         tableDescription.setEnabled(true);
-                        planColumn.setEnabled(true);
-                        planRow.setEnabled(true);
                         descriptionLayout.setClickable(true);
                         showShortToast(TableActivity.this, mContext.getString(R.string.enter_species_plan_mode));
                     } else {
@@ -146,19 +148,7 @@ public class TableActivity extends AppCompatActivity {
                             rightOneLayout.setTooltipText(getText(R.string.species_data_plan));
                         }
                         tableDescription.setEnabled(false);
-                        planColumn.setEnabled(false);
-                        planRow.setEnabled(false);
                         descriptionLayout.setClickable(false);
-                        if (!planColumn.getText().toString().equals("") && !planRow.getText().toString().equals("")) {
-                            if (Integer.parseInt(planColumn.getText().toString()) < 0 || Integer.parseInt(planRow.getText().toString()) < 0) {
-                                showShortToast(getBaseContext(), getString(R.string.toast_input_error));
-                            } else {
-                                maxColumns = Integer.parseInt(planColumn.getText().toString());
-                                maxRows = Integer.parseInt(planRow.getText().toString());
-                            }
-                        }
-                        //TODO 更新行和列数,保存行数和列数
-
 
                         //保存操作 sqlite
                         List<ContentValues> contentValuesList = assembleData(str);
@@ -198,6 +188,19 @@ public class TableActivity extends AppCompatActivity {
                         editor.apply();
                     }
                     break;
+                case R.id.confirm_button:
+                    if (!planColumn.getText().toString().equals("") && !planRow.getText().toString().equals("")) {
+                        if (Integer.parseInt(planColumn.getText().toString()) < 0 || Integer.parseInt(planRow.getText().toString()) < 0) {
+                            showShortToast(getBaseContext(), getString(R.string.toast_input_error));
+                        } else {
+                            maxColumns = Integer.parseInt(planColumn.getText().toString());
+                            maxRows = Integer.parseInt(planRow.getText().toString());
+                        }
+                    }
+                    //TODO 更新行和列数,保存行数和列数
+
+
+                    break;
                 default:
                     break;
             }
@@ -223,10 +226,10 @@ public class TableActivity extends AppCompatActivity {
         sp = getSharedPreferences("update_flag", Context.MODE_PRIVATE);
         editor = sp.edit();
 
-        initToolBar();
-
         dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
         db = dbHelper.getWritableDatabase();
+
+        initToolBar();
 
         fieldId = getIntent().getStringExtra("fieldId");
         expType = getIntent().getStringExtra("expType");
@@ -344,6 +347,7 @@ public class TableActivity extends AppCompatActivity {
         rightOneLayout.setBackgroundResource(R.drawable.selector_button);
         leftOneLayout.setOnClickListener(toolBarOnClickListener);
         rightOneLayout.setOnClickListener(toolBarOnClickListener);
+        confirmButton.setOnClickListener(toolBarOnClickListener);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             leftOneLayout.setTooltipText(getText(R.string.back_left));

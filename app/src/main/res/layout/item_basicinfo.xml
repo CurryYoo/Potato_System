@@ -205,7 +205,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@color/ColorDarkGrey" />
+                    style="@style/divider_color" />
 
                 <ImageButton
                     android:id="@+id/imb_colors"
@@ -217,7 +217,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@color/ColorDarkGrey" />
+                    style="@style/divider_color" />
 
                 <Button
                     android:id="@+id/btn_select_from_album_colors"
@@ -229,7 +229,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@color/ColorDarkGrey" />
+                    style="@style/divider_color" />
 
                 <ImageView
                     android:id="@+id/imv_colors"
@@ -278,7 +278,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@color/ColorDarkGrey" />
+                    style="@style/divider_color" />
 
                 <ImageButton
                     android:id="@+id/imb_corolla_colors"
@@ -290,7 +290,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@color/ColorDarkGrey" />
+                    style="@style/divider_color"/>
 
                 <Button
                     android:id="@+id/btn_select_from_album_corolla_colors"
@@ -302,7 +302,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@color/ColorDarkGrey" />
+                    style="@style/divider_color" />
 
                 <ImageView
                     android:id="@+id/imv_corolla_colors"
@@ -351,7 +351,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@color/ColorDarkGrey" />
+                    style="@style/divider_color"/>
 
                 <ImageButton
                     android:id="@+id/imb_plant_flourish"
@@ -363,7 +363,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@color/ColorDarkGrey" />
+                    style="@style/divider_color" />
 
                 <Button
                     android:id="@+id/btn_select_from_album_plant_flourish"
@@ -375,7 +375,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@color/ColorDarkGrey" />
+                    style="@style/divider_color"/>
 
                 <ImageView
                     android:id="@+id/imv_plant_flourish"
@@ -425,7 +425,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@color/ColorDarkGrey" />
+                    style="@style/divider_color"/>
 
                 <ImageButton
                     android:id="@+id/imb_stem_color"
@@ -437,7 +437,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@color/ColorDarkGrey" />
+
+                    style="@style/divider_color"/>
 
                 <Button
                     android:id="@+id/btn_select_from_album_stem_color"
@@ -449,7 +450,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@color/ColorDarkGrey" />
+                    style="@style/divider_color" />
 
                 <ImageView
                     android:id="@+id/imv_stem_color"
@@ -499,7 +500,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@color/ColorDarkGrey" />
+                    style="@style/divider_color"/>
 
                 <ImageButton
                     android:id="@+id/imb_natural_fecundity"
@@ -511,7 +512,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@color/ColorDarkGrey" />
+                    style="@style/divider_color" />
 
                 <Button
                     android:id="@+id/btn_select_from_album_natural_fecundity"
@@ -523,7 +524,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@color/ColorDarkGrey" />
+                    style="@style/divider_color" />
 
                 <ImageView
                     android:id="@+id/imv_natural_fecundity"

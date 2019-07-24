@@ -191,7 +191,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/dp_10"
             android:layout_marginBottom="@dimen/dp_10"
-            android:background="@color/ColorDarkGrey" />
+            style="@style/divider_color" />
 
         <Button
             android:id="@+id/btn_compute_average_plant_height"

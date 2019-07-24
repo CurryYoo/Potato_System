@@ -21,7 +21,7 @@
             android:background="@drawable/selector_button"
             android:gravity="center"
             android:padding="8dp"
-            android:textColor="@color/secondary_text"
+            android:textColor="@color/primary_text"
             tools:text="选择" />
 
         <View
@@ -29,7 +29,7 @@
             android:layout_height="0.01dp"
             android:layout_marginStart="@dimen/dp_10"
             android:layout_marginEnd="@dimen/dp_10"
-            android:background="@color/ColorDarkGrey" />
+            style="@style/divider_color" />
     </LinearLayout>
 
     <View
@@ -39,6 +39,6 @@
         android:layout_marginTop="@dimen/dp_10"
         android:layout_marginBottom="@dimen/dp_10"
         android:layout_marginEnd="@dimen/dp_5"
-        android:background="@color/ColorDarkGrey" />
+        style="@style/divider_color"/>
 
 </LinearLayout>

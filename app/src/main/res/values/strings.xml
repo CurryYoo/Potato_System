@@ -14,6 +14,8 @@
         completions."
     </string>
 
+
+    <string name="APPName">种土豆</string>
     //Toast Tip
     <string name="toast_null_error">"未知错误"</string>
     <string name="toast_bigFarm_null_error">"无试验基地信息"</string>

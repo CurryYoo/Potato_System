@@ -304,9 +304,7 @@ public class HomepageFragment extends Fragment {
         farmButton = view.findViewById(R.id.farm_button);
         homepageFarm = view.findViewById(R.id.homepage_farm);
 
-        farmButton.getBackground().setAlpha(100);
-        planFarm.getBackground().setAlpha(20);
-        changeFarmView.getBackground().setAlpha(20);
+        farmButton.getBackground().setAlpha(50);
 
         homepageYears.setPopupBackgroundResource(R.drawable.bg_spinner_drop_down2);
 

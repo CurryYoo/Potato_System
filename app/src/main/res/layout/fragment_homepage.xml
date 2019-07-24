@@ -32,7 +32,7 @@
 
             <Spinner
                 android:id="@+id/homepage_years"
-                android:layout_width="match_parent"
+                android:layout_width="100dp"
                 android:layout_height="@dimen/dp_35"
                 android:layout_marginStart="@dimen/dp_5"
                 android:background="@drawable/selector_10_button"
@@ -45,7 +45,7 @@
             android:layout_width="0.1dp"
             android:layout_height="@dimen/dp_35"
             android:layout_gravity="center_vertical"
-            android:background="@color/ColorDarkGrey" />
+            style="@style/divider_color"/>
 
         <LinearLayout
             android:id="@+id/btn_download"
@@ -78,7 +78,7 @@
             android:layout_width="0.1dp"
             android:layout_height="@dimen/dp_35"
             android:layout_gravity="center_vertical"
-            android:background="@color/ColorDarkGrey" />
+            style="@style/divider_color" />
 
         <LinearLayout
             android:id="@+id/btn_upload"
@@ -167,7 +167,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/dp_3"
                 android:layout_marginBottom="@dimen/dp_3"
-                android:background="@color/ColorDarkGrey" />
+                style="@style/divider_color" />
 
             <LinearLayout
                 android:id="@+id/change_farm_view"

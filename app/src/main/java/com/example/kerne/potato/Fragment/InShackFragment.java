@@ -134,7 +134,7 @@ public class InShackFragment extends Fragment {
                     } else {
                         coverView.setVisibility(View.VISIBLE);
                         inImage.setBackgroundResource(R.drawable.ic_menu_plan);
-                        savePlan.setBackgroundResource(R.drawable.selector_10_button);
+                        savePlan.getBackground().setAlpha(255);
                         if(road!=null) {
                             road.setText("田间小路");
                         }

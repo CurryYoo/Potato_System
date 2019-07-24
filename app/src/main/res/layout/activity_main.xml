@@ -7,7 +7,7 @@
 
     <com.viewpagerindicator.TabPageIndicator
         android:id="@+id/main_indicator"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/StyledIndicators_main" />
 
