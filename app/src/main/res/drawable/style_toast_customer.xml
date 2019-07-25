@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <!-- 设置背景透明度和颜色 -->
-    <solid android:color="@color/ColorWhite" />
+    <solid android:color="@color/color_white" />
     <!-- 设置四个角为弧形 -->
     <corners android:radius="8dp" />
 </shape>

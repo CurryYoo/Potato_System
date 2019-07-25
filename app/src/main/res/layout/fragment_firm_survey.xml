@@ -2,11 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/backGroundColor">
+    android:background="@drawable/background_bottom_right"
+    android:orientation="vertical">
+
     <com.example.kerne.potato.complextable.widget.GridRecyclerView.BetterDoubleGridView
         android:id="@+id/expType_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/transparent"/>
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginStart="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_5"
+        android:background="@color/secondary_background" />
 </LinearLayout>

@@ -2,13 +2,16 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape>
-            <solid android:color="@color/secondary_text" />
+            <solid android:color="@color/primary_background" />
+            <corners android:topLeftRadius="@dimen/dp_10"
+                android:topRightRadius="@dimen/dp_10"/>
         </shape>
     </item>
-    <item
-        android:bottom="1dp">
+    <item>
         <shape>
-            <solid android:color="@color/ColorWhite" />
+            <solid android:color="@color/secondary_background" />
+            <corners android:topLeftRadius="@dimen/dp_10"
+            android:topRightRadius="@dimen/dp_10"/>
         </shape>
     </item>
 </layer-list>

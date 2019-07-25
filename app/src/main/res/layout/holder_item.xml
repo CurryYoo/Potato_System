@@ -18,10 +18,12 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/dp_5"
-            android:background="@drawable/selector_button"
+            android:background="@drawable/selector_trans_button"
             android:gravity="center"
             android:padding="8dp"
-            android:textColor="@color/primary_text"
+            android:textColor="@color/primary_background"
+            android:textStyle="bold"
+            android:textSize="14sp"
             tools:text="选择" />
 
         <View

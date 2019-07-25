@@ -4,29 +4,35 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="primary">#03A9F4</color>
-    <color name="primary_dark">#0288D1</color>
-    <color name="primary_light">#B3E5FC</color>
-    <color name="accent">#4CAF50</color>
-    <color name="primary_text">#212121</color>
-    <color name="secondary_text">#757575</color>
-    <color name="icons">#FFFFFF</color>
-    <color name="divider">#BDBDBD</color>
+    <!--黑色文件夹-->
+    <!--<color name="primary_background">#212121</color>-->
+    <!--<color name="secondary_background">#424242</color>-->
+    <!--<color name="light_background">#10fffff0</color>-->
+    <!--<color name="color_divider">#616161</color>-->
+
+    <!--灰色文件夹-->
+    <color name="primary_background">#616161</color>
+    <color name="secondary_background">#9e9e9e</color>
+    <color name="light_background">#fffff0</color>
+    <color name="primary_text">#fffff0</color>
+    <color name="secondary_text">#d3d3d3</color>
+    <color name="color_farm">#756358</color>
+    <color name="color_field">#068043</color>
+    <color name="color_field2">#AEDD81</color>
+    <color name="color_divider">#BDBDBD</color>
+
+    <color name="color_white">#fffff0</color>
+    <color name="color_grey">#607D8B</color>
+    <color name="color_yellow">#E5B622</color>
+    <color name="color_green">#068043</color>
+    <color name="color_red">#e53935</color>
+    <color name="color_blue">#2196f3</color>
 
 
-    <color name="ColorWhite">#FFFFFF</color>
-    <color name="colorGrey">#607D8B</color>
-    <color name="colorOrange">#E64A19</color>
-    <color name="colorGreen">#4CAF50</color>
-    <color name="colorRed">#D32F2F</color>
-    <color name="colorBlue">#0288D1</color>
-    <color name="colorPink">#E91E63</color>
-    <color name="backGroundColor">#F5F5F5</color>
-    <color name="ColorPressed">#D3D3D3</color>
-    <color name="ColorBlack">#000000</color>
-
-    <color name="ColorDarkGrey">#D3D3D3</color>
-    <color name="ColorFarm">#757575</color>
+    <color name="light_text">#BEC4DC</color>
+    <color name="color_pressed">#616161</color>
+    <color name="color_black">#000000</color>
+    <color name="color_dark_grey">#D3D3D3</color>
 
     <!-- 透明 -->
     <color name="transparent">#00000000</color>
@@ -35,49 +41,4 @@
     <color name="ProgressWheel_color">#489df3</color>
     <color name="line_color">#dadada</color>
 
-
-
-    <color name="actionsheet_blue">#037BFF</color>
-    <color name="actionsheet_gray">#8F8F8F</color>
-    <color name="actionsheet_red">#FD4A2E</color>
-    <color name="alertdialog_line">#c6c6c6</color>
-    <color name="bg_grey">#f2f2f2</color>
-    <color name="btn_text_disable_color">#66808080</color>
-    <color name="dialog_action_color">#ff5800</color>
-    <color name="dialog_black">#000000</color>
-    <color name="dialog_cancel">#7e7e7e</color>
-    <color name="dialog_confirm_btn_bg_color">#fdf3e8</color>
-    <color name="dialog_confirm_btn_bg_pressed_color">#66fdf3e8</color>
-    <color name="dialog_gray">#808080</color>
-    <color name="dialog_gray_bg">#dddddd</color>
-    <color name="dialog_gray_text">#333333</color>
-    <color name="dialog_press_normal">#F6F6F6</color>
-    <color name="dialog_pressed">#E0E0E0</color>
-    <color name="dialog_white">#ffffff</color>
-    <color name="line_grey">#d3d3d3</color>
-    <color name="pressed_while">#D3D3D3</color>
-    <color name="sdl_bright_foreground_disabled_holo_dark">#ff4c4c4c</color>
-    <color name="sdl_bright_foreground_disabled_holo_light">#ffb2b2b2</color>
-    <color name="sdl_bright_foreground_holo_dark">#fff3f3f3</color>
-    <color name="sdl_bright_foreground_holo_light">#ff000000</color>
-    <color name="sdl_button_focused_dark">#4C0099cc</color>
-    <color name="sdl_button_focused_light">#4C33B5E5</color>
-    <color name="sdl_button_normal_dark">@android:color/transparent</color>
-    <color name="sdl_button_normal_light">@android:color/transparent</color>
-    <color name="sdl_button_pressed_dark">#990099cc</color>
-    <color name="sdl_button_pressed_light">#9933B5E5</color>
-    <color name="sdl_button_separator_dark">#12ffffff</color>
-    <color name="sdl_button_separator_light">#25000000</color>
-    <color name="sdl_button_text_dark">@color/sdl_primary_text_holo_dark</color>
-    <color name="sdl_button_text_light">@color/sdl_primary_text_holo_light</color>
-    <color name="sdl_list_item_separator_dark">#eeffffff</color>
-    <color name="sdl_list_item_separator_light">#ee000000</color>
-    <color name="sdl_message_text_dark">#FFFFFF</color>
-    <color name="sdl_message_text_light">#333333</color>
-    <color name="sdl_title_separator_dark">#ff0099cc</color>
-    <color name="sdl_title_separator_light">#33B5E5</color>
-    <color name="sdl_title_text_dark">#ff0099cc</color>
-    <color name="sdl_title_text_light">#33B5E5</color>
-    <color name="text_dark_grey">#222222</color>
-    <color name="text_middle_grey">#858585</color>
 </resources>

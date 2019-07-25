@@ -1,136 +1,118 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backGroundColor"
+    android:background="@color/light_background"
     android:orientation="horizontal">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="vertical">
 
 
         <EditText
             android:id="@+id/yield_monitoring_of_small_plant1"
-            style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp"
-            android:layout_marginTop="@dimen/dp_20"
-            android:inputType="number" />
+            style="@style/style_item_edittext"/>
 
         <View
             style="@style/view_divider_style"
-            android:layout_marginStart="5dp" />
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp" />
 
 
         <EditText
             android:id="@+id/yield_monitoring_of_small_plant3"
-            style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp"
-            android:layout_marginTop="@dimen/dp_20"
-            android:inputType="number"/>
+            style="@style/style_item_edittext"/>
 
         <View
             style="@style/view_divider_style"
-            android:layout_marginStart="5dp" />
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp" />
 
 
         <EditText
             android:id="@+id/yield_monitoring_of_small_plant5"
-            style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp"
-            android:layout_marginTop="@dimen/dp_20"
-            android:inputType="number" />
+            style="@style/style_item_edittext"/>
 
         <View
             style="@style/view_divider_style"
-            android:layout_marginStart="5dp" />
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp" />
 
 
         <EditText
             android:id="@+id/yield_monitoring_of_small_plant7"
-            style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp"
-            android:layout_marginTop="@dimen/dp_20"
-            android:inputType="number" />
+            style="@style/style_item_edittext"/>
 
         <View
             style="@style/view_divider_style"
-            android:layout_marginStart="5dp"/>
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
 
 
         <EditText
             android:id="@+id/yield_monitoring_of_small_plant9"
-            style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp"
-            android:layout_marginTop="@dimen/dp_20"
-            android:inputType="number" />
+            style="@style/style_item_edittext" />
 
         <View
             style="@style/view_divider_style"
-            android:layout_marginStart="5dp"/>
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <EditText
             android:id="@+id/yield_monitoring_of_small_plant2"
-            style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp"
-            android:layout_marginTop="@dimen/dp_20"
-            android:inputType="number"/>
+            style="@style/style_item_edittext"/>
 
         <View
             style="@style/view_divider_style"
-            android:layout_marginStart="5dp"/>
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
 
         <EditText
             android:id="@+id/yield_monitoring_of_small_plant4"
-            style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp"
-            android:layout_marginTop="@dimen/dp_20"
-            android:inputType="number" />
+            style="@style/style_item_edittext"/>
 
         <View
             style="@style/view_divider_style"
-            android:layout_marginStart="5dp" />
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
 
 
         <EditText
             android:id="@+id/yield_monitoring_of_small_plant6"
-            style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp"
-            android:layout_marginTop="@dimen/dp_20"
-            android:inputType="number" />
+            style="@style/style_item_edittext" />
 
         <View
             style="@style/view_divider_style"
-            android:layout_marginStart="5dp"/>
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
 
         <EditText
             android:id="@+id/yield_monitoring_of_small_plant8"
-            style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp"
-            android:layout_marginTop="@dimen/dp_20"
-            android:inputType="number" />
+            style="@style/style_item_edittext" />
 
         <View
             style="@style/view_divider_style"
-            android:layout_marginStart="5dp" />
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
 
 
         <EditText
             android:id="@+id/yield_monitoring_of_small_plant10"
-            style="@style/style_item_basicinfo_edittext"
-            android:layout_width="150dp"
-            android:layout_marginTop="@dimen/dp_20"
-            android:inputType="number" />
+            style="@style/style_item_edittext"/>
 
         <View
             style="@style/view_divider_style"
-            android:layout_marginStart="5dp" />
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp" />
     </LinearLayout>
 
 </LinearLayout>

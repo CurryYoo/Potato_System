@@ -110,8 +110,8 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
     private void initToolBar() {
         titleText.setText(bigFarmName);
         leftOneButton.setBackgroundResource(R.drawable.left_back);
-        rightOneButton.setBackgroundResource(R.drawable.ic_menu_home);
-        rightTwoButton.setBackgroundResource(R.drawable.firm_plan);
+        rightOneButton.setBackgroundResource(R.drawable.homepage);
+        rightTwoButton.setBackgroundResource(R.drawable.farm_plan);
 
 
         leftOneLayout.setOnClickListener(toolBarOnClickListener);

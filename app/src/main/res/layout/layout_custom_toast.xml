@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/style_toast_customer"
         android:gravity="center"
-        android:textColor="@color/secondary_text"
+        android:textColor="@color/secondary_background"
         android:text="@string/search_species"
         android:paddingStart="@dimen/dp_15"
         android:paddingEnd="@dimen/dp_15"

@@ -3,7 +3,7 @@
     android:id="@+id/title_bar"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:background="@color/ColorWhite"
+    android:background="@color/primary_background"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
@@ -58,7 +58,7 @@
         android:layout_marginBottom="@dimen/dp_5"
         android:layout_weight="12"
         android:gravity="center"
-        android:textColor="@color/secondary_text"
+        android:textColor="@color/primary_text"
         android:textSize="15sp"
         android:textStyle="bold" />
 

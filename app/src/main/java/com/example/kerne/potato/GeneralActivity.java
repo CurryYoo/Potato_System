@@ -184,7 +184,7 @@ public class GeneralActivity extends AppCompatActivity {
     private void initToolBar() {
         titleText.setText(farmName);
         leftOneButton.setBackgroundResource(R.drawable.left_back);
-        rightOneButton.setBackgroundResource(R.drawable.ic_menu_home);
+        rightOneButton.setBackgroundResource(R.drawable.homepage);
 
         leftOneLayout.setOnClickListener(toolBarOnClickListener);
         rightOneLayout.setOnClickListener(toolBarOnClickListener);

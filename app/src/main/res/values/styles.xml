@@ -6,7 +6,7 @@
          
         <item name="colorPrimary">@color/secondary_text</item>
         <item name="colorPrimaryDark">@color/secondary_text</item>
-        <item name="colorAccent">@color/colorGreen</item> 
+        <item name="colorAccent">@color/primary_background</item> 
     </style>
 
     <!-- 无边框loding -->
@@ -27,8 +27,8 @@
         <item name="android:layout_margin">3dp</item>
         <item name="android:maxLines">2</item>
         <item name="android:textColor">@color/secondary_text</item>
-        <item name="android:textColorHint">@color/ColorDarkGrey</item>
-        <item name="android:background">@drawable/selector_button</item>
+        <item name="android:textColorHint">@color/light_background</item>
+        <item name="android:background">@drawable/selector_trans_button</item>
         <item name="android:visibility">gone</item>
     </style>
 
@@ -52,35 +52,49 @@
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:textColor">@color/primary_background</item>
     </style>
 
     <style name="style_item_basicinfo_edittext">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">15dp</item>
-        <item name="android:layout_marginTop">2dp</item>
-        <item name="android:layout_marginBottom">2dp</item>
-        <item name="android:paddingTop">6dp</item>
-        <item name="android:paddingBottom">6dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
         <item name="android:background">@null</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textColor">@color/primary_background</item>
+    </style>
+
+    <style name="style_item_edittext">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:inputType">number</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingStart">@dimen/dp_10</item>
+        <item name="android:layout_marginEnd">5dp</item>
+        <item name="android:background">@null</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/primary_background</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
     <style name="view_divider_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.01dp</item>
-        <item name="android:background">@color/line_grey</item>
+        <item name="android:background">@color/color_divider</item>
     </style>
 
-    <style name="view_vertical_devider_style">
+    <style name="view_vertical_divider_style">
         <item name="android:layout_width">0.01dp</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@drawable/bg_devider</item>
+        <item name="android:background">@drawable/bg_divider</item>
     </style>
 
 
     //一般的indicator的style
+
     <style name="StyledIndicators" parent="@android:style/Theme.Light">
         <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator</item>
     </style>
@@ -104,6 +118,7 @@
     </style>
 
     //首页的indicator的style
+
     <style name="StyledIndicators_main" parent="@android:style/Theme.Light">
         <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator_main</item>
     </style>
@@ -160,8 +175,7 @@
         <item name="android:layout_marginEnd">@dimen/dp_3</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/secondary_text</item>
-        <item name="android:background">@drawable/selector_10_button</item>
+        <item name="android:background">@drawable/selector_trans_button_5</item>
         <item name="android:scrollbars">none</item>
     </style>
 
@@ -171,8 +185,7 @@
         <item name="android:layout_marginStart">15dp</item>
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/secondary_text</item>
-        <item name="android:background">@drawable/selector_10_button</item>
+        <item name="android:background">@drawable/selector_5_button_light</item>
         <item name="android:elevation">2dp</item>
         <item name="android:scrollbars">none</item>
     </style>
@@ -184,7 +197,7 @@
         <item name="android:padding">3dp</item>
         <item name="android:layout_marginStart">3dp</item>
         <item name="android:layout_marginEnd">3dp</item>
-        <item name="android:background">@drawable/selector_5_button</item>
+        <item name="android:background">@drawable/selector_trans_button_5</item>
     </style>
 
     //item_basic_info页面拍照style
@@ -194,7 +207,7 @@
         <item name="android:layout_height">@dimen/dp_30</item>
         <item name="android:layout_marginStart">3dp</item>
         <item name="android:layout_marginEnd">3dp</item>
-        <item name="android:background">@drawable/selector_5_button</item>
+        <item name="android:background">@drawable/selector_trans_button_5</item>
     </style>
 
     //item_basic_info页面相册style
@@ -205,8 +218,8 @@
         <item name="android:layout_marginStart">3dp</item>
         <item name="android:layout_marginEnd">3dp</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/secondary_text</item>
-        <item name="android:background">@drawable/selector_5_button</item>
+        <item name="android:textColor">@color/primary_background</item>
+        <item name="android:background">@drawable/selector_trans_button_5</item>
     </style>
 
     <style name="style_basic_calculate">
@@ -215,26 +228,26 @@
         <item name="android:layout_marginStart">3dp</item>
         <item name="android:layout_marginEnd">3dp</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/secondary_text</item>
-        <item name="android:background">@drawable/selector_5_button</item>
+        <item name="android:textColor">@color/primary_background</item>
+        <item name="android:background">@drawable/bg_10_light</item>
         <item name="android:elevation">2dp</item>
     </style>
 
     <style name="save_data_activity_calculate" parent="@style/Widget.AppCompat.Button.Borderless">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">45dp</item>
         <item name="android:layout_marginTop">@dimen/dp_10</item>
         <item name="android:layout_marginBottom">@dimen/dp_10</item>
-        <item name="android:layout_marginStart">@dimen/dp_10</item>
+        <item name="android:layout_marginStart">@dimen/dp_5</item>
         <item name="android:layout_marginEnd">5dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/secondary_text</item>
-        <item name="android:background">@drawable/selector_10_button</item>
+        <item name="android:textColor">@color/primary_background</item>
+        <item name="android:background">@drawable/selector_10_button_light</item>
     </style>
 
     <style name="divider_color">
-        <item name="android:background">@color/ColorDarkGrey</item>
+        <item name="android:background">@color/color_divider</item>
     </style>
 
 

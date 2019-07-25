@@ -8,13 +8,13 @@
     <!-- 保存按钮 -->
     <item
         android:id="@+id/save_off_seq"
-        android:icon="@drawable/ic_menu_plan"
+        android:icon="@drawable/edit"
         android:title="品种规划"
         app:showAsAction="always" />
     <!-- 主页按钮 -->
     <item
         android:id="@+id/back_home_seq"
-        android:icon="@drawable/ic_menu_home"
+        android:icon="@drawable/homepage"
         android:title="首页"
         app:showAsAction="always" />
 </menu>

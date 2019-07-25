@@ -3,20 +3,20 @@
     <item android:left="@dimen/dp_50"
         android:right="60dp">
         <shape>
-            <solid android:color="@color/colorOrange" />/>
+            <solid android:color="@color/color_yellow" />/>
         </shape>
     </item>
     <item android:bottom="60dp"
         android:top="50dp">
         <shape>
-            <solid android:color="@color/colorOrange" />/>
+            <solid android:color="@color/color_yellow" />/>
         </shape>
     </item>
     <item
         android:bottom="@dimen/dp_10"
         android:right="@dimen/dp_10">
         <shape>
-            <solid android:color="@color/ColorWhite" />
+            <solid android:color="@color/color_white" />
         </shape>
     </item>
 </layer-list>

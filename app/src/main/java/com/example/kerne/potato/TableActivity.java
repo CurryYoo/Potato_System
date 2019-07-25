@@ -47,6 +47,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
+import static com.example.kerne.potato.Util.ChangeStatusBar.setStatusBarColor;
 import static com.example.kerne.potato.Util.CustomToast.showShortToast;
 import static com.example.kerne.potato.Util.ShowKeyBoard.delayShowSoftKeyBoard;
 
@@ -131,9 +132,9 @@ public class TableActivity extends AppCompatActivity {
                 case R.id.right_one_layout:
                     if (status == STATUS_READ) {
                         status = STATUS_EDIT;
-                        rightOneButton.setBackgroundResource(R.drawable.ic_menu_no_save);
+                        rightOneButton.setBackgroundResource(R.drawable.no_save);
                         titleText.setText(getText(R.string.species_data_plan));
-                        titleText.setTextColor(getResources().getColor(R.color.colorOrange));
+                        titleText.setTextColor(getResources().getColor(R.color.color_yellow));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             rightOneLayout.setTooltipText(getResources().getText(R.string.save_data));
                         }
@@ -141,7 +142,7 @@ public class TableActivity extends AppCompatActivity {
                         descriptionLayout.setClickable(true);
                         showShortToast(TableActivity.this, mContext.getString(R.string.enter_species_plan_mode));
                     } else {
-                        rightOneButton.setBackgroundResource(R.drawable.ic_menu_plan);
+                        rightOneButton.setBackgroundResource(R.drawable.edit);
                         titleText.setText(getString(R.string.species_data));
                         titleText.setTextColor(getResources().getColor(R.color.secondary_text));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -220,7 +221,7 @@ public class TableActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);setStatusBarColor(this,R.color.primary_background);
         setContentView(R.layout.activity_table);
         ButterKnife.bind(this);
         sp = getSharedPreferences("update_flag", Context.MODE_PRIVATE);
@@ -341,10 +342,10 @@ public class TableActivity extends AppCompatActivity {
     private void initToolBar() {
         titleText.setText(getString(R.string.species_data));
         leftOneButton.setBackgroundResource(R.drawable.left_back);
-        rightOneButton.setBackgroundResource(R.drawable.ic_menu_plan);
+        rightOneButton.setBackgroundResource(R.drawable.edit);
 
-        leftOneLayout.setBackgroundResource(R.drawable.selector_button);
-        rightOneLayout.setBackgroundResource(R.drawable.selector_button);
+        leftOneLayout.setBackgroundResource(R.drawable.selector_trans_button);
+        rightOneLayout.setBackgroundResource(R.drawable.selector_trans_button);
         leftOneLayout.setOnClickListener(toolBarOnClickListener);
         rightOneLayout.setOnClickListener(toolBarOnClickListener);
         confirmButton.setOnClickListener(toolBarOnClickListener);
@@ -392,7 +393,7 @@ public class TableActivity extends AppCompatActivity {
         pulltorefreshview = findViewById(R.id.pulltorefreshview);
         tv_table_title_left = findViewById(R.id.tv_table_title_left);
         tv_table_title_left.setText(expType);
-        tv_table_title_left.setTextColor(getResources().getColor(R.color.colorOrange));
+        tv_table_title_left.setTextColor(getResources().getColor(R.color.color_yellow));
         leftListView = findViewById(R.id.left_container_listview);
         rightListView = findViewById(R.id.right_container_listview);
         right_title_container = findViewById(R.id.right_title_container);

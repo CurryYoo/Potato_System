@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backGroundColor"
+    android:background="@color/light_background"
     android:orientation="vertical">
 
     <LinearLayout
@@ -15,7 +15,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_species_id" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <EditText
             android:id="@+id/edt_species_id"
@@ -39,7 +39,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_experiment_type" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <EditText
             android:id="@+id/edt_experiment_type"
@@ -62,7 +62,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_sowing_period_input" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <TextView
             android:id="@+id/sowing_period_input"
@@ -86,7 +86,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_emergence_period" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <TextView
             android:id="@+id/emergence_period"
@@ -109,7 +109,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_rate_of_emergence" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <EditText
             android:id="@+id/edt_rate_of_emergence"
@@ -131,7 +131,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_squaring_period" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <TextView
             android:id="@+id/squaring_period"
@@ -154,14 +154,14 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_flowering_period" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <TextView
             android:id="@+id/flowering_period"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
             android:hint="@string/click_edit_hint"
-            android:inputType="none" />
+            android:inputType="none"/>
     </LinearLayout>
 
     <View style="@style/view_divider_style" />
@@ -177,7 +177,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_colors" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <HorizontalScrollView
             android:layout_width="wrap_content"
@@ -190,7 +190,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/dp_2"
                 android:layout_marginBottom="@dimen/dp_2"
-                android:background="@drawable/bg_main"
+                android:background="@drawable/bg_10_light"
                 android:elevation="@dimen/dp_2"
                 android:gravity="center_vertical">
 
@@ -250,7 +250,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_corolla_colors" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <HorizontalScrollView
             android:layout_width="match_parent"
@@ -263,7 +263,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/dp_2"
                 android:layout_marginBottom="@dimen/dp_2"
-                android:background="@drawable/bg_main"
+                android:background="@drawable/bg_10_light"
                 android:elevation="@dimen/dp_2"
                 android:gravity="center_vertical">
 
@@ -323,7 +323,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_plant_flourish" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <HorizontalScrollView
             android:layout_width="match_parent"
@@ -336,7 +336,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/dp_2"
                 android:layout_marginBottom="@dimen/dp_2"
-                android:background="@drawable/bg_main"
+                android:background="@drawable/bg_10_light"
                 android:elevation="@dimen/dp_2"
                 android:gravity="center_vertical">
 
@@ -397,7 +397,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_stem_color" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <HorizontalScrollView
             android:layout_width="match_parent"
@@ -410,7 +410,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/dp_2"
                 android:layout_marginBottom="@dimen/dp_2"
-                android:background="@drawable/bg_main"
+                android:background="@drawable/bg_10_light"
                 android:elevation="@dimen/dp_2"
                 android:gravity="center_vertical">
 
@@ -472,7 +472,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_natural_fecundity" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <HorizontalScrollView
             android:layout_width="match_parent"
@@ -485,7 +485,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/dp_2"
                 android:layout_marginBottom="@dimen/dp_2"
-                android:background="@drawable/bg_main"
+                android:background="@drawable/bg_10_light"
                 android:elevation="@dimen/dp_2"
                 android:gravity="center_vertical">
 
@@ -546,7 +546,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_mature_period" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <TextView
             android:id="@+id/mature_period"
@@ -569,7 +569,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_growing_days" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <EditText
             android:id="@+id/growing_days"
@@ -599,7 +599,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_tuber_uniformity" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <Spinner
             android:id="@+id/tuber_uniformity"
@@ -622,7 +622,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_tuber_shape" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <Spinner
             android:id="@+id/tuber_shape"
@@ -655,7 +655,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_potato_skin_smoothness" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <Spinner
             android:id="@+id/potato_skin_smoothness"
@@ -688,7 +688,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_eye" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <Spinner
             android:id="@+id/eye"
@@ -721,7 +721,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_skin_color" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <Spinner
             android:id="@+id/skin_color"
@@ -754,7 +754,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_flesh_color" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <Spinner
             android:id="@+id/flesh_color"
@@ -787,7 +787,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_whether_to_be_included" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <RadioGroup
             android:id="@+id/whether_to_be_included"
@@ -826,7 +826,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_remark" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <EditText
             android:id="@+id/remark"
@@ -848,7 +848,7 @@
             style="@style/style_item_basicinfo_textview"
             android:text="@string/info_num_of_harvested_plants" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <EditText
             android:id="@+id/num_of_harvested_plants"
@@ -871,7 +871,7 @@
             android:layout_width="160dp"
             android:text="@string/info_num_of_large_and_medium_potatoes" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <EditText
             android:id="@+id/num_of_large_and_medium_potatoes"
@@ -894,7 +894,7 @@
             android:layout_width="160dp"
             android:text="@string/info_weight_of_large_and_medium_potatoes" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <EditText
             android:id="@+id/weight_of_large_and_medium_potatoes"
@@ -917,7 +917,7 @@
             android:layout_width="160dp"
             android:text="@string/info_num_of_small_potatoes" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <EditText
             android:id="@+id/num_of_small_potatoes"
@@ -940,7 +940,7 @@
             android:layout_width="160dp"
             android:text="@string/info_weight_of_small_potatoes" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <EditText
             android:id="@+id/weight_of_small_potatoes"
@@ -963,7 +963,7 @@
             android:layout_width="160dp"
             android:text="@string/info_rate_of_economic_potato" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <EditText
             android:id="@+id/rate_of_economic_potato"
@@ -994,7 +994,7 @@
             android:layout_width="160dp"
             android:text="@string/info_small_section_yield1" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <EditText
             android:id="@+id/small_section_yield1"
@@ -1017,7 +1017,7 @@
             android:layout_width="160dp"
             android:text="@string/info_small_section_yield2" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <EditText
             android:id="@+id/small_section_yield2"
@@ -1040,7 +1040,7 @@
             android:layout_width="160dp"
             android:text="@string/info_small_section_yield3" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <EditText
             android:id="@+id/small_section_yield3"
@@ -1063,7 +1063,7 @@
             android:layout_width="160dp"
             android:text="@string/info_per_mu_yield" />
 
-        <View style="@style/view_vertical_devider_style" />
+        <View style="@style/view_vertical_divider_style" />
 
         <EditText
             android:id="@+id/per_mu_yield"

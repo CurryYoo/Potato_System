@@ -114,7 +114,7 @@ public class OutShackFragment extends Fragment {
                 case R.id.save_plan:
                     if (!flag) {
                         coverView.setVisibility(View.GONE);
-                        outImage.setBackgroundResource(R.drawable.ic_menu_no_save);
+                        outImage.setBackgroundResource(R.drawable.no_save);
 //                        savePlan.getBackground().setAlpha(50);
                         if(road!=null) {
                             road.setText("编辑模式");
@@ -122,7 +122,7 @@ public class OutShackFragment extends Fragment {
                         flag = true;
                     } else {
                         coverView.setVisibility(View.VISIBLE);
-                        outImage.setBackgroundResource(R.drawable.ic_menu_plan);
+                        outImage.setBackgroundResource(R.drawable.edit);
 //                        savePlan.getBackground().setAlpha(255);
                         if(road!=null) {
                             road.setText("田间小路");
@@ -155,7 +155,8 @@ public class OutShackFragment extends Fragment {
         sp = self.getSharedPreferences("update_flag", Context.MODE_PRIVATE);
         editor = sp.edit();
         unbinder = ButterKnife.bind(this, view);
-        outImage.setBackgroundResource(R.drawable.ic_menu_plan);
+        outImage.setBackgroundResource(R.drawable.edit);
+        savePlan.getBackground().setAlpha(100);
 
         coverView.setOnClickListener(null);
         savePlan.setOnClickListener(onClickListener);

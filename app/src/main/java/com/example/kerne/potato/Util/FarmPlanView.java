@@ -65,9 +65,9 @@ public class FarmPlanView {
                 break;
         }
         roadTextView.setLayoutParams(layoutParams);
-        roadTextView.setBackgroundColor(mContext.getResources().getColor(R.color.ColorDarkGrey));
+        roadTextView.setBackgroundColor(mContext.getResources().getColor(R.color.secondary_background));
         roadTextView.setText("田间小路");
-        roadTextView.setTextColor(Color.WHITE);
+        roadTextView.setTextColor(mContext.getResources().getColor(R.color.color_farm));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             roadTextView.setAutoSizeTextTypeUniformWithConfiguration(8,16,1, TypedValue.COMPLEX_UNIT_SP);
@@ -99,11 +99,10 @@ public class FarmPlanView {
                         layoutParams.topMargin = (int) (btn_y * farmHeight);
                         layoutParams.leftMargin = (int) (btn_x * farmWidth);
                         textView.setLayoutParams(layoutParams);
-                        textView.setBackgroundColor(mContext.getResources().getColor(R.color.ColorDarkGrey));
                         textView.setText(mJsonList.get(i).getString("name"));
-                        textView.setTextColor(Color.WHITE);
+                        textView.setTextColor(mContext.getResources().getColor(R.color.color_white));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            textView.setAutoSizeTextTypeUniformWithConfiguration(8,15,1, TypedValue.COMPLEX_UNIT_SP);
+                            textView.setAutoSizeTextTypeUniformWithConfiguration(5,13,1, TypedValue.COMPLEX_UNIT_SP);
                         }else {
                             textView.setTextSize(9);
                         }
@@ -127,11 +126,10 @@ public class FarmPlanView {
                         layoutParams.topMargin = (int) (btn_y * farmHeight);
                         layoutParams.leftMargin = (int) (btn_x * farmWidth);
                         textView.setLayoutParams(layoutParams);
-                        textView.setBackgroundColor(mContext.getResources().getColor(R.color.ColorDarkGrey));
                         textView.setText(mJsonList.get(i).getString("expType"));
-                        textView.setTextColor(Color.WHITE);
+                        textView.setTextColor(mContext.getResources().getColor(R.color.color_white));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            textView.setAutoSizeTextTypeUniformWithConfiguration(8,15,1, TypedValue.COMPLEX_UNIT_SP);
+                            textView.setAutoSizeTextTypeUniformWithConfiguration(5,13,1, TypedValue.COMPLEX_UNIT_SP);
                         }else {
                             textView.setTextSize(9);
                         }

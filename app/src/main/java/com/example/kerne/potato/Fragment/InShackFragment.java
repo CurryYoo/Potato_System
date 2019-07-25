@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.kerne.potato.MainActivity;
 import com.example.kerne.potato.R;
 import com.example.kerne.potato.Util.FarmPlanView;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
@@ -128,7 +127,7 @@ public class InShackFragment extends Fragment {
                 case R.id.save_plan:
                     if (!flag) {
                         coverView.setVisibility(View.GONE);
-                        inImage.setBackgroundResource(R.drawable.ic_menu_no_save);
+                        inImage.setBackgroundResource(R.drawable.no_save);
 //                        savePlan.getBackground().setAlpha(50);
                         if (road != null) {
                             road.setText("编辑模式");
@@ -136,7 +135,7 @@ public class InShackFragment extends Fragment {
                         flag = true;
                     } else {
                         coverView.setVisibility(View.VISIBLE);
-                        inImage.setBackgroundResource(R.drawable.ic_menu_plan);
+                        inImage.setBackgroundResource(R.drawable.edit);
 //                        savePlan.getBackground().setAlpha(255);
                         if (road != null) {
                             road.setText("田间小路");
@@ -180,7 +179,8 @@ public class InShackFragment extends Fragment {
         sp = self.getSharedPreferences("update_flag", Context.MODE_PRIVATE);
         editor = sp.edit();
         unbinder = ButterKnife.bind(this, view);
-        inImage.setBackgroundResource(R.drawable.ic_menu_plan);
+        inImage.setBackgroundResource(R.drawable.edit);
+        savePlan.getBackground().setAlpha(100);
 
         coverView.setOnClickListener(null);
         savePlan.setOnClickListener(onClickListener);

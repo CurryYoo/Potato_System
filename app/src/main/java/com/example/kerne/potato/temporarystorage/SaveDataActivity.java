@@ -23,7 +23,6 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,6 +48,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
+import static com.example.kerne.potato.Util.ChangeStatusBar.setStatusBarColor;
 import static com.example.kerne.potato.Util.CustomToast.showShortToast;
 import static com.example.kerne.potato.Util.ThumbImage.getImageThumbnail;
 import static com.example.kerne.potato.temporarystorage.RealPath.getRealPathFromUri;
@@ -620,6 +620,7 @@ public class SaveDataActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Fresco.initialize(this);
         super.onCreate(savedInstanceState);
+        setStatusBarColor(this,R.color.primary_background);
         setContentView(R.layout.activity_commit);
         ButterKnife.bind(this);
         sp = getSharedPreferences("update_flag", Context.MODE_PRIVATE);
@@ -656,31 +657,29 @@ public class SaveDataActivity extends AppCompatActivity {
     private void initView() {
         view_basic = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_basicinfo, null);
         InfoItemBar mbar_basic = new InfoItemBar(SaveDataActivity.this, getString(R.string.item_bar_basic));
-        mbar_basic.setColor(getResources().getDrawable(R.drawable.bg_item_bar_basic_info,null));
+        mbar_basic.setColor(getResources().getDrawable(R.drawable.bg_item_bar_top,null));
         mbar_basic.addView(view_basic);
         mbar_basic.setShow(true);
         mLinearLayout.addView(mbar_basic);
         view_height = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_height, null);
         InfoItemBar mbar_height = new InfoItemBar(SaveDataActivity.this, getString(R.string.item_bar_height));
-        mbar_height.setColor(getResources().getDrawable(R.drawable.bg_item_bar_height,null));
         mbar_height.addView(view_height);
         mbar_height.setShow(true);
         mLinearLayout.addView(mbar_height);
         view_branch = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_branch, null);
         InfoItemBar mbar_branch = new InfoItemBar(SaveDataActivity.this, getString(R.string.item_bar_branch));
-        mbar_branch.setColor(getResources().getDrawable(R.drawable.bg_item_bar_branch,null));
+
         mbar_branch.addView(view_branch);
         mbar_branch.setShow(true);
         mLinearLayout.addView(mbar_branch);
         view_big = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_big, null);
         InfoItemBar mbar_big = new InfoItemBar(SaveDataActivity.this, getString(R.string.item_bar_big));
-        mbar_big.setColor(getResources().getDrawable(R.drawable.bg_item_bar_big,null));
+
         mbar_big.addView(view_big);
         mbar_big.setShow(true);
         mLinearLayout.addView(mbar_big);
         view_small = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_small, null);
         InfoItemBar mbar_small = new InfoItemBar(SaveDataActivity.this, getString(R.string.item_bar_small));
-        mbar_small.setColor(getResources().getDrawable(R.drawable.bg_item_bar_small,null));
         mbar_small.addView(view_small);
         mbar_small.setShow(true);
         mLinearLayout.addView(mbar_small);
@@ -1308,12 +1307,12 @@ public class SaveDataActivity extends AppCompatActivity {
     private void initToolBar() {
         titleText.setText(getText(R.string.species_data_pick));
         leftOneButton.setBackgroundResource(R.drawable.left_back);
-        rightOneButton.setBackgroundResource(R.drawable.ic_menu_home);
+        rightOneButton.setBackgroundResource(R.drawable.homepage);
         rightTwoButton.setBackgroundResource(R.drawable.ic_menu_save);
 
-        leftOneLayout.setBackgroundResource(R.drawable.selector_button);
-        rightOneLayout.setBackgroundResource(R.drawable.selector_button);
-        rightTwoLayout.setBackgroundResource(R.drawable.selector_button);
+        leftOneLayout.setBackgroundResource(R.drawable.selector_trans_button);
+        rightOneLayout.setBackgroundResource(R.drawable.selector_trans_button);
+        rightTwoLayout.setBackgroundResource(R.drawable.selector_trans_button);
 
         leftOneLayout.setOnClickListener(toolBarOnClickListener);
         rightOneLayout.setOnClickListener(toolBarOnClickListener);

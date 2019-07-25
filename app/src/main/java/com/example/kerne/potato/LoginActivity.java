@@ -29,6 +29,7 @@ import java.io.IOException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.kerne.potato.Util.ChangeStatusBar.setStatusBarColor;
 import static com.example.kerne.potato.Util.CustomToast.showShortToast;
 import static com.example.kerne.potato.Util.ShowKeyBoard.delayShowSoftKeyBoard;
 
@@ -66,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setStatusBarColor(this,R.color.primary_background);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
@@ -128,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
     private void initToolBar() {
         titleText.setText(getText(R.string.account_log_in));
         leftOneButton.setBackgroundResource(R.drawable.left_back);
-        leftOneLayout.setBackgroundResource(R.drawable.selector_button);
+        leftOneLayout.setBackgroundResource(R.drawable.selector_trans_button);
         leftOneLayout.setOnClickListener(toolBarOnClickListener);
     }
 

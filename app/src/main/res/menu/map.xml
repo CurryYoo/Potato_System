@@ -4,13 +4,13 @@
 
     <item
         android:id="@+id/map_bigfarm"
-        android:icon="@drawable/firm_plan"
+        android:icon="@drawable/farm_plan"
         android:title="地图"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/back_home"
-        android:icon="@drawable/ic_menu_home"
+        android:icon="@drawable/homepage"
         android:title="首页"
         app:showAsAction="always" />
 

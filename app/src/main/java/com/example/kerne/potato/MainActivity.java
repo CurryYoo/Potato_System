@@ -14,17 +14,14 @@ import com.example.kerne.potato.Fragment.FirmSurveyFragment;
 import com.example.kerne.potato.Fragment.HomepageFragment;
 import com.viewpagerindicator.TabPageIndicator;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import static com.example.kerne.potato.Util.ChangeStatusBar.setStatusBarColor;
 
 public class MainActivity extends AppCompatActivity implements HomepageFragment.updateData, HomepageFragment.selectFarm {
 
     public static Fragment homepageFragment;
     public static Fragment firmSurveyFragment;
     public String titles[] = new String[]{"试验田", "试验调查"};
-    @BindView(R.id.main_indicator)
     TabPageIndicator mainIndicator;
-    @BindView(R.id.main_viewpager)
     ViewPager mainViewpager;
     private TabPageIndicatorAdapter mAdpter;
     private int currentPage = 0;
@@ -33,7 +30,9 @@ public class MainActivity extends AppCompatActivity implements HomepageFragment.
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        setStatusBarColor(this,R.color.primary_background);
+        mainIndicator = findViewById(R.id.main_indicator);
+        mainViewpager = findViewById(R.id.main_viewpager);
 
         initView();
     }

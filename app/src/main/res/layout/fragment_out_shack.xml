@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/background_bottom_left">
 
     <LinearLayout
         android:id="@+id/save_plan"
@@ -10,14 +11,14 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/dp_15"
         android:layout_marginEnd="15dp"
-        android:background="@drawable/selector_10_button"
+        android:background="@drawable/selector_10_button_light"
         android:elevation="2dp"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/out_image"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_margin="5dp" />
     </LinearLayout>
 

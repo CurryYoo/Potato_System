@@ -12,7 +12,7 @@
     <!-- 主页按钮 -->
     <item
         android:id="@+id/back_home"
-        android:icon="@drawable/ic_menu_home"
+        android:icon="@drawable/homepage"
         android:title="Home"
         app:showAsAction="always" />
 </menu>

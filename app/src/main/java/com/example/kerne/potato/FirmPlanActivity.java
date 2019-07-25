@@ -1,5 +1,6 @@
 package com.example.kerne.potato;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -21,6 +23,9 @@ import com.viewpagerindicator.TabPageIndicator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
+import static com.example.kerne.potato.Util.ChangeStatusBar.setStatusBarColor;
 
 public class FirmPlanActivity extends AppCompatActivity {
 
@@ -50,6 +55,18 @@ public class FirmPlanActivity extends AppCompatActivity {
                 case R.id.left_one_layout:
                     finish();
                     break;
+                case R.id.right_one_layout:
+                    final SweetAlertDialog tipDialog = new SweetAlertDialog(FirmPlanActivity.this, SweetAlertDialog.NORMAL_TYPE)
+                            .setConfirmText("了解")
+                            .setContentText("点击编辑按钮进入编辑\n模式,编辑模式下可以\n缩放与拖动试验田")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismissWithAnimation();
+                                }
+                            });
+                    tipDialog.show();
+                    break;
                 default:
                     break;
             }
@@ -58,7 +75,7 @@ public class FirmPlanActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);setStatusBarColor(this,R.color.primary_background);
         setContentView(R.layout.activity_firm_plan);
         ButterKnife.bind(this);
         initToolBar();
@@ -67,13 +84,17 @@ public class FirmPlanActivity extends AppCompatActivity {
 
     private void initToolBar() {
         leftOneButton.setBackgroundResource(R.drawable.left_back);
+        rightOneButton.setBackgroundResource(R.drawable.tip);
         titleText.setText(getString(R.string.farm_plan));
 
-        leftOneLayout.setBackgroundResource(R.drawable.selector_button);
+        rightOneLayout.setBackgroundResource(R.drawable.selector_trans_button);
+        leftOneLayout.setBackgroundResource(R.drawable.selector_trans_button);
+        rightOneLayout.setOnClickListener(onClickListener);
         leftOneLayout.setOnClickListener(onClickListener);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             leftOneLayout.setTooltipText(getString(R.string.back_left));
+            rightOneLayout.setTooltipText("提示");
         }
     }
 

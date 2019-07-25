@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backGroundColor"
+    android:background="@color/primary_background"
     android:gravity="center_vertical"
     android:orientation="vertical">
 
@@ -20,6 +20,6 @@
         tools:text="横标题"
         android:layout_marginTop="@dimen/dp_3"
         android:layout_marginBottom="@dimen/dp_3"
-        android:background="@color/backGroundColor"/>
+        android:background="@color/primary_background"/>
 
 </LinearLayout>

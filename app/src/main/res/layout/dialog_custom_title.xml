@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_10"
-        android:textColor="@color/icons"
+        android:textColor="@color/primary_text"
         android:textSize="16sp" />
 
     <TextView
@@ -20,6 +20,6 @@
         android:layout_marginStart="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_5"
         android:text="@string/dialog_picture_operate"
-        android:textColor="@color/divider"
+        android:textColor="@color/secondary_text"
         android:textSize="12sp" />
 </LinearLayout>
