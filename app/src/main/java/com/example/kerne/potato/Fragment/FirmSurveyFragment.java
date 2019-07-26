@@ -58,7 +58,7 @@ public class FirmSurveyFragment extends Fragment {
     public void selectFarm(String bigFarmId) {
         FirmSurveyFragment.bigfarmId = bigFarmId;
         Message msg = new Message();
-        msg.what = CHANGE_VIEW  ;
+        msg.what = CHANGE_VIEW;
         myHandler.sendMessage(msg);
     }
 
@@ -101,9 +101,6 @@ public class FirmSurveyFragment extends Fragment {
                             jsonObject0.put("width", cursor.getInt(cursor.getColumnIndex("width")));
                             jsonObject0.put("type", cursor.getString(cursor.getColumnIndex("type")));
                             jsonObject0.put("bigfarmId", cursor.getString(cursor.getColumnIndex("bigfarmId")));
-//                            jsonObject0.put("bigFarmName", bigFarmName);
-//                            jsonObject0.put("year", year);
-
                             mFieldList.add(jsonObject0);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -126,8 +123,6 @@ public class FirmSurveyFragment extends Fragment {
                             jsonObject0.put("farmlandId", cursor2.getString(cursor2.getColumnIndex("farmlandId")));
                             jsonObject0.put("rows", cursor2.getInt(cursor2.getColumnIndex("rows")));
                             jsonObject0.put("type", "greenhouse");
-//                            jsonObject0.put("bigFarmName", bigFarmName);
-//                            jsonObject0.put("year", year);
                             mFieldList.add(jsonObject0);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -173,10 +168,6 @@ public class FirmSurveyFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
 //        if (isVisibleToUser) {
 //            // 相当于Fragment的onResume
-//            if (update_flag) {
-//                initData();
-//                update_flag = false;
-//            }
 //        } else {
 //            // 相当于Fragment的onPause
 //        }

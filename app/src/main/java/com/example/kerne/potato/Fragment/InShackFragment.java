@@ -56,69 +56,6 @@ public class InShackFragment extends Fragment {
     private Boolean flag = false;//开始时处于不可编辑状态
     private String bigfarmId;
     private List<JSONObject> mFieldList = new ArrayList<>();
-    private View.OnTouchListener moveTouchListenr = new View.OnTouchListener() {
-        int lastX, lastY;
-
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            v.getParent().requestDisallowInterceptTouchEvent(true);
-            int ea = event.getAction();
-            switch (ea) {
-                case MotionEvent.ACTION_DOWN:
-                    v.setBackgroundResource(R.drawable.bg_field_p);
-                    v.setElevation(10);
-                    lastX = (int) event.getRawX();//获取触摸事件触摸位置的原始X坐标
-                    lastY = (int) event.getRawY();
-                    int x = 0, y = 0;
-                    x = v.getLeft();
-                    y = v.getTop();
-                case MotionEvent.ACTION_MOVE:
-                    //event.getRawX();获得移动的位置
-                    int dx = (int) event.getRawX() - lastX;
-                    int dy = (int) event.getRawY() - lastY;
-                    int l = v.getLeft() + dx;
-                    int b = v.getBottom() + dy;
-                    int r = v.getRight() + dx;
-                    int t = v.getTop() + dy;
-
-                    //下面判断移动是否超出屏幕
-                    if (l < 0) {
-                        l = 0;
-                        r = l + v.getWidth();
-                    }
-                    if (t < 0) {
-                        t = 0;
-                        b = t + v.getHeight();
-                    }
-                    if (r > inShackFirm.getWidth()) {
-                        r = inShackFirm.getWidth();
-                        l = r - v.getWidth();
-                    }
-                    if (b > inShackFirm.getHeight()) {
-                        b = inShackFirm.getHeight();
-                        t = b - v.getHeight();
-                    }
-                    v.layout(l, t, r, b);
-                    lastX = (int) event.getRawX();
-                    lastY = (int) event.getRawY();
-                    v.postInvalidate();
-                    break;
-                case MotionEvent.ACTION_UP:
-                    v.setBackgroundResource(R.drawable.bg_field);
-                    v.setElevation(0);
-                    int m = 0, n = 0, main_width = 0, main_height;
-                    m = v.getLeft();
-                    n = v.getTop();
-                    main_width = inShackFirm.getWidth();
-                    main_height = inShackFirm.getHeight();
-
-                    Log.d(TAG + "结束位置", m + "," + n + "," + main_width + "," + main_height);
-                    break;
-            }
-            return true;
-        }
-    };
-    private List<JSONObject> mJsonList = null;
     private TextView road;
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -144,7 +81,8 @@ public class InShackFragment extends Fragment {
                         editor.putBoolean("upload_data", true);
                         editor.apply();
                         showShortToast(self, "保存完成");
-                        //TODO 保存
+
+                        //TODO 保存,只需要更新数据库即可
                     }
                     break;
                 default:
@@ -239,11 +177,7 @@ public class InShackFragment extends Fragment {
         if (inShackFirm != null) {
             FarmPlanView farmPlanView = new FarmPlanView(getContext(), inShackFirm, inShackFirm.getWidth(), inShackFirm.getHeight(), mFieldList);
             road = farmPlanView.createRoad("greenhouse");
-            textViewList = farmPlanView.createField("greenhouse");
-            for (int i = 0; i < textViewList.size(); i++) {
-                textViewList.get(i).setOnTouchListener(moveTouchListenr);
-                textViewList.get(i).setBackgroundResource(R.drawable.bg_field);
-            }
+            textViewList = farmPlanView.createField("greenhouse",FarmPlanView.DRAG_EVENT);
         }
     }
 

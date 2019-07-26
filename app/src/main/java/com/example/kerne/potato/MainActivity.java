@@ -79,11 +79,6 @@ public class MainActivity extends AppCompatActivity implements  HomepageFragment
         }
     }
 
-//    @Override
-//    public void updateData(Boolean update_flag) {
-//        ((FirmSurveyFragment) firmSurveyFragment).setUpdate_flag(update_flag);
-//    }
-
     @Override
     public void selectFarm(String bigFarmId) {
         ((FirmSurveyFragment) firmSurveyFragment).selectFarm(bigFarmId);

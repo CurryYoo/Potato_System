@@ -63,6 +63,9 @@
         <item name="android:background">@null</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/primary_background</item>
+        <item name="android:maxLength">8</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
     </style>
 
     <style name="style_item_edittext">
@@ -78,6 +81,9 @@
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/primary_background</item>
         <item name="android:gravity">center_vertical</item>
+        <item name="android:maxLength">8</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
     </style>
 
     <style name="view_divider_style">

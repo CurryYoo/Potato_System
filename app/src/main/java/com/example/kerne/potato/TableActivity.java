@@ -109,7 +109,6 @@ public class TableActivity extends AppCompatActivity {
     private String fieldId;
     private String expType;
     private String type;
-    private String farmName;
     private String farmlandId;
     private String description;
     private int column;
@@ -235,7 +234,6 @@ public class TableActivity extends AppCompatActivity {
         fieldId = getIntent().getStringExtra("fieldId");
         expType = getIntent().getStringExtra("expType");
         type = getIntent().getStringExtra("type");
-        farmName = getIntent().getStringExtra("farmName");
         farmlandId = getIntent().getStringExtra("farmlandId");
 
         //延迟加载视图
@@ -552,8 +550,6 @@ public class TableActivity extends AppCompatActivity {
                                     Intent intent = new Intent(TableActivity.this, SaveDataActivity.class);
                                     intent.putExtra("speciesId", speciesId);
                                     intent.putExtra("expType", expType);
-                                    //备注信息
-                                    intent.putExtra("farmName", farmName);
                                     if (blockId != null) {
                                         intent.putExtra("blockId", blockId);
                                     } else {

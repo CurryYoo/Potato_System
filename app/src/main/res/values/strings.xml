@@ -18,12 +18,12 @@
     <string name="APPName">种土豆</string>
     //Toast Tip
     <string name="toast_null_error">"未知错误"</string>
-    <string name="toast_bigFarm_null_error">"无试验基地信息"</string>
     <string name="toast_farm_null_error">"无试验田信息"</string>
     <string name="toast_shack_farm_null_error">"无棚内试验田信息"</string>
     <string name="toast_field_null_error">"无试验田规划信息"</string>
     <string name="toast_field_plan_null_error">"试验田尚未规划种植图"</string>
     <string name="toast_species_null_error">"无试验品种信息"</string>
+    <string name="toast_database_null">"请先下载数据"</string>
     <string name="toast_species_click_tip">请填写品种编号</string>
     <string name="toast_log_in">请登录账号</string>
     <string name="toast_upload_data_complete">数据上传完成</string>
@@ -74,7 +74,6 @@
     <string name="download_data_warn">本地数据未上传，下载云端数据将覆盖本地数据，是否继续下载数据？</string>
     <string name="save_data_tip">确定保存？</string>
 
-    <string name="download_big_farm_data">下载试验基地数据</string>
     <string name="download_farm_plan_data">下载试验田规划数据</string>
     <string name="download_farm_data">下载试验田数据</string>
     <string name="download_species_data">下载试验品种数据</string>
@@ -144,6 +143,7 @@
     <string name="remember_password">记住密码</string>
     <string name="log_in">登 录</string>
     <string name="account_password_error">账号或密码无效</string>
+    <string name="account_password_null">账号或密码不能为空</string>
     <string name="log_in_success">登录成功</string>
     <string name="network_normal">网络正常</string>
     <string name="network_wrong">网络异常</string>

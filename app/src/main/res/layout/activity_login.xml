@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary_background">
-    <include layout="@layout/tool_bar"
-        android:id="@+id/tool_bar"/>
+    android:background="@color/primary_background"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar" />
+
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="60dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
@@ -26,20 +29,21 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/dp_20"
-            android:textSize="16sp"
-            android:textColor="@color/secondary_text"
+            android:background="@null"
             android:hint="@string/click_edit_hint"
+            android:maxLength="16"
             android:maxLines="1"
             android:singleLine="true"
-            android:background="@null"/>
+            android:textColor="@color/secondary_text"
+            android:textSize="16sp" />
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style" />
+    <View style="@style/view_divider_style" />
+
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_height="60dp"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
@@ -56,41 +60,43 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/dp_20"
-            android:textSize="16sp"
-            android:textColor="@color/secondary_text"
+            android:background="@null"
             android:hint="@string/click_edit_hint"
+            android:inputType="textPassword"
+            android:maxLength="16"
             android:maxLines="1"
             android:singleLine="true"
-            android:inputType="textPassword"
-            android:background="@null" />
+            android:textColor="@color/secondary_text"
+            android:textSize="16sp" />
     </LinearLayout>
 
-    <View
-        style="@style/view_divider_style" />
+    <View style="@style/view_divider_style" />
+
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_10">
+        android:layout_marginTop="@dimen/dp_10"
+        android:orientation="horizontal">
+
         <CheckBox
             android:id="@+id/remember_pass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_10"/>
+            android:layout_marginStart="@dimen/dp_10" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
             android:text="@string/remember_password"
-            android:textColor="@color/secondary_text"/>
+            android:textColor="@color/secondary_text"
+            android:textSize="14sp" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:gravity="center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
 
         <Button
             android:id="@+id/login"

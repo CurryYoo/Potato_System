@@ -6,9 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -32,7 +30,6 @@ import butterknife.Unbinder;
 import static com.example.kerne.potato.Util.CustomToast.showShortToast;
 
 public class OutShackFragment extends Fragment {
-    private static final String TAG = "CheatGZ";
     @BindView(R.id.save_plan)
     LinearLayout savePlan;
     @BindView(R.id.out_shack_firm)
@@ -48,65 +45,6 @@ public class OutShackFragment extends Fragment {
     SharedPreferences sp;
     SharedPreferences.Editor editor;
     private Boolean flag = false;//开始时处于不可编辑状态
-    private View.OnTouchListener moveTouchListenr = new View.OnTouchListener() {
-        int lastX, lastY;
-
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            v.getParent().requestDisallowInterceptTouchEvent(true);
-            int ea = event.getAction();
-            switch (ea) {
-                case MotionEvent.ACTION_DOWN:
-                    v.setBackgroundResource(R.drawable.bg_field_p);
-                    v.setElevation(10);
-                    lastX = (int) event.getRawX();//获取触摸事件触摸位置的原始X坐标
-                    lastY = (int) event.getRawY();
-                case MotionEvent.ACTION_MOVE:
-                    //event.getRawX();获得移动的位置
-                    int dx = (int) event.getRawX() - lastX;
-                    int dy = (int) event.getRawY() - lastY;
-                    int l = v.getLeft() + dx;
-                    int b = v.getBottom() + dy;
-                    int r = v.getRight() + dx;
-                    int t = v.getTop() + dy;
-
-                    //下面判断移动是否超出屏幕
-                    if (l < 0) {
-                        l = 0;
-                        r = l + v.getWidth();
-                    }
-                    if (t < 0) {
-                        t = 0;
-                        b = t + v.getHeight();
-                    }
-                    if (r > outShackFirm.getWidth()) {
-                        r = outShackFirm.getWidth();
-                        l = r - v.getWidth();
-                    }
-                    if (b > outShackFirm.getHeight()) {
-                        b = outShackFirm.getHeight();
-                        t = b - v.getHeight();
-                    }
-                    v.layout(l, t, r, b);
-                    lastX = (int) event.getRawX();
-                    lastY = (int) event.getRawY();
-                    v.postInvalidate();
-                    break;
-                case MotionEvent.ACTION_UP:
-                    v.setBackgroundResource(R.drawable.bg_field);
-                    v.setElevation(0);
-                    int m = 0, n = 0, main_width = 0, main_height;
-                    m = v.getLeft();
-                    n = v.getTop();
-                    main_width = outShackFirm.getWidth();
-                    main_height = outShackFirm.getHeight();
-
-                    Log.d(TAG + "结束位置", m + "," + n + "," + main_width + "," + main_height);
-                    break;
-            }
-            return true;
-        }
-    };
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -115,7 +53,6 @@ public class OutShackFragment extends Fragment {
                     if (!flag) {
                         coverView.setVisibility(View.GONE);
                         outImage.setBackgroundResource(R.drawable.no_save);
-//                        savePlan.getBackground().setAlpha(50);
                         if(road!=null) {
                             road.setText("编辑模式");
                         }
@@ -123,7 +60,6 @@ public class OutShackFragment extends Fragment {
                     } else {
                         coverView.setVisibility(View.VISIBLE);
                         outImage.setBackgroundResource(R.drawable.edit);
-//                        savePlan.getBackground().setAlpha(255);
                         if(road!=null) {
                             road.setText("田间小路");
                         }
@@ -131,7 +67,7 @@ public class OutShackFragment extends Fragment {
                         editor.putBoolean("upload_data", true);
                         editor.apply();
                         showShortToast(self, "保存完成");
-                        //TODO 保存
+                        //TODO 保存,只需要更新数据库即可
                     }
                     break;
                 default:
@@ -139,7 +75,7 @@ public class OutShackFragment extends Fragment {
             }
         }
     };
-    private List<JSONObject> mJsonList = null;
+    private List<JSONObject> mFieldList = null;
     private TextView road;
     private List<TextView> textViewList;
 
@@ -165,7 +101,7 @@ public class OutShackFragment extends Fragment {
     }
 
     private void initView() {
-        mJsonList = new ArrayList<>();
+        mFieldList = new ArrayList<>();
         try {
             for (int i = 0; i < 3; i++) {
                 JSONObject jsonObject = new JSONObject();
@@ -174,7 +110,7 @@ public class OutShackFragment extends Fragment {
                 jsonObject.put("x", 300000+i*100000);
                 jsonObject.put("y", 300000+i*100000);
                 jsonObject.put("name", "加工鉴定");
-                mJsonList.add(jsonObject);
+                mFieldList.add(jsonObject);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -185,13 +121,9 @@ public class OutShackFragment extends Fragment {
             @Override
             public void run() {
                 if (outShackFirm != null) {
-                    FarmPlanView farmPlanView = new FarmPlanView(getContext(), outShackFirm, outShackFirm.getWidth(), outShackFirm.getHeight(), mJsonList);
+                    FarmPlanView farmPlanView = new FarmPlanView(getContext(), outShackFirm, outShackFirm.getWidth(), outShackFirm.getHeight(), mFieldList);
                     road=farmPlanView.createRoad("common");
-                    textViewList = farmPlanView.createField("common");
-                    for (int i = 0; i < textViewList.size(); i++) {
-                        textViewList.get(i).setOnTouchListener(moveTouchListenr);
-                        textViewList.get(i).setBackgroundResource(R.drawable.bg_field);
-                    }
+                    textViewList = farmPlanView.createField("common",FarmPlanView.DRAG_EVENT);
                 }
             }
         }, 1000); //延迟ms

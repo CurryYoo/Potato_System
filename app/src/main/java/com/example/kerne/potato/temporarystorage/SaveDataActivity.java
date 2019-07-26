@@ -137,13 +137,8 @@ public class SaveDataActivity extends AppCompatActivity {
     LinearLayout PreLoad;
     //需要暂存的各字段
     //品种id
-    private String fieldId;
-    private String fieldName;
     private String speciesId;
     private String expType;
-    private String bigFarmName;
-    private String farmName;
-    private int year;
     private Spinner spnLeafColor = null;
     private Spinner spnCorollaColors = null;
     private Spinner spnPlantFlourish = null;
@@ -631,14 +626,9 @@ public class SaveDataActivity extends AppCompatActivity {
 
         //从上一层品种id和实验类型
         Intent intent_speciesId = getIntent();
-        fieldId = intent_speciesId.getStringExtra("fieldId");
-        fieldName = intent_speciesId.getStringExtra("fieldName");
         speciesId = intent_speciesId.getStringExtra("speciesId");
         expType = intent_speciesId.getStringExtra("expType");
         blockId = intent_speciesId.getStringExtra("blockId");
-        bigFarmName = intent_speciesId.getStringExtra("bigFarmName");
-        farmName = intent_speciesId.getStringExtra("farmName");
-        year = intent_speciesId.getIntExtra("year", 1970);
 
         initToolBar();
 

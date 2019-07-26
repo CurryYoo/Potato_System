@@ -1,12 +1,17 @@
 package com.example.kerne.potato;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -28,6 +33,7 @@ import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import static com.example.kerne.potato.Util.ChangeStatusBar.setStatusBarColor;
 import static com.example.kerne.potato.Util.CustomToast.showShortToast;
@@ -35,6 +41,7 @@ import static com.example.kerne.potato.Util.ShowKeyBoard.delayShowSoftKeyBoard;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private static final int LOGIN_OK = 0;
     public String result;
     @BindView(R.id.left_one_button)
     ImageView leftOneButton;
@@ -63,11 +70,24 @@ public class LoginActivity extends AppCompatActivity {
     private EditText passwordEdit;
     private Button login;
     private CheckBox rememberPass;
+//    @SuppressLint("HandlerLeak")
+//    private Handler myHandler = new Handler() {
+//        @SuppressLint("SetTextI18n")
+//        public void handleMessage(Message msg) {
+//            switch (msg.what) {
+//                case LOGIN_OK:
+//                    finish();
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
+//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStatusBarColor(this,R.color.primary_background);
+        setStatusBarColor(this, R.color.primary_background);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
@@ -77,8 +97,7 @@ public class LoginActivity extends AppCompatActivity {
         accountEdit = (EditText) findViewById(R.id.account);
         passwordEdit = (EditText) findViewById(R.id.password);
         rememberPass = (CheckBox) findViewById(R.id.remember_pass);
-        //弹出软键盘
-        delayShowSoftKeyBoard(accountEdit);
+
         login = (Button) findViewById(R.id.login);
         boolean isRemember = pref.getBoolean("remember_password", false);
         if (isRemember) {
@@ -93,35 +112,12 @@ public class LoginActivity extends AppCompatActivity {
                 //获取输入的账号密码
                 account_input = accountEdit.getText().toString().trim();
                 password_input = passwordEdit.getText().toString().trim();
-                //登录到后台进行验证，若验证通过则获取用户角色
-                login(account_input, password_input);
-//                JSONObject jsonObject = HttpRequest.HttpLogin(LoginActivity.this, account_input, password_input);
-
-//                String account_remote = "admin";
-//                String password_remote = "admin";
-//                boolean isAuthorizedUser = account_input.equals(account_remote) && password_input.equals(password_remote);
-//                String userRole = "farmer";
-//                String userRole = "admin";
-//                String userRole = "experimenter";
-                //记住密码
-//                if (isAuthorizedUser) {
-//                    editor = pref.edit();
-//                    if (rememberPass.isChecked()) { // 检查复选框是否被选中
-//                        editor.putBoolean("remember_password", true);
-//                        editor.putString("account_input", account_input);
-//                        editor.putString("password_input", password_input);
-//                    } else {
-//                        editor.clear();
-//                    }
-//                    editor.apply();
-//                    Intent intent = new Intent(LoginActivity.this, MainActivtiy_old.class);
-//                    intent.putExtra("userRole", userRole);
-//                    startActivity(intent);
-//                    finish();
-//                } else {
-//                    Toast.makeText(LoginActivity.this, "账号或密码无效",
-//                            Toast.LENGTH_SHORT).show();
-//                }
+                if (account_input.length() == 0 || password_input.length() == 0) {
+                    showShortToast(LoginActivity.this, getString(R.string.account_password_null));
+                } else {
+                    //登录到后台进行验证，若验证通过则获取用户角色
+                    login(account_input, password_input);
+                }
             }
         });
     }
@@ -138,6 +134,7 @@ public class LoginActivity extends AppCompatActivity {
         new Thread(new Runnable() {//开启线程
             @Override
             public void run() {
+                Looper.prepare();
                 RequestBody body = new FormEncodingBuilder()
                         .add("name", name)   //提交参数电话和密码
                         .add("password", pwd)
@@ -151,17 +148,14 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     Response response = client.newCall(request).execute();
                     result = response.body().string();           //获得值
-                    Looper.prepare();
                     JX(result);    //解析
-                    Looper.loop();
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                Looper.loop();
             }
         }).start();
-
-
     }
 
     private void JX(String body) {
@@ -183,23 +177,17 @@ public class LoginActivity extends AppCompatActivity {
                 UserRole.setUserRole(userRole);
 //                intent.putExtra("userRole", userRole);
                 setResult(RESULT_OK, intent);
-                finish();
+
                 showShortToast(LoginActivity.this, getString(R.string.log_in_success));
+                finish();
 
             } else {
-                //Looper解决闪退bug
-                Looper.prepare();
                 showShortToast(LoginActivity.this, getString(R.string.account_password_error));
-                Looper.loop();
 //                is = jsonObject.getString("description");
             }
-//            Message message = new Message();
-//            message.what = 1;
-//            handler.sendMessage(message);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
 }
