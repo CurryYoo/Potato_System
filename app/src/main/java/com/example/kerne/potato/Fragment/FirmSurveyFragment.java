@@ -26,7 +26,7 @@ import java.util.List;
 public class FirmSurveyFragment extends Fragment {
 
     private static final int DATA_OK = 0;
-    public static Boolean update_flag = false;
+    private static final int CHANGE_VIEW = 1;
     private static String bigfarmId;
     private View view;
     private Context self;
@@ -40,6 +40,9 @@ public class FirmSurveyFragment extends Fragment {
                 case DATA_OK:
                     initRecyclerView();
                     break;
+                case CHANGE_VIEW:
+                    initView();
+                    break;
                 default:
                     break;
             }
@@ -51,12 +54,12 @@ public class FirmSurveyFragment extends Fragment {
         return fragment;
     }
 
-    public void setUpdate_flag(Boolean update_flag) {
-        FirmSurveyFragment.update_flag = update_flag;
-    }
 
     public void selectFarm(String bigFarmId) {
         FirmSurveyFragment.bigfarmId = bigFarmId;
+        Message msg = new Message();
+        msg.what = CHANGE_VIEW  ;
+        myHandler.sendMessage(msg);
     }
 
     @Override
@@ -69,7 +72,9 @@ public class FirmSurveyFragment extends Fragment {
 
     private void initView() {
         betterDoubleGridView = view.findViewById(R.id.expType_list);
-        if (bigfarmId != null) {
+        if (bigfarmId == null) {
+            initRecyclerView();
+        } else {
             initData();
         }
     }
@@ -144,18 +149,20 @@ public class FirmSurveyFragment extends Fragment {
     private void initRecyclerView() {
         List<JSONObject> outShack = new ArrayList<>();
         List<JSONObject> inShack = new ArrayList<>();
-        try {
-            for (int i = 0; i < mFieldList.size(); ++i) {
+        if (mFieldList.size() > 0) {
+            try {
+                for (int i = 0; i < mFieldList.size(); ++i) {
 
-                if (mFieldList.get(i).getString("type").equals("common")) {
-                    outShack.add(mFieldList.get(i));
-                } else {
-                    inShack.add(mFieldList.get(i));
+                    if (mFieldList.get(i).getString("type").equals("common")) {
+                        outShack.add(mFieldList.get(i));
+                    } else {
+                        inShack.add(mFieldList.get(i));
+                    }
+
                 }
-
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
         betterDoubleGridView.setmTopGridData(outShack).setmBottomGridList(inShack).build();
     }
@@ -164,15 +171,15 @@ public class FirmSurveyFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            // 相当于Fragment的onResume
-            if (update_flag) {
-                initData();
-                update_flag = false;
-            }
-        } else {
-            // 相当于Fragment的onPause
-        }
+//        if (isVisibleToUser) {
+//            // 相当于Fragment的onResume
+//            if (update_flag) {
+//                initData();
+//                update_flag = false;
+//            }
+//        } else {
+//            // 相当于Fragment的onPause
+//        }
     }
 
 

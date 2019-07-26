@@ -1,209 +1,227 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_bottom_left"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="UnusedAttribute">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/bg_10_secondary"
+        android:columnCount="9"
+        android:elevation="@dimen/dp_2">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_marginBottom="5dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/bg_10_secondary"
-            android:columnCount="9"
-            android:elevation="@dimen/dp_2">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_35"
-                android:layout_marginStart="@dimen/dp_5"
-                android:layout_marginTop="@dimen/dp_5"
-                android:layout_marginEnd="@dimen/dp_5"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="@dimen/dp_5">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/year" />
-
-                <Spinner
-                    android:id="@+id/homepage_years"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dp_35"
-                    android:layout_marginStart="@dimen/dp_5"
-                    android:background="@drawable/selector_trans_button"
-                    android:orientation="horizontal"
-                    android:scrollbars="none" />
-            </LinearLayout>
-
-
-            <View
-                style="@style/divider_color"
-                android:layout_width="0.1dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical" />
-
-            <LinearLayout
-                android:id="@+id/btn_download"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_35"
-                android:layout_marginStart="@dimen/dp_5"
-                android:layout_marginTop="@dimen/dp_5"
-                android:layout_marginEnd="@dimen/dp_5"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/selector_trans_button"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="@dimen/dp_5">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/download" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="下载"
-                    android:textColor="@color/color_red"
-                    android:textSize="14sp"
-                    android:textStyle="bold"/>
-            </LinearLayout>
-
-            <View
-                style="@style/divider_color"
-                android:layout_width="0.1dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical" />
-
-
-            <LinearLayout
-                android:id="@+id/btn_upload"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_35"
-                android:layout_marginStart="@dimen/dp_5"
-                android:layout_marginTop="@dimen/dp_5"
-                android:layout_marginEnd="@dimen/dp_5"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/selector_trans_button"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="@dimen/dp_5">
-
-                <ImageView
-                    android:id="@+id/upload_icon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/upload" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="上传"
-                    android:textColor="@color/color_blue"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <View
-                style="@style/divider_color"
-                android:layout_width="0.1dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical" />
-
-            <LinearLayout
-                android:id="@+id/plan_farm"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_35"
-                android:layout_marginStart="@dimen/dp_5"
-                android:layout_marginTop="@dimen/dp_5"
-                android:layout_marginEnd="@dimen/dp_5"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/selector_trans_button"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="@dimen/dp_5">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/farm_plan" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="规划"
-                    android:textColor="@color/color_green"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <View
-                style="@style/divider_color"
-                android:layout_width="0.1dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical" />
-
-            <LinearLayout
-                android:id="@+id/change_farm_view"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_35"
-                android:layout_marginStart="@dimen/dp_5"
-                android:layout_marginTop="@dimen/dp_5"
-                android:layout_marginEnd="@dimen/dp_5"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:background="@drawable/selector_trans_button"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="@dimen/dp_5">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/farm" />
-
-                <TextView
-                    android:id="@+id/firm_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="@string/shack_farm"
-                    android:textColor="@color/color_grey"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_35"
             android:layout_marginStart="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_5"
             android:layout_marginEnd="@dimen/dp_5"
-            android:layout_marginBottom="@dimen/dp_5"
-            android:background="@drawable/bg_homepage_firm"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="horizontal"
             android:padding="@dimen/dp_5">
 
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/year" />
 
-            <RelativeLayout
-                android:id="@+id/homepage_farm"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_farm" />
-        </RelativeLayout>
+            <Spinner
+                android:id="@+id/homepage_years"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_35"
+                android:layout_marginStart="@dimen/dp_5"
+                android:background="@drawable/selector_trans_button"
+                android:orientation="horizontal"
+                android:scrollbars="none" />
+        </LinearLayout>
+
+
+        <View
+            style="@style/divider_color"
+            android:layout_width="0.1dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical" />
+
+        <LinearLayout
+            android:id="@+id/btn_download"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_35"
+            android:layout_marginStart="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/selector_trans_button"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/dp_5">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/download" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:autoSizeMaxTextSize="14sp"
+                android:autoSizeMinTextSize="8sp"
+                android:autoSizeStepGranularity="1sp"
+                android:autoSizeTextType="uniform"
+                android:text="下载"
+                android:textColor="@color/color_red"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <View
+            style="@style/divider_color"
+            android:layout_width="0.1dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical" />
+
+
+        <LinearLayout
+            android:id="@+id/btn_upload"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_35"
+            android:layout_marginStart="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/selector_trans_button"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/dp_5">
+
+            <ImageView
+                android:id="@+id/upload_icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/upload" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:autoSizeMaxTextSize="14sp"
+                android:autoSizeMinTextSize="8sp"
+                android:autoSizeStepGranularity="1sp"
+                android:autoSizeTextType="uniform"
+                android:text="上传"
+                android:textColor="@color/color_blue"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <View
+            style="@style/divider_color"
+            android:layout_width="0.1dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical" />
+
+        <LinearLayout
+            android:id="@+id/plan_farm"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_35"
+            android:layout_marginStart="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/selector_trans_button"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/dp_5">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/farm_plan" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:autoSizeMaxTextSize="14sp"
+                android:autoSizeMinTextSize="8sp"
+                android:autoSizeStepGranularity="1sp"
+                android:autoSizeTextType="uniform"
+                android:text="规划"
+                android:textColor="@color/color_green"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <View
+            style="@style/divider_color"
+            android:layout_width="0.1dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical" />
+
+        <LinearLayout
+            android:id="@+id/change_farm_view"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_35"
+            android:layout_marginStart="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/selector_trans_button"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/dp_5">
+
+            <ImageView
+                android:id="@+id/farm_type_icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
+
+            <TextView
+                android:id="@+id/farm_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:autoSizeMaxTextSize="14sp"
+                android:autoSizeMinTextSize="8sp"
+                android:autoSizeStepGranularity="1sp"
+                android:autoSizeTextType="uniform"
+                android:text="@string/shack_farm"
+                android:textColor="@color/color_grey"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_5"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:background="@drawable/bg_homepage_firm"
+        android:padding="@dimen/dp_5">
+
+
+        <RelativeLayout
+            android:id="@+id/homepage_farm"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_farm" />
+    </RelativeLayout>
 </LinearLayout>

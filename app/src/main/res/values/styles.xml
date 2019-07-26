@@ -6,7 +6,7 @@
          
         <item name="colorPrimary">@color/secondary_text</item>
         <item name="colorPrimaryDark">@color/secondary_text</item>
-        <item name="colorAccent">@color/primary_background</item> 
+        <item name="colorAccent">@color/color_green</item> 
     </style>
 
     <!-- 无边框loding -->

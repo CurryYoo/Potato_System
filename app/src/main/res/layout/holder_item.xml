@@ -4,43 +4,48 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    tools:ignore="UnusedAttribute">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginBottom="@dimen/dp_5"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/rv_item"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/dp_5"
+            android:autoSizeMaxTextSize="14sp"
+            android:autoSizeMinTextSize="10sp"
+            android:autoSizeStepGranularity="2sp"
+            android:autoSizeTextType="uniform"
             android:background="@drawable/selector_trans_button"
             android:gravity="center"
             android:padding="8dp"
             android:textColor="@color/primary_background"
-            android:textStyle="bold"
             android:textSize="14sp"
+            android:textStyle="bold"
             tools:text="选择" />
 
         <View
+            style="@style/divider_color"
             android:layout_width="match_parent"
             android:layout_height="0.01dp"
             android:layout_marginStart="@dimen/dp_10"
-            android:layout_marginEnd="@dimen/dp_10"
-            style="@style/divider_color" />
+            android:layout_marginEnd="@dimen/dp_10" />
     </LinearLayout>
 
     <View
         android:id="@+id/rv_divider"
+        style="@style/divider_color"
         android:layout_width="0.01dp"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/dp_10"
-        android:layout_marginBottom="@dimen/dp_10"
         android:layout_marginEnd="@dimen/dp_5"
-        style="@style/divider_color"/>
+        android:layout_marginBottom="@dimen/dp_10" />
 
 </LinearLayout>

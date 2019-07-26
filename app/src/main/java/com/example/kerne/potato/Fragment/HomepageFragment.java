@@ -19,7 +19,6 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -36,7 +35,6 @@ import com.example.kerne.potato.MainActivity;
 import com.example.kerne.potato.R;
 import com.example.kerne.potato.Util.FarmPlanView;
 import com.example.kerne.potato.Util.HttpRequest;
-import com.example.kerne.potato.Util.PowerFullLayout;
 import com.example.kerne.potato.Util.UserRole;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
 import com.facebook.stetho.Stetho;
@@ -94,8 +92,8 @@ public class HomepageFragment extends Fragment {
     private LinearLayout planFarm;
     private LinearLayout changeFarmView;
     private RelativeLayout homepageFarm;
-    private PowerFullLayout scaleLayout;
     private TextView farmType;
+    private ImageView farmTypeIcon;
     private int farm_flag = 0;//标识当前的firm视图 0,棚外  1,棚内
     private SpeciesDBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
@@ -170,7 +168,6 @@ public class HomepageFragment extends Fragment {
                 downloadSuccess_Num = 0;
                 initData();
                 MainActivity mainActivity = new MainActivity();
-                mainActivity.updateData(true);
                 mainActivity.selectFarm(bigfarmId);
             }
         }
@@ -247,11 +244,13 @@ public class HomepageFragment extends Fragment {
                 case R.id.change_farm_view:
                     if (farm_flag == 0) {
                         farmType.setText(self.getString(R.string.farm));
+                        farmTypeIcon.setBackgroundResource(R.drawable.farm);
                         farm_flag = 1;
 
                         initView(farm_flag);
                     } else if (farm_flag == 1) {
                         farmType.setText(self.getString(R.string.shack_farm));
+                        farmTypeIcon.setBackgroundResource(R.drawable.shack_farm);
                         farm_flag = 0;
 
                         initView(farm_flag);
@@ -271,7 +270,6 @@ public class HomepageFragment extends Fragment {
                 initView(farm_flag);
                 MainActivity mainActivity = new MainActivity();
                 mainActivity.selectFarm(bigfarmId);
-                mainActivity.updateData(true);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -306,10 +304,11 @@ public class HomepageFragment extends Fragment {
         homepageYears = view.findViewById(R.id.homepage_years);
         planFarm = view.findViewById(R.id.plan_farm);
         changeFarmView = view.findViewById(R.id.change_farm_view);
-        farmType = view.findViewById(R.id.firm_type);
+        farmType = view.findViewById(R.id.farm_type);
+        farmTypeIcon=view.findViewById(R.id.farm_type_icon);
         homepageFarm = view.findViewById(R.id.homepage_farm);
-        scaleLayout = view.findViewById(R.id.scale_layout);
 
+        farmTypeIcon.setBackgroundResource(R.drawable.shack_farm);
         homepageYears.setPopupBackgroundResource(R.drawable.bg_spinner_drop_down2);
 
         btnDownload.setOnClickListener(onClickListener);

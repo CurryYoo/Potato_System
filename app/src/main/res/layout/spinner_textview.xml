@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:textColor="@color/color_yellow"
@@ -9,4 +10,9 @@
     android:paddingTop="@dimen/dp_5"
     android:paddingBottom="@dimen/dp_5"
     android:paddingEnd="@dimen/dp_5"
-    android:gravity="center"/>
+    android:gravity="center"
+    android:autoSizeMaxTextSize="14sp"
+    android:autoSizeMinTextSize="8sp"
+    android:autoSizeStepGranularity="1sp"
+    android:autoSizeTextType="uniform"
+    tools:ignore="UnusedAttribute" />

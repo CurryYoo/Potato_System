@@ -16,7 +16,7 @@ import com.viewpagerindicator.TabPageIndicator;
 
 import static com.example.kerne.potato.Util.ChangeStatusBar.setStatusBarColor;
 
-public class MainActivity extends AppCompatActivity implements HomepageFragment.updateData, HomepageFragment.selectFarm {
+public class MainActivity extends AppCompatActivity implements  HomepageFragment.selectFarm {
 
     public static Fragment homepageFragment;
     public static Fragment firmSurveyFragment;
@@ -79,10 +79,10 @@ public class MainActivity extends AppCompatActivity implements HomepageFragment.
         }
     }
 
-    @Override
-    public void updateData(Boolean update_flag) {
-        ((FirmSurveyFragment) firmSurveyFragment).setUpdate_flag(update_flag);
-    }
+//    @Override
+//    public void updateData(Boolean update_flag) {
+//        ((FirmSurveyFragment) firmSurveyFragment).setUpdate_flag(update_flag);
+//    }
 
     @Override
     public void selectFarm(String bigFarmId) {
