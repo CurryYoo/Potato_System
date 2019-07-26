@@ -196,6 +196,8 @@ public class TableActivity extends AppCompatActivity {
                         } else {
                             maxColumns = Integer.parseInt(planColumn.getText().toString());
                             maxRows = Integer.parseInt(planRow.getText().toString());
+                            initTableView(maxColumns);
+                            setData();
                         }
                     }
                     //TODO 更新行和列数,保存行数和列数
@@ -399,11 +401,11 @@ public class TableActivity extends AppCompatActivity {
         right_title_container = findViewById(R.id.right_title_container);
 
 
-        getLayoutInflater().inflate(R.layout.table_right_title, right_title_container);
-        for (int i = 0; i < maxColumns; i++) {
-            View view = right_title_container.getChildAt(i);
-            view.setVisibility(View.VISIBLE);
-        }
+//        getLayoutInflater().inflate(R.layout.table_right_title, right_title_container);
+//        for (int i = 0; i < maxColumns; i++) {
+//            View view = right_title_container.getChildAt(i);
+//            view.setVisibility(View.VISIBLE);
+//        }
 
         titleHorScv = findViewById(R.id.title_horsv);
         contentHorScv = findViewById(R.id.content_horsv);
@@ -411,7 +413,7 @@ public class TableActivity extends AppCompatActivity {
         titleHorScv.setScrollView(contentHorScv);
         contentHorScv.setScrollView(titleHorScv);
         findTitleTextViewIds();
-        initTableView();
+        initTableView(maxColumns);
     }
 
     /**
@@ -431,7 +433,19 @@ public class TableActivity extends AppCompatActivity {
         }
     }
 
-    public void initTableView() {
+    //初始化列数
+    private void initTableConfiguration(int column) {
+        getLayoutInflater().inflate(R.layout.table_right_title, right_title_container);
+        for (int i = 0; i < column; i++) {
+            View view = right_title_container.getChildAt(i);
+            view.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void initTableView(int column) {
+        //初始化列数
+        initTableConfiguration(column);
+
         mLeftAdapter = new AbsCommonAdapter<TableModel>(mContext, R.layout.table_left_item) {
             @Override
             public void convert(AbsViewHolder helper, TableModel item, int pos) {
@@ -616,11 +630,12 @@ public class TableActivity extends AppCompatActivity {
                 tableMode.setLeftTitle(onlineSaleBean.getCompanyName());
 
                 for (int j = 0; j < maxColumns; j++) {
-                    if (str[i][j] == null) {
-                        tableMode.setText("", j);
-                    } else {
-                        tableMode.setText(str[i][j], j);
-                    }
+//                    if (str[i][j] == null) {
+//                        tableMode.setText("", j);
+//                    } else {
+//                        tableMode.setText(str[i][j], j);
+//                    }
+                    tableMode.setText("test", j);
                 }
                 mDatas.add(tableMode);
             }
