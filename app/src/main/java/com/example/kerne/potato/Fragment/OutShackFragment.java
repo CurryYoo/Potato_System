@@ -132,7 +132,7 @@ public class OutShackFragment extends Fragment {
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
                 //获取棚外数据
                 mFieldList.clear();
-                Cursor cursor1 = db.query("ExperimentField", null, "bigfarmId=?", new String[]{bigfarmId}, null, null, null);
+                Cursor cursor1 = db.query("ExperimentField", null, "bigfarmId=? and type=?", new String[]{bigfarmId,"common"}, null, null, null);
                 if (cursor1.moveToFirst()) {
                     do {
                         JSONObject jsonObject0 = new JSONObject();
@@ -145,7 +145,7 @@ public class OutShackFragment extends Fragment {
                             jsonObject0.put("rows", cursor1.getInt(cursor1.getColumnIndex("rows")));
                             jsonObject0.put("x", cursor1.getInt(cursor1.getColumnIndex("moveX")));
                             jsonObject0.put("y", cursor1.getInt(cursor1.getColumnIndex("moveY")));
-                            jsonObject0.put("type", cursor1.getInt(cursor1.getColumnIndex("type")));
+                            jsonObject0.put("type", "common");
                             mFieldList.add(jsonObject0);
                         } catch (JSONException e) {
                             e.printStackTrace();

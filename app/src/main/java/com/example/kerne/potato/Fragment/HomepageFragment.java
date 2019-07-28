@@ -388,7 +388,7 @@ public class HomepageFragment extends Fragment {
 
         //获取棚外数据
         mOutShackList.clear();
-        Cursor cursor1 = db.query("ExperimentField", null, "bigfarmId=?", new String[]{bigfarmId}, null, null, null);
+        Cursor cursor1 = db.query("ExperimentField", null, "bigfarmId=? and type=?", new String[]{bigfarmId,"common"}, null, null, null);
         if (cursor1.moveToFirst()) {
             do {
                 JSONObject jsonObject0 = new JSONObject();
@@ -401,7 +401,7 @@ public class HomepageFragment extends Fragment {
                     jsonObject0.put("rows", cursor1.getInt(cursor1.getColumnIndex("rows")));
                     jsonObject0.put("x", cursor1.getInt(cursor1.getColumnIndex("moveX")));
                     jsonObject0.put("y", cursor1.getInt(cursor1.getColumnIndex("moveY")));
-                    jsonObject0.put("type", cursor1.getInt(cursor1.getColumnIndex("type")));
+                    jsonObject0.put("type", "common");
                     mOutShackList.add(jsonObject0);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -412,7 +412,7 @@ public class HomepageFragment extends Fragment {
 
         //获取大棚区域
         mInShackList.clear();
-        Cursor cursor2 = db.query("ExperimentField", null, "bigfarmId=?", new String[]{bigfarmId}, null, null, null);
+        Cursor cursor2 = db.query("ExperimentField", null, "bigfarmId=? and type=?", new String[]{bigfarmId,"greenhouse"}, null, null, null);
         if (cursor2.moveToFirst()) {
             do {
                 JSONObject jsonObject0 = new JSONObject();
