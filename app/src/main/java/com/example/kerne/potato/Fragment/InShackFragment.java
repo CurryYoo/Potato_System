@@ -197,11 +197,11 @@ public class InShackFragment extends Fragment {
             public void run() {
                 Looper.prepare();
                 //获取数据库中数据
-                SpeciesDBHelper dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 10);
+                SpeciesDBHelper dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 11);
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
 
                 //获取大棚区域
-                Cursor cursor = db.query("ExperimentField", null, "farmlandId=?", new String[]{bigfarmId}, null, null, null);
+                Cursor cursor = db.query("ExperimentField", null, "bigfarmId=?", new String[]{bigfarmId}, null, null, null);
                 if (cursor.moveToFirst()) {
                     do {
                         JSONObject jsonObject0 = new JSONObject();
@@ -210,7 +210,7 @@ public class InShackFragment extends Fragment {
                             jsonObject0.put("name", cursor.getString(cursor.getColumnIndex("name")));
                             jsonObject0.put("expType", cursor.getString(cursor.getColumnIndex("expType")));
                             jsonObject0.put("num", cursor.getInt(cursor.getColumnIndex("num")));
-                            jsonObject0.put("farmlandId", cursor.getString(cursor.getColumnIndex("farmlandId")));
+                            jsonObject0.put("bigfarmId", cursor.getString(cursor.getColumnIndex("bigfarmId")));
                             jsonObject0.put("rows", cursor.getInt(cursor.getColumnIndex("rows")));
                             jsonObject0.put("x", cursor.getInt(cursor.getColumnIndex("moveX")));
                             jsonObject0.put("y", cursor.getInt(cursor.getColumnIndex("moveY")));

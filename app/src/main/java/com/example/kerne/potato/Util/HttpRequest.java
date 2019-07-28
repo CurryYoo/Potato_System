@@ -135,38 +135,38 @@ public class HttpRequest {
         return null;
     }
 
-    //获取试验田列表
-    public static void HttpRequest_farm(final String name, Context context, final HttpCallback callback) {
-        requestQueue = SingleRequestQueue.getInstance(context).getRequestQueue();
-
-        JSONObject jsonObject = new JSONObject();
-        if (name != null) {
-            try {
-                jsonObject.put("name", name); //POST数据
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        Log.d("POST_farm_name", jsonObject.toString());
-
-        //volley进行网络传输
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "farm/getFarmList", jsonObject, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) { //接收数据
-                Log.d("TAG_farm", response.toString());
-                callback.onSuccess(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("TAG_error_farm", error.getMessage(), error);
-            }
-        });
-
-        requestQueue.add(jsonObjectRequest);
-        //requestQueue.add(stringRequest);
-
-    }
+//    //获取试验田列表
+//    public static void HttpRequest_farm(final String name, Context context, final HttpCallback callback) {
+//        requestQueue = SingleRequestQueue.getInstance(context).getRequestQueue();
+//
+//        JSONObject jsonObject = new JSONObject();
+//        if (name != null) {
+//            try {
+//                jsonObject.put("name", name); //POST数据
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        Log.d("POST_farm_name", jsonObject.toString());
+//
+//        //volley进行网络传输
+//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "farm/getFarmList", jsonObject, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) { //接收数据
+//                Log.d("TAG_farm", response.toString());
+//                callback.onSuccess(response);
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.e("TAG_error_farm", error.getMessage(), error);
+//            }
+//        });
+//
+//        requestQueue.add(jsonObjectRequest);
+//        //requestQueue.add(stringRequest);
+//
+//    }
 
     //获取种植图信息
     public static void HttpRequest_map(final String farmlandId, Context context, final HttpCallback callback) {

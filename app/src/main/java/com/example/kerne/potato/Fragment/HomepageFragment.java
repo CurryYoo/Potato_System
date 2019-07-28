@@ -65,6 +65,7 @@ public class HomepageFragment extends Fragment {
     private static final int FARMLIST_OK = 1;
     private static final int EXPERIMENTFIELD_OK = 2;
     private static final int SPECIESLIST_OK = 3;
+    private static final int LOCALSPECIES_OK = 4;
     private static final int DATA_OK = 5;
     private static final int FIELD_DATA_OK = 6;
     private static int downloadSuccess_Num = 0;
@@ -117,17 +118,21 @@ public class HomepageFragment extends Fragment {
             switch (msg.what) {
                 case BIGFARMLIST_OK:
                     downloadSuccess_Num++;
-                    downloadDataDialog.setTitleText(getContext().getString(R.string.download_farm_data));
-                    break;
-                case FARMLIST_OK:
-                    downloadSuccess_Num++;
                     downloadDataDialog.setTitleText(getContext().getString(R.string.download_farm_plan_data));
                     break;
+//                case FARMLIST_OK:
+//                    downloadSuccess_Num++;
+//                    downloadDataDialog.setTitleText(getContext().getString(R.string.download_farm_plan_data));
+//                    break;
                 case EXPERIMENTFIELD_OK:
                     downloadSuccess_Num++;
                     downloadDataDialog.setTitleText(getContext().getString(R.string.download_species_data));
                     break;
                 case SPECIESLIST_OK:
+                    downloadSuccess_Num++;
+                    downloadDataDialog.setTitleText(getContext().getString(R.string.download_localspecies_data));
+                    break;
+                case LOCALSPECIES_OK:
                     downloadSuccess_Num++;
                     break;
                 case DATA_OK:
@@ -380,7 +385,7 @@ public class HomepageFragment extends Fragment {
             public void run() {
                 Looper.prepare();
                 //获取数据库中数据
-                SpeciesDBHelper dbHelper = new SpeciesDBHelper(getContext(), "SpeciesTable.db", null, 10);
+                SpeciesDBHelper dbHelper = new SpeciesDBHelper(getContext(), "SpeciesTable.db", null, 11);
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
 
                 Cursor cursor = db.query("BigfarmList", null, null, null, null, null, null);
@@ -417,7 +422,7 @@ public class HomepageFragment extends Fragment {
         //TODO
         //获取大棚区域
         mInShackList.clear();
-        Cursor cursor2 = db.query("ExperimentField", null, "farmlandId=?", new String[]{bigfarmId}, null, null, null);
+        Cursor cursor2 = db.query("ExperimentField", null, "bigfarmId=?", new String[]{bigfarmId}, null, null, null);
         if (cursor2.moveToFirst()) {
             do {
                 JSONObject jsonObject0 = new JSONObject();
@@ -426,7 +431,7 @@ public class HomepageFragment extends Fragment {
                     jsonObject0.put("name", cursor2.getString(cursor2.getColumnIndex("name")));
                     jsonObject0.put("expType", cursor2.getString(cursor2.getColumnIndex("expType")));
                     jsonObject0.put("num", cursor2.getInt(cursor2.getColumnIndex("num")));
-                    jsonObject0.put("farmlandId", cursor2.getString(cursor2.getColumnIndex("farmlandId")));
+                    jsonObject0.put("bigfarmId", cursor2.getString(cursor2.getColumnIndex("bigfarmId")));
                     jsonObject0.put("rows", cursor2.getInt(cursor2.getColumnIndex("rows")));
                     jsonObject0.put("x", cursor2.getInt(cursor2.getColumnIndex("moveX")));
                     jsonObject0.put("y", cursor2.getInt(cursor2.getColumnIndex("moveY")));
@@ -473,6 +478,12 @@ public class HomepageFragment extends Fragment {
                                 if (jsonObject0.get("year") != null) {
                                     contentValues.put("year", jsonObject0.getInt("year"));
                                 }
+                                if (jsonObject0.get("width") != null) {
+                                    contentValues.put("width", jsonObject0.getInt("width"));
+                                }
+                                if (jsonObject0.get("length") != null) {
+                                    contentValues.put("length", jsonObject0.getInt("length"));
+                                }
 
                                 Uri uri = getImageURI(HttpRequest.serverUrl + jsonObject0.getString("img"), cache);
                                 contentValues.put("uri", uri.toString());
@@ -494,53 +505,53 @@ public class HomepageFragment extends Fragment {
             }
         });
 
-        HttpRequest.HttpRequest_farm(null, self, new HttpRequest.HttpCallback() {
-            @Override
-            public void onSuccess(final JSONObject result) { //获取FarmList信息
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        db.delete("FarmList", null, null);
-                        try {
-                            JSONArray rows = new JSONArray();
-                            rows = result.getJSONArray("rows");
-                            int total = result.getInt("total");
-                            JSONObject jsonObject0;
-                            for (int i = 0; i < total; i++) {
-                                jsonObject0 = rows.getJSONObject(i);
-                                ContentValues contentValues = new ContentValues();
-                                contentValues.put("farmlandId", jsonObject0.getString("farmlandId"));
-                                if (jsonObject0.getBoolean("deleted")) {
-                                    contentValues.put("deleted", "true");
-                                } else {
-                                    contentValues.put("deleted", "false");
-                                }
-                                contentValues.put("name", jsonObject0.getString("name"));
-                                if (jsonObject0.get("length") != null) {
-                                    contentValues.put("length", jsonObject0.getInt("length"));
-                                }
-                                if (jsonObject0.get("width") != null) {
-                                    contentValues.put("width", jsonObject0.getInt("width"));
-                                }
-                                contentValues.put("type", jsonObject0.getString("type"));
-                                contentValues.put("bigfarmId", jsonObject0.getString("bigfarmId"));
-
-                                db.insert("FarmList", null, contentValues);
-                                contentValues.clear();
-                            }
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                        Message msg = new Message();
-                        msg.what = FARMLIST_OK;
-                        myHandler.sendMessage(msg);
-                    }
-                }).start();
-
-            }
-        });
+//        HttpRequest.HttpRequest_farm(null, self, new HttpRequest.HttpCallback() {
+//            @Override
+//            public void onSuccess(final JSONObject result) { //获取FarmList信息
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        db.delete("FarmList", null, null);
+//                        try {
+//                            JSONArray rows = new JSONArray();
+//                            rows = result.getJSONArray("rows");
+//                            int total = result.getInt("total");
+//                            JSONObject jsonObject0;
+//                            for (int i = 0; i < total; i++) {
+//                                jsonObject0 = rows.getJSONObject(i);
+//                                ContentValues contentValues = new ContentValues();
+//                                contentValues.put("farmlandId", jsonObject0.getString("farmlandId"));
+//                                if (jsonObject0.getBoolean("deleted")) {
+//                                    contentValues.put("deleted", "true");
+//                                } else {
+//                                    contentValues.put("deleted", "false");
+//                                }
+//                                contentValues.put("name", jsonObject0.getString("name"));
+//                                if (jsonObject0.get("length") != null) {
+//                                    contentValues.put("length", jsonObject0.getInt("length"));
+//                                }
+//                                if (jsonObject0.get("width") != null) {
+//                                    contentValues.put("width", jsonObject0.getInt("width"));
+//                                }
+//                                contentValues.put("type", jsonObject0.getString("type"));
+//                                contentValues.put("bigfarmId", jsonObject0.getString("bigfarmId"));
+//
+//                                db.insert("FarmList", null, contentValues);
+//                                contentValues.clear();
+//                            }
+//
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                        Message msg = new Message();
+//                        msg.what = FARMLIST_OK;
+//                        myHandler.sendMessage(msg);
+//                    }
+//                }).start();
+//
+//            }
+//        });
 
         HttpRequest.HttpRequest_map(null, self, new HttpRequest.HttpCallback() {
             @Override
@@ -587,11 +598,18 @@ public class HomepageFragment extends Fragment {
                                 }
                                 contentValues.put("num", jsonObject0.getString("num"));
                                 contentValues.put("color", jsonObject0.getString("color"));
-                                contentValues.put("farmlandId", jsonObject0.getString("farmlandId"));
+                                contentValues.put("bigfarmId", jsonObject0.getString("bigfarmId"));
                                 if (jsonObject0.get("rows") != null) {
                                     contentValues.put("rows", jsonObject0.getInt("rows"));
                                 }
+                                if (jsonObject0.get("length") != null) {
+                                    contentValues.put("length", jsonObject0.getInt("length"));
+                                }
+                                if (jsonObject0.get("width") != null) {
+                                    contentValues.put("width", jsonObject0.getInt("width"));
+                                }
                                 contentValues.put("description", jsonObject0.getString("description"));
+                                contentValues.put("type", jsonObject0.getString("type"));
                                 contentValues.put("speciesList", jsonObject0.getString("speciesList"));
 
                                 db.insert("ExperimentField", null, contentValues);
@@ -683,6 +701,10 @@ public class HomepageFragment extends Fragment {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
+                        Message msg = new Message();
+                        msg.what = LOCALSPECIES_OK;
+                        myHandler.sendMessage(msg);
                     }
                 }).start();
 
@@ -1044,7 +1066,7 @@ public class HomepageFragment extends Fragment {
                 badge.setBadgeText("");
             }
         }
-        dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 10);
+        dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 11);
         db = dbHelper.getWritableDatabase();
     }
 
@@ -1088,6 +1110,7 @@ public class HomepageFragment extends Fragment {
             db.close();
         }
         self.unregisterReceiver(networkChangeReceiver);
+        myHandler.removeCallbacksAndMessages(null);
     }
 
     //与firmsurveyfragment进行通信，通知下载了数据

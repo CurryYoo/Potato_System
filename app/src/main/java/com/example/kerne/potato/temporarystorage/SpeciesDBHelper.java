@@ -119,17 +119,19 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "description text,"
             + "img text,"
             + "year integer,"
+            + "width integer,"
+            + "length integer,"
             + "uri text"
             + ")";
 
-    public static final String CREATE_FARMLIST = "create table FarmList ("
-            + "farmlandId text primary key,"
-            + "deleted text,"
-            + "name text,"
-            + "length integer,"
-            + "width integer,"
-            + "type text,"
-            + "bigfarmId text)";
+//    public static final String CREATE_FARMLIST = "create table FarmList ("
+//            + "farmlandId text primary key,"
+//            + "deleted text,"
+//            + "name text,"
+//            + "length integer,"
+//            + "width integer,"
+//            + "type text,"
+//            + "bigfarmId text)";
 
     public static final String CREATE_EXPERIMENTFIELD = "create table ExperimentField ("
             + "id text primary key,"
@@ -142,9 +144,12 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "moveY1 integer,"
             + "num text,"
             + "color text,"
-            + "farmlandId text,"
+            + "bigfarmId text,"
             + "rows integer,"
+            + "length integer,"
+            + "width integer,"
             + "description text,"
+            + "type text," //类型，棚外棚内
             + "speciesList text)";
 
     public static final String CREATE_SPECIESLIST = "create table SpeciesList ("
@@ -154,11 +159,11 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "x integer,"
             + "y integer)";
 
-    public static final String CREATE_SPECIES_SEQUENCE = "create table SpeciesSequence ("
-            + "id integer primary key autoincrement,"
-            + "fieldId text,"
-            + "NumofRows integer,"
-            + "ContentofColumn text)";
+//    public static final String CREATE_SPECIES_SEQUENCE = "create table SpeciesSequence ("
+//            + "id integer primary key autoincrement,"
+//            + "fieldId text,"
+//            + "NumofRows integer,"
+//            + "ContentofColumn text)";
 
     public SpeciesDBHelper(Context context, String name,
                            SQLiteDatabase.CursorFactory factory, int version) {
@@ -173,10 +178,10 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_SPECIES_TABLE);
         db.execSQL(CREATE_LOCALSPECIES);
         db.execSQL(CREATE_BIGFARMLIST);
-        db.execSQL(CREATE_FARMLIST);
+//        db.execSQL(CREATE_FARMLIST);
         db.execSQL(CREATE_EXPERIMENTFIELD);
         db.execSQL(CREATE_SPECIESLIST);
-        db.execSQL(CREATE_SPECIES_SEQUENCE);
+//        db.execSQL(CREATE_SPECIES_SEQUENCE);
         //Toast.makeText(mContext, "创建品种信息表成功", Toast.LENGTH_SHORT).show();
     }
 
@@ -185,10 +190,10 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
         db.execSQL("drop table if exists SpeciesTable");
         db.execSQL("drop table if exists LocalSpecies");
         db.execSQL("drop table if exists BigfarmList");
-        db.execSQL("drop table if exists FarmList");
+//        db.execSQL("drop table if exists FarmList");
         db.execSQL("drop table if exists ExperimentField");
         db.execSQL("drop table if exists SpeciesList");
-        db.execSQL("drop table if exists SpeciesSequence");
+//        db.execSQL("drop table if exists SpeciesSequence");
         onCreate(db);
     }
 }

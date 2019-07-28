@@ -132,7 +132,7 @@ public class GeneralClickActivity extends AppCompatActivity implements GeneralCl
             public void run() {
                 Looper.prepare();
                 //获取数据库中数据
-                SpeciesDBHelper dbHelper = new SpeciesDBHelper(GeneralClickActivity.this, "SpeciesTable.db", null, 10);
+                SpeciesDBHelper dbHelper = new SpeciesDBHelper(GeneralClickActivity.this, "SpeciesTable.db", null, 11);
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
 
                 //获取棚外区域

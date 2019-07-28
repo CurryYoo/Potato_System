@@ -229,7 +229,7 @@ public class TableActivity extends AppCompatActivity {
         sp = getSharedPreferences("update_flag", Context.MODE_PRIVATE);
         editor = sp.edit();
 
-        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
+        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 11);
         db = dbHelper.getWritableDatabase();
 
         initToolBar();

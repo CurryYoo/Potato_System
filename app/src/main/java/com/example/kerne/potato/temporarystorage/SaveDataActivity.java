@@ -945,7 +945,7 @@ public class SaveDataActivity extends AppCompatActivity {
     private void initData() {
 
         //数据存储
-        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 10);
+        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 11);
         sqLiteDatabase = dbHelper.getWritableDatabase();
 
         //如果品种信息不存在，进行初始化

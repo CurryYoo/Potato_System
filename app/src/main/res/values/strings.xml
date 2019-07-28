@@ -78,6 +78,7 @@
     <string name="download_farm_plan_data">下载试验田规划数据</string>
     <string name="download_farm_data">下载试验田数据</string>
     <string name="download_species_data">下载试验品种数据</string>
+    <string name="download_localspecies_data">下载本地品种数据</string>
     <string name="download_complete">下载完成</string>
 
     <string name="farm_info_hint">试验田信息</string>
