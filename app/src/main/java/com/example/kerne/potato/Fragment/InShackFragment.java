@@ -135,7 +135,7 @@ public class InShackFragment extends Fragment {
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
 
                 //获取大棚区域
-                Cursor cursor = db.query("ExperimentField", null, "bigfarmId=?", new String[]{bigfarmId}, null, null, null);
+                Cursor cursor = db.query("ExperimentField", null, "bigfarmId=? and type=?", new String[]{bigfarmId,"greenhouse"}, null, null, null);
                 if (cursor.moveToFirst()) {
                     do {
                         JSONObject jsonObject0 = new JSONObject();

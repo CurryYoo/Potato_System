@@ -16,8 +16,8 @@
 
         <ImageView
             android:id="@+id/left_one_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp" />
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -30,8 +30,8 @@
 
         <ImageView
             android:id="@+id/left_two_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp" />
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
     </LinearLayout>
 
     <!--<LinearLayout-->
@@ -86,8 +86,8 @@
 
         <ImageView
             android:id="@+id/right_two_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp" />
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -100,8 +100,8 @@
 
         <ImageView
             android:id="@+id/right_one_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp" />
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
     </LinearLayout>
 
 </LinearLayout>

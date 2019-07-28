@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +32,8 @@ public class FirmSurveyFragment extends Fragment {
     private Context self;
     private BetterDoubleGridView betterDoubleGridView;
     private List<JSONObject> mFieldList = new ArrayList<>();
+    private List<JSONObject> outShack = new ArrayList<>();
+    private List<JSONObject> inShack = new ArrayList<>();
     @SuppressLint("HandlerLeak")
     private Handler myHandler = new Handler() {
         @SuppressLint("SetTextI18n")
@@ -90,28 +91,27 @@ public class FirmSurveyFragment extends Fragment {
                 SpeciesDBHelper dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 11);
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-//                //获取棚外区域
-//                Cursor cursor = db.query("FarmList", null, "bigfarmId=?", new String[]{bigfarmId}, null, null, null);
-//                if (cursor.moveToFirst()) {
-//                    do {
-//                        JSONObject jsonObject0 = new JSONObject();
-//                        try {
-//                            jsonObject0.put("farmlandId", cursor.getString(cursor.getColumnIndex("farmlandId")));
-//                            jsonObject0.put("name", cursor.getString(cursor.getColumnIndex("name")));
-//                            jsonObject0.put("length", cursor.getInt(cursor.getColumnIndex("length")));
-//                            jsonObject0.put("width", cursor.getInt(cursor.getColumnIndex("width")));
-//                            jsonObject0.put("type", cursor.getString(cursor.getColumnIndex("type")));
-//                            jsonObject0.put("bigfarmId", cursor.getString(cursor.getColumnIndex("bigfarmId")));
-////                            jsonObject0.put("bigFarmName", bigFarmName);
-////                            jsonObject0.put("year", year);
-//
-//                            mFieldList.add(jsonObject0);
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    } while (cursor.moveToNext());
-//                }
-//                cursor.close();
+               //获取棚外区域
+                outShack.clear();
+                Cursor cursor1 = db.query("ExperimentField", null, "bigfarmId=? and type=?", new String[]{bigfarmId,"common"}, null, null, null);
+                if (cursor1.moveToFirst()) {
+                    do {
+                        JSONObject jsonObject0 = new JSONObject();
+                        try {
+                            jsonObject0.put("fieldId", cursor1.getString(cursor1.getColumnIndex("id")));
+                            jsonObject0.put("name", cursor1.getString(cursor1.getColumnIndex("name")));
+                            jsonObject0.put("expType", cursor1.getString(cursor1.getColumnIndex("expType")));
+                            jsonObject0.put("num", cursor1.getInt(cursor1.getColumnIndex("num")));
+                            jsonObject0.put("bigfarmId", cursor1.getString(cursor1.getColumnIndex("bigfarmId")));
+                            jsonObject0.put("rows", cursor1.getInt(cursor1.getColumnIndex("rows")));
+                            jsonObject0.put("type", cursor1.getString(cursor1.getColumnIndex("type")));
+                            outShack.add(jsonObject0);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } while (cursor1.moveToNext());
+                }
+                cursor1.close();
 
 
                 //获取大棚区域
@@ -127,11 +127,7 @@ public class FirmSurveyFragment extends Fragment {
                             jsonObject0.put("bigfarmId", cursor2.getString(cursor2.getColumnIndex("bigfarmId")));
                             jsonObject0.put("rows", cursor2.getInt(cursor2.getColumnIndex("rows")));
                             jsonObject0.put("type", cursor2.getString(cursor2.getColumnIndex("type")));
-
-                            Log.d("typeeeeeeeeeee", cursor2.getString(cursor2.getColumnIndex("type")));
-//                            jsonObject0.put("bigFarmName", bigFarmName);
-//                            jsonObject0.put("year", year);
-                            mFieldList.add(jsonObject0);
+                            inShack.add(jsonObject0);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

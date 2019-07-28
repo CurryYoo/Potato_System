@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.kerne.potato.LoginActivity;
 import com.example.kerne.potato.R;
+import com.example.kerne.potato.TableActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,18 +49,19 @@ public class FarmPlanView {
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-//            Intent intent = new Intent(mContext, LoginActivity.class);
-//            try {
-//                intent.putExtra("expType", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("expType"));
-//                intent.putExtra("fieldId", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("fieldId"));
-//                intent.putExtra("num", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("num"));
-//                intent.putExtra("rows", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("rows"));
-//                intent.putExtra("farmlandId", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("farmlandId"));
-//                intent.putExtra("type", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("type"));
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//            mContext.startActivity(intent);
+            Intent intent = new Intent(mContext, TableActivity.class);
+            try {
+                intent.putExtra("expType", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("expType"));
+                intent.putExtra("fieldId", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("fieldId"));
+                intent.putExtra("num", mJsonList.get(Integer.parseInt(v.getTag().toString())).getInt("num"));
+                intent.putExtra("rows", mJsonList.get(Integer.parseInt(v.getTag().toString())).getInt("rows"));
+                intent.putExtra("bigfarmId", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("bigfarmId"));
+                intent.putExtra("type", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("type"));
+                intent.putExtra("farmName", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("name"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            mContext.startActivity(intent);
         }
     };
 
@@ -187,7 +190,7 @@ public class FarmPlanView {
                         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         View view = inflater.inflate(R.layout.field_view, null, false);
                         TextView textView = view.findViewById(R.id.field_name);
-                        textView.setText(mJsonList.get(i).getString("name"));
+                        textView.setText(mJsonList.get(i).getString("expType"));
                         mRelativeLayout.addView(view);
                         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
                         layoutParams.height = (int) ((btn_row / FARM_ROW) * (farmHeight - 20));
@@ -214,7 +217,7 @@ public class FarmPlanView {
                         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         View view = inflater.inflate(R.layout.field_view, null, false);
                         TextView textView = view.findViewById(R.id.field_name);
-                        textView.setText(mJsonList.get(i).getString("name"));
+                        textView.setText(mJsonList.get(i).getString("expType"));
                         mRelativeLayout.addView(view);
                         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
                         layoutParams.width = (int) ((btn_column / SHACK_FARM_COLUMN) * (farmWidth - 20));
