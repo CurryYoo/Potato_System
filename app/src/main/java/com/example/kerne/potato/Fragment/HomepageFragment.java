@@ -218,47 +218,61 @@ public class HomepageFragment extends Fragment {
                     }
                     break;
                 case R.id.btn_upload:
-                    //检查网络状况
-                    if (!isOnline) {
-                        showShortToast(self, getString(R.string.toast_check_network_state));
+                    if (bigfarmId == null) {
+                        showShortToast(getContext(), getString(R.string.toast_database_null));
                         break;
-                    }
-
-                    //将暂存的数据从数据库取出并提交到远程服务器
-                    userRole = UserRole.getUserRole();
-                    if (!userRole.equals("farmer")) {
-                        if (badge != null) {
-                            badge.hide(false);
-                        }
-                        uploadPlanData();
-                        uploadSurveyData();
-                        showShortToast(self, getString(R.string.toast_upload_data_complete));
                     } else {
-                        showShortToast(self, getString(R.string.toast_log_in));
-                        Intent intent = new Intent(self, LoginActivity.class);
-                        startActivityForResult(intent, 1);
+                        //检查网络状况
+                        if (!isOnline) {
+                            showShortToast(self, getString(R.string.toast_check_network_state));
+                            break;
+                        }
+                        //将暂存的数据从数据库取出并提交到远程服务器
+                        userRole = UserRole.getUserRole();
+                        if (!userRole.equals("farmer")) {
+                            if (badge != null) {
+                                badge.hide(false);
+                            }
+                            uploadPlanData();
+                            uploadSurveyData();
+                            showShortToast(self, getString(R.string.toast_upload_data_complete));
+                        } else {
+                            showShortToast(self, getString(R.string.toast_log_in));
+                            Intent intent = new Intent(self, LoginActivity.class);
+                            startActivityForResult(intent, 1);
+                        }
+                        editor.putBoolean("upload_data", false);
+                        editor.apply();
                     }
-                    editor.putBoolean("upload_data", false);
-                    editor.apply();
                     break;
                 case R.id.plan_farm:
-                    Intent intent = new Intent(self, FirmPlanActivity.class);
-                    intent.putExtra("bigfarmId", bigfarmId);
-                    self.startActivity(intent);
+                    if (bigfarmId == null) {
+                        showShortToast(getContext(), getString(R.string.toast_database_null));
+                        break;
+                    } else {
+                        Intent intent = new Intent(self, FirmPlanActivity.class);
+                        intent.putExtra("bigfarmId", bigfarmId);
+                        self.startActivity(intent);
+                    }
                     break;
                 case R.id.change_farm_view:
-                    if (farm_flag == 0) {
-                        farmType.setText(self.getString(R.string.farm));
-                        farmTypeIcon.setBackgroundResource(R.drawable.farm);
-                        farm_flag = 1;
+                    if (bigfarmId == null) {
+                        showShortToast(getContext(), getString(R.string.toast_database_null));
+                        break;
+                    } else {
+                        if (farm_flag == 0) {
+                            farmType.setText(self.getString(R.string.farm));
+                            farmTypeIcon.setBackgroundResource(R.drawable.farm);
+                            farm_flag = 1;
 
-                        initView(farm_flag);
-                    } else if (farm_flag == 1) {
-                        farmType.setText(self.getString(R.string.shack_farm));
-                        farmTypeIcon.setBackgroundResource(R.drawable.shack_farm);
-                        farm_flag = 0;
+                            initView(farm_flag);
+                        } else if (farm_flag == 1) {
+                            farmType.setText(self.getString(R.string.shack_farm));
+                            farmTypeIcon.setBackgroundResource(R.drawable.shack_farm);
+                            farm_flag = 0;
 
-                        initView(farm_flag);
+                            initView(farm_flag);
+                        }
                     }
                     break;
                 default:
@@ -310,7 +324,7 @@ public class HomepageFragment extends Fragment {
         planFarm = view.findViewById(R.id.plan_farm);
         changeFarmView = view.findViewById(R.id.change_farm_view);
         farmType = view.findViewById(R.id.farm_type);
-        farmTypeIcon=view.findViewById(R.id.farm_type_icon);
+        farmTypeIcon = view.findViewById(R.id.farm_type_icon);
         homepageFarm = view.findViewById(R.id.homepage_farm);
 
         farmTypeIcon.setBackgroundResource(R.drawable.shack_farm);
@@ -330,54 +344,6 @@ public class HomepageFragment extends Fragment {
         self.registerReceiver(networkChangeReceiver, intentFilter);
     }
 
-    private void initView(int flag) {
-        initFieldData();
-        switch (flag) {
-            case 0:
-                //加载棚外
-                homepageFarm.removeAllViews();
-                mOutShackList = new ArrayList<>();
-                try {
-                    for (int i = 0; i < 3; i++) {
-                        JSONObject jsonObject = new JSONObject();
-                        jsonObject.put("num", 50 + i * 10);
-                        jsonObject.put("rows", 1 + i);
-                        jsonObject.put("x", 300000 + i * 100000);
-                        jsonObject.put("y", 300000 + i * 100000);
-                        jsonObject.put("name", "加工鉴定");
-                        mOutShackList.add(jsonObject);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                if (homepageFarm != null) {
-                    FarmPlanView farmPlanView = new FarmPlanView(getContext(), homepageFarm, homepageFarm.getWidth(), homepageFarm.getHeight(), mOutShackList);
-                    farmPlanView.createRoad("common");
-                    mOutList = farmPlanView.createField("common");
-                    for (int i = 0; i < mOutList.size(); i++) {
-//                            mOutList.get(i).setTag(mOutShackList.get(i));
-                        mOutList.get(i).setBackgroundResource(R.drawable.bg_field);
-                    }
-                }
-
-                break;
-            case 1:
-                //加载棚内
-                homepageFarm.removeAllViews();
-                if (homepageFarm != null) {
-                    FarmPlanView farmPlanView = new FarmPlanView(getContext(), homepageFarm, homepageFarm.getWidth(), homepageFarm.getHeight(), mInShackList);
-                    farmPlanView.createRoad("greenhouse");
-                    mInList = farmPlanView.createField("greenhouse");
-                    for (int i = 0; i < mInList.size(); i++) {
-                        mInList.get(i).setBackgroundResource(R.drawable.bg_field);
-                    }
-                }
-                break;
-            default:
-                break;
-        }
-    }
 
     private void initData() {
         new Thread(new Runnable() {
@@ -443,6 +409,51 @@ public class HomepageFragment extends Fragment {
             } while (cursor2.moveToNext());
         }
         cursor2.close();
+    }
+
+    private void initView(int flag) {
+        initFieldData();
+        switch (flag) {
+            case 0:
+                //加载棚外
+                homepageFarm.removeAllViews();
+                mOutShackList = new ArrayList<>();
+                try {
+                    for (int i = 0; i < 3; i++) {
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObject.put("num", 50 + i * 10);
+                        jsonObject.put("rows", 1 + i);
+                        jsonObject.put("x", 300000 + i * 100000);
+                        jsonObject.put("y", 300000 + i * 100000);
+                        jsonObject.put("name", "加工鉴定");
+                        mOutShackList.add(jsonObject);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                if (homepageFarm != null) {
+                    FarmPlanView farmPlanView = new FarmPlanView(getContext(), homepageFarm, homepageFarm.getWidth(), homepageFarm.getHeight(), mOutShackList);
+                    farmPlanView.createRoad("common");
+                    mOutList = farmPlanView.createField("common",FarmPlanView.CLICK_EVENT);
+                    for (int i = 0; i < mOutList.size(); i++) {
+                    }
+                }
+                break;
+            case 1:
+                //加载棚内
+                homepageFarm.removeAllViews();
+                if (homepageFarm != null) {
+                    FarmPlanView farmPlanView = new FarmPlanView(getContext(), homepageFarm, homepageFarm.getWidth(), homepageFarm.getHeight(), mInShackList);
+                    farmPlanView.createRoad("greenhouse");
+                    mInList = farmPlanView.createField("greenhouse",FarmPlanView.CLICK_EVENT);
+                    for (int i = 0; i < mInList.size(); i++) {
+                    }
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     private void downloadData() {
@@ -1114,10 +1125,6 @@ public class HomepageFragment extends Fragment {
     }
 
     //与firmsurveyfragment进行通信，通知下载了数据
-    public interface updateData {
-        void updateData(Boolean update_flag);
-    }
-
     public interface selectFarm {
         void selectFarm(String bigFarmId);
     }

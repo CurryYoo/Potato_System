@@ -159,15 +159,14 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
             }
             intent = new Intent(mContext, TableActivity.class);
 
-            final Intent finalIntent = intent;
-            finalIntent.putExtra("expType", expType);
-            finalIntent.putExtra("fieldId", fieldId);
-            finalIntent.putExtra("num", num);
-            finalIntent.putExtra("rows", rows);
-            finalIntent.putExtra("farmlandId", farmlandId);
-            finalIntent.putExtra("type", type);
-            finalIntent.putExtra("farmName", name);
-            mContext.startActivity(finalIntent);
+            intent.putExtra("expType", expType);
+            intent.putExtra("fieldId", fieldId);
+            intent.putExtra("num", num);
+            intent.putExtra("rows", rows);
+            intent.putExtra("farmlandId", farmlandId);
+            intent.putExtra("type", type);
+            intent.putExtra("farmName", name);
+            mContext.startActivity(intent);
         }
     }
 }

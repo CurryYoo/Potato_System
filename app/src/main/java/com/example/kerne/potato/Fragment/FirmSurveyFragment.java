@@ -58,7 +58,7 @@ public class FirmSurveyFragment extends Fragment {
     public void selectFarm(String bigFarmId) {
         FirmSurveyFragment.bigfarmId = bigFarmId;
         Message msg = new Message();
-        msg.what = CHANGE_VIEW  ;
+        msg.what = CHANGE_VIEW;
         myHandler.sendMessage(msg);
     }
 
