@@ -170,7 +170,7 @@ public class FirmSurveyFragment extends Fragment {
         betterDoubleGridView.setmTopGridData(outShack).setmBottomGridList(inShack).build();
     }
 
-    //设置在前一页更新数据后，本页可以刷新数据
+    //fragment可见
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);

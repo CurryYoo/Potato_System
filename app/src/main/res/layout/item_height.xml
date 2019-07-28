@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_background"
     android:orientation="vertical">
 
     <LinearLayout
@@ -132,7 +131,7 @@
         android:layout_marginTop="@dimen/dp_10"
         android:layout_marginEnd="@dimen/dp_10"
         android:layout_marginBottom="@dimen/dp_5"
-        android:background="@drawable/bg_10_light"
+        android:background="@drawable/bg_30_black"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -144,7 +143,6 @@
             android:layout_marginTop="@dimen/dp_10"
             android:layout_marginBottom="@dimen/dp_10"
             android:layout_marginEnd="@dimen/dp_5"
-            android:background="@drawable/bg_10_light"
             android:orientation="horizontal"
             android:padding="5dp">
 
@@ -158,7 +156,7 @@
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp"
                 android:text="@string/average_height"
-                android:textColor="@color/primary_background"
+                android:textColor="@color/primary_text_light"
                 android:textSize="15sp" />
 
             <EditText
@@ -167,7 +165,7 @@
                 android:layout_marginStart="@dimen/dp_5"
                 android:focusable="false"
                 android:inputType="number"
-                android:textColor="@color/color_blue" />
+                android:textColor="@color/color_red" />
 
         </LinearLayout>
 

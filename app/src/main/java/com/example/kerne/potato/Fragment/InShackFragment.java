@@ -10,9 +10,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -40,8 +38,8 @@ public class InShackFragment extends Fragment {
 
     private static final String TAG = "CheatGZ";
     private static final int DATA_OK = 0;
-    @BindView(R.id.in_shack_firm)
-    RelativeLayout inShackFirm;
+    @BindView(R.id.in_shack_farm)
+    RelativeLayout inShackFarm;
     @BindView(R.id.save_plan)
     LinearLayout savePlan;
     Unbinder unbinder;
@@ -49,6 +47,7 @@ public class InShackFragment extends Fragment {
     ImageView inImage;
     @BindView(R.id.cover_view)
     View coverView;
+    private RelativeLayout baseFarm;
     SharedPreferences sp;
     SharedPreferences.Editor editor;
     private View view;
@@ -57,15 +56,15 @@ public class InShackFragment extends Fragment {
     private String bigfarmId;
     private List<JSONObject> mFieldList = new ArrayList<>();
     private TextView road;
+    private List<View> viewList;
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.save_plan:
                     if (!flag) {
-                        coverView.setVisibility(View.GONE);
+                        coverView.setVisibility(View.INVISIBLE);
                         inImage.setBackgroundResource(R.drawable.no_save);
-//                        savePlan.getBackground().setAlpha(50);
                         if (road != null) {
                             road.setText("编辑模式");
                         }
@@ -73,9 +72,8 @@ public class InShackFragment extends Fragment {
                     } else {
                         coverView.setVisibility(View.VISIBLE);
                         inImage.setBackgroundResource(R.drawable.edit);
-//                        savePlan.getBackground().setAlpha(255);
                         if (road != null) {
-                            road.setText("田间小路");
+                            road.setText("路");
                         }
                         flag = false;
                         editor.putBoolean("upload_data", true);
@@ -90,7 +88,6 @@ public class InShackFragment extends Fragment {
             }
         }
     };
-    private List<TextView> textViewList;
     @SuppressLint("HandlerLeak")
     private Handler myHandler = new Handler() {
         @SuppressLint("SetTextI18n")
@@ -118,12 +115,11 @@ public class InShackFragment extends Fragment {
         editor = sp.edit();
         unbinder = ButterKnife.bind(this, view);
         inImage.setBackgroundResource(R.drawable.edit);
-        savePlan.getBackground().setAlpha(100);
+        baseFarm=view.findViewById(R.id.base_farm);
 
         coverView.setOnClickListener(null);
         savePlan.setOnClickListener(onClickListener);
         initData();
-        initView();
         return view;
     }
 
@@ -171,13 +167,15 @@ public class InShackFragment extends Fragment {
         }).start();
     }
 
-
-    @SuppressLint("ClickableViewAccessibility")
     private void initView() {
-        if (inShackFirm != null) {
-            FarmPlanView farmPlanView = new FarmPlanView(getContext(), inShackFirm, inShackFirm.getWidth(), inShackFirm.getHeight(), mFieldList);
+        if (inShackFarm != null) {
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) inShackFarm.getLayoutParams();
+            layoutParams.width = (int) (0.6* baseFarm.getHeight());
+            layoutParams.height = baseFarm.getHeight();
+            inShackFarm.setLayoutParams(layoutParams);
+            FarmPlanView farmPlanView = new FarmPlanView(getContext(), inShackFarm, (int) (0.6* baseFarm.getHeight()), baseFarm.getHeight(), mFieldList);
             road = farmPlanView.createRoad("greenhouse");
-            textViewList = farmPlanView.createField("greenhouse",FarmPlanView.DRAG_EVENT);
+            farmPlanView.createField("greenhouse", FarmPlanView.DRAG_EVENT);
         }
     }
 

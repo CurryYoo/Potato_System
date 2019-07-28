@@ -3,11 +3,10 @@ package com.example.kerne.potato.Util;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 
 import com.example.kerne.potato.LoginActivity;
 import com.example.kerne.potato.R;
-import com.example.kerne.potato.TableActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,16 +25,16 @@ public class FarmPlanView {
 
     public static final double FARM_ROW = 410D;//棚外试验田行，包括中间道路的行数
     public static final double FARM_COLUMN = 40D;//棚外试验田列数
-    public static final double SHACK_FARM_ROW = 551D;//棚行数，包括中间道路的行数
+    public static final double SHACK_FARM_ROW = 552D;//棚行数，包括中间道路的行数
     public static final double SHACK_FARM_COLUMN = 7D;//棚列数
     public static final double ROAD_ROW = 10D;//道路行数
-    public static final double SHACK_ROAD_ROW = 11D;//棚道路行数
+    public static final double SHACK_ROAD_ROW = 12D;//棚道路行数
     public static final int RATIO = 1000000;
 
     public static final int DRAG_EVENT = 0;
     public static final int CLICK_EVENT = 1;
 
-    public List<TextView> textViewList;//试验区域块
+    public List<View> viewList;//试验区域块
     public TextView roadTextView;//道路
     private Context mContext;
     private RelativeLayout mRelativeLayout;//试验田
@@ -49,18 +47,18 @@ public class FarmPlanView {
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(mContext, LoginActivity.class);
-            try {
-                intent.putExtra("expType", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("expType"));
-                intent.putExtra("fieldId", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("fieldId"));
-                intent.putExtra("num", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("num"));
-                intent.putExtra("rows", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("rows"));
-                intent.putExtra("farmlandId", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("farmlandId"));
-                intent.putExtra("type", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("type"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            mContext.startActivity(intent);
+//            Intent intent = new Intent(mContext, LoginActivity.class);
+//            try {
+//                intent.putExtra("expType", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("expType"));
+//                intent.putExtra("fieldId", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("fieldId"));
+//                intent.putExtra("num", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("num"));
+//                intent.putExtra("rows", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("rows"));
+//                intent.putExtra("farmlandId", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("farmlandId"));
+//                intent.putExtra("type", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("type"));
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//            mContext.startActivity(intent);
         }
     };
 
@@ -74,9 +72,6 @@ public class FarmPlanView {
             int ea = event.getAction();
             switch (ea) {
                 case MotionEvent.ACTION_DOWN:
-                    v.setBackgroundResource(R.drawable.bg_field_p);
-                    v.setElevation(10);
-                    Log.d("CheatGZ positon", v.getTag() + "");
                     lastX = (int) event.getRawX();//获取触摸事件触摸位置的原始X坐标
                     lastY = (int) event.getRawY();
                 case MotionEvent.ACTION_MOVE:
@@ -111,8 +106,6 @@ public class FarmPlanView {
                     v.postInvalidate();
                     break;
                 case MotionEvent.ACTION_UP:
-                    v.setBackgroundResource(R.drawable.bg_field);
-                    v.setElevation(0);
                     //x，y轴坐标
                     endX = (int) (((double) v.getLeft() / farmWidth) * RATIO);
                     endY = (int) (((double) v.getTop() / farmHeight) * RATIO);
@@ -160,14 +153,14 @@ public class FarmPlanView {
                 break;
         }
         roadTextView.setLayoutParams(layoutParams);
-        roadTextView.setBackgroundColor(mContext.getResources().getColor(R.color.secondary_background));
-        roadTextView.setText("田间小路");
-        roadTextView.setTextColor(mContext.getResources().getColor(R.color.color_farm));
+        roadTextView.setBackgroundResource(R.drawable.bg_road);
+        roadTextView.setText("路");
+        roadTextView.setTextColor(mContext.getResources().getColor(R.color.primary_text));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            roadTextView.setAutoSizeTextTypeUniformWithConfiguration(8, 16, 1, TypedValue.COMPLEX_UNIT_SP);
+            roadTextView.setAutoSizeTextTypeUniformWithConfiguration(5, 12, 1, TypedValue.COMPLEX_UNIT_SP);
         } else {
-            roadTextView.setTextSize(8);
+            roadTextView.setTextSize(6);
         }
         roadTextView.setGravity(Gravity.CENTER);
 
@@ -179,79 +172,63 @@ public class FarmPlanView {
      * @param action 生成区域的action event 监听事件,0代表可以拖动,1代表可以点击
      * @return
      */
-    @SuppressLint("ClickableViewAccessibility")
-    public List<TextView> createField(String type, int action) {
-        textViewList = new ArrayList<>();
+
+    public List<View> createField(String type, int action) {
+        viewList = new ArrayList<>();
         try {
             switch (type) {
                 case "common":
                     for (int i = 0; i < mJsonList.size(); i++) {
-                        TextView textView = new TextView(mContext);
                         double btn_row = (double) mJsonList.get(i).getInt("num") / mJsonList.get(i).getInt("rows");
                         double btn_column = (double) mJsonList.get(i).getInt("rows");
                         double btn_x = Double.valueOf(mJsonList.get(i).get("x").toString()) / RATIO;
                         double btn_y = Double.valueOf(mJsonList.get(i).get("y").toString()) / RATIO;
 
-                        mRelativeLayout.addView(textView);
-                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) textView.getLayoutParams();
+                        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        View view = inflater.inflate(R.layout.field_view, null, false);
+                        TextView textView = view.findViewById(R.id.field_name);
+                        textView.setText(mJsonList.get(i).getString("name"));
+                        mRelativeLayout.addView(view);
+                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
                         layoutParams.height = (int) ((btn_row / FARM_ROW) * (farmHeight - 20));
                         layoutParams.width = (int) ((btn_column / FARM_COLUMN) * (farmWidth - 20));
-
                         layoutParams.topMargin = (int) (btn_y * farmHeight);
                         layoutParams.leftMargin = (int) (btn_x * farmWidth);
-                        textView.setLayoutParams(layoutParams);
-                        textView.setText(mJsonList.get(i).getString("name"));
-                        textView.setTextColor(mContext.getResources().getColor(R.color.color_white));
-                        textView.setBackgroundResource(R.drawable.bg_field);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            textView.setAutoSizeTextTypeUniformWithConfiguration(5, 13, 1, TypedValue.COMPLEX_UNIT_SP);
-                        } else {
-                            textView.setTextSize(9);
-                        }
-                        textView.setEms(1);
-                        textView.setGravity(Gravity.CENTER);
-                        textView.setTag(i);
+                        view.setLayoutParams(layoutParams);
+                        view.setTag(i);
                         if (action == DRAG_EVENT) {
-                            textView.setOnTouchListener(moveTouchListenr);
+                            view.setOnTouchListener(moveTouchListenr);
                         } else if (action == CLICK_EVENT) {
-                            textView.setOnClickListener(onClickListener);
+                            view.setOnClickListener(onClickListener);
                         }
-                        textViewList.add(textView);
+                        viewList.add(view);
                     }
                     break;
                 case "greenhouse":
                     for (int i = 0; i < mJsonList.size(); i++) {
-                        TextView textView = new TextView(mContext);
                         double btn_row = (double) mJsonList.get(i).getInt("num") / mJsonList.get(i).getInt("rows");
                         double btn_column = (double) mJsonList.get(i).getInt("rows");
                         double btn_x = Double.valueOf(mJsonList.get(i).get("x").toString()) / RATIO;
                         double btn_y = Double.valueOf(mJsonList.get(i).get("y").toString()) / RATIO;
 
-                        mRelativeLayout.addView(textView);
-                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) textView.getLayoutParams();
+                        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        View view = inflater.inflate(R.layout.field_view, null, false);
+                        TextView textView = view.findViewById(R.id.field_name);
+                        textView.setText(mJsonList.get(i).getString("name"));
+                        mRelativeLayout.addView(view);
+                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
                         layoutParams.width = (int) ((btn_column / SHACK_FARM_COLUMN) * (farmWidth - 20));
                         layoutParams.height = (int) ((btn_row / SHACK_FARM_ROW) * (farmHeight - 20));
-
                         layoutParams.leftMargin = (int) (btn_x * farmWidth);
                         layoutParams.topMargin = (int) (btn_y * farmHeight);
-                        textView.setLayoutParams(layoutParams);
-                        textView.setText(mJsonList.get(i).getString("expType"));
-                        textView.setTextColor(mContext.getResources().getColor(R.color.color_white));
-                        textView.setBackgroundResource(R.drawable.bg_field);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            textView.setAutoSizeTextTypeUniformWithConfiguration(5, 13, 1, TypedValue.COMPLEX_UNIT_SP);
-                        } else {
-                            textView.setTextSize(9);
-                        }
-                        textView.setEms(1);
-                        textView.setGravity(Gravity.CENTER);
-                        textView.setTag(i);//设置tag记录点击的是第几块田地
+                        view.setLayoutParams(layoutParams);
+                        view.setTag(i);
                         if (action == DRAG_EVENT) {
-                            textView.setOnTouchListener(moveTouchListenr);
+                            view.setOnTouchListener(moveTouchListenr);
                         } else if (action == CLICK_EVENT) {
-                            textView.setOnClickListener(onClickListener);
+                            view.setOnClickListener(onClickListener);
                         }
-                        textViewList.add(textView);
+                        viewList.add(view);
                     }
                     break;
                 default:
@@ -260,6 +237,6 @@ public class FarmPlanView {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return textViewList;
+        return viewList;
     }
 }

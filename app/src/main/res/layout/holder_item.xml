@@ -23,10 +23,10 @@
             android:autoSizeMinTextSize="10sp"
             android:autoSizeStepGranularity="2sp"
             android:autoSizeTextType="uniform"
-            android:background="@drawable/selector_trans_button"
+            android:background="@drawable/selector_trans_button_light"
             android:gravity="center"
             android:padding="8dp"
-            android:textColor="@color/primary_background"
+            android:textColor="@color/primary_text"
             android:textSize="14sp"
             android:textStyle="bold"
             tools:text="选择" />

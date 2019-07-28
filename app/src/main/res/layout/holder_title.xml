@@ -7,5 +7,5 @@
     android:padding="10dp"
     tools:text="title"
     android:textSize="14sp"
-    android:textColor="@color/secondary_background"/>
+    android:textColor="@color/secondary_text"/>
 

@@ -3,15 +3,11 @@
     <item>
         <shape>
             <solid android:color="@color/primary_background" />
-            <corners android:topLeftRadius="@dimen/dp_10"
-                android:topRightRadius="@dimen/dp_10"/>
         </shape>
     </item>
     <item>
         <shape>
-            <solid android:color="@color/secondary_background" />
-            <corners android:topLeftRadius="@dimen/dp_10"
-            android:topRightRadius="@dimen/dp_10"/>
+            <solid android:color="@color/primary_background" />
         </shape>
     </item>
 </layer-list>
