@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,6 +127,8 @@ public class FirmSurveyFragment extends Fragment {
                             jsonObject0.put("bigfarmId", cursor2.getString(cursor2.getColumnIndex("bigfarmId")));
                             jsonObject0.put("rows", cursor2.getInt(cursor2.getColumnIndex("rows")));
                             jsonObject0.put("type", cursor2.getString(cursor2.getColumnIndex("type")));
+
+                            Log.d("typeeeeeeeeeee", cursor2.getString(cursor2.getColumnIndex("type")));
 //                            jsonObject0.put("bigFarmName", bigFarmName);
 //                            jsonObject0.put("year", year);
                             mFieldList.add(jsonObject0);
