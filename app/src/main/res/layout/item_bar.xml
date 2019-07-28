@@ -2,18 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary_background"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/itembar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_item_bar"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingTop="10dp"
-        android:paddingEnd="@dimen/dp_10"
+        android:paddingTop="15dp"
+        android:paddingEnd="15dp"
         android:paddingStart="@dimen/dp_10">
 
         <LinearLayout
@@ -28,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
                 android:gravity="center|left"
-                android:text="Title : "
+                android:text="Title"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/primary_text"
                 android:textSize="15sp"
@@ -46,7 +44,7 @@
             style="@style/divider_color"
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
-            android:layout_marginTop="@dimen/dp_10" />
+            android:layout_marginTop="@dimen/dp_10"/>
 
     </LinearLayout>
 
@@ -54,13 +52,10 @@
         android:id="@+id/itemBar_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_10"
-        android:layout_marginEnd="@dimen/dp_10"
-        android:background="@color/light_background"
         android:orientation="vertical"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
         android:paddingBottom="10dp"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
 </LinearLayout>

@@ -11,13 +11,11 @@
         android:id="@+id/plan_indicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/StyledIndicators"
-        android:background="@color/primary_background"/>
+        android:theme="@style/StyledIndicators"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/plan_viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/primary_background"/>
+        android:layout_weight="1"/>
 </LinearLayout>

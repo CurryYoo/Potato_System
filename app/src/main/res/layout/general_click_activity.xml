@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_white"
+    android:background="@color/primary_background"
     android:orientation="vertical">
 
     <include
@@ -12,9 +12,12 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rcv_click"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
         android:overScrollMode="never"
+        android:background="@drawable/bg_30_light_top"
         android:scrollbars="none" />
 
 </LinearLayout>

@@ -647,7 +647,7 @@ public class SaveDataActivity extends AppCompatActivity {
     private void initView() {
         view_basic = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_basicinfo, null);
         InfoItemBar mbar_basic = new InfoItemBar(SaveDataActivity.this, getString(R.string.item_bar_basic));
-        mbar_basic.setColor(getResources().getDrawable(R.drawable.bg_item_bar_top,null));
+//        mbar_basic.setColor(getResources().getDrawable(R.drawable.bg_item_bar_top,null));
         mbar_basic.addView(view_basic);
         mbar_basic.setShow(true);
         mLinearLayout.addView(mbar_basic);
@@ -1298,7 +1298,7 @@ public class SaveDataActivity extends AppCompatActivity {
         titleText.setText(getText(R.string.species_data_pick));
         leftOneButton.setBackgroundResource(R.drawable.left_back);
         rightOneButton.setBackgroundResource(R.drawable.homepage);
-        rightTwoButton.setBackgroundResource(R.drawable.ic_menu_save);
+        rightTwoButton.setBackgroundResource(R.drawable.no_save);
 
         leftOneLayout.setBackgroundResource(R.drawable.selector_trans_button);
         rightOneLayout.setBackgroundResource(R.drawable.selector_trans_button);
@@ -1758,18 +1758,15 @@ public class SaveDataActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 //        saveImageToGallery(Context., bitmap);
-        Log.d("SaveDataActivity", "onPause method");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("SaveDataActivity", "onDestroy method");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("SaveDataActivity", "onStop method");
     }
 }

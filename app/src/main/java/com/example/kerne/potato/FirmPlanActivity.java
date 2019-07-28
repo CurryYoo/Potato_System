@@ -31,7 +31,7 @@ public class FirmPlanActivity extends AppCompatActivity {
 
     public static Fragment outShackFragment;
     public static Fragment inShackFragment;
-    public String titles[] = new String[]{"试验田", "棚区"};
+    public String titles[] = new String[]{"棚外", "棚内"};
     @BindView(R.id.left_one_button)
     ImageView leftOneButton;
     @BindView(R.id.left_one_layout)
@@ -55,18 +55,6 @@ public class FirmPlanActivity extends AppCompatActivity {
                 case R.id.left_one_layout:
                     finish();
                     break;
-                case R.id.right_one_layout:
-                    final SweetAlertDialog tipDialog = new SweetAlertDialog(FirmPlanActivity.this, SweetAlertDialog.NORMAL_TYPE)
-                            .setConfirmText("了解")
-                            .setContentText("点击编辑按钮进入编辑\n模式,编辑模式下可以\n缩放与拖动试验田")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                    sweetAlertDialog.dismissWithAnimation();
-                                }
-                            });
-                    tipDialog.show();
-                    break;
                 default:
                     break;
             }
@@ -84,17 +72,17 @@ public class FirmPlanActivity extends AppCompatActivity {
 
     private void initToolBar() {
         leftOneButton.setBackgroundResource(R.drawable.left_back);
-        rightOneButton.setBackgroundResource(R.drawable.tip);
+//        rightOneButton.setBackgroundResource(R.drawable.no_save);
         titleText.setText(getString(R.string.farm_plan));
 
-        rightOneLayout.setBackgroundResource(R.drawable.selector_trans_button);
+//        rightOneLayout.setBackgroundResource(R.drawable.selector_trans_button);
         leftOneLayout.setBackgroundResource(R.drawable.selector_trans_button);
-        rightOneLayout.setOnClickListener(onClickListener);
+//        rightOneLayout.setOnClickListener(onClickListener);
         leftOneLayout.setOnClickListener(onClickListener);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             leftOneLayout.setTooltipText(getString(R.string.back_left));
-            rightOneLayout.setTooltipText("提示");
+            rightOneLayout.setTooltipText(getString(R.string.save));
         }
     }
 
@@ -123,16 +111,6 @@ public class FirmPlanActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-
-    @Override
-    public void onBackPressed() {
-        if (currentPage == 0) {
-            super.onBackPressed();
-        } else {
-            planIndicator.setCurrentItem(0);
-        }
     }
 
     //adapter

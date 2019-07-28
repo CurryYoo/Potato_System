@@ -69,16 +69,6 @@ public class MainActivity extends AppCompatActivity implements  HomepageFragment
         });
     }
 
-
-    @Override
-    public void onBackPressed() {
-        if (currentPage == 0) {
-            super.onBackPressed();
-        } else {
-            mainIndicator.setCurrentItem(0);
-        }
-    }
-
     @Override
     public void selectFarm(String bigFarmId) {
         ((FirmSurveyFragment) firmSurveyFragment).selectFarm(bigFarmId);

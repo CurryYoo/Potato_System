@@ -83,6 +83,7 @@ public class HomepageFragment extends Fragment {
     SharedPreferences.Editor editor;
     //用户角色字段
     String userRole = "farmer";
+    private LinearLayout baseFarm;
     private LinearLayout farmButton;
     private View view;
     private Context self;
@@ -103,8 +104,8 @@ public class HomepageFragment extends Fragment {
     private List<JSONObject> mBigFarmList = new ArrayList<>();
     private List<JSONObject> mOutShackList = new ArrayList<>();
     private List<JSONObject> mInShackList = new ArrayList<>();
-    private List<TextView> mOutList = new ArrayList<>();
-    private List<TextView> mInList = new ArrayList<>();
+    private List<View> mOutList = new ArrayList<>();
+    private List<View> mInList = new ArrayList<>();
     private List<String> mYears = new ArrayList<>();
     private ArrayAdapter<String> spinnerAdapter;
     private String bigfarmId;
@@ -118,7 +119,7 @@ public class HomepageFragment extends Fragment {
             switch (msg.what) {
                 case BIGFARMLIST_OK:
                     downloadSuccess_Num++;
-                    downloadDataDialog.setTitleText(getContext().getString(R.string.download_farm_plan_data));
+                    downloadDataDialog.setTitleText(getContext().getString(R.string.download_farm_exp_type));
                     break;
 //                case FARMLIST_OK:
 //                    downloadSuccess_Num++;
@@ -137,7 +138,6 @@ public class HomepageFragment extends Fragment {
                     break;
                 case DATA_OK:
                     if (mBigFarmList.size() > 0) {
-
                         //spinner加载
                         try {
                             bigfarmId = mBigFarmList.get(0).getString("bigfarmId");
@@ -261,15 +261,16 @@ public class HomepageFragment extends Fragment {
                         break;
                     } else {
                         if (farm_flag == 0) {
-                            farmType.setText(self.getString(R.string.farm));
+                            farmType.setText(self.getString(R.string.out_shack));
                             farmTypeIcon.setBackgroundResource(R.drawable.farm);
                             farm_flag = 1;
 
                             initView(farm_flag);
                         } else if (farm_flag == 1) {
-                            farmType.setText(self.getString(R.string.shack_farm));
+                            farmType.setText(self.getString(R.string.in_shack));
                             farmTypeIcon.setBackgroundResource(R.drawable.shack_farm);
                             farm_flag = 0;
+
 
                             initView(farm_flag);
                         }
@@ -326,9 +327,11 @@ public class HomepageFragment extends Fragment {
         farmType = view.findViewById(R.id.farm_type);
         farmTypeIcon = view.findViewById(R.id.farm_type_icon);
         homepageFarm = view.findViewById(R.id.homepage_farm);
+        baseFarm = view.findViewById(R.id.base_farm);
 
         farmTypeIcon.setBackgroundResource(R.drawable.shack_farm);
-        homepageYears.setPopupBackgroundResource(R.drawable.bg_spinner_drop_down2);
+        homepageYears.setPopupBackgroundResource(R.drawable.bg_spinner_drop_down_dark);
+
 
         btnDownload.setOnClickListener(onClickListener);
         btnUpload.setOnClickListener(onClickListener);
@@ -337,7 +340,7 @@ public class HomepageFragment extends Fragment {
         homepageYears.setOnItemSelectedListener(onItemSelectedListener);
         initData();
 
-
+//
         intentFilter = new IntentFilter();
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         networkChangeReceiver = new NetworkChangeReceiver();
@@ -385,7 +388,28 @@ public class HomepageFragment extends Fragment {
 
         //获取棚外数据
         mOutShackList.clear();
-        //TODO
+        Cursor cursor1 = db.query("ExperimentField", null, "bigfarmId=?", new String[]{bigfarmId}, null, null, null);
+        if (cursor1.moveToFirst()) {
+            do {
+                JSONObject jsonObject0 = new JSONObject();
+                try {
+                    jsonObject0.put("fieldId", cursor1.getString(cursor1.getColumnIndex("id")));
+                    jsonObject0.put("name", cursor1.getString(cursor1.getColumnIndex("name")));
+                    jsonObject0.put("expType", cursor1.getString(cursor1.getColumnIndex("expType")));
+                    jsonObject0.put("num", cursor1.getInt(cursor1.getColumnIndex("num")));
+                    jsonObject0.put("bigfarmId", cursor1.getString(cursor1.getColumnIndex("bigfarmId")));
+                    jsonObject0.put("rows", cursor1.getInt(cursor1.getColumnIndex("rows")));
+                    jsonObject0.put("x", cursor1.getInt(cursor1.getColumnIndex("moveX")));
+                    jsonObject0.put("y", cursor1.getInt(cursor1.getColumnIndex("moveY")));
+                    jsonObject0.put("type", cursor1.getInt(cursor1.getColumnIndex("type")));
+                    mOutShackList.add(jsonObject0);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } while (cursor1.moveToNext());
+        }
+        cursor1.close();
+
         //获取大棚区域
         mInShackList.clear();
         Cursor cursor2 = db.query("ExperimentField", null, "bigfarmId=?", new String[]{bigfarmId}, null, null, null);
@@ -415,40 +439,44 @@ public class HomepageFragment extends Fragment {
         initFieldData();
         switch (flag) {
             case 0:
-                //加载棚外
-                homepageFarm.removeAllViews();
-                mOutShackList = new ArrayList<>();
-                try {
-                    for (int i = 0; i < 3; i++) {
-                        JSONObject jsonObject = new JSONObject();
-                        jsonObject.put("num", 50 + i * 10);
-                        jsonObject.put("rows", 1 + i);
-                        jsonObject.put("x", 300000 + i * 100000);
-                        jsonObject.put("y", 300000 + i * 100000);
-                        jsonObject.put("name", "加工鉴定");
-                        mOutShackList.add(jsonObject);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+//                mOutShackList = new ArrayList<>();
+//                try {
+//                    for (int i = 0; i < 10; i++) {
+//                        JSONObject jsonObject = new JSONObject();
+//                        jsonObject.put("num", 200 + i * 100);
+//                        jsonObject.put("rows", 1 + i);//列
+//                        jsonObject.put("x", 100000 + i * 50000);
+//                        jsonObject.put("y", 100000 + i * 50000);
+//                        jsonObject.put("name", "加工鉴定" + i);
+//                        mOutShackList.add(jsonObject);
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
 
                 if (homepageFarm != null) {
-                    FarmPlanView farmPlanView = new FarmPlanView(getContext(), homepageFarm, homepageFarm.getWidth(), homepageFarm.getHeight(), mOutShackList);
+                    //加载棚外,设置farm大小
+                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) homepageFarm.getLayoutParams();
+                    layoutParams.width = baseFarm.getWidth();
+                    layoutParams.height = (int) (0.92 * baseFarm.getWidth());
+                    homepageFarm.setLayoutParams(layoutParams);
+                    homepageFarm.removeAllViews();
+                    FarmPlanView farmPlanView = new FarmPlanView(getContext(), homepageFarm, baseFarm.getWidth(), (int) (0.92 * baseFarm.getWidth()), mOutShackList);
                     farmPlanView.createRoad("common");
-                    mOutList = farmPlanView.createField("common",FarmPlanView.CLICK_EVENT);
-                    for (int i = 0; i < mOutList.size(); i++) {
-                    }
+                    farmPlanView.createField("common", FarmPlanView.CLICK_EVENT);
                 }
                 break;
             case 1:
-                //加载棚内
-                homepageFarm.removeAllViews();
                 if (homepageFarm != null) {
-                    FarmPlanView farmPlanView = new FarmPlanView(getContext(), homepageFarm, homepageFarm.getWidth(), homepageFarm.getHeight(), mInShackList);
+                    //加载棚内
+                    LinearLayout.LayoutParams layoutParams2 = (LinearLayout.LayoutParams) homepageFarm.getLayoutParams();
+                    layoutParams2.width = (int) (0.6* baseFarm.getHeight());
+                    layoutParams2.height = baseFarm.getHeight();
+                    homepageFarm.setLayoutParams(layoutParams2);
+                    homepageFarm.removeAllViews();
+                    FarmPlanView farmPlanView = new FarmPlanView(getContext(), homepageFarm, (int) (0.6* baseFarm.getHeight()), baseFarm.getHeight(), mInShackList);
                     farmPlanView.createRoad("greenhouse");
-                    mInList = farmPlanView.createField("greenhouse",FarmPlanView.CLICK_EVENT);
-                    for (int i = 0; i < mInList.size(); i++) {
-                    }
+                    farmPlanView.createField("greenhouse", FarmPlanView.CLICK_EVENT);
                 }
                 break;
             default:
@@ -458,7 +486,7 @@ public class HomepageFragment extends Fragment {
 
     private void downloadData() {
         downloadDataDialog = new SweetAlertDialog(self, SweetAlertDialog.PROGRESS_TYPE);
-        downloadDataDialog.setTitleText(getString(R.string.download_data));
+        downloadDataDialog.setTitleText(getString(R.string.download_farm_data));
         downloadDataDialog.setContentText("下载云端数据耗时较长，请勿中途退出，以免造成数据缺失");
         downloadDataDialog.setCancelable(false);
         downloadDataDialog.show();
@@ -1082,6 +1110,11 @@ public class HomepageFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         if (sp.getBoolean("upload_data", false)) {
@@ -1124,7 +1157,7 @@ public class HomepageFragment extends Fragment {
         myHandler.removeCallbacksAndMessages(null);
     }
 
-    //与firmsurveyfragment进行通信，通知下载了数据
+    //与firmsurveyfragment进行通信，通知更新了数据
     public interface selectFarm {
         void selectFarm(String bigFarmId);
     }
@@ -1137,11 +1170,13 @@ public class HomepageFragment extends Fragment {
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
             if (networkInfo != null && networkInfo.isAvailable()) {
                 isOnline = true;
-                showShortToast(context, getString(R.string.network_normal));
+//                showShortToast(context, getString(R.string.network_normal));
             } else {
                 isOnline = false;
-                showShortToast(context, getString(R.string.network_wrong));
+//                showShortToast(context, getString(R.string.network_wrong));
             }
         }
+
+
     }
 }

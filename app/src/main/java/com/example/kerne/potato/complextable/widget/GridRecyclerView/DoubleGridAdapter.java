@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.kerne.potato.R;
 import com.example.kerne.potato.complextable.widget.GridRecyclerView.holder.ItemViewHolder;
 import com.example.kerne.potato.complextable.widget.GridRecyclerView.holder.TitleViewHolder;
 
@@ -65,9 +66,9 @@ public class DoubleGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             case TYPE_TITLE:
                 TitleViewHolder titleViewHolder = (TitleViewHolder) holder;
                 if (position == 0) {
-                    titleViewHolder.bind("试验田");
+                    titleViewHolder.bind(mContext.getString(R.string.out_shack));
                 } else {
-                    titleViewHolder.bind("棚区");
+                    titleViewHolder.bind(mContext.getString(R.string.in_shack));
                 }
                 break;
             case TYPE_ITEM:
