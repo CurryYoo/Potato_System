@@ -375,6 +375,8 @@ public class HomepageFragment extends Fragment {
                     } while (cursor.moveToNext());
                 }
                 cursor.close();
+                dbHelper.close();
+                db.close();
 
                 Message msg = new Message();
                 msg.what = DATA_OK;
@@ -1152,6 +1154,7 @@ public class HomepageFragment extends Fragment {
         }
         if (db != null) {
             db.close();
+            dbHelper.close();
         }
         self.unregisterReceiver(networkChangeReceiver);
         myHandler.removeCallbacksAndMessages(null);

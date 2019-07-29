@@ -1,6 +1,7 @@
 package com.example.kerne.potato.Fragment;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -51,6 +52,8 @@ public class OutShackFragment extends Fragment {
     private Context self;
     private String bigfarmId;
 
+    SpeciesDBHelper dbHelper;
+    SQLiteDatabase db;
     SharedPreferences sp;
     SharedPreferences.Editor editor;
     private Boolean flag = false;//开始时处于不可编辑状态
@@ -76,7 +79,8 @@ public class OutShackFragment extends Fragment {
                         editor.putBoolean("upload_data", true);
                         editor.apply();
                         showShortToast(self, "保存完成");
-                        //TODO 保存,只需要更新数据库即可
+                        //保存
+                        updateData();
                     }
                     break;
                 default:
@@ -116,6 +120,10 @@ public class OutShackFragment extends Fragment {
         baseFarm=view.findViewById(R.id.base_farm);
         coverView.setOnClickListener(null);
         savePlan.setOnClickListener(onClickListener);
+
+        dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 11);
+        db = dbHelper.getWritableDatabase();
+
         initData();
         return view;
     }
@@ -127,9 +135,6 @@ public class OutShackFragment extends Fragment {
             @Override
             public void run() {
                 Looper.prepare();
-                //获取数据库中数据
-                SpeciesDBHelper dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 11);
-                SQLiteDatabase db = dbHelper.getReadableDatabase();
                 //获取棚外数据
                 mFieldList.clear();
                 Cursor cursor1 = db.query("ExperimentField", null, "bigfarmId=? and type=?", new String[]{bigfarmId,"common"}, null, null, null);
@@ -154,9 +159,6 @@ public class OutShackFragment extends Fragment {
                 }
                 cursor1.close();
 
-                db.close();
-                dbHelper.close();
-
                 Message msg = new Message();
                 msg.what = DATA_OK;
                 myHandler.sendMessage(msg);
@@ -165,34 +167,6 @@ public class OutShackFragment extends Fragment {
     }
 
     private void initView() {
-//        try {
-//            for (int i = 0; i < 10; i++) {
-//                JSONObject jsonObject = new JSONObject();
-//                jsonObject.put("num", 200+i*100);
-//                jsonObject.put("rows", 1+i);//列
-//                jsonObject.put("x", 100000+i*50000);
-//                jsonObject.put("y", 100000+i*50000);
-//                jsonObject.put("name", "加工鉴定"+i);
-//                mFieldList.add(jsonObject);
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        new Handler().postDelayed(new Runnable() {
-//            @SuppressLint("ClickableViewAccessibility")
-//            @Override
-//            public void run() {
-//                if (outShackFarm != null) {
-//                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) outShackFarm.getLayoutParams();
-//                    layoutParams.width = baseFarm.getWidth();
-//                    layoutParams.height = (int) (0.92 * baseFarm.getWidth());
-//                    outShackFarm.setLayoutParams(layoutParams);
-//                    FarmPlanView farmPlanView = new FarmPlanView(getContext(), outShackFarm, baseFarm.getWidth(), (int) (0.92 * baseFarm.getWidth()), mFieldList);
-//                    road=farmPlanView.createRoad("common");
-//                    farmPlanView.createField("common",FarmPlanView.DRAG_EVENT);
-//                }
-//            }
-//        }, 1000); //延迟ms
         if (outShackFarm != null) {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) outShackFarm.getLayoutParams();
             layoutParams.width = baseFarm.getWidth();
@@ -204,13 +178,36 @@ public class OutShackFragment extends Fragment {
         }
     }
 
+    private void updateData() {
+        List<ContentValues> contentValuesList = assembleData(mFieldList);
+        for (int i = 0; i < contentValuesList.size(); i++) {
+            db.update("ExperimentField", contentValuesList.get(i), "id=?", new String[]{contentValuesList.get(i).getAsString("id")});
+        }
+    }
+
+    //组装数据
+    private List<ContentValues> assembleData(List<JSONObject> jsonObjectList) {
+        List<ContentValues> contentValuesList = new ArrayList<>();
+        try {
+            for (int i = 0; i < jsonObjectList.size(); i++) {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put("id", jsonObjectList.get(i).getString("fieldId"));
+                contentValues.put("moveX", jsonObjectList.get(i).getInt("x"));
+                contentValues.put("moveY", jsonObjectList.get(i).getInt("y"));
+                contentValuesList.add(contentValues);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return contentValuesList;
+    }
 
     //fragment可见
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {//可见
-//            initView();
+            // 相当于Fragment的onResume
         } else {
             // 相当于Fragment的onPause
         }
@@ -220,5 +217,7 @@ public class OutShackFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        db.close();
+        dbHelper.close();
     }
 }

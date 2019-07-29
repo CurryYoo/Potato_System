@@ -1,6 +1,7 @@
 package com.example.kerne.potato.Fragment;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -50,6 +51,8 @@ public class InShackFragment extends Fragment {
     private RelativeLayout baseFarm;
     SharedPreferences sp;
     SharedPreferences.Editor editor;
+    SpeciesDBHelper dbHelper;
+    SQLiteDatabase db;
     private View view;
     private Context self;
     private Boolean flag = false;//开始时处于不可编辑状态
@@ -79,8 +82,8 @@ public class InShackFragment extends Fragment {
                         editor.putBoolean("upload_data", true);
                         editor.apply();
                         showShortToast(self, "保存完成");
-
-                        //TODO 保存,只需要更新数据库即可
+                        //保存
+                        updateData();
                     }
                     break;
                 default:
@@ -115,10 +118,12 @@ public class InShackFragment extends Fragment {
         editor = sp.edit();
         unbinder = ButterKnife.bind(this, view);
         inImage.setBackgroundResource(R.drawable.edit);
-        baseFarm=view.findViewById(R.id.base_farm);
+        baseFarm = view.findViewById(R.id.base_farm);
 
         coverView.setOnClickListener(null);
         savePlan.setOnClickListener(onClickListener);
+        dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 11);
+        db = dbHelper.getWritableDatabase();
         initData();
         return view;
     }
@@ -130,12 +135,9 @@ public class InShackFragment extends Fragment {
             @Override
             public void run() {
                 Looper.prepare();
-                //获取数据库中数据
-                SpeciesDBHelper dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 11);
-                SQLiteDatabase db = dbHelper.getReadableDatabase();
 
                 //获取大棚区域
-                Cursor cursor = db.query("ExperimentField", null, "bigfarmId=? and type=?", new String[]{bigfarmId,"greenhouse"}, null, null, null);
+                Cursor cursor = db.query("ExperimentField", null, "bigfarmId=? and type=?", new String[]{bigfarmId, "greenhouse"}, null, null, null);
                 if (cursor.moveToFirst()) {
                     do {
                         JSONObject jsonObject0 = new JSONObject();
@@ -157,9 +159,6 @@ public class InShackFragment extends Fragment {
                 }
                 cursor.close();
 
-                db.close();
-                dbHelper.close();
-
                 Message msg = new Message();
                 msg.what = DATA_OK;
                 myHandler.sendMessage(msg);
@@ -170,18 +169,44 @@ public class InShackFragment extends Fragment {
     private void initView() {
         if (inShackFarm != null) {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) inShackFarm.getLayoutParams();
-            layoutParams.width = (int) (0.6* baseFarm.getHeight());
+            layoutParams.width = (int) (0.6 * baseFarm.getHeight());
             layoutParams.height = baseFarm.getHeight();
             inShackFarm.setLayoutParams(layoutParams);
-            FarmPlanView farmPlanView = new FarmPlanView(getContext(), inShackFarm, (int) (0.6* baseFarm.getHeight()), baseFarm.getHeight(), mFieldList);
+            FarmPlanView farmPlanView = new FarmPlanView(getContext(), inShackFarm, (int) (0.6 * baseFarm.getHeight()), baseFarm.getHeight(), mFieldList);
             road = farmPlanView.createRoad("greenhouse");
             farmPlanView.createField("greenhouse", FarmPlanView.DRAG_EVENT);
         }
+    }
+
+    private void updateData() {
+        List<ContentValues> contentValuesList = assembleData(mFieldList);
+        for (int i = 0; i < contentValuesList.size(); i++) {
+            db.update("ExperimentField", contentValuesList.get(i), "id=?", new String[]{contentValuesList.get(i).getAsString("id")});
+        }
+    }
+
+    //组装数据
+    private List<ContentValues> assembleData(List<JSONObject> jsonObjectList) {
+        List<ContentValues> contentValuesList = new ArrayList<>();
+        try {
+            for (int i = 0; i < jsonObjectList.size(); i++) {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put("id", jsonObjectList.get(i).getString("fieldId"));
+                contentValues.put("moveX", jsonObjectList.get(i).getInt("x"));
+                contentValues.put("moveY", jsonObjectList.get(i).getInt("y"));
+                contentValuesList.add(contentValues);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return contentValuesList;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        db.close();
+        dbHelper.close();
     }
 }

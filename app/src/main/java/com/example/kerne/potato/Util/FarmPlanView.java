@@ -28,7 +28,7 @@ public class FarmPlanView {
     public static final double FARM_ROW = 410D;//棚外试验田行，包括中间道路的行数
     public static final double FARM_COLUMN = 40D;//棚外试验田列数
     public static final double SHACK_FARM_ROW = 552D;//棚行数，包括中间道路的行数
-    public static final double SHACK_FARM_COLUMN = 7D;//棚列数
+    public static final double SHACK_FARM_COLUMN = 14D;//棚列数
     public static final double ROAD_ROW = 10D;//道路行数
     public static final double SHACK_ROAD_ROW = 12D;//棚道路行数
     public static final int RATIO = 1000000;

@@ -133,7 +133,7 @@ public class TableActivity extends AppCompatActivity {
                         status = STATUS_EDIT;
                         rightOneButton.setBackgroundResource(R.drawable.no_save);
                         titleText.setText(getText(R.string.species_data_plan));
-                        titleText.setTextColor(getResources().getColor(R.color.color_yellow));
+                        titleText.setTextColor(getResources().getColor(R.color.color_red));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             rightOneLayout.setTooltipText(getResources().getText(R.string.save_data));
                         }
@@ -142,8 +142,8 @@ public class TableActivity extends AppCompatActivity {
                         showShortToast(TableActivity.this, mContext.getString(R.string.enter_species_plan_mode));
                     } else {
                         rightOneButton.setBackgroundResource(R.drawable.edit);
-                        titleText.setText(getString(R.string.species_data));
-                        titleText.setTextColor(getResources().getColor(R.color.secondary_text));
+                        titleText.setText(expType);
+                        titleText.setTextColor(getResources().getColor(R.color.primary_text));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             rightOneLayout.setTooltipText(getText(R.string.species_data_plan));
                         }
@@ -231,12 +231,12 @@ public class TableActivity extends AppCompatActivity {
         dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 11);
         db = dbHelper.getWritableDatabase();
 
-        initToolBar();
-
         fieldId = getIntent().getStringExtra("fieldId");
         expType = getIntent().getStringExtra("expType");
         type = getIntent().getStringExtra("type");
         farmlandId = getIntent().getStringExtra("farmlandId");
+
+        initToolBar();
 
         //延迟加载视图
         new Handler().postDelayed(new Runnable() {
@@ -246,6 +246,23 @@ public class TableActivity extends AppCompatActivity {
                 initTable();
             }
         }, 10); //延迟ms
+    }
+    private void initToolBar() {
+        titleText.setText(expType);
+        leftOneButton.setBackgroundResource(R.drawable.left_back);
+        rightOneButton.setBackgroundResource(R.drawable.edit);
+
+        leftOneLayout.setBackgroundResource(R.drawable.selector_trans_button);
+        rightOneLayout.setBackgroundResource(R.drawable.selector_trans_button);
+        leftOneLayout.setOnClickListener(toolBarOnClickListener);
+        rightOneLayout.setOnClickListener(toolBarOnClickListener);
+        confirmButton.setOnClickListener(toolBarOnClickListener);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            leftOneLayout.setTooltipText(getText(R.string.back_left));
+            rightOneLayout.setTooltipText(getText(R.string.species_data_plan));
+        }
+
     }
 
     @Override
@@ -339,23 +356,6 @@ public class TableActivity extends AppCompatActivity {
         uiHandler.sendMessage(msg);
     }
 
-    private void initToolBar() {
-        titleText.setText(getString(R.string.species_data));
-        leftOneButton.setBackgroundResource(R.drawable.left_back);
-        rightOneButton.setBackgroundResource(R.drawable.edit);
-
-        leftOneLayout.setBackgroundResource(R.drawable.selector_trans_button);
-        rightOneLayout.setBackgroundResource(R.drawable.selector_trans_button);
-        leftOneLayout.setOnClickListener(toolBarOnClickListener);
-        rightOneLayout.setOnClickListener(toolBarOnClickListener);
-        confirmButton.setOnClickListener(toolBarOnClickListener);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            leftOneLayout.setTooltipText(getText(R.string.back_left));
-            rightOneLayout.setTooltipText(getText(R.string.species_data_plan));
-        }
-
-    }
 
     //组装数据
     private List<ContentValues> assembleData(String[][] str) {
@@ -392,8 +392,8 @@ public class TableActivity extends AppCompatActivity {
     public void findByid() {
         pulltorefreshview = findViewById(R.id.pulltorefreshview);
         tv_table_title_left = findViewById(R.id.tv_table_title_left);
-        tv_table_title_left.setText(expType);
-        tv_table_title_left.setTextColor(getResources().getColor(R.color.color_yellow));
+        tv_table_title_left.setText(getString(R.string.species_list));
+        tv_table_title_left.setTextColor(getResources().getColor(R.color.primary_text));
         leftListView = findViewById(R.id.left_container_listview);
         rightListView = findViewById(R.id.right_container_listview);
         right_title_container = findViewById(R.id.right_title_container);

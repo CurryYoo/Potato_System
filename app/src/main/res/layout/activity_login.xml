@@ -118,7 +118,7 @@
             android:paddingStart="@dimen/dp_10"
             android:paddingEnd="@dimen/dp_10"
             android:text="@string/log_in"
-            android:textColor="@color/color_white"
+            android:textColor="@color/primary_text_light"
             android:textSize="18sp"
             android:textStyle="bold" />
     </LinearLayout>

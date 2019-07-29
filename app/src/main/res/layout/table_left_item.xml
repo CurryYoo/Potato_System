@@ -19,6 +19,6 @@
         android:padding="10dp"
         android:textColor="@color/primary_text"
         android:textSize="15sp"
-        tools:text="横标题" />
+        tools:text="@string/species_list" />
 
 </LinearLayout>

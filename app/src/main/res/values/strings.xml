@@ -67,10 +67,11 @@
     <string name="farm_tree">试验田目录树</string>
     <string name="search_species">搜索试验品种</string>
     <string name="species_data">试验品种</string>
+    <string name="species_list">品种列表</string>
     <string name="species_data_plan">品种规划</string>
     <string name="species_data_pick">品种信息采集</string>
     <string name="update_plan">上传本地数据</string>
-    <string name="input_species_data">请输入品种编号</string>
+    <string name="input_species_data">请输入品种名称</string>
     <string name="download_data_warn">本地数据未上传，下载云端数据将覆盖本地数据，是否继续下载数据？</string>
     <string name="save_data_tip">确定保存？</string>
 
@@ -83,8 +84,8 @@
     <string name="farm_info_hint">试验田信息</string>
     <string name="farm_description">备注：</string>
 
-    <string name="enter_species_plan_mode">进入品种规划</string>
-    <string name="exit_species_plan_mode">保存完成，退出品种规划</string>
+    <string name="enter_species_plan_mode">编辑模式</string>
+    <string name="exit_species_plan_mode">保存完成</string>
     <string name="edit">编辑</string>
 
     <string name="album">相册</string>
