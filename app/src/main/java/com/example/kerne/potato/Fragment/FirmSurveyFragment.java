@@ -115,7 +115,8 @@ public class FirmSurveyFragment extends Fragment {
 
 
                 //获取大棚区域
-                Cursor cursor2 = db.query("ExperimentField", null, "bigfarmId=?", new String[]{bigfarmId}, null, null, null);
+                inShack.clear();
+                Cursor cursor2 = db.query("ExperimentField", null, "bigfarmId=? and type=?", new String[]{bigfarmId,"greenhouse"}, null, null, null);
                 if (cursor2.moveToFirst()) {
                     do {
                         JSONObject jsonObject0 = new JSONObject();
@@ -146,23 +147,6 @@ public class FirmSurveyFragment extends Fragment {
     }
 
     private void initRecyclerView() {
-        List<JSONObject> outShack = new ArrayList<>();
-        List<JSONObject> inShack = new ArrayList<>();
-        if (mFieldList.size() > 0) {
-            try {
-                for (int i = 0; i < mFieldList.size(); ++i) {
-
-                    if (mFieldList.get(i).getString("type").equals("common")) {
-                        outShack.add(mFieldList.get(i));
-                    } else {
-                        inShack.add(mFieldList.get(i));
-                    }
-
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
         betterDoubleGridView.setmTopGridData(outShack).setmBottomGridList(inShack).build();
     }
 
