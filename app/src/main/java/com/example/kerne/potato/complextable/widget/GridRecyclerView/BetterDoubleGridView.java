@@ -8,7 +8,6 @@ import android.os.Build;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,8 +24,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.example.kerne.potato.Util.CustomToast.showShortToast;
-
 /**
  * auther: baiiu
  * time: 16/6/5 05 23:03
@@ -42,7 +39,7 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
     private Context mContext;
 
 
-    private String farmlandId;
+    private String bigfarmId;
     private String name;
     private String bigFarmName;
 
@@ -128,7 +125,7 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
         Intent intent;
         if(position<mTopGridData.size()){
             try {
-                farmlandId = mTopGridData.get(position).getString("farmlandId");
+                bigfarmId = mTopGridData.get(position).getString("bigfarmId");
                 type = mTopGridData.get(position).getString("type");
                 name = mTopGridData.get(position).getString("name");
                 length = mTopGridData.get(position).getInt("length");
@@ -139,7 +136,7 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
             intent = new Intent(mContext, GeneralActivity.class);
             intent.putExtra("length", length);
             intent.putExtra("width", width);
-            intent.putExtra("farmlandId", farmlandId);
+            intent.putExtra("bigfarmId", bigfarmId);
             intent.putExtra("type", type);
             intent.putExtra("farmName", name);
             intent.putExtra("bigFarmName", bigFarmName);
@@ -147,7 +144,7 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
             mContext.startActivity(intent);
         }else {
             try {
-                farmlandId = mBottomGridList.get(position-mTopGridData.size()).getString("farmlandId");
+                bigfarmId = mBottomGridList.get(position-mTopGridData.size()).getString("bigfarmId");
                 type = mBottomGridList.get(position-mTopGridData.size()).getString("type");
                 expType = mBottomGridList.get(position-mTopGridData.size()).getString("expType");
                 fieldId = mBottomGridList.get(position-mTopGridData.size()).getString("fieldId");
@@ -163,7 +160,7 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
             intent.putExtra("fieldId", fieldId);
             intent.putExtra("num", num);
             intent.putExtra("rows", rows);
-            intent.putExtra("farmlandId", farmlandId);
+            intent.putExtra("bigfarmId", bigfarmId);
             intent.putExtra("type", type);
             intent.putExtra("farmName", name);
             mContext.startActivity(intent);
