@@ -143,14 +143,14 @@ public class OutShackFragment extends Fragment {
                         JSONObject jsonObject0 = new JSONObject();
                         try {
                             jsonObject0.put("fieldId", cursor1.getString(cursor1.getColumnIndex("id")));
-                            jsonObject0.put("name", cursor1.getString(cursor1.getColumnIndex("name")));
+                            jsonObject0.put("bigfarmId", cursor1.getString(cursor1.getColumnIndex("bigfarmId")));
+                            jsonObject0.put("type", "common");
                             jsonObject0.put("expType", cursor1.getString(cursor1.getColumnIndex("expType")));
                             jsonObject0.put("num", cursor1.getInt(cursor1.getColumnIndex("num")));
-                            jsonObject0.put("bigfarmId", cursor1.getString(cursor1.getColumnIndex("bigfarmId")));
                             jsonObject0.put("rows", cursor1.getInt(cursor1.getColumnIndex("rows")));
                             jsonObject0.put("x", cursor1.getInt(cursor1.getColumnIndex("moveX")));
                             jsonObject0.put("y", cursor1.getInt(cursor1.getColumnIndex("moveY")));
-                            jsonObject0.put("type", "common");
+                            jsonObject0.put("name", cursor1.getString(cursor1.getColumnIndex("name")));
                             mFieldList.add(jsonObject0);
                         } catch (JSONException e) {
                             e.printStackTrace();

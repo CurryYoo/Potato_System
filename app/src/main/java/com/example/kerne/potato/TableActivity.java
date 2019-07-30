@@ -77,8 +77,6 @@ public class TableActivity extends AppCompatActivity {
     EditText planColumn;
     @BindView(R.id.plan_row)
     EditText planRow;
-    @BindView(R.id.description_layout)
-    LinearLayout descriptionLayout;
 
     SharedPreferences sp;
     SharedPreferences.Editor editor;
@@ -109,7 +107,7 @@ public class TableActivity extends AppCompatActivity {
     private String fieldId;
     private String expType;
     private String type;
-    private String farmlandId;
+    private String bigfarmId;
     private String description;
     private int column;
     private JSONArray rows = new JSONArray();
@@ -138,7 +136,6 @@ public class TableActivity extends AppCompatActivity {
                             rightOneLayout.setTooltipText(getResources().getText(R.string.save_data));
                         }
                         tableDescription.setEnabled(true);
-                        descriptionLayout.setClickable(true);
                         showShortToast(TableActivity.this, mContext.getString(R.string.enter_species_plan_mode));
                     } else {
                         rightOneButton.setBackgroundResource(R.drawable.edit);
@@ -148,7 +145,6 @@ public class TableActivity extends AppCompatActivity {
                             rightOneLayout.setTooltipText(getText(R.string.species_data_plan));
                         }
                         tableDescription.setEnabled(false);
-                        descriptionLayout.setClickable(false);
 
                         //保存操作 sqlite
                         List<ContentValues> contentValuesList = assembleData(str);
@@ -222,7 +218,8 @@ public class TableActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);setStatusBarColor(this,R.color.primary_background);
+        super.onCreate(savedInstanceState);
+        setStatusBarColor(this, R.color.primary_background);
         setContentView(R.layout.activity_table);
         ButterKnife.bind(this);
         sp = getSharedPreferences("update_flag", Context.MODE_PRIVATE);
@@ -232,9 +229,12 @@ public class TableActivity extends AppCompatActivity {
         db = dbHelper.getWritableDatabase();
 
         fieldId = getIntent().getStringExtra("fieldId");
-        expType = getIntent().getStringExtra("expType");
+        bigfarmId = getIntent().getStringExtra("bigfarmId");
         type = getIntent().getStringExtra("type");
-        farmlandId = getIntent().getStringExtra("farmlandId");
+        expType = getIntent().getStringExtra("expType");
+        column = getIntent().getIntExtra("rows", 2);
+        maxRows = getIntent().getIntExtra("num", 0) / column;
+        maxColumns = getIntent().getIntExtra("rows", 0);
 
         initToolBar();
 
@@ -247,6 +247,7 @@ public class TableActivity extends AppCompatActivity {
             }
         }, 10); //延迟ms
     }
+
     private void initToolBar() {
         titleText.setText(expType);
         leftOneButton.setBackgroundResource(R.drawable.left_back);
@@ -271,40 +272,38 @@ public class TableActivity extends AppCompatActivity {
     }
 
     private void initTable() {
-        if (type.equals("common")) {
-            try {
-                Cursor cursor = db.query("ExperimentField", null, "farmlandId=? and expType=?",
-                        new String[]{farmlandId, expType}, null, null, "moveX");
-                maxColumns = cursor.getCount();
-                if (maxColumns > 0) {
-                    cursor.moveToFirst();
-                    for (int i = 0; i < maxColumns; i++) {
-                        fieldArray.put(i, cursor.getString(cursor.getColumnIndex("id")));
-                        int num = cursor.getInt(cursor.getColumnIndex("num"));
-                        rows.put(i, num);
-                        maxRows = (num > maxRows ? num : maxRows);
-                        column = 1;
-                        cursor.moveToNext();
-                    }
-                }
-                cursor.close();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            str = new String[maxRows][maxColumns];
-        } else {
-            column = getIntent().getIntExtra("rows", 2);
-            maxRows = getIntent().getIntExtra("num", 0) / column;
-            maxColumns = getIntent().getIntExtra("rows", 0);
-            str = new String[maxRows][maxColumns];
+//        if (type.equals("common")) {
+//            try {
+//                Cursor cursor = db.query("ExperimentField", null, "bigfarmId=? and expType=?",
+//                        new String[]{bigfarmId, expType}, null, null, "moveX");
+//                maxColumns = cursor.getCount();
+//                if (maxColumns > 0) {
+//                    cursor.moveToFirst();
+//                    for (int i = 0; i < maxColumns; i++) {
+//                        fieldArray.put(i, cursor.getString(cursor.getColumnIndex("id")));
+//                        int num = cursor.getInt(cursor.getColumnIndex("num"));
+//                        rows.put(i, num);
+//                        maxRows = (num > maxRows ? num : maxRows);
+//                        column = 1;
+//                        cursor.moveToNext();
+//                    }
+//                }
+//                cursor.close();
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//            str = new String[maxRows][maxColumns];
+//        } else {
 
-            try {
-                fieldArray.put(0, fieldId);
-                rows.put(0, maxRows);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        str = new String[maxRows][maxColumns];
+
+        try {
+            fieldArray.put(0, fieldId);
+            rows.put(0, maxRows);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+//        }
         initData();
     }
 
@@ -320,15 +319,15 @@ public class TableActivity extends AppCompatActivity {
         cursor.close();
 
         String sql;
-        if (type.equals("common")) {
-            sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
-                    "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
-                    "' and ExperimentField.farmlandId='" + farmlandId + "' order by ExperimentField.moveX";
-        } else {
+//        if (type.equals("common")) {
+//            sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
+//                    "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
+//                    "' and ExperimentField.bigfarmId='" + bigfarmId + "' order by ExperimentField.moveX";
+//        } else {
             sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
                     "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
                     "' and ExperimentField.id='" + fieldId + "' order by ExperimentField.moveX";
-        }
+//        }
 
         Cursor cursor0 = db.rawQuery(sql, null);
         if (cursor0.moveToFirst()) {
@@ -367,7 +366,6 @@ public class TableActivity extends AppCompatActivity {
                     ContentValues contentValues = new ContentValues();
                     contentValues.put("fieldId", fieldArray.getString(i / column));
                     contentValues.put("speciesId", str[j][i]);
-
                     contentValues.put("x", i % column + 1);
                     contentValues.put("y", j + 1);
                     contentValuesList.add(contentValues);

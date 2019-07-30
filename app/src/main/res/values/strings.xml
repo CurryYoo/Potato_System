@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">种土豆</string>
+    <string name="app_name">育苗IMS</string>
     <string name="title_activity_login">Sign in</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -15,7 +15,7 @@
     </string>
 
 
-    <string name="APPName">种土豆</string>
+    <string name="APPName">育苗IMS</string>
     //Toast Tip
     <string name="toast_null_error">"未知错误"</string>
     <string name="toast_farm_null_error">"无试验田信息"</string>
@@ -62,6 +62,7 @@
     <string name="dialog_title_farm_image">试验田示意图</string>
     <string name="dialog_picture_operate">双指缩放，单击退出</string>
 
+    <string name="createFarm">创建新一年实验田数据</string>
     <string name="download_data">下载云端数据</string>
     <string name="farm_list">试验田列表</string>
     <string name="farm_tree">试验田目录树</string>
@@ -82,7 +83,7 @@
     <string name="download_complete">下载完成</string>
 
     <string name="farm_info_hint">试验田信息</string>
-    <string name="farm_description">备注：</string>
+    <string name="farm_description">备注...</string>
 
     <string name="enter_species_plan_mode">编辑模式</string>
     <string name="exit_species_plan_mode">保存完成</string>

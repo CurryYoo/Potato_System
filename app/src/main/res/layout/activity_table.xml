@@ -24,43 +24,33 @@
             android:layout_marginBottom="@dimen/dp_5"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/description_layout"
+
+            <ScrollView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/dp_5"
-                android:layout_marginTop="@dimen/dp_5"
-                android:layout_marginEnd="@dimen/dp_5"
-                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_margin="5dp"
                 android:layout_weight="2"
-                android:gravity="center">
+                android:background="@drawable/bg_description"
+                android:gravity="center"
+                android:paddingTop="@dimen/dp_5"
+                android:paddingBottom="@dimen/dp_5"
+                android:scrollbarThumbVertical="@drawable/bg_scrollbar"
+                android:scrollbarSize="2dp"
+                android:scrollbarFadeDuration="@integer/default_underline_indicator_fade_length">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/table_description"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/farm_description"
-                    android:textColor="@color/secondary_text"
-                    android:textSize="14sp" />
+                    android:layout_marginStart="@dimen/dp_5"
+                    android:layout_marginEnd="@dimen/dp_5"
+                    android:background="@null"
+                    android:enabled="false"
+                    android:hint="@string/farm_description"
+                    android:textColor="@color/primary_text"
+                    android:textSize="14sp"/>
 
-                <ScrollView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_5"
-                    android:layout_marginBottom="@dimen/dp_5">
-
-                    <EditText
-                        android:id="@+id/table_description"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:elevation="@dimen/dp_2"
-                        android:enabled="false"
-                        android:maxWidth="180dp"
-                        android:textColor="@color/primary_text"
-                        android:textSize="14sp" />
-                </ScrollView>
-
-            </LinearLayout>
+            </ScrollView>
 
             <View
                 style="@style/divider_color"
@@ -236,7 +226,9 @@
                 android:id="@+id/pull_refresh_scroll"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scrollbars="none">
+                android:scrollbarThumbVertical="@drawable/bg_scrollbar"
+                android:scrollbarSize="2dp"
+                android:scrollbarFadeDuration="@integer/default_underline_indicator_fade_length">
 
                 <LinearLayout
                     android:layout_width="match_parent"

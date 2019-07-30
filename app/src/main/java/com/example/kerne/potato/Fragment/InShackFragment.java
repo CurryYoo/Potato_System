@@ -143,14 +143,14 @@ public class InShackFragment extends Fragment {
                         JSONObject jsonObject0 = new JSONObject();
                         try {
                             jsonObject0.put("fieldId", cursor.getString(cursor.getColumnIndex("id")));
-                            jsonObject0.put("name", cursor.getString(cursor.getColumnIndex("name")));
+                            jsonObject0.put("bigfarmId", cursor.getString(cursor.getColumnIndex("bigfarmId")));
+                            jsonObject0.put("type", "greenhouse");
                             jsonObject0.put("expType", cursor.getString(cursor.getColumnIndex("expType")));
                             jsonObject0.put("num", cursor.getInt(cursor.getColumnIndex("num")));
-                            jsonObject0.put("bigfarmId", cursor.getString(cursor.getColumnIndex("bigfarmId")));
                             jsonObject0.put("rows", cursor.getInt(cursor.getColumnIndex("rows")));
                             jsonObject0.put("x", cursor.getInt(cursor.getColumnIndex("moveX")));
                             jsonObject0.put("y", cursor.getInt(cursor.getColumnIndex("moveY")));
-                            jsonObject0.put("type", "greenhouse");
+                            jsonObject0.put("name", cursor.getString(cursor.getColumnIndex("name")));
                             mFieldList.add(jsonObject0);
                         } catch (JSONException e) {
                             e.printStackTrace();

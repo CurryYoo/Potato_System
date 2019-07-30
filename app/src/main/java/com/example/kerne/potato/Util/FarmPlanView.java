@@ -51,13 +51,13 @@ public class FarmPlanView {
         public void onClick(View v) {
             Intent intent = new Intent(mContext, TableActivity.class);
             try {
-                intent.putExtra("expType", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("expType"));
                 intent.putExtra("fieldId", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("fieldId"));
-                intent.putExtra("num", mJsonList.get(Integer.parseInt(v.getTag().toString())).getInt("num"));
-                intent.putExtra("rows", mJsonList.get(Integer.parseInt(v.getTag().toString())).getInt("rows"));
                 intent.putExtra("bigfarmId", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("bigfarmId"));
                 intent.putExtra("type", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("type"));
-                intent.putExtra("farmName", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("name"));
+                intent.putExtra("expType", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("expType"));
+                intent.putExtra("num", mJsonList.get(Integer.parseInt(v.getTag().toString())).getInt("num"));
+                intent.putExtra("rows", mJsonList.get(Integer.parseInt(v.getTag().toString())).getInt("rows"));
+                intent.putExtra("name", mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("name"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

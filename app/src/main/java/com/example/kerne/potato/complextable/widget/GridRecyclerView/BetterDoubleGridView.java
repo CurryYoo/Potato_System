@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.kerne.potato.GeneralActivity;
 import com.example.kerne.potato.R;
 import com.example.kerne.potato.TableActivity;
 
@@ -59,19 +58,19 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
 
     public BetterDoubleGridView(Context context) {
         this(context, null);
-        mContext=context;
+        mContext = context;
     }
 
     public BetterDoubleGridView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
-        mContext=context;
+        mContext = context;
     }
 
     public BetterDoubleGridView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
-        mContext=context;
+        mContext = context;
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -121,49 +120,37 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
         TextView textView = (TextView) v;
         int position = (int) textView.getTag();
 
-
         Intent intent;
-        if(position<mTopGridData.size()){
-            try {
+        try {
+            if (position < mTopGridData.size()) {
+                fieldId = mTopGridData.get(position).getString("fieldId");
                 bigfarmId = mTopGridData.get(position).getString("bigfarmId");
                 type = mTopGridData.get(position).getString("type");
+                expType = mTopGridData.get(position).getString("expType");
+                num = mTopGridData.get(position).getInt("num");
+                rows = mTopGridData.get(position).getInt("rows");
                 name = mTopGridData.get(position).getString("name");
-                length = mTopGridData.get(position).getInt("length");
-                width = mTopGridData.get(position).getInt("width");
-            } catch (JSONException e) {
-                e.printStackTrace();
+            } else {
+                fieldId = mBottomGridList.get(position - mTopGridData.size()).getString("fieldId");
+                bigfarmId = mBottomGridList.get(position - mTopGridData.size()).getString("bigfarmId");
+                type = mBottomGridList.get(position - mTopGridData.size()).getString("type");
+                expType = mBottomGridList.get(position - mTopGridData.size()).getString("expType");
+                num = mBottomGridList.get(position - mTopGridData.size()).getInt("num");
+                rows = mBottomGridList.get(position - mTopGridData.size()).getInt("rows");
+                name = mBottomGridList.get(position - mTopGridData.size()).getString("name");
             }
-            intent = new Intent(mContext, GeneralActivity.class);
-            intent.putExtra("length", length);
-            intent.putExtra("width", width);
-            intent.putExtra("bigfarmId", bigfarmId);
-            intent.putExtra("type", type);
-            intent.putExtra("farmName", name);
-            intent.putExtra("bigFarmName", bigFarmName);
-            intent.putExtra("year", year);
-            mContext.startActivity(intent);
-        }else {
-            try {
-                bigfarmId = mBottomGridList.get(position-mTopGridData.size()).getString("bigfarmId");
-                type = mBottomGridList.get(position-mTopGridData.size()).getString("type");
-                expType = mBottomGridList.get(position-mTopGridData.size()).getString("expType");
-                fieldId = mBottomGridList.get(position-mTopGridData.size()).getString("fieldId");
-                num = mBottomGridList.get(position-mTopGridData.size()).getInt("num");
-                rows = mBottomGridList.get(position-mTopGridData.size()).getInt("rows");
-                name = mBottomGridList.get(position-mTopGridData.size()).getString("name");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            intent = new Intent(mContext, TableActivity.class);
-
-            intent.putExtra("expType", expType);
-            intent.putExtra("fieldId", fieldId);
-            intent.putExtra("num", num);
-            intent.putExtra("rows", rows);
-            intent.putExtra("bigfarmId", bigfarmId);
-            intent.putExtra("type", type);
-            intent.putExtra("farmName", name);
-            mContext.startActivity(intent);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        intent = new Intent(mContext, TableActivity.class);
+
+        intent.putExtra("bigfarmId", bigfarmId);
+        intent.putExtra("fieldId", fieldId);
+        intent.putExtra("type", type);
+        intent.putExtra("expType", expType);
+        intent.putExtra("num", num);
+        intent.putExtra("rows", rows);
+        intent.putExtra("name", name);
+        mContext.startActivity(intent);
     }
 }
