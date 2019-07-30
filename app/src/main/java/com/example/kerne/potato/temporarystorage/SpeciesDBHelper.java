@@ -159,6 +159,22 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "x integer,"
             + "y integer)";
 
+    public static final String CREATE_LOCALFIELD = "create table LocalField ("
+            + "fieldId text primary key,"
+            + "name text,"
+            + "expType text,"
+            + "year text,"
+            + "type text,"
+            + "num integer,"
+            + "rows integer)";
+
+    public static final String CREATE_LOCALBLOCK = "create table LocalBlock ("
+            + "blockId text primary key,"
+            + "fieldId text,"
+            + "speciesId text,"
+            + "x integer,"
+            + "y integer)";
+
 //    public static final String CREATE_SPECIES_SEQUENCE = "create table SpeciesSequence ("
 //            + "id integer primary key autoincrement,"
 //            + "fieldId text,"
@@ -181,6 +197,8 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
 //        db.execSQL(CREATE_FARMLIST);
         db.execSQL(CREATE_EXPERIMENTFIELD);
         db.execSQL(CREATE_SPECIESLIST);
+        db.execSQL(CREATE_LOCALFIELD);
+        db.execSQL(CREATE_LOCALBLOCK);
 //        db.execSQL(CREATE_SPECIES_SEQUENCE);
         //Toast.makeText(mContext, "创建品种信息表成功", Toast.LENGTH_SHORT).show();
     }
@@ -193,6 +211,8 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
 //        db.execSQL("drop table if exists FarmList");
         db.execSQL("drop table if exists ExperimentField");
         db.execSQL("drop table if exists SpeciesList");
+        db.execSQL("drop table if exists LocalField");
+        db.execSQL("drop table if exists LocalBlock");
 //        db.execSQL("drop table if exists SpeciesSequence");
         onCreate(db);
     }
