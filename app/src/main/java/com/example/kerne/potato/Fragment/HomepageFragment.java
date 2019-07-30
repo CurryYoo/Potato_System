@@ -87,6 +87,7 @@ public class HomepageFragment extends Fragment {
     private LinearLayout farmButton;
     private View view;
     private Context self;
+    private LinearLayout createNewFarm;
     private LinearLayout btnDownload;
     private ImageView uploadIcon;
     private LinearLayout btnUpload;
@@ -182,6 +183,26 @@ public class HomepageFragment extends Fragment {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
+                case R.id.create_new_farm:
+                    final SweetAlertDialog createFarmDialog = new SweetAlertDialog(self, SweetAlertDialog.NORMAL_TYPE)
+                            .setContentText(getString(R.string.createFarm))
+                            .setConfirmText("确定")
+                            .setCancelText("取消")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismissWithAnimation();
+
+                                }
+                            });
+                    createFarmDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
+                        }
+                    });
+                    createFarmDialog.show();
+                    break;
                 case R.id.btn_download:
                     //检查网络状况
                     if (!isOnline) {
@@ -318,6 +339,7 @@ public class HomepageFragment extends Fragment {
         sp = self.getSharedPreferences("update_flag", Context.MODE_PRIVATE);
         editor = sp.edit();
 
+        createNewFarm=view.findViewById(R.id.create_new_farm);
         btnDownload = view.findViewById(R.id.btn_download);
         btnUpload = view.findViewById(R.id.btn_upload);
         uploadIcon = view.findViewById(R.id.upload_icon);
@@ -333,12 +355,14 @@ public class HomepageFragment extends Fragment {
         homepageYears.setPopupBackgroundResource(R.drawable.bg_spinner_drop_down_dark);
 
 
+        createNewFarm.setOnClickListener(onClickListener);
         btnDownload.setOnClickListener(onClickListener);
         btnUpload.setOnClickListener(onClickListener);
         planFarm.setOnClickListener(onClickListener);
         changeFarmView.setOnClickListener(onClickListener);
         homepageYears.setOnItemSelectedListener(onItemSelectedListener);
         initData();
+
 
 //
         intentFilter = new IntentFilter();
@@ -390,20 +414,20 @@ public class HomepageFragment extends Fragment {
 
         //获取棚外数据
         mOutShackList.clear();
-        Cursor cursor1 = db.query("ExperimentField", null, "bigfarmId=? and type=?", new String[]{bigfarmId,"common"}, null, null, null);
+        Cursor cursor1 = db.query("ExperimentField", null, "bigfarmId=? and type=?", new String[]{bigfarmId, "common"}, null, null, null);
         if (cursor1.moveToFirst()) {
             do {
                 JSONObject jsonObject0 = new JSONObject();
                 try {
                     jsonObject0.put("fieldId", cursor1.getString(cursor1.getColumnIndex("id")));
-                    jsonObject0.put("name", cursor1.getString(cursor1.getColumnIndex("name")));
+                    jsonObject0.put("bigfarmId", cursor1.getString(cursor1.getColumnIndex("bigfarmId")));
+                    jsonObject0.put("type", "common");
                     jsonObject0.put("expType", cursor1.getString(cursor1.getColumnIndex("expType")));
                     jsonObject0.put("num", cursor1.getInt(cursor1.getColumnIndex("num")));
-                    jsonObject0.put("bigfarmId", cursor1.getString(cursor1.getColumnIndex("bigfarmId")));
                     jsonObject0.put("rows", cursor1.getInt(cursor1.getColumnIndex("rows")));
                     jsonObject0.put("x", cursor1.getInt(cursor1.getColumnIndex("moveX")));
                     jsonObject0.put("y", cursor1.getInt(cursor1.getColumnIndex("moveY")));
-                    jsonObject0.put("type", "common");
+                    jsonObject0.put("name", cursor1.getString(cursor1.getColumnIndex("name")));
                     mOutShackList.add(jsonObject0);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -414,20 +438,20 @@ public class HomepageFragment extends Fragment {
 
         //获取大棚区域
         mInShackList.clear();
-        Cursor cursor2 = db.query("ExperimentField", null, "bigfarmId=? and type=?", new String[]{bigfarmId,"greenhouse"}, null, null, null);
+        Cursor cursor2 = db.query("ExperimentField", null, "bigfarmId=? and type=?", new String[]{bigfarmId, "greenhouse"}, null, null, null);
         if (cursor2.moveToFirst()) {
             do {
                 JSONObject jsonObject0 = new JSONObject();
                 try {
                     jsonObject0.put("fieldId", cursor2.getString(cursor2.getColumnIndex("id")));
-                    jsonObject0.put("name", cursor2.getString(cursor2.getColumnIndex("name")));
+                    jsonObject0.put("bigfarmId", cursor2.getString(cursor2.getColumnIndex("bigfarmId")));
+                    jsonObject0.put("type", "greenhouse");
                     jsonObject0.put("expType", cursor2.getString(cursor2.getColumnIndex("expType")));
                     jsonObject0.put("num", cursor2.getInt(cursor2.getColumnIndex("num")));
-                    jsonObject0.put("bigfarmId", cursor2.getString(cursor2.getColumnIndex("bigfarmId")));
                     jsonObject0.put("rows", cursor2.getInt(cursor2.getColumnIndex("rows")));
                     jsonObject0.put("x", cursor2.getInt(cursor2.getColumnIndex("moveX")));
                     jsonObject0.put("y", cursor2.getInt(cursor2.getColumnIndex("moveY")));
-                    jsonObject0.put("type", "greenhouse");
+                    jsonObject0.put("name", cursor2.getString(cursor2.getColumnIndex("name")));
                     mInShackList.add(jsonObject0);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -441,21 +465,6 @@ public class HomepageFragment extends Fragment {
         initFieldData();
         switch (flag) {
             case 0:
-//                mOutShackList = new ArrayList<>();
-//                try {
-//                    for (int i = 0; i < 10; i++) {
-//                        JSONObject jsonObject = new JSONObject();
-//                        jsonObject.put("num", 200 + i * 100);
-//                        jsonObject.put("rows", 1 + i);//列
-//                        jsonObject.put("x", 100000 + i * 50000);
-//                        jsonObject.put("y", 100000 + i * 50000);
-//                        jsonObject.put("name", "加工鉴定" + i);
-//                        mOutShackList.add(jsonObject);
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-
                 if (homepageFarm != null) {
                     //加载棚外,设置farm大小
                     LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) homepageFarm.getLayoutParams();
@@ -472,11 +481,11 @@ public class HomepageFragment extends Fragment {
                 if (homepageFarm != null) {
                     //加载棚内
                     LinearLayout.LayoutParams layoutParams2 = (LinearLayout.LayoutParams) homepageFarm.getLayoutParams();
-                    layoutParams2.width = (int) (0.6* baseFarm.getHeight());
+                    layoutParams2.width = (int) (0.6 * baseFarm.getHeight());
                     layoutParams2.height = baseFarm.getHeight();
                     homepageFarm.setLayoutParams(layoutParams2);
                     homepageFarm.removeAllViews();
-                    FarmPlanView farmPlanView = new FarmPlanView(getContext(), homepageFarm, (int) (0.6* baseFarm.getHeight()), baseFarm.getHeight(), mInShackList);
+                    FarmPlanView farmPlanView = new FarmPlanView(getContext(), homepageFarm, (int) (0.6 * baseFarm.getHeight()), baseFarm.getHeight(), mInShackList);
                     farmPlanView.createRoad("greenhouse");
                     farmPlanView.createField("greenhouse", FarmPlanView.CLICK_EVENT);
                 }
@@ -816,15 +825,12 @@ public class HomepageFragment extends Fragment {
                     e.printStackTrace();
                 }
                 jsonArray.put(jsonObject0);
-
-
             } while (cursor0.moveToNext());
             HttpRequest.HttpRequest_SpeciesList(jsonArray, self, new HttpRequest.HttpCallback() {
                 @Override
                 public void onSuccess(JSONObject result) {
                 }
             });
-
         } else {
             showShortToast(self, getString(R.string.toast_null_plan_data));
         }
