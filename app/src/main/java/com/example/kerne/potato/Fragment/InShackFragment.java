@@ -151,6 +151,7 @@ public class InShackFragment extends Fragment {
                             jsonObject0.put("x", cursor.getInt(cursor.getColumnIndex("moveX")));
                             jsonObject0.put("y", cursor.getInt(cursor.getColumnIndex("moveY")));
                             jsonObject0.put("name", cursor.getString(cursor.getColumnIndex("name")));
+                            jsonObject0.put("description", cursor.getString(cursor.getColumnIndex("description")));
                             mFieldList.add(jsonObject0);
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -27,17 +27,17 @@
         android:id="@+id/base_farm"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginStart="5dp"
         android:layout_marginBottom="10dp">
 
         <RelativeLayout
             android:id="@+id/in_shack_farm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_farm"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:background="@drawable/bg_farm" />
 
         <View
             android:id="@+id/cover_view"

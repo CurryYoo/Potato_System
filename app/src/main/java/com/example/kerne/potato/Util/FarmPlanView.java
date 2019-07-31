@@ -1,14 +1,20 @@
 package com.example.kerne.potato.Util;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -42,6 +48,9 @@ public class FarmPlanView {
     private int farmWidth;//试验田宽
     private int farmHeight;//试验田长
     private int endX = 0, endY = 0;//list中最终存储的x,y轴坐标
+    private String expType=null;
+    private int row=0,column=0;
+    private String description="备注";
 
     //监听事件
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -68,7 +77,7 @@ public class FarmPlanView {
     private View.OnLongClickListener onLongClickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
-
+            onLongClickShowTip(v);
             return true;
         }
     };
@@ -77,7 +86,7 @@ public class FarmPlanView {
     private View.OnTouchListener moveTouchListenr = new View.OnTouchListener() {
         int lastX, lastY;
 
-        @SuppressLint("ClickableViewAccessibility")
+        @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             v.getParent().requestDisallowInterceptTouchEvent(true);
@@ -141,6 +150,90 @@ public class FarmPlanView {
         this.farmHeight = farmHeight;
     }
 
+    @SuppressLint("SetTextI18n")
+    private void onLongClickShowTip(View v) {
+        try {
+            row = mJsonList.get(Integer.parseInt(v.getTag().toString())).getInt("num") / mJsonList.get(Integer.parseInt(v.getTag().toString())).getInt("rows");
+            column = mJsonList.get(Integer.parseInt(v.getTag().toString())).getInt("rows");
+            description = mJsonList.get(Integer.parseInt(v.getTag().toString())).getString("description");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View vPopupWindow = inflater.inflate(R.layout.layout_popupwindow, null, false);//引入弹窗布局
+        TextView fieldData = vPopupWindow.findViewById(R.id.field_data);//popupwindow内容
+        TextView fieldDescription = vPopupWindow.findViewById(R.id.field_description);//popupwindow内容
+        SanJiaoView sjv = vPopupWindow.findViewById(R.id.sanjiaoView);//popupwindow三角突起
+        LinearLayout mainLayout = vPopupWindow.findViewById(R.id.main_layout);//popupwindow主体布局
+
+        fieldData.setText("列：" + column + "  " + "行：" + row);
+        if (description != null && description.length() == 0) {
+            fieldDescription.setVisibility(View.GONE);
+        } else {
+            fieldDescription.setText(description);
+        }
+        PopupWindow popupWindow = new PopupWindow(vPopupWindow, ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT, true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setBackgroundDrawable(mContext.getDrawable(R.drawable.bg_trans));
+
+        //设置三角突起的参数
+        int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+
+        int left = v.getLeft();
+        int top = v.getTop();
+        int right = v.getRight();
+
+        //获取手机的分辨率
+        Display display = ((Activity) mContext).getWindowManager().getDefaultDisplay();
+        int dWidth = display.getWidth();
+        int dHeight = display.getHeight();
+
+        //获取popupwindow布局的padding值
+        int paddingLeft = vPopupWindow.getPaddingLeft();
+        int paddingRight = vPopupWindow.getPaddingRight();
+        vPopupWindow.measure(w, h);
+        mainLayout.measure(w, h);
+
+        //popupwindow主体的宽度
+        int width1 = mainLayout.getMeasuredWidth();
+
+        //popwindow带padding的宽度
+        int widthP = width1 + paddingLeft + paddingRight;
+
+        //popupwindow上方控件的宽度
+        int parentWidth = right - left;
+
+        //小三角的宽度
+        sjv.measure(w, h);
+        int width = sjv.getMeasuredWidth();
+
+        //小三角最大的marginLeft值
+        int maxMarginLeft = width1 - width;
+
+        //控件需调整的margin值
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        //判断使用那种计算方式来计算小三角的位移量
+        int centerIndex;
+
+        if (parentWidth > widthP) {
+            centerIndex = maxMarginLeft / 2;
+        } else if ((dWidth - left) > widthP) {
+            centerIndex = parentWidth / 2 - width / 2 - paddingLeft;
+        } else {
+            int rWidth = dWidth - right;
+            centerIndex = width1 - (parentWidth / 2 + rWidth - paddingRight);
+        }
+
+        if (centerIndex > maxMarginLeft) {
+            centerIndex = maxMarginLeft;
+        }
+        params.setMargins(centerIndex, 0, 0, 0);
+        sjv.setLayoutParams(params);
+        popupWindow.showAsDropDown(v);
+        CountTimer countTimer = new CountTimer(4000, 500, popupWindow);//定时消失
+    }
 
     public TextView createRoad(String type) {
         //type==0,棚外
@@ -212,6 +305,7 @@ public class FarmPlanView {
                             view.setOnTouchListener(moveTouchListenr);
                         } else if (action == CLICK_EVENT) {
                             view.setOnClickListener(onClickListener);
+                            view.setOnLongClickListener(onLongClickListener);
                         }
                         viewList.add(view);
                     }
@@ -239,6 +333,7 @@ public class FarmPlanView {
                             view.setOnTouchListener(moveTouchListenr);
                         } else if (action == CLICK_EVENT) {
                             view.setOnClickListener(onClickListener);
+                            view.setOnLongClickListener(onLongClickListener);
                         }
                         viewList.add(view);
                     }

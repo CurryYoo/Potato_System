@@ -19,7 +19,9 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -74,6 +76,7 @@ public class HomepageFragment extends Fragment {
     private static int request_Num = 4;
     private static int uploadSuccess_Num = 0;
     private static boolean isOnline = false;
+    protected static final float FLIP_DISTANCE = 50;//滑动距离
     public SweetAlertDialog downloadDataDialog;
     String img1;
     String img2;
@@ -86,7 +89,6 @@ public class HomepageFragment extends Fragment {
     //用户角色字段
     String userRole = "farmer";
     private LinearLayout baseFarm;
-    private LinearLayout farmButton;
     private View view;
     private Context self;
     private LinearLayout createNewFarm;
@@ -112,6 +114,7 @@ public class HomepageFragment extends Fragment {
     private List<String> mYears = new ArrayList<>();
     private ArrayAdapter<String> spinnerAdapter;
     private String bigfarmId;
+    private GestureDetector mDetector;
 
     private IntentFilter intentFilter;
     private NetworkChangeReceiver networkChangeReceiver;
@@ -156,7 +159,7 @@ public class HomepageFragment extends Fragment {
                             e.printStackTrace();
                         }
                         if (spinnerAdapter == null) {
-                            spinnerAdapter = new ArrayAdapter<>(getContext(), R.layout.spinner_textview, mYears);
+                            spinnerAdapter = new ArrayAdapter<>(getContext(), R.layout.layout_spinner_textview, mYears);
                             homepageYears.setAdapter(spinnerAdapter);
                         } else {
                             Log.d("cheatGZ spinner ", "big " + mBigFarmList.size() + " year" + mYears.size());
@@ -346,7 +349,16 @@ public class HomepageFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_homepage, container, false);
         self = getContext();
         Stetho.initializeWithDefaults(self);
+
         init();
+        initGestureDetector();
+        //frgment滑动监听事件
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return mDetector.onTouchEvent(event);
+            }
+        });
         return view;
     }
 
@@ -452,6 +464,7 @@ public class HomepageFragment extends Fragment {
                     jsonObject0.put("x", cursor1.getInt(cursor1.getColumnIndex("moveX")));
                     jsonObject0.put("y", cursor1.getInt(cursor1.getColumnIndex("moveY")));
                     jsonObject0.put("name", cursor1.getString(cursor1.getColumnIndex("name")));
+                    jsonObject0.put("description", cursor1.getString(cursor1.getColumnIndex("description")));
                     mOutShackList.add(jsonObject0);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -476,6 +489,7 @@ public class HomepageFragment extends Fragment {
                     jsonObject0.put("x", cursor2.getInt(cursor2.getColumnIndex("moveX")));
                     jsonObject0.put("y", cursor2.getInt(cursor2.getColumnIndex("moveY")));
                     jsonObject0.put("name", cursor2.getString(cursor2.getColumnIndex("name")));
+                    jsonObject0.put("description", cursor2.getString(cursor2.getColumnIndex("description")));
                     mInShackList.add(jsonObject0);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1125,6 +1139,71 @@ public class HomepageFragment extends Fragment {
             showShortToast(self, getString(R.string.toast_null_pick_data));
         }
         cursor.close();
+    }
+
+    private void initGestureDetector() {
+        mDetector = new GestureDetector(getActivity(), new GestureDetector.OnGestureListener() {
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return true;
+            }
+
+            @Override
+            public void onShowPress(MotionEvent e) {
+            }
+
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                return false;
+            }
+
+            @Override
+            public void onLongPress(MotionEvent e) {
+
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                //上滑
+                if (e1.getY() - e2.getY() > FLIP_DISTANCE) {
+                    if (farm_flag == 0) {
+                        farmType.setText(self.getString(R.string.out_shack));
+                        farmTypeIcon.setBackgroundResource(R.drawable.farm);
+                        farm_flag = 1;
+                        initView(farm_flag);
+                    } else if (farm_flag == 1) {
+                        farmType.setText(self.getString(R.string.in_shack));
+                        farmTypeIcon.setBackgroundResource(R.drawable.shack_farm);
+                        farm_flag = 0;
+                        initView(farm_flag);
+                        return true;
+                    }
+                    return true;
+                }
+                //下滑
+                if (e2.getY() - e1.getY() > FLIP_DISTANCE) {
+                    if (farm_flag == 1) {
+                        farmType.setText(self.getString(R.string.in_shack));
+                        farmTypeIcon.setBackgroundResource(R.drawable.shack_farm);
+                        farm_flag = 0;
+                        initView(farm_flag);
+                        return true;
+                    } else if (farm_flag == 0) {
+                        farmType.setText(self.getString(R.string.out_shack));
+                        farmTypeIcon.setBackgroundResource(R.drawable.farm);
+                        farm_flag = 1;
+                        initView(farm_flag);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     @Override
