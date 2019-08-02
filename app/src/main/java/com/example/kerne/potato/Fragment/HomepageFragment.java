@@ -72,14 +72,17 @@ public class HomepageFragment extends Fragment {
     private static final int LOCALSPECIES_OK = 4;
     private static final int DATA_OK = 5;
     private static final int FIELD_DATA_OK = 6;
+    private static final int CREATE_BIGFARM_OK = 10;
     private static final int CREATE_FIELD_OK = 11;
     private static final int DOWNLOAD_FIELD_OK = 12;
     private static final int DOWNLOAD_BLOCK_OK = 13;
     private static final int UPLOAD_BLOCK_OK = 14;
-    private static final int UPLOAD_SURVEY_OK = 15;
+    private static final int UPLOAD_DESCRIPTION_OK = 15;
+    private static final int UPLOAD_SURVEY_OK = 16;
     private static int downloadSuccess_Num = 0;
     private static int request_Num = 4;
     private static int uploadSuccess_Num = 0;
+    private static int upload_Num = 2;
 
     private static boolean isOnline = false;
     public SweetAlertDialog downloadDataDialog;
@@ -219,11 +222,19 @@ public class HomepageFragment extends Fragment {
                                 new Thread(new Runnable() {
                                     @Override
                                     public void run() {
+                                        //初始化本地bigfarm数据
+                                        String bigfarmId_ = initLocalBigfarm(dialog_input.getText().toString());
                                         //初始化本地localfield数据
-                                        initLocalField(bigfarmId);
+                                        initLocalField(bigfarmId_);
 
-                                        MainActivity mainActivity = new MainActivity();
-                                        mainActivity.selectFarm(bigfarmId);
+                                        mBigFarmList.clear();
+                                        mYears.clear();
+                                        initData();
+
+                                        editor.putBoolean("upload_data", true);
+                                        editor.apply();
+//                                        MainActivity mainActivity = new MainActivity();
+//                                        mainActivity.selectFarm(bigfarmId);
                                     }
                                 }).start();
 
@@ -292,12 +303,19 @@ public class HomepageFragment extends Fragment {
                             if (badge != null) {
                                 badge.hide(false);
                             }
-                            uploadFieldData();
+
                             mHandler = new Handler() {
                                 @Override
                                 public void handleMessage(Message msg) {
                                     super.handleMessage(msg);
                                     switch (msg.what) {
+                                        case CREATE_BIGFARM_OK: //创建bigfarm完成
+                                            CreateField();
+
+                                            mBigFarmList.clear();
+                                            mYears.clear();
+                                            initData();
+                                            break;
                                         case CREATE_FIELD_OK: //创建field完成
                                             downloadFieldAndBlock();
                                             break;
@@ -308,6 +326,10 @@ public class HomepageFragment extends Fragment {
                                             break;
                                         case UPLOAD_BLOCK_OK: //上传block数据完成
                                             uploadSurveyData();
+                                            uploadSuccess_Num++;
+                                            break;
+                                        case UPLOAD_DESCRIPTION_OK:
+                                            uploadSuccess_Num++;
                                             break;
                                         case UPLOAD_SURVEY_OK: //上传调查数据完成
                                             showShortToast(self, getString(R.string.toast_upload_data_complete));
@@ -317,8 +339,12 @@ public class HomepageFragment extends Fragment {
                                         default:
                                             break;
                                     }
+                                    if (uploadSuccess_Num == upload_Num) {
+                                        //
+                                    }
                                 }
                             };
+                            CreateBigfarm();
 //                            uploadPlanData();
 //                            uploadSurveyData();
 
@@ -368,6 +394,18 @@ public class HomepageFragment extends Fragment {
         }
     };
 
+    //初始化年份
+    private String initLocalBigfarm(String year) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("bigfarmId", year);
+        contentValues.put("name", year);
+        contentValues.put("year", year);
+        contentValues.put("isCreated", 0);
+        db.insert("BigfarmList", null, contentValues);
+        contentValues.clear();
+        return year;
+    }
+
     //初始化本地field
     private void initLocalField(String mBigfarmId) {
         int num = 5;
@@ -387,6 +425,7 @@ public class HomepageFragment extends Fragment {
             contentValues.put("bigfarmId", mBigfarmId);
             contentValues.put("description", "");
             contentValues.put("type", expTypes[i].equals("杂交圃") ? "greenhouse" : "common");
+            contentValues.put("isCreated", 0);
             db.insert("LocalField", null, contentValues);
             contentValues.clear();
 //            contentValuesList.add(contentValues);
@@ -634,6 +673,7 @@ public class HomepageFragment extends Fragment {
                                 if (jsonObject0.get("length") != null) {
                                     contentValues.put("length", jsonObject0.getInt("length"));
                                 }
+                                contentValues.put("isCreated", 1);
 
                                 Uri uri = getImageURI(HttpRequest.serverUrl + jsonObject0.getString("img"), cache);
                                 contentValues.put("uri", uri.toString());
@@ -763,7 +803,7 @@ public class HomepageFragment extends Fragment {
                                 contentValues.put("description", jsonObject0.getString("description"));
                                 contentValues.put("type", jsonObject0.getString("type"));
                                 contentValues.put("speciesList", jsonObject0.getString("speciesList"));
-                                contentValues.put("isCreated", 1);
+                                contentValues.put("isCreated", 2);
 
                                 db.insert("LocalField", null, contentValues);
                                 contentValues.clear();
@@ -811,6 +851,7 @@ public class HomepageFragment extends Fragment {
                                         contentValues.put("y", jsonObject0.getInt("y"));
                                     }
                                 }
+                                contentValues.put("isUpdate", 1);
 
                                 db.insert("LocalBlock", null, contentValues);
 //                                        updateSqlite("SpeciesList", "blockId", contentValues); //缓存数据到本地sqlite
@@ -906,15 +947,82 @@ public class HomepageFragment extends Fragment {
         return null;
     }
 
+    //创建bigfarm
+    private void CreateBigfarm() {
+        sqLiteDatabase = dbHelper.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.query("BigfarmList", null, null, null, null, null, null);
+        final int[] num = {cursor.getCount()};
+        if (cursor.moveToFirst()) {
+            do {
+                int isCreated = cursor.getInt(cursor.getColumnIndex("isCreated"));
+                if (isCreated != 0) {
+                    num[0]--;
+                    continue;
+                }
+                final String bigfarmId = cursor.getString(cursor.getColumnIndex("bigfarmId"));
+                final String name = cursor.getString(cursor.getColumnIndex("name"));
+                final String year = cursor.getString(cursor.getColumnIndex("year"));
+
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("name", name);
+                    jsonObject.put("year", year);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                HttpRequest.HttpRequest_CreateBigfarm(jsonObject, self, new HttpRequest.HttpCallback() {
+                    @Override
+                    public void onSuccess(JSONObject result) {
+                        try {
+                            if (result.getBoolean("success")) {
+                                JSONObject data = result.getJSONObject("data");
+                                String id = data.getString("id");
+                                ContentValues contentValues = new ContentValues();
+                                contentValues.put("bigfarmId", id);
+                                contentValues.put("isCreated", 1);
+                                sqLiteDatabase.update("BigfarmList", contentValues, "name=? and year=?",
+                                        new String[]{name, year});
+                                contentValues.clear();
+                                contentValues.put("bigfarmId", id);
+                                sqLiteDatabase.update("LocalField", contentValues,
+                                        "bigfarmId=?", new String[]{bigfarmId});
+                                num[0]--;
+
+                                if (num[0] == 0) {
+                                    Message msg = new Message();
+                                    msg.what = CREATE_BIGFARM_OK;
+                                    mHandler.sendMessage(msg);
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+            } while (cursor.moveToNext());
+        }
+        else {
+            showShortToast(self, "没有创建过大田");
+        }
+        cursor.close();
+        if (num[0] == 0) {
+            Message msg = new Message();
+            msg.what = CREATE_BIGFARM_OK;
+            mHandler.sendMessage(msg);
+        }
+    }
+
     //创建field
-    private void uploadFieldData() {
+    private void CreateField() {
         final JSONArray jsonArray = new JSONArray();
         sqLiteDatabase = dbHelper.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.query("LocalField", null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 int isCreated = cursor.getInt(cursor.getColumnIndex("isCreated"));
-                if (isCreated != 0) {
+                if (isCreated != 1) {
                     continue;
                 }
 //                String id = cursor.getString(cursor.getColumnIndex("id"));
@@ -926,6 +1034,9 @@ public class HomepageFragment extends Fragment {
                 int moveY1 = cursor.getInt(cursor.getColumnIndex("moveY1"));
                 int num = cursor.getInt(cursor.getColumnIndex("num"));
                 int rows = cursor.getInt(cursor.getColumnIndex("rows"));
+                if (num == 0 || rows == 0) {
+                    continue;
+                }
                 String bigfarmId = cursor.getString(cursor.getColumnIndex("bigfarmId"));
                 String description = cursor.getString(cursor.getColumnIndex("description"));
                 String type = cursor.getString(cursor.getColumnIndex("type"));
@@ -934,6 +1045,10 @@ public class HomepageFragment extends Fragment {
 //                    jsonObject0.put("id", id);
                     jsonObject0.put("name", name);
                     jsonObject0.put("expType", expType);
+                    jsonObject0.put("moveX", moveX);
+                    jsonObject0.put("moveY", moveY);
+                    jsonObject0.put("moveX1", moveX1);
+                    jsonObject0.put("moveY1", moveY1);
                     jsonObject0.put("num", num);
                     jsonObject0.put("rows", rows);
                     jsonObject0.put("bigfarmId", bigfarmId);
@@ -945,30 +1060,35 @@ public class HomepageFragment extends Fragment {
                 jsonArray.put(jsonObject0);
             } while (cursor.moveToNext());
             Log.d("jsonArray", jsonArray.toString());
-            cursor.close();
-
-            HttpRequest.HttpRequest_CreateField(jsonArray, self, new HttpRequest.HttpCallback() {
-                @Override
-                public void onSuccess(JSONObject result) {
-                    try {
-                        if (result.getBoolean("success")) {
-                            ContentValues contentValues = new ContentValues();
-                            contentValues.put("isCreated", 1);
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                db.update("LocalField", contentValues, "name=? and bigfarmId=?",
-                                        new String[]{jsonArray.getJSONObject(i).getString("name"), jsonArray.getJSONObject(i).getString("bigfarmId")});
-                            }
-                            Message msg = new Message();
-                            msg.what = CREATE_FIELD_OK;
-                            mHandler.sendMessage(msg);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-
         }
+        cursor.close();
+
+        if (jsonArray.length() == 0) {
+            Message msg = new Message();
+            msg.what = CREATE_FIELD_OK;
+            mHandler.sendMessage(msg);
+            return;
+        }
+        HttpRequest.HttpRequest_CreateField(jsonArray, self, new HttpRequest.HttpCallback() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                try {
+                    if (result.getBoolean("success")) {
+                        ContentValues contentValues = new ContentValues();
+                        contentValues.put("isCreated", 2);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            db.update("LocalField", contentValues, "name=? and bigfarmId=?",
+                                    new String[]{jsonArray.getJSONObject(i).getString("name"), jsonArray.getJSONObject(i).getString("bigfarmId")});
+                        }
+                        Message msg = new Message();
+                        msg.what = CREATE_FIELD_OK;
+                        mHandler.sendMessage(msg);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 
@@ -1105,7 +1225,7 @@ public class HomepageFragment extends Fragment {
                                 contentValues.put("description", jsonObject0.getString("description"));
                                 contentValues.put("type", jsonObject0.getString("type"));
                                 contentValues.put("speciesList", jsonObject0.getString("speciesList"));
-                                contentValues.put("isCreated", 1);
+                                contentValues.put("isCreated", 2);
 
                                 db.update("LocalField", contentValues, "name=? and bigfarmId=?",
                                         new String[]{jsonObject0.getString("name"), jsonObject0.getString("bigfarmId")});
@@ -1137,7 +1257,7 @@ public class HomepageFragment extends Fragment {
 
     //上传种植图信息
     private void uploadPlanData() {
-        JSONArray jsonArray = new JSONArray();
+        final JSONArray jsonArray = new JSONArray();
         sqLiteDatabase = dbHelper.getReadableDatabase();
         Cursor cursor0 = sqLiteDatabase.query("LocalBlock", null, null, null, null, null, null);
         if (cursor0.moveToFirst()) {
@@ -1147,6 +1267,10 @@ public class HomepageFragment extends Fragment {
                 String speciesId = cursor0.getString(cursor0.getColumnIndex("speciesId"));
                 int x = cursor0.getInt(cursor0.getColumnIndex("x"));
                 int y = cursor0.getInt(cursor0.getColumnIndex("y"));
+                int isUpdate = cursor0.getInt(cursor0.getColumnIndex("isUpdate"));
+                if (isUpdate != 0) {
+                    continue;
+                }
                 JSONObject jsonObject0 = new JSONObject();
                 try {
                     jsonObject0.put("id", blockId);
@@ -1160,14 +1284,34 @@ public class HomepageFragment extends Fragment {
                 jsonArray.put(jsonObject0);
             } while (cursor0.moveToNext());
             Log.d("BlockJson", jsonArray.toString());
-            HttpRequest.HttpRequest_SpeciesList(jsonArray, self, new HttpRequest.HttpCallback() {
-                @Override
-                public void onSuccess(JSONObject result) {
-                    Message msg = new Message();
-                    msg.what = UPLOAD_BLOCK_OK;
-                    mHandler.sendMessage(msg);
-                }
-            });
+            if (jsonArray.length() != 0) {
+                HttpRequest.HttpRequest_SpeciesList(jsonArray, self, new HttpRequest.HttpCallback() {
+                    @Override
+                    public void onSuccess(JSONObject result) {
+                        try {
+                            if (result.getBoolean("success")) {
+                                Message msg = new Message();
+                                msg.what = UPLOAD_BLOCK_OK;
+                                mHandler.sendMessage(msg);
+
+                                ContentValues contentValues = new ContentValues();
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    contentValues.put("isUpdate", 1);
+                                    db.update("LocalBlock", contentValues, "blockId=?",
+                                            new String[]{jsonArray.getJSONObject(i).getString("id")});
+                                    contentValues.clear();
+                                }
+
+                            } else {
+                                showShortToast(self, "上传block失败");
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
         } else {
             showShortToast(self, getString(R.string.toast_null_plan_data));
         }
@@ -1176,6 +1320,11 @@ public class HomepageFragment extends Fragment {
             do {
                 String experimentFieldId = cursor0.getString(cursor0.getColumnIndex("id"));
                 String description = cursor0.getString(cursor0.getColumnIndex("description"));
+                int num = cursor0.getInt(cursor0.getColumnIndex("num"));
+                int rows = cursor0.getInt(cursor0.getColumnIndex("rows"));
+                if (num == 0 || rows == 0) {
+                    continue;
+                }
                 HttpRequest.HttpRequest_description(experimentFieldId, description, self, new HttpRequest.HttpCallback() {
                     @Override
                     public void onSuccess(JSONObject result) {

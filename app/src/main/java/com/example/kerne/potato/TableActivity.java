@@ -424,6 +424,7 @@ public class TableActivity extends AppCompatActivity {
                     contentValues.put("speciesId", str[j][i]);
                     contentValues.put("x", i % column + 1);
                     contentValues.put("y", j + 1);
+                    contentValues.put("isUpdate", 0);
                     contentValuesList.add(contentValues);
                 }
             }
@@ -720,7 +721,7 @@ public class TableActivity extends AppCompatActivity {
         ContentValues contentValues = new ContentValues();
         contentValues.put("rows", column);
         contentValues.put("num", row * column);
-        contentValues.put("isCreated", 0);
+        contentValues.put("isCreated", 1);
         db.update("LocalField", contentValues, "id=?", new String[]{fieldId});
     }
 
@@ -733,6 +734,7 @@ public class TableActivity extends AppCompatActivity {
                 contentValues.put("speciesId", "");
                 contentValues.put("x", j + 1);
                 contentValues.put("y", i + 1);
+                contentValues.put("isUpdate", 1);
                 db.insert("LocalBlock", null, contentValues);
                 contentValues.clear();
             }

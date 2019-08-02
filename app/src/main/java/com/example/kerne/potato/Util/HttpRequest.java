@@ -484,6 +484,39 @@ public class HttpRequest {
         requestQueue.add(jsonObjectRequest);
     }
 
+    //创建bigfarm
+    public static void HttpRequest_CreateBigfarm(final JSONObject jsonObject, Context context, final HttpCallback callback) {
+        requestQueue = SingleRequestQueue.getInstance(context).getRequestQueue();
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url + "bigfarm/addBigfarm", jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("CreateBigfarm_response", response.toString());
+                callback.onSuccess(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("CreateBigfarm_error", error.getMessage(), error);
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=UTF-8");
+                return headers;
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return super.getBodyContentType();
+            }
+        };
+
+        requestQueue.add(jsonObjectRequest);
+    }
+
     //创建field
     public static void HttpRequest_CreateField(final JSONArray jsonArray, Context context, final HttpCallback callback) {
         requestQueue = SingleRequestQueue.getInstance(context).getRequestQueue();

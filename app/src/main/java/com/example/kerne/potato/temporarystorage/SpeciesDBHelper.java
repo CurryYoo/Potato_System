@@ -121,7 +121,8 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "year integer,"
             + "width integer,"
             + "length integer,"
-            + "uri text"
+            + "uri text,"
+            + "isCreated integer" //是否联网创建过，0为未创建过，1为创建过
             + ")";
 
 //    public static final String CREATE_FARMLIST = "create table FarmList ("
@@ -177,14 +178,15 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "description text," //
             + "type text," //类型，棚外棚内
             + "speciesList text,"
-            + "isCreated integer)"; //是否创建过
+            + "isCreated integer)"; //是否联网创建过，0为未创建但没有行列数，1为未创建有行列数，2为创建过
 
     public static final String CREATE_LOCALBLOCK = "create table LocalBlock ("
             + "blockId text primary key,"
             + "fieldId text,"
             + "speciesId text,"
             + "x integer," //列数
-            + "y integer)"; //行数
+            + "y integer," //行数
+            + "isUpdate integer)"; //是否联网更新过，0为未更新，1为更新过
 
 //    public static final String CREATE_SPECIES_SEQUENCE = "create table SpeciesSequence ("
 //            + "id integer primary key autoincrement,"
