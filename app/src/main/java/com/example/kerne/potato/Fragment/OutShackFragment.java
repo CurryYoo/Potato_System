@@ -121,7 +121,7 @@ public class OutShackFragment extends Fragment {
         coverView.setOnClickListener(null);
         savePlan.setOnClickListener(onClickListener);
 
-        dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 11);
+        dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 13);
         db = dbHelper.getWritableDatabase();
 
         initData();

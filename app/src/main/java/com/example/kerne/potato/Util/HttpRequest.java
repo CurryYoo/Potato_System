@@ -425,7 +425,7 @@ public class HttpRequest {
             }
         };
 
-        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(20000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         requestQueue.add(jsonArrayRequest);
     }
@@ -482,6 +482,88 @@ public class HttpRequest {
 
 //        requestQueue.add(stringRequest);
         requestQueue.add(jsonObjectRequest);
+    }
+
+    //创建field
+    public static void HttpRequest_CreateField(final JSONArray jsonArray, Context context, final HttpCallback callback) {
+        requestQueue = SingleRequestQueue.getInstance(context).getRequestQueue();
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url + "bigfarm/addFieldPlan", jsonArray, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                Log.d("CreateField_response", response.toString());
+                try {
+                    callback.onSuccess(response.getJSONObject(0));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("CreateField_error", error.getMessage(), error);
+            }
+        }) {
+            @Override
+            protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
+                try {
+                    String jsonString = new String(response.data,
+                            HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
+                    jsonString = "[" + jsonString + "]"; //由于返回的数据是jsonobject而不是jsonarray，因此需要将其改为jsonarray格式
+                    return Response.success(new JSONArray(jsonString),
+                            HttpHeaderParser.parseCacheHeaders(response));
+                } catch (UnsupportedEncodingException e) {
+                    return Response.error(new ParseError(e));
+                } catch (JSONException je) {
+                    return Response.error(new ParseError(je));
+                }
+            }
+        };
+
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        requestQueue.add(jsonArrayRequest);
+    }
+
+    //更新field
+    public static void HttpRequest_UpdateField(final JSONArray jsonArray, Context context, final HttpCallback callback) {
+        requestQueue = SingleRequestQueue.getInstance(context).getRequestQueue();
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url + "experimentfield/updateField", jsonArray, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                Log.d("UpdateField_response", response.toString());
+                try {
+                    callback.onSuccess(response.getJSONObject(0));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("UpdateField_error", error.getMessage(), error);
+            }
+        }) {
+            @Override
+            protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
+                try {
+                    String jsonString = new String(response.data,
+                            HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
+                    jsonString = "[" + jsonString + "]"; //由于返回的数据是jsonobject而不是jsonarray，因此需要将其改为jsonarray格式
+                    return Response.success(new JSONArray(jsonString),
+                            HttpHeaderParser.parseCacheHeaders(response));
+                } catch (UnsupportedEncodingException e) {
+                    return Response.error(new ParseError(e));
+                } catch (JSONException je) {
+                    return Response.error(new ParseError(je));
+                }
+            }
+        };
+
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        requestQueue.add(jsonArrayRequest);
     }
 
     public interface HttpCallback {

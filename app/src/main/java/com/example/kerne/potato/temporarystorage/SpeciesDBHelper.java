@@ -142,7 +142,7 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "moveY integer,"
             + "moveX1 integer,"
             + "moveY1 integer,"
-            + "num text,"
+            + "num integer,"
             + "color text,"
             + "bigfarmId text,"
             + "rows integer,"
@@ -160,20 +160,31 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "y integer)";
 
     public static final String CREATE_LOCALFIELD = "create table LocalField ("
-            + "fieldId text primary key,"
-            + "name text,"
-            + "expType text,"
-            + "year text,"
-            + "type text,"
-            + "num integer,"
-            + "rows integer)";
+            + "id text primary key," //
+            + "name text," //
+            + "deleted text,"
+            + "expType text," //
+            + "moveX integer,"
+            + "moveY integer,"
+            + "moveX1 integer,"
+            + "moveY1 integer,"
+            + "num integer," //
+            + "color text,"
+            + "bigfarmId text," //
+            + "rows integer," //
+            + "length integer,"
+            + "width integer,"
+            + "description text," //
+            + "type text," //类型，棚外棚内
+            + "speciesList text,"
+            + "isCreated integer)"; //是否创建过
 
     public static final String CREATE_LOCALBLOCK = "create table LocalBlock ("
             + "blockId text primary key,"
             + "fieldId text,"
             + "speciesId text,"
-            + "x integer,"
-            + "y integer)";
+            + "x integer," //列数
+            + "y integer)"; //行数
 
 //    public static final String CREATE_SPECIES_SEQUENCE = "create table SpeciesSequence ("
 //            + "id integer primary key autoincrement,"
@@ -191,6 +202,14 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 //        String sql_prepare = "drop table SpeciesTable if exists(select * from sys.databases where name='SpeciesTable')";
 //        db.execSQL(sql_prepare);
+        db.execSQL("drop table if exists SpeciesTable");
+        db.execSQL("drop table if exists LocalSpecies");
+        db.execSQL("drop table if exists BigfarmList");
+//        db.execSQL("drop table if exists FarmList");
+        db.execSQL("drop table if exists ExperimentField");
+        db.execSQL("drop table if exists SpeciesList");
+        db.execSQL("drop table if exists LocalField");
+        db.execSQL("drop table if exists LocalBlock");
         db.execSQL(CREATE_SPECIES_TABLE);
         db.execSQL(CREATE_LOCALSPECIES);
         db.execSQL(CREATE_BIGFARMLIST);
