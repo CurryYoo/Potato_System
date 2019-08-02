@@ -62,7 +62,7 @@
     <string name="dialog_title_farm_image">试验田示意图</string>
     <string name="dialog_picture_operate">双指缩放，单击退出</string>
 
-    <string name="createFarm">创建新一年实验田数据</string>
+    <string name="createFarm">年份创建新的实验田数据?</string>
     <string name="download_data">下载云端数据</string>
     <string name="farm_list">试验田列表</string>
     <string name="farm_tree">试验田目录树</string>

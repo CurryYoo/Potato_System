@@ -17,12 +17,14 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -198,24 +200,39 @@ public class HomepageFragment extends Fragment {
                     final SweetAlertDialog createFarmDialog = new SweetAlertDialog(self, SweetAlertDialog.NORMAL_TYPE)
                             .setContentText(getString(R.string.createFarm))
                             .setConfirmText("确定")
-                            .setCancelText("取消")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                    sweetAlertDialog.dismissWithAnimation();
-                                    new Thread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            //初始化本地localfield数据
-                                            initLocalField(bigfarmId);
+                            .setCancelText("取消");
+                    LayoutInflater mlayoutInflater = LayoutInflater.from(getContext());
+                    View view = mlayoutInflater.inflate(R.layout.dialog_input, null);
+                    final EditText dialog_input = view.findViewById(R.id.dialog_input);
+                    dialog_input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    dialog_input.setHint("添加新一年的实验田数据");
+                    createFarmDialog.addContentView(view, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                    createFarmDialog.setCustomView(view);
+                    createFarmDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            if (dialog_input.getText().toString().length() == 0) {
+                                showShortToast(getContext(), "年份为空,输入无效");
+                            } else if (checkYears(dialog_input.getText().toString(), mYears)) {
+                                sweetAlertDialog.dismissWithAnimation();
+                                //TODO 创建新的年份
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        //初始化本地localfield数据
+                                        initLocalField(bigfarmId);
 
-                                            MainActivity mainActivity = new MainActivity();
-                                            mainActivity.selectFarm(bigfarmId);
-                                        }
-                                    }).start();
+                                        MainActivity mainActivity = new MainActivity();
+                                        mainActivity.selectFarm(bigfarmId);
+                                    }
+                                }).start();
 
-                                }
-                            });
+                            } else {
+                                showShortToast(getContext(), "年份重复,输入无效");
+                            }
+                        }
+                    });
+
                     createFarmDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
@@ -409,11 +426,20 @@ public class HomepageFragment extends Fragment {
         return view;
     }
 
+    private Boolean checkYears(String y, List<String> ys) {
+        for (int i = 0; i < ys.size(); i++) {
+            if (ys.get(i).equals(y)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void init() {
         sp = self.getSharedPreferences("update_flag", Context.MODE_PRIVATE);
         editor = sp.edit();
 
-        createNewFarm=view.findViewById(R.id.create_new_farm);
+        createNewFarm = view.findViewById(R.id.create_new_farm);
         btnDownload = view.findViewById(R.id.btn_download);
         btnUpload = view.findViewById(R.id.btn_upload);
         uploadIcon = view.findViewById(R.id.upload_icon);

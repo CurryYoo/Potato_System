@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.kerne.potato.LoginActivity;
 import com.example.kerne.potato.R;
 import com.example.kerne.potato.TableActivity;
 
@@ -66,9 +64,20 @@ public class FarmPlanView {
     };
 
 
+    //监听事件
+    private View.OnLongClickListener onLongClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+
+            return true;
+        }
+    };
+
+
     private View.OnTouchListener moveTouchListenr = new View.OnTouchListener() {
         int lastX, lastY;
 
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             v.getParent().requestDisallowInterceptTouchEvent(true);
