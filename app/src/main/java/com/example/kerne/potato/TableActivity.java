@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -109,7 +110,7 @@ public class TableActivity extends AppCompatActivity {
     private String type;
     private String bigfarmId;
     private String description;
-    private int column;
+    private int column = 1;
     private JSONArray rows = new JSONArray();
     private JSONArray fieldArray = new JSONArray();
     private int column_num;
@@ -148,6 +149,7 @@ public class TableActivity extends AppCompatActivity {
 
                         //保存操作 sqlite
                         List<ContentValues> contentValuesList = assembleData(str);
+                        Log.d("contentvaluelist", contentValuesList.toString());
 
 //                db.delete("SpeciesList", "fieldId=?", new String[]{fieldId});
                         try {
@@ -157,7 +159,7 @@ public class TableActivity extends AppCompatActivity {
                                 ContentValues contentValues = new ContentValues();
                                 contentValues.put("description", description);
 
-                                db.update("ExperimentField", contentValues, "id=?", new String[]{fieldArray.getString(k)});
+                                db.update("LocalField", contentValues, "id=?", new String[]{fieldArray.getString(k)});
                             }
                             //更新品种块block
                             int lastRows = 0; //把之前列的行数叠加起来，确定contentvalueslist中的位置
@@ -170,7 +172,7 @@ public class TableActivity extends AppCompatActivity {
 
                                 for (int j = 0; j < rows_num; j++) {
                                     int id = lastRows + j;
-                                    db.update("SpeciesList", contentValuesList.get(id), "fieldId=? and x=? and y=?",
+                                    db.update("LocalBlock", contentValuesList.get(id), "fieldId=? and x=? and y=?",
                                             new String[]{contentValuesList.get(id).getAsString("fieldId"), contentValuesList.get(id).getAsString("x"), contentValuesList.get(id).getAsString("y")});
                                 }
                             }
@@ -192,7 +194,16 @@ public class TableActivity extends AppCompatActivity {
                             maxColumns = Integer.parseInt(planColumn.getText().toString());
                             maxRows = Integer.parseInt(planRow.getText().toString());
                             initTableView(maxColumns);
+                            str = new String[maxRows][maxColumns];
                             setData();
+
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    initLocalField(fieldId, maxRows, maxColumns);
+                                    initLocalBlock(fieldId, maxRows, maxColumns);
+                                }
+                            }).start();
                         }
                     }
                     //TODO 更新行和列数,保存行数和列数
@@ -225,16 +236,17 @@ public class TableActivity extends AppCompatActivity {
         sp = getSharedPreferences("update_flag", Context.MODE_PRIVATE);
         editor = sp.edit();
 
-        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 11);
+        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 13);
         db = dbHelper.getWritableDatabase();
 
         fieldId = getIntent().getStringExtra("fieldId");
         bigfarmId = getIntent().getStringExtra("bigfarmId");
         type = getIntent().getStringExtra("type");
         expType = getIntent().getStringExtra("expType");
-        column = getIntent().getIntExtra("rows", 2);
-        maxRows = getIntent().getIntExtra("num", 0) / column;
-        maxColumns = getIntent().getIntExtra("rows", 0);
+//        column = getIntent().getIntExtra("rows", 2);
+//        maxRows = (column != 0 ? getIntent().getIntExtra("num", 0) / column : 0);
+//        maxColumns = getIntent().getIntExtra("rows", 0);
+//        Log.d("col,maxrows,maxcol", column + "," + maxRows + "," + maxColumns);
 
         initToolBar();
 
@@ -295,6 +307,15 @@ public class TableActivity extends AppCompatActivity {
 //            str = new String[maxRows][maxColumns];
 //        } else {
 
+        Cursor cursor = db.query("LocalField", null, "id=?", new String[]{fieldId}, null, null, null);
+        if (cursor.moveToFirst()) {
+            maxColumns = cursor.getInt(cursor.getColumnIndex("rows"));
+            column = maxColumns;
+            int num = cursor.getInt(cursor.getColumnIndex("num"));
+            maxRows = (maxColumns != 0) ? num / maxColumns : 0;
+        }
+        cursor.close();
+
         str = new String[maxRows][maxColumns];
 
         try {
@@ -318,16 +339,21 @@ public class TableActivity extends AppCompatActivity {
         }
         cursor.close();
 
-        String sql;
-//        if (type.equals("common")) {
-//            sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
-//                    "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
-//                    "' and ExperimentField.bigfarmId='" + bigfarmId + "' order by ExperimentField.moveX";
-//        } else {
-            sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
-                    "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
-                    "' and ExperimentField.id='" + fieldId + "' order by ExperimentField.moveX";
-//        }
+
+        Cursor cursor1 = db.query("LocalField", null, "id=?", new String[]{fieldId}, null, null, null);
+        if (cursor1.moveToFirst()) {
+            do {
+
+            } while (cursor1.moveToNext());
+        }
+        else {
+            showShortToast(TableActivity.this, "无localfield");
+        }
+        cursor1.close();
+
+        String sql = "select LocalField.*, LocalBlock.* from LocalField, LocalBlock " +
+                "where LocalField.id=LocalBlock.fieldId and LocalField.expType='" + expType +
+                "' and LocalField.id='" + fieldId + "' order by LocalField.moveX";
 
         Cursor cursor0 = db.rawQuery(sql, null);
         if (cursor0.moveToFirst()) {
@@ -347,8 +373,35 @@ public class TableActivity extends AppCompatActivity {
                 str[y][x] = cursor0.getString(cursor0.getColumnIndex("speciesId"));
             } while (cursor0.moveToNext());
         } else {
+
         }
         cursor0.close();
+
+//        String sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
+//                "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
+//                "' and ExperimentField.id='" + fieldId + "' order by ExperimentField.moveX";
+//
+//        Cursor cursor0 = db.rawQuery(sql, null);
+//        if (cursor0.moveToFirst()) {
+//            String fieldId = "";
+//            int x = 0, y = 0;
+//            int columns = 0;
+//            description = cursor0.getString(cursor0.getColumnIndex("description"));
+//            fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
+//            do {
+//                if (!fieldId.equals(cursor0.getString(cursor0.getColumnIndex("id")))) {
+//                    columns++;
+//                    fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
+//                }
+//                x = cursor0.getInt(cursor0.getColumnIndex("x")) + columns * column - 1; //从0开始
+//                y = cursor0.getInt(cursor0.getColumnIndex("y")) - 1; //从0开始
+//
+//                str[y][x] = cursor0.getString(cursor0.getColumnIndex("speciesId"));
+//            } while (cursor0.moveToNext());
+//        } else {
+//
+//        }
+//        cursor0.close();
 
         Message msg = new Message();
         msg.what = 1;
@@ -360,6 +413,9 @@ public class TableActivity extends AppCompatActivity {
     private List<ContentValues> assembleData(String[][] str) {
         List<ContentValues> contentValuesList = new ArrayList<>();
         try {
+            Log.d("fieldArray", fieldArray.toString());
+            Log.d("column", column + "");
+            Log.d("rows", rows.toString());
             for (int i = 0; i < fieldArray.length() * column; i++) {
                 int rows_num = rows.getInt(i / column);
                 for (int j = 0; j < rows_num; j++) {
@@ -368,6 +424,7 @@ public class TableActivity extends AppCompatActivity {
                     contentValues.put("speciesId", str[j][i]);
                     contentValues.put("x", i % column + 1);
                     contentValues.put("y", j + 1);
+                    contentValues.put("isUpdate", 0);
                     contentValuesList.add(contentValues);
                 }
             }
@@ -553,7 +610,7 @@ public class TableActivity extends AppCompatActivity {
                                 if (speciesId.equals("")) {
                                     showShortToast(TableActivity.this, mContext.getString(R.string.toast_species_click_tip));
                                 } else {
-                                    Cursor c = db.query("SpeciesList", null, "speciesId=? and fieldId=?",
+                                    Cursor c = db.query("LocalBlock", null, "speciesId=? and fieldId=?",
                                             new String[]{speciesId, fieldId}, null, null, null);
                                     if (c.moveToFirst()) {
                                         blockId = c.getString(c.getColumnIndex("blockId"));
@@ -624,12 +681,12 @@ public class TableActivity extends AppCompatActivity {
                 tableMode.setLeftTitle(onlineSaleBean.getCompanyName());
 
                 for (int j = 0; j < maxColumns; j++) {
-//                    if (str[i][j] == null) {
-//                        tableMode.setText("", j);
-//                    } else {
-//                        tableMode.setText(str[i][j], j);
-//                    }
-                    tableMode.setText("test", j);
+                    if (str[i][j] == null) {
+                        tableMode.setText("", j);
+                    } else {
+                        tableMode.setText(str[i][j], j);
+                    }
+//                    tableMode.setText("test", j);
                 }
                 mDatas.add(tableMode);
             }
@@ -656,6 +713,30 @@ public class TableActivity extends AppCompatActivity {
                 //                mEmpty.setShowErrorAndPic(getString(R.string.empty_null), 0);
             } else if (type == RefreshParams.LOAD_DATA) {
                 showShortToast(mContext, mContext.getString(R.string.toast_network_error));
+            }
+        }
+    }
+
+    private void initLocalField(String fieldId, int row, int column) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("rows", column);
+        contentValues.put("num", row * column);
+        contentValues.put("isCreated", 1);
+        db.update("LocalField", contentValues, "id=?", new String[]{fieldId});
+    }
+
+    private void initLocalBlock(String fieldId, int row, int column) {
+        ContentValues contentValues = new ContentValues();
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
+                contentValues.put("blockId", fieldId + "_" + j + "_" + i);
+                contentValues.put("fieldId", fieldId);
+                contentValues.put("speciesId", "");
+                contentValues.put("x", j + 1);
+                contentValues.put("y", i + 1);
+                contentValues.put("isUpdate", 1);
+                db.insert("LocalBlock", null, contentValues);
+                contentValues.clear();
             }
         }
     }

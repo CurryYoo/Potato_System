@@ -133,7 +133,7 @@ public class GeneralActivity extends AppCompatActivity {
         //获取权限角色
 //        userRole = getIntent().getStringExtra("userRole");
 
-        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 11);
+        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 13);
         db = dbHelper.getReadableDatabase();
 
         getData();

@@ -55,6 +55,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -65,16 +66,26 @@ import static android.app.Activity.RESULT_OK;
 import static com.example.kerne.potato.Util.CustomToast.showShortToast;
 
 public class HomepageFragment extends Fragment {
+
     private static final int BIGFARMLIST_OK = 0;
     private static final int FARMLIST_OK = 1;
-    private static final int EXPERIMENTFIELD_OK = 2;
-    private static final int SPECIESLIST_OK = 3;
+    private static final int LOCALFIELD_OK = 2;
+    private static final int LOCALBLOCK_OK = 3;
     private static final int LOCALSPECIES_OK = 4;
     private static final int DATA_OK = 5;
     private static final int FIELD_DATA_OK = 6;
+    private static final int CREATE_BIGFARM_OK = 10;
+    private static final int CREATE_FIELD_OK = 11;
+    private static final int DOWNLOAD_FIELD_OK = 12;
+    private static final int DOWNLOAD_BLOCK_OK = 13;
+    private static final int UPLOAD_BLOCK_OK = 14;
+    private static final int UPLOAD_DESCRIPTION_OK = 15;
+    private static final int UPLOAD_SURVEY_OK = 16;
     private static int downloadSuccess_Num = 0;
     private static int request_Num = 4;
     private static int uploadSuccess_Num = 0;
+    private static int upload_Num = 2;
+
     private static boolean isOnline = false;
     protected static final float FLIP_DISTANCE = 50;//滑动距离
     public SweetAlertDialog downloadDataDialog;
@@ -118,6 +129,9 @@ public class HomepageFragment extends Fragment {
 
     private IntentFilter intentFilter;
     private NetworkChangeReceiver networkChangeReceiver;
+
+    private Handler mHandler;
+
     @SuppressLint("HandlerLeak")
     private Handler myHandler = new Handler() {
         @SuppressLint("SetTextI18n")
@@ -131,11 +145,11 @@ public class HomepageFragment extends Fragment {
 //                    downloadSuccess_Num++;
 //                    downloadDataDialog.setTitleText(getContext().getString(R.string.download_farm_plan_data));
 //                    break;
-                case EXPERIMENTFIELD_OK:
+                case LOCALFIELD_OK:
                     downloadSuccess_Num++;
                     downloadDataDialog.setTitleText(getContext().getString(R.string.download_species_data));
                     break;
-                case SPECIESLIST_OK:
+                case LOCALBLOCK_OK:
                     downloadSuccess_Num++;
                     downloadDataDialog.setTitleText(getContext().getString(R.string.download_localspecies_data));
                     break;
@@ -190,6 +204,7 @@ public class HomepageFragment extends Fragment {
             switch (v.getId()) {
                 case R.id.create_new_farm:
                     final SweetAlertDialog createFarmDialog = new SweetAlertDialog(self, SweetAlertDialog.NORMAL_TYPE)
+                            .setContentText(getString(R.string.createFarm))
                             .setConfirmText("确定")
                             .setCancelText("取消");
                     LayoutInflater mlayoutInflater = LayoutInflater.from(getContext());
@@ -207,6 +222,25 @@ public class HomepageFragment extends Fragment {
                             } else if (checkYears(dialog_input.getText().toString(), mYears)) {
                                 sweetAlertDialog.dismissWithAnimation();
                                 //TODO 创建新的年份
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        //初始化本地bigfarm数据
+                                        String bigfarmId_ = initLocalBigfarm(dialog_input.getText().toString());
+                                        //初始化本地localfield数据
+                                        initLocalField(bigfarmId_);
+
+                                        mBigFarmList.clear();
+                                        mYears.clear();
+                                        initData();
+
+                                        editor.putBoolean("upload_data", true);
+                                        editor.apply();
+//                                        MainActivity mainActivity = new MainActivity();
+//                                        mainActivity.selectFarm(bigfarmId);
+                                    }
+                                }).start();
+
                             } else {
                                 showShortToast(getContext(), "年份重复,输入无效");
                             }
@@ -272,9 +306,51 @@ public class HomepageFragment extends Fragment {
                             if (badge != null) {
                                 badge.hide(false);
                             }
-                            uploadPlanData();
-                            uploadSurveyData();
-                            showShortToast(self, getString(R.string.toast_upload_data_complete));
+
+                            mHandler = new Handler() {
+                                @Override
+                                public void handleMessage(Message msg) {
+                                    super.handleMessage(msg);
+                                    switch (msg.what) {
+                                        case CREATE_BIGFARM_OK: //创建bigfarm完成
+                                            CreateField();
+
+                                            mBigFarmList.clear();
+                                            mYears.clear();
+                                            initData();
+                                            break;
+                                        case CREATE_FIELD_OK: //创建field完成
+                                            downloadFieldAndBlock();
+                                            break;
+                                        case DOWNLOAD_FIELD_OK: //下载field数据完成
+                                            break;
+                                        case DOWNLOAD_BLOCK_OK: //下载block数据完成
+                                            uploadPlanData();
+                                            break;
+                                        case UPLOAD_BLOCK_OK: //上传block数据完成
+                                            uploadSurveyData();
+                                            uploadSuccess_Num++;
+                                            break;
+                                        case UPLOAD_DESCRIPTION_OK:
+                                            uploadSuccess_Num++;
+                                            break;
+                                        case UPLOAD_SURVEY_OK: //上传调查数据完成
+                                            showShortToast(self, getString(R.string.toast_upload_data_complete));
+                                            MainActivity mainActivity = new MainActivity();
+                                            mainActivity.selectFarm(bigfarmId);
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    if (uploadSuccess_Num == upload_Num) {
+                                        //
+                                    }
+                                }
+                            };
+                            CreateBigfarm();
+//                            uploadPlanData();
+//                            uploadSurveyData();
+
                         } else {
                             showShortToast(self, getString(R.string.toast_log_in));
                             Intent intent = new Intent(self, LoginActivity.class);
@@ -320,6 +396,45 @@ public class HomepageFragment extends Fragment {
             }
         }
     };
+
+    //初始化年份
+    private String initLocalBigfarm(String year) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("bigfarmId", year);
+        contentValues.put("name", year);
+        contentValues.put("year", year);
+        contentValues.put("isCreated", 0);
+        db.insert("BigfarmList", null, contentValues);
+        contentValues.clear();
+        return year;
+    }
+
+    //初始化本地field
+    private void initLocalField(String mBigfarmId) {
+        int num = 5;
+        String[] expTypes = {"加工鉴定", "早熟鉴定", "加工品比", "早熟品比", "杂交圃"};
+//        List<ContentValues> contentValuesList = new ArrayList<ContentValues>();
+        ContentValues contentValues = new ContentValues();
+        for (int i = 0; i < num; i++) {
+            contentValues.put("id", mBigfarmId + "_" + i);
+            contentValues.put("name", expTypes[i]);
+            contentValues.put("expType", expTypes[i]);
+            contentValues.put("moveX", 0);
+            contentValues.put("moveY", 0);
+            contentValues.put("moveX1", 0);
+            contentValues.put("moveY1", 0);
+            contentValues.put("num", 0);
+            contentValues.put("rows", 0);
+            contentValues.put("bigfarmId", mBigfarmId);
+            contentValues.put("description", "");
+            contentValues.put("type", expTypes[i].equals("杂交圃") ? "greenhouse" : "common");
+            contentValues.put("isCreated", 0);
+            db.insert("LocalField", null, contentValues);
+            contentValues.clear();
+//            contentValuesList.add(contentValues);
+        }
+
+    }
 
     private AdapterView.OnItemSelectedListener onItemSelectedListener = new AdapterView.OnItemSelectedListener() {
         @Override
@@ -414,7 +529,7 @@ public class HomepageFragment extends Fragment {
             public void run() {
                 Looper.prepare();
                 //获取数据库中数据
-                SpeciesDBHelper dbHelper = new SpeciesDBHelper(getContext(), "SpeciesTable.db", null, 11);
+                SpeciesDBHelper dbHelper = new SpeciesDBHelper(getContext(), "SpeciesTable.db", null, 13);
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
 
                 Cursor cursor = db.query("BigfarmList", null, null, null, null, null, null);
@@ -572,6 +687,7 @@ public class HomepageFragment extends Fragment {
                                 if (jsonObject0.get("length") != null) {
                                     contentValues.put("length", jsonObject0.getInt("length"));
                                 }
+                                contentValues.put("isCreated", 1);
 
                                 Uri uri = getImageURI(HttpRequest.serverUrl + jsonObject0.getString("img"), cache);
                                 contentValues.put("uri", uri.toString());
@@ -647,7 +763,7 @@ public class HomepageFragment extends Fragment {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        db.delete("ExperimentField", null, null);
+                        db.delete("LocalField", null, null);
                         try {
                             JSONArray rows = result.getJSONArray("rows");
                             int total = result.getInt("total");
@@ -684,7 +800,9 @@ public class HomepageFragment extends Fragment {
                                         contentValues.put("moveY1", jsonObject0.getInt("moveY1"));
                                     }
                                 }
-                                contentValues.put("num", jsonObject0.getString("num"));
+                                if (jsonObject0.get("num") != null) {
+                                    contentValues.put("num", jsonObject0.getInt("num"));
+                                }
                                 contentValues.put("color", jsonObject0.getString("color"));
                                 contentValues.put("bigfarmId", jsonObject0.getString("bigfarmId"));
                                 if (jsonObject0.get("rows") != null) {
@@ -699,9 +817,10 @@ public class HomepageFragment extends Fragment {
                                 contentValues.put("description", jsonObject0.getString("description"));
                                 contentValues.put("type", jsonObject0.getString("type"));
                                 contentValues.put("speciesList", jsonObject0.getString("speciesList"));
+                                contentValues.put("isCreated", 2);
 
-                                db.insert("ExperimentField", null, contentValues);
-//                                    contentValues.clear();
+                                db.insert("LocalField", null, contentValues);
+                                contentValues.clear();
                             }
 
                         } catch (Exception e) {
@@ -709,7 +828,7 @@ public class HomepageFragment extends Fragment {
                         }
 
                         Message msg = new Message();
-                        msg.what = EXPERIMENTFIELD_OK;
+                        msg.what = LOCALFIELD_OK;
                         myHandler.sendMessage(msg);
                     }
                 }).start();
@@ -723,7 +842,7 @@ public class HomepageFragment extends Fragment {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        db.delete("SpeciesList", null, null);
+                        db.delete("LocalBlock", null, null);
                         try {
                             JSONArray rows = result.getJSONArray("rows");
                             int total = result.getInt("total");
@@ -746,8 +865,9 @@ public class HomepageFragment extends Fragment {
                                         contentValues.put("y", jsonObject0.getInt("y"));
                                     }
                                 }
+                                contentValues.put("isUpdate", 1);
 
-                                db.insert("SpeciesList", null, contentValues);
+                                db.insert("LocalBlock", null, contentValues);
 //                                        updateSqlite("SpeciesList", "blockId", contentValues); //缓存数据到本地sqlite
                                 contentValues.clear();
                             }
@@ -757,7 +877,7 @@ public class HomepageFragment extends Fragment {
                         }
 
                         Message msg = new Message();
-                        msg.what = SPECIESLIST_OK;
+                        msg.what = LOCALBLOCK_OK;
                         myHandler.sendMessage(msg);
                     }
                 }).start();
@@ -841,10 +961,319 @@ public class HomepageFragment extends Fragment {
         return null;
     }
 
-    private void uploadPlanData() {
-        JSONArray jsonArray = new JSONArray();
+    //创建bigfarm
+    private void CreateBigfarm() {
         sqLiteDatabase = dbHelper.getReadableDatabase();
-        Cursor cursor0 = sqLiteDatabase.query("SpeciesList", null, null, null, null, null, null);
+        Cursor cursor = sqLiteDatabase.query("BigfarmList", null, null, null, null, null, null);
+        final int[] num = {cursor.getCount()};
+        if (cursor.moveToFirst()) {
+            do {
+                int isCreated = cursor.getInt(cursor.getColumnIndex("isCreated"));
+                if (isCreated != 0) {
+                    num[0]--;
+                    continue;
+                }
+                final String bigfarmId = cursor.getString(cursor.getColumnIndex("bigfarmId"));
+                final String name = cursor.getString(cursor.getColumnIndex("name"));
+                final String year = cursor.getString(cursor.getColumnIndex("year"));
+
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("name", name);
+                    jsonObject.put("year", year);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                HttpRequest.HttpRequest_CreateBigfarm(jsonObject, self, new HttpRequest.HttpCallback() {
+                    @Override
+                    public void onSuccess(JSONObject result) {
+                        try {
+                            if (result.getBoolean("success")) {
+                                JSONObject data = result.getJSONObject("data");
+                                String id = data.getString("id");
+                                ContentValues contentValues = new ContentValues();
+                                contentValues.put("bigfarmId", id);
+                                contentValues.put("isCreated", 1);
+                                sqLiteDatabase.update("BigfarmList", contentValues, "name=? and year=?",
+                                        new String[]{name, year});
+                                contentValues.clear();
+                                contentValues.put("bigfarmId", id);
+                                sqLiteDatabase.update("LocalField", contentValues,
+                                        "bigfarmId=?", new String[]{bigfarmId});
+                                num[0]--;
+
+                                if (num[0] == 0) {
+                                    Message msg = new Message();
+                                    msg.what = CREATE_BIGFARM_OK;
+                                    mHandler.sendMessage(msg);
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+            } while (cursor.moveToNext());
+        }
+        else {
+            showShortToast(self, "没有创建过大田");
+        }
+        cursor.close();
+        if (num[0] == 0) {
+            Message msg = new Message();
+            msg.what = CREATE_BIGFARM_OK;
+            mHandler.sendMessage(msg);
+        }
+    }
+
+    //创建field
+    private void CreateField() {
+        final JSONArray jsonArray = new JSONArray();
+        sqLiteDatabase = dbHelper.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.query("LocalField", null, null, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                int isCreated = cursor.getInt(cursor.getColumnIndex("isCreated"));
+                if (isCreated != 1) {
+                    continue;
+                }
+//                String id = cursor.getString(cursor.getColumnIndex("id"));
+                String name = cursor.getString(cursor.getColumnIndex("name"));
+                String expType = cursor.getString(cursor.getColumnIndex("expType"));
+                int moveX = cursor.getInt(cursor.getColumnIndex("moveX"));
+                int moveY = cursor.getInt(cursor.getColumnIndex("moveY"));
+                int moveX1 = cursor.getInt(cursor.getColumnIndex("moveX1"));
+                int moveY1 = cursor.getInt(cursor.getColumnIndex("moveY1"));
+                int num = cursor.getInt(cursor.getColumnIndex("num"));
+                int rows = cursor.getInt(cursor.getColumnIndex("rows"));
+                if (num == 0 || rows == 0) {
+                    continue;
+                }
+                String bigfarmId = cursor.getString(cursor.getColumnIndex("bigfarmId"));
+                String description = cursor.getString(cursor.getColumnIndex("description"));
+                String type = cursor.getString(cursor.getColumnIndex("type"));
+                JSONObject jsonObject0 = new JSONObject();
+                try {
+//                    jsonObject0.put("id", id);
+                    jsonObject0.put("name", name);
+                    jsonObject0.put("expType", expType);
+                    jsonObject0.put("moveX", moveX);
+                    jsonObject0.put("moveY", moveY);
+                    jsonObject0.put("moveX1", moveX1);
+                    jsonObject0.put("moveY1", moveY1);
+                    jsonObject0.put("num", num);
+                    jsonObject0.put("rows", rows);
+                    jsonObject0.put("bigfarmId", bigfarmId);
+                    jsonObject0.put("description", description);
+                    jsonObject0.put("type", type);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                jsonArray.put(jsonObject0);
+            } while (cursor.moveToNext());
+            Log.d("jsonArray", jsonArray.toString());
+        }
+        cursor.close();
+
+        if (jsonArray.length() == 0) {
+            Message msg = new Message();
+            msg.what = CREATE_FIELD_OK;
+            mHandler.sendMessage(msg);
+            return;
+        }
+        HttpRequest.HttpRequest_CreateField(jsonArray, self, new HttpRequest.HttpCallback() {
+            @Override
+            public void onSuccess(JSONObject result) {
+                try {
+                    if (result.getBoolean("success")) {
+                        ContentValues contentValues = new ContentValues();
+                        contentValues.put("isCreated", 2);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            db.update("LocalField", contentValues, "name=? and bigfarmId=?",
+                                    new String[]{jsonArray.getJSONObject(i).getString("name"), jsonArray.getJSONObject(i).getString("bigfarmId")});
+                        }
+                        Message msg = new Message();
+                        msg.what = CREATE_FIELD_OK;
+                        mHandler.sendMessage(msg);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+    //下载field和block数据
+    private void downloadFieldAndBlock() {
+        final Handler childHandler = new Handler();
+        final HashMap<String, String> fieldmap = new HashMap<>();
+
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                HttpRequest.HttpRequest_Species(self, new HttpRequest.HttpCallback() {
+                    @Override
+                    public void onSuccess(final JSONObject result) {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+//                                db.delete("LocalBlock", null, null);
+                                try {
+                                    JSONArray rows = result.getJSONArray("rows");
+                                    int total = result.getInt("total");
+                                    ContentValues contentValues = new ContentValues();
+                                    JSONObject jsonObject0;
+                                    for (int i = 0; i < total; i++) {
+                                        jsonObject0 = rows.getJSONObject(i);
+
+                                        contentValues.put("blockId", jsonObject0.getString("id"));
+                                        contentValues.put("fieldId", jsonObject0.getString("fieldId"));
+//                                        contentValues.put("speciesId", jsonObject0.getString("speciesId"));
+
+                                        if (jsonObject0.get("x") != null) {
+                                            if (!jsonObject0.getString("x").equals("null")) {
+                                                contentValues.put("x", jsonObject0.getInt("x"));
+                                            }
+                                        }
+                                        if (jsonObject0.get("y") != null) {
+                                            if (!jsonObject0.getString("y").equals("null")) {
+                                                contentValues.put("y", jsonObject0.getInt("y"));
+                                            }
+                                        }
+
+                                        db.update("LocalBlock", contentValues, "fieldId=? and x=? and y=?",
+                                                new String[]{jsonObject0.getString("fieldId"), jsonObject0.getString("x"), jsonObject0.getString("y")});
+//                                db.insert("LocalBlock", null, contentValues);
+//                                        updateSqlite("SpeciesList", "blockId", contentValues); //缓存数据到本地sqlite
+                                        contentValues.clear();
+                                    }
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                                Message msg = new Message();
+                                msg.what = DOWNLOAD_BLOCK_OK;
+                                mHandler.sendMessage(msg);
+                            }
+                        }).start();
+
+                    }
+                });
+            }
+        };
+
+        HttpRequest.HttpRequest_map(null, self, new HttpRequest.HttpCallback() {
+            @Override
+            public void onSuccess(final JSONObject result) { //获取ExperimentField信息
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+//                        db.delete("LocalField", null, null);
+                        try {
+                            JSONArray rows = result.getJSONArray("rows");
+                            int total = result.getInt("total");
+                            ContentValues contentValues = new ContentValues();
+                            ContentValues contentValues1 = new ContentValues();
+                            JSONObject jsonObject0;
+                            for (int i = 0; i < total; i++) {
+                                jsonObject0 = rows.getJSONObject(i);
+
+                                //获取服务器的fieldId与本地的fieldId之间的映射关系
+                                Cursor cursor0 = db.query("LocalField", null, "name=? and bigfarmId=?",
+                                        new String[]{jsonObject0.getString("name"), jsonObject0.getString("bigfarmId")}, null, null, null);
+                                if (cursor0.moveToFirst()){
+//                                    if (cursor0.getInt(cursor0.getColumnIndex("isCreated")) != 0) {
+//                                        cursor0.close();
+//                                        continue;
+//                                    }
+                                    fieldmap.put(jsonObject0.getString("id"), cursor0.getString(cursor0.getColumnIndex("id")));
+                                }
+                                cursor0.close();
+
+                                contentValues.put("id", jsonObject0.getString("id"));
+                                contentValues.put("name", jsonObject0.getString("name"));
+                                if (jsonObject0.getBoolean("deleted")) {
+                                    contentValues.put("deleted", "true");
+                                } else {
+                                    contentValues.put("deleted", "false");
+                                }
+                                contentValues.put("expType", jsonObject0.getString("expType"));
+                                if (jsonObject0.get("moveX") != null) {
+                                    if (!jsonObject0.getString("moveX").equals("null")) {
+                                        contentValues.put("moveX", jsonObject0.getInt("moveX"));
+                                    }
+                                }
+                                if (jsonObject0.get("moveY") != null) {
+                                    if (!jsonObject0.getString("moveY").equals("null")) {
+                                        contentValues.put("moveY", jsonObject0.getInt("moveY"));
+                                    }
+                                }
+                                if (jsonObject0.get("moveX1") != null) {
+                                    if (!jsonObject0.getString("moveX1").equals("null")) {
+                                        contentValues.put("moveX1", jsonObject0.getInt("moveX1"));
+                                    }
+                                }
+                                if (jsonObject0.get("moveY1") != null) {
+                                    if (!jsonObject0.getString("moveY1").equals("null")) {
+                                        contentValues.put("moveY1", jsonObject0.getInt("moveY1"));
+                                    }
+                                }
+                                if (jsonObject0.get("num") != null) {
+                                    contentValues.put("num", jsonObject0.getInt("num"));
+                                }
+                                contentValues.put("color", jsonObject0.getString("color"));
+                                contentValues.put("bigfarmId", jsonObject0.getString("bigfarmId"));
+                                if (jsonObject0.get("rows") != null) {
+                                    contentValues.put("rows", jsonObject0.getInt("rows"));
+                                }
+                                if (jsonObject0.get("length") != null) {
+                                    contentValues.put("length", jsonObject0.getInt("length"));
+                                }
+                                if (jsonObject0.get("width") != null) {
+                                    contentValues.put("width", jsonObject0.getInt("width"));
+                                }
+                                contentValues.put("description", jsonObject0.getString("description"));
+                                contentValues.put("type", jsonObject0.getString("type"));
+                                contentValues.put("speciesList", jsonObject0.getString("speciesList"));
+                                contentValues.put("isCreated", 2);
+
+                                db.update("LocalField", contentValues, "name=? and bigfarmId=?",
+                                        new String[]{jsonObject0.getString("name"), jsonObject0.getString("bigfarmId")});
+                                contentValues.clear();
+
+                                contentValues1.put("fieldId", jsonObject0.getString("id"));
+                                db.update("LocalBlock", contentValues1, "fieldId=?",
+                                        new String[]{fieldmap.get(jsonObject0.getString("id"))});
+                                contentValues1.clear();
+//                                db.insert("ExperimentField", null, contentValues);
+
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        childHandler.post(runnable);
+                    }
+                }).start();
+            }
+        });
+
+    }
+
+    //更新field数据（坐标）
+    private void updateFieldData() {
+
+    }
+
+    //上传种植图信息
+    private void uploadPlanData() {
+        final JSONArray jsonArray = new JSONArray();
+        sqLiteDatabase = dbHelper.getReadableDatabase();
+        Cursor cursor0 = sqLiteDatabase.query("LocalBlock", null, null, null, null, null, null);
         if (cursor0.moveToFirst()) {
             do {
                 String blockId = cursor0.getString(cursor0.getColumnIndex("blockId"));
@@ -852,6 +1281,10 @@ public class HomepageFragment extends Fragment {
                 String speciesId = cursor0.getString(cursor0.getColumnIndex("speciesId"));
                 int x = cursor0.getInt(cursor0.getColumnIndex("x"));
                 int y = cursor0.getInt(cursor0.getColumnIndex("y"));
+                int isUpdate = cursor0.getInt(cursor0.getColumnIndex("isUpdate"));
+                if (isUpdate != 0) {
+                    continue;
+                }
                 JSONObject jsonObject0 = new JSONObject();
                 try {
                     jsonObject0.put("id", blockId);
@@ -864,19 +1297,48 @@ public class HomepageFragment extends Fragment {
                 }
                 jsonArray.put(jsonObject0);
             } while (cursor0.moveToNext());
-            HttpRequest.HttpRequest_SpeciesList(jsonArray, self, new HttpRequest.HttpCallback() {
-                @Override
-                public void onSuccess(JSONObject result) {
-                }
-            });
+            Log.d("BlockJson", jsonArray.toString());
+            if (jsonArray.length() != 0) {
+                HttpRequest.HttpRequest_SpeciesList(jsonArray, self, new HttpRequest.HttpCallback() {
+                    @Override
+                    public void onSuccess(JSONObject result) {
+                        try {
+                            if (result.getBoolean("success")) {
+                                Message msg = new Message();
+                                msg.what = UPLOAD_BLOCK_OK;
+                                mHandler.sendMessage(msg);
+
+                                ContentValues contentValues = new ContentValues();
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    contentValues.put("isUpdate", 1);
+                                    db.update("LocalBlock", contentValues, "blockId=?",
+                                            new String[]{jsonArray.getJSONObject(i).getString("id")});
+                                    contentValues.clear();
+                                }
+
+                            } else {
+                                showShortToast(self, "上传block失败");
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
         } else {
             showShortToast(self, getString(R.string.toast_null_plan_data));
         }
-        cursor0 = sqLiteDatabase.query("ExperimentField", null, null, null, null, null, null);
+        cursor0 = sqLiteDatabase.query("LocalField", null, null, null, null, null, null);
         if (cursor0.moveToFirst()) {
             do {
                 String experimentFieldId = cursor0.getString(cursor0.getColumnIndex("id"));
                 String description = cursor0.getString(cursor0.getColumnIndex("description"));
+                int num = cursor0.getInt(cursor0.getColumnIndex("num"));
+                int rows = cursor0.getInt(cursor0.getColumnIndex("rows"));
+                if (num == 0 || rows == 0) {
+                    continue;
+                }
                 HttpRequest.HttpRequest_description(experimentFieldId, description, self, new HttpRequest.HttpCallback() {
                     @Override
                     public void onSuccess(JSONObject result) {
@@ -1216,7 +1678,7 @@ public class HomepageFragment extends Fragment {
                 badge.setBadgeText("");
             }
         }
-        dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 11);
+        dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 13);
         db = dbHelper.getWritableDatabase();
     }
 

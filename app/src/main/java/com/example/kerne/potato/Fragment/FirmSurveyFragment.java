@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,12 +89,13 @@ public class FirmSurveyFragment extends Fragment {
             public void run() {
                 Looper.prepare();
                 //获取数据库中数据
-                SpeciesDBHelper dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 11);
+                SpeciesDBHelper dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 13);
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
 
                //获取棚外区域
                 outShack.clear();
-                Cursor cursor1 = db.query("ExperimentField", null, "bigfarmId=? and type=?", new String[]{bigfarmId,"common"}, null, null, null);
+                Log.d("bigfarmId", bigfarmId);
+                Cursor cursor1 = db.query("LocalField", null, "bigfarmId=? and type=?", new String[]{bigfarmId, "common"}, null, null, null);
                 if (cursor1.moveToFirst()) {
                     do {
                         JSONObject jsonObject0 = new JSONObject();
@@ -110,13 +112,14 @@ public class FirmSurveyFragment extends Fragment {
                             e.printStackTrace();
                         }
                     } while (cursor1.moveToNext());
+                    Log.d("outShack", outShack.toString());
                 }
                 cursor1.close();
 
 
                 //获取大棚区域
                 inShack.clear();
-                Cursor cursor2 = db.query("ExperimentField", null, "bigfarmId=? and type=?", new String[]{bigfarmId,"greenhouse"}, null, null, null);
+                Cursor cursor2 = db.query("LocalField", null, "bigfarmId=? and type=?", new String[]{bigfarmId, "greenhouse"}, null, null, null);
                 if (cursor2.moveToFirst()) {
                     do {
                         JSONObject jsonObject0 = new JSONObject();

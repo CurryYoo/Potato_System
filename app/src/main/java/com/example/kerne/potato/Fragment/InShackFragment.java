@@ -122,7 +122,7 @@ public class InShackFragment extends Fragment {
 
         coverView.setOnClickListener(null);
         savePlan.setOnClickListener(onClickListener);
-        dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 11);
+        dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 13);
         db = dbHelper.getWritableDatabase();
         initData();
         return view;

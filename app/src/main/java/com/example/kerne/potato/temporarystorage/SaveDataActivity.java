@@ -935,7 +935,7 @@ public class SaveDataActivity extends AppCompatActivity {
     private void initData() {
 
         //数据存储
-        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 11);
+        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 13);
         sqLiteDatabase = dbHelper.getWritableDatabase();
 
         //如果品种信息不存在，进行初始化
@@ -1288,7 +1288,7 @@ public class SaveDataActivity extends AppCompatActivity {
             }
         } else {
             Log.d("SaveDataActivity", "onCreate: cursor<=0" + cursor);
-            savaDataLocally();
+//            savaDataLocally();
         }
         cursor.close();
     }
@@ -1328,13 +1328,22 @@ public class SaveDataActivity extends AppCompatActivity {
 
     //更新本地数据
     private void updateDataLocally() {
-        String id = edtSpeciesID.getText().toString();
+//        String id = edtSpeciesID.getText().toString();
         ContentValues contentValues = assembleData();
-        sqLiteDatabase.delete("SpeciesTable", "blockId=?", new String[]{blockId});
-        sqLiteDatabase.insert("SpeciesTable", null, contentValues);
-        contentValues.clear();
-        showShortToast(this,
-                getString(R.string.toast_save_data_complete));
+        Cursor cursor = sqLiteDatabase.query("SpeciesTable", null, "blockId=?", new String[]{blockId}, null, null, null);
+        if (cursor.getCount() > 0) {
+            sqLiteDatabase.update("SpeciesTable", contentValues, "blockId=?", new String[]{blockId});
+        }
+        else {
+            sqLiteDatabase.insert("SpeciesTable", null, contentValues);
+        }
+        cursor.close();
+//        sqLiteDatabase.delete("SpeciesTable", "blockId=?", new String[]{blockId});
+//        sqLiteDatabase.insert("SpeciesTable", null, contentValues);
+        if (contentValues != null) {
+            contentValues.clear();
+        }
+        showShortToast(this, getString(R.string.toast_save_data_complete));
     }
 
     //组装数据
