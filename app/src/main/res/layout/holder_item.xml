@@ -28,7 +28,6 @@
             android:padding="8dp"
             android:textColor="@color/primary_text"
             android:textSize="14sp"
-            android:textStyle="bold"
             tools:text="选择" />
 
         <View

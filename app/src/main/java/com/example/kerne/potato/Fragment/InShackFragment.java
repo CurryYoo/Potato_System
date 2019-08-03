@@ -19,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.billy.android.swipe.SmartSwipe;
+import com.billy.android.swipe.consumer.SpaceConsumer;
 import com.example.kerne.potato.R;
 import com.example.kerne.potato.Util.FarmPlanView;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
@@ -36,8 +38,6 @@ import butterknife.Unbinder;
 import static com.example.kerne.potato.Util.CustomToast.showShortToast;
 
 public class InShackFragment extends Fragment {
-
-    private static final String TAG = "CheatGZ";
     private static final int DATA_OK = 0;
     @BindView(R.id.in_shack_farm)
     RelativeLayout inShackFarm;
@@ -48,7 +48,10 @@ public class InShackFragment extends Fragment {
     ImageView inImage;
     @BindView(R.id.cover_view)
     View coverView;
-    private RelativeLayout baseFarm;
+    @BindView(R.id.swipe_layout)
+    RelativeLayout swipeLayout;
+    @BindView(R.id.base_farm)
+    RelativeLayout baseFarm;
     SharedPreferences sp;
     SharedPreferences.Editor editor;
     SpeciesDBHelper dbHelper;
@@ -118,7 +121,10 @@ public class InShackFragment extends Fragment {
         editor = sp.edit();
         unbinder = ButterKnife.bind(this, view);
         inImage.setBackgroundResource(R.drawable.edit);
-        baseFarm = view.findViewById(R.id.base_farm);
+        //仿iOS下拉留白
+        SmartSwipe.wrap(swipeLayout)
+                .addConsumer(new SpaceConsumer())
+                .enableVertical();
 
         coverView.setOnClickListener(null);
         savePlan.setOnClickListener(onClickListener);
@@ -137,7 +143,7 @@ public class InShackFragment extends Fragment {
                 Looper.prepare();
 
                 //获取大棚区域
-                Cursor cursor = db.query("ExperimentField", null, "bigfarmId=? and type=?", new String[]{bigfarmId, "greenhouse"}, null, null, null);
+                Cursor cursor = db.query("LocalField", null, "bigfarmId=? and type=?", new String[]{bigfarmId, "greenhouse"}, null, null, null);
                 if (cursor.moveToFirst()) {
                     do {
                         JSONObject jsonObject0 = new JSONObject();
@@ -182,7 +188,7 @@ public class InShackFragment extends Fragment {
     private void updateData() {
         List<ContentValues> contentValuesList = assembleData(mFieldList);
         for (int i = 0; i < contentValuesList.size(); i++) {
-            db.update("ExperimentField", contentValuesList.get(i), "id=?", new String[]{contentValuesList.get(i).getAsString("id")});
+            db.update("LocalField", contentValuesList.get(i), "id=?", new String[]{contentValuesList.get(i).getAsString("id")});
         }
     }
 

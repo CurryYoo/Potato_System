@@ -1,48 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/in_shack_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_30_light_top"
-    android:orientation="vertical">
-
-    <LinearLayout
-        android:id="@+id/save_plan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="15dp"
-        android:background="@drawable/selector_trans_button"
-        android:elevation="2dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/in_image"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_margin="5dp" />
-    </LinearLayout>
+    android:background="@drawable/bg_swipe">
 
     <RelativeLayout
-        android:id="@+id/base_farm"
+        android:id="@+id/swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="10dp">
+        android:background="@drawable/bg_30_light_top">
 
-        <RelativeLayout
-            android:id="@+id/in_shack_farm"
+        <LinearLayout
+            android:id="@+id/save_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:background="@drawable/bg_farm" />
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/selector_trans_button"
+            android:elevation="2dp"
+            android:orientation="horizontal">
 
-        <View
-            android:id="@+id/cover_view"
+            <ImageView
+                android:id="@+id/in_image"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_margin="5dp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/base_farm"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/transparent" />
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="10dp">
+
+            <RelativeLayout
+                android:id="@+id/in_shack_farm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/bg_farm" />
+
+            <View
+                android:id="@+id/cover_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparent" />
+        </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>

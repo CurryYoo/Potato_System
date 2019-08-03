@@ -13,7 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
+import com.billy.android.swipe.SmartSwipe;
+import com.billy.android.swipe.consumer.SpaceConsumer;
 import com.example.kerne.potato.R;
 import com.example.kerne.potato.complextable.widget.GridRecyclerView.BetterDoubleGridView;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
@@ -31,6 +34,7 @@ public class FirmSurveyFragment extends Fragment {
     private static String bigfarmId;
     private View view;
     private Context self;
+    private LinearLayout swipeLayout;
     private BetterDoubleGridView betterDoubleGridView;
     private List<JSONObject> mFieldList = new ArrayList<>();
     private List<JSONObject> outShack = new ArrayList<>();
@@ -69,6 +73,12 @@ public class FirmSurveyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_firm_survey, container, false);
         self = getContext();
+        swipeLayout = view.findViewById(R.id.swipe_layout);
+        betterDoubleGridView = view.findViewById(R.id.expType_list);
+        //仿iOS下拉留白
+        SmartSwipe.wrap(swipeLayout)
+                .addConsumer(new SpaceConsumer())
+                .enableVertical();
         initView();
         return view;
     }
@@ -112,7 +122,6 @@ public class FirmSurveyFragment extends Fragment {
                             e.printStackTrace();
                         }
                     } while (cursor1.moveToNext());
-                    Log.d("outShack", outShack.toString());
                 }
                 cursor1.close();
 

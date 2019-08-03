@@ -62,4 +62,6 @@ dependencies {
     implementation 'jp.wasabeef:glide-transformations:3.0.1'
 
     implementation 'com.nineoldandroids:library:2.4.0'
+    //侧滑
+    implementation 'com.billy.android:smart-swipe:1.0.3'
 }

@@ -25,6 +25,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.billy.android.swipe.SmartSwipe;
+import com.billy.android.swipe.consumer.SpaceConsumer;
 import com.example.kerne.potato.complextable.base.RefreshParams;
 import com.example.kerne.potato.complextable.base.adapter.AbsCommonAdapter;
 import com.example.kerne.potato.complextable.base.adapter.AbsViewHolder;
@@ -85,6 +87,8 @@ public class TableActivity extends AppCompatActivity {
     View confirmView;
     @BindView(R.id.confirm_button)
     TextView confirmButton;
+    @BindView(R.id.swipe_layout)
+    LinearLayout swipeLayout;
     /**
      * 用于存放标题的id,与textview引用
      */
@@ -248,6 +252,11 @@ public class TableActivity extends AppCompatActivity {
 //        maxColumns = getIntent().getIntExtra("rows", 0);
 //        Log.d("col,maxrows,maxcol", column + "," + maxRows + "," + maxColumns);
 
+        //仿iOS下拉留白
+        SmartSwipe.wrap(swipeLayout)
+                .addConsumer(new SpaceConsumer())
+                .enableVertical();
+
         initToolBar();
 
         //延迟加载视图
@@ -284,29 +293,6 @@ public class TableActivity extends AppCompatActivity {
     }
 
     private void initTable() {
-//        if (type.equals("common")) {
-//            try {
-//                Cursor cursor = db.query("ExperimentField", null, "bigfarmId=? and expType=?",
-//                        new String[]{bigfarmId, expType}, null, null, "moveX");
-//                maxColumns = cursor.getCount();
-//                if (maxColumns > 0) {
-//                    cursor.moveToFirst();
-//                    for (int i = 0; i < maxColumns; i++) {
-//                        fieldArray.put(i, cursor.getString(cursor.getColumnIndex("id")));
-//                        int num = cursor.getInt(cursor.getColumnIndex("num"));
-//                        rows.put(i, num);
-//                        maxRows = (num > maxRows ? num : maxRows);
-//                        column = 1;
-//                        cursor.moveToNext();
-//                    }
-//                }
-//                cursor.close();
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//            str = new String[maxRows][maxColumns];
-//        } else {
-
         Cursor cursor = db.query("LocalField", null, "id=?", new String[]{fieldId}, null, null, null);
         if (cursor.moveToFirst()) {
             maxColumns = cursor.getInt(cursor.getColumnIndex("rows"));
@@ -324,7 +310,18 @@ public class TableActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//        }
+
+        //如果已填冲，自动填充行列数，并隐藏确认按钮
+        if(maxColumns!=0||maxRows!=0){
+            planColumn.setText(maxColumns+"");
+            planRow.setText(maxRows+"");
+            planColumn.setEnabled(false);
+            planRow.setEnabled(false);
+
+            confirmView.setVisibility(View.GONE);
+            confirmButton.setVisibility(View.GONE);
+        }
+
         initData();
     }
 

@@ -48,9 +48,9 @@ public class FarmPlanView {
     private int farmWidth;//试验田宽
     private int farmHeight;//试验田长
     private int endX = 0, endY = 0;//list中最终存储的x,y轴坐标
-    private String expType=null;
-    private int row=0,column=0;
-    private String description="备注";
+    private String expType = null;
+    private int row = 0, column = 0;
+    private String description = "备注";
 
     //监听事件
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -263,7 +263,7 @@ public class FarmPlanView {
         roadTextView.setTextColor(mContext.getResources().getColor(R.color.primary_text));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            roadTextView.setAutoSizeTextTypeUniformWithConfiguration(5, 12, 1, TypedValue.COMPLEX_UNIT_SP);
+            roadTextView.setAutoSizeTextTypeUniformWithConfiguration(6, 12, 1, TypedValue.COMPLEX_UNIT_SP);
         } else {
             roadTextView.setTextSize(6);
         }
@@ -293,6 +293,11 @@ public class FarmPlanView {
                         View view = inflater.inflate(R.layout.field_view, null, false);
                         TextView textView = view.findViewById(R.id.field_name);
                         textView.setText(mJsonList.get(i).getString("expType"));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            textView.setAutoSizeTextTypeUniformWithConfiguration(6, 12, 1, TypedValue.COMPLEX_UNIT_SP);
+                        } else {
+                            textView.setTextSize(8);
+                        }
                         mRelativeLayout.addView(view);
                         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
                         layoutParams.height = (int) ((btn_row / FARM_ROW) * (farmHeight - 20));
@@ -321,6 +326,11 @@ public class FarmPlanView {
                         View view = inflater.inflate(R.layout.field_view, null, false);
                         TextView textView = view.findViewById(R.id.field_name);
                         textView.setText(mJsonList.get(i).getString("expType"));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            textView.setAutoSizeTextTypeUniformWithConfiguration(6, 12, 1, TypedValue.COMPLEX_UNIT_SP);
+                        } else {
+                            textView.setTextSize(8);
+                        }
                         mRelativeLayout.addView(view);
                         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
                         layoutParams.width = (int) ((btn_column / SHACK_FARM_COLUMN) * (farmWidth - 20));

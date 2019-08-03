@@ -1,17 +1,12 @@
 package com.example.kerne.potato;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -19,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.billy.android.swipe.SmartSwipe;
+import com.billy.android.swipe.consumer.SpaceConsumer;
 import com.example.kerne.potato.Util.UserRole;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.OkHttpClient;
@@ -33,11 +30,9 @@ import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import static com.example.kerne.potato.Util.ChangeStatusBar.setStatusBarColor;
 import static com.example.kerne.potato.Util.CustomToast.showShortToast;
-import static com.example.kerne.potato.Util.ShowKeyBoard.delayShowSoftKeyBoard;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -64,6 +59,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     };
+    @BindView(R.id.swipe_layout)
+    LinearLayout swipeLayout;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private EditText accountEdit;
@@ -97,9 +94,14 @@ public class LoginActivity extends AppCompatActivity {
         accountEdit = (EditText) findViewById(R.id.account);
         passwordEdit = (EditText) findViewById(R.id.password);
         rememberPass = (CheckBox) findViewById(R.id.remember_pass);
-
         login = (Button) findViewById(R.id.login);
         boolean isRemember = pref.getBoolean("remember_password", false);
+
+        //仿iOS下拉留白
+        SmartSwipe.wrap(swipeLayout)
+                .addConsumer(new SpaceConsumer())
+                .enableVertical();
+
         if (isRemember) {
             // 将账号和密码都设置到文本框中
             accountEdit.setText(pref.getString("account", ""));

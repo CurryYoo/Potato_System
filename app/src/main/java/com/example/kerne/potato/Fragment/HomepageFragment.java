@@ -21,7 +21,6 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -33,7 +32,12 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.kerne.potato.FirmPlanActivity;
+import com.billy.android.swipe.SmartSwipe;
+import com.billy.android.swipe.SmartSwipeWrapper;
+import com.billy.android.swipe.SwipeConsumer;
+import com.billy.android.swipe.consumer.SpaceConsumer;
+import com.billy.android.swipe.listener.SwipeListener;
+import com.example.kerne.potato.FarmPlanActivity;
 import com.example.kerne.potato.LoginActivity;
 import com.example.kerne.potato.MainActivity;
 import com.example.kerne.potato.R;
@@ -55,6 +59,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -87,8 +92,8 @@ public class HomepageFragment extends Fragment {
     private static int upload_Num = 2;
 
     private static boolean isOnline = false;
-    protected static final float FLIP_DISTANCE = 50;//滑动距离
-    public SweetAlertDialog downloadDataDialog;
+    private SweetAlertDialog downloadDataDialog;
+    private SweetAlertDialog updateDialog;
     String img1;
     String img2;
     String img3;
@@ -102,6 +107,7 @@ public class HomepageFragment extends Fragment {
     private LinearLayout baseFarm;
     private View view;
     private Context self;
+    private RelativeLayout swipeLayout;
     private LinearLayout createNewFarm;
     private LinearLayout btnDownload;
     private ImageView uploadIcon;
@@ -129,8 +135,6 @@ public class HomepageFragment extends Fragment {
 
     private IntentFilter intentFilter;
     private NetworkChangeReceiver networkChangeReceiver;
-
-    private Handler mHandler;
 
     @SuppressLint("HandlerLeak")
     private Handler myHandler = new Handler() {
@@ -161,24 +165,20 @@ public class HomepageFragment extends Fragment {
                         //spinner加载
                         try {
                             bigfarmId = mBigFarmList.get(0).getString("bigfarmId");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        mYears.clear();
-                        try {
+                            mYears.clear();
                             for (int i = 0; i < mBigFarmList.size(); i++) {
                                 mYears.add(mBigFarmList.get(i).getString("year"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        if (spinnerAdapter == null) {
-                            spinnerAdapter = new ArrayAdapter<>(getContext(), R.layout.layout_spinner_textview, mYears);
-                            homepageYears.setAdapter(spinnerAdapter);
-                        } else {
-                            Log.d("cheatGZ spinner ", "big " + mBigFarmList.size() + " year" + mYears.size());
-                            spinnerAdapter.notifyDataSetChanged();
-                        }
+//                        if (spinnerAdapter == null) {
+                        spinnerAdapter = new ArrayAdapter<>(getContext(), R.layout.layout_spinner_textview, mYears);
+                        homepageYears.setAdapter(spinnerAdapter);
+//                        } else {
+//                            Log.d("cheatGZ spinner ", "big " + mBigFarmList.size() + " year" + mYears.size());
+//                            spinnerAdapter.notifyDataSetChanged();
+//                        }
                         initView(farm_flag);
                     }
                     break;
@@ -197,70 +197,130 @@ public class HomepageFragment extends Fragment {
             }
         }
     };
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case CREATE_BIGFARM_OK: //创建bigfarm完成
+                    CreateField();
+                    mBigFarmList.clear();
+                    mYears.clear();
+                    initData();
+                    break;
+                case CREATE_FIELD_OK: //创建field完成
+                    downloadFieldAndBlock();
+                    break;
+                case DOWNLOAD_FIELD_OK: //下载field数据完成
+                    break;
+                case DOWNLOAD_BLOCK_OK: //下载block数据完成
+                    uploadPlanData();
+                    MainActivity mainActivity = new MainActivity();
+                    mainActivity.selectFarm(bigfarmId);
+                    updateDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                    updateDialog.setCancelable(true);
+                    updateDialog.setTitleText(getContext().getString(R.string.update_complete));
+                    updateDialog.setContentText(null);
+                    break;
+                case UPLOAD_BLOCK_OK: //上传block数据完成
+                    uploadSurveyData();
+                    uploadSuccess_Num++;
+//                    showShortToast(self, getString(R.string.toast_upload_data_complete));
+//                    MainActivity mainActivity = new MainActivity();
+//                    mainActivity.selectFarm(bigfarmId);
+//                    updateDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+//                    updateDialog.setCancelable(true);
+//                    updateDialog.setTitleText(getContext().getString(R.string.update_complete));
+//                    updateDialog.setContentText(null);
+                    break;
+                case UPLOAD_DESCRIPTION_OK:
+                    Log.d("cheatGZ", "handleMessage:  update success3");
+                    uploadSuccess_Num++;
+                    break;
+                case UPLOAD_SURVEY_OK: //上传调查数据完成
+                    showShortToast(self, getString(R.string.toast_upload_data_complete));
+                    break;
+                default:
+                    break;
+            }
+            if (uploadSuccess_Num == upload_Num) {
+                //
+            }
+        }
+    };
     //监听事件
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.create_new_farm:
-                    final SweetAlertDialog createFarmDialog = new SweetAlertDialog(self, SweetAlertDialog.NORMAL_TYPE)
-                            .setContentText(getString(R.string.createFarm))
-                            .setConfirmText("确定")
-                            .setCancelText("取消");
-                    LayoutInflater mlayoutInflater = LayoutInflater.from(getContext());
-                    View view = mlayoutInflater.inflate(R.layout.dialog_input, null);
-                    final EditText dialog_input = view.findViewById(R.id.dialog_input);
-                    dialog_input.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    dialog_input.setHint("添加新一年的实验田数据");
-                    createFarmDialog.addContentView(view, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                    createFarmDialog.setCustomView(view);
-                    createFarmDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            if (dialog_input.getText().toString().length() == 0) {
-                                showShortToast(getContext(), "年份为空,输入无效");
-                            } else if (checkYears(dialog_input.getText().toString(), mYears)) {
-                                sweetAlertDialog.dismissWithAnimation();
-                                //TODO 创建新的年份
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        //初始化本地bigfarm数据
-                                        String bigfarmId_ = initLocalBigfarm(dialog_input.getText().toString());
-                                        //初始化本地localfield数据
-                                        initLocalField(bigfarmId_);
+                    userRole = UserRole.getUserRole();
+                    if (!userRole.equals("farmer")) {
+                        final SweetAlertDialog createFarmDialog = new SweetAlertDialog(self, SweetAlertDialog.NORMAL_TYPE)
+                                .setContentText(getString(R.string.createFarm))
+                                .setConfirmText("确定")
+                                .setCancelText("取消");
+                        LayoutInflater mlayoutInflater = LayoutInflater.from(getContext());
+                        View view = mlayoutInflater.inflate(R.layout.dialog_input, null);
+                        final EditText dialog_input = view.findViewById(R.id.dialog_input);
+                        dialog_input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                        dialog_input.setHint("增加新一年的实验田数据");
+                        createFarmDialog.addContentView(view, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                        createFarmDialog.setCustomView(view);
+                        createFarmDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                if (dialog_input.getText().toString().length() == 0) {
+                                    showShortToast(getContext(), "年份为空,输入无效");
+                                } else if (checkYears(dialog_input.getText().toString(), mYears)) {
+                                    sweetAlertDialog.dismissWithAnimation();
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            //初始化本地bigfarm数据
+                                            String bigfarmId_ = initLocalBigfarm(dialog_input.getText().toString());
+                                            //初始化本地localfield数据
+                                            initLocalField(bigfarmId_);
 
-                                        mBigFarmList.clear();
-                                        mYears.clear();
-                                        initData();
+                                            mBigFarmList.clear();
+                                            mYears.clear();
+                                            initData();
 
-                                        myHandler.post(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                showShortToast(self, "添加成功");
-                                            }
-                                        });
+                                            myHandler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    showShortToast(self, "添加成功");
+                                                }
+                                            });
 
-                                        editor.putBoolean("upload_data", true);
-                                        editor.apply();
+                                            editor.putBoolean("upload_data", true);
+                                            editor.apply();
 //                                        MainActivity mainActivity = new MainActivity();
 //                                        mainActivity.selectFarm(bigfarmId);
-                                    }
-                                }).start();
+                                        }
+                                    }).start();
 
-                            } else {
-                                showShortToast(getContext(), "年份重复,输入无效");
+                                } else {
+                                    showShortToast(getContext(), "年份重复,输入无效");
+                                }
                             }
-                        }
-                    });
+                        });
 
-                    createFarmDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            sweetAlertDialog.dismissWithAnimation();
-                        }
-                    });
-                    createFarmDialog.show();
+                        createFarmDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismissWithAnimation();
+                            }
+                        });
+                        createFarmDialog.show();
+                    } else {
+                        showShortToast(self, getString(R.string.toast_log_in));
+                        Intent intent = new Intent(self, LoginActivity.class);
+                        startActivityForResult(intent, 1);
+                    }
+
                     break;
                 case R.id.btn_download:
                     //检查网络状况
@@ -282,6 +342,8 @@ public class HomepageFragment extends Fragment {
                                         if (badge != null) {
                                             badge.hide(false);
                                         }
+                                        mBigFarmList.clear();
+                                        mYears.clear();
                                         downloadData();
                                     }
                                 });
@@ -313,47 +375,14 @@ public class HomepageFragment extends Fragment {
                             if (badge != null) {
                                 badge.hide(false);
                             }
+                            editor.putBoolean("upload_data", false);
+                            editor.apply();
+                            updateDialog = new SweetAlertDialog(self, SweetAlertDialog.PROGRESS_TYPE);
+                            updateDialog.setTitleText(getString(R.string.update_data));
+                            updateDialog.setContentText("上传本地数据耗时较长，请勿中途退出，以免造成数据缺失");
+                            updateDialog.setCancelable(false);
+                            updateDialog.show();
 
-                            mHandler = new Handler() {
-                                @Override
-                                public void handleMessage(Message msg) {
-                                    super.handleMessage(msg);
-                                    switch (msg.what) {
-                                        case CREATE_BIGFARM_OK: //创建bigfarm完成
-                                            CreateField();
-
-                                            mBigFarmList.clear();
-                                            mYears.clear();
-                                            initData();
-                                            break;
-                                        case CREATE_FIELD_OK: //创建field完成
-                                            downloadFieldAndBlock();
-                                            break;
-                                        case DOWNLOAD_FIELD_OK: //下载field数据完成
-                                            break;
-                                        case DOWNLOAD_BLOCK_OK: //下载block数据完成
-                                            uploadPlanData();
-                                            break;
-                                        case UPLOAD_BLOCK_OK: //上传block数据完成
-                                            uploadSurveyData();
-                                            uploadSuccess_Num++;
-                                            break;
-                                        case UPLOAD_DESCRIPTION_OK:
-                                            uploadSuccess_Num++;
-                                            break;
-                                        case UPLOAD_SURVEY_OK: //上传调查数据完成
-                                            showShortToast(self, getString(R.string.toast_upload_data_complete));
-                                            MainActivity mainActivity = new MainActivity();
-                                            mainActivity.selectFarm(bigfarmId);
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                    if (uploadSuccess_Num == upload_Num) {
-                                        //
-                                    }
-                                }
-                            };
                             CreateBigfarm();
 //                            uploadPlanData();
 //                            uploadSurveyData();
@@ -363,8 +392,6 @@ public class HomepageFragment extends Fragment {
                             Intent intent = new Intent(self, LoginActivity.class);
                             startActivityForResult(intent, 1);
                         }
-                        editor.putBoolean("upload_data", false);
-                        editor.apply();
                     }
                     break;
                 case R.id.plan_farm:
@@ -372,7 +399,7 @@ public class HomepageFragment extends Fragment {
                         showShortToast(getContext(), getString(R.string.toast_database_null));
                         break;
                     } else {
-                        Intent intent = new Intent(self, FirmPlanActivity.class);
+                        Intent intent = new Intent(self, FarmPlanActivity.class);
                         intent.putExtra("bigfarmId", bigfarmId);
                         self.startActivity(intent);
                     }
@@ -392,7 +419,6 @@ public class HomepageFragment extends Fragment {
                             farmType.setText(self.getString(R.string.in_shack));
                             farmTypeIcon.setBackgroundResource(R.drawable.shack_farm);
                             farm_flag = 0;
-
 
                             initView(farm_flag);
                         }
@@ -418,8 +444,11 @@ public class HomepageFragment extends Fragment {
 
     //初始化本地field
     private void initLocalField(String mBigfarmId) {
-        int num = 5;
-        String[] expTypes = {"加工鉴定", "早熟鉴定", "加工品比", "早熟品比", "杂交圃"};
+        int num = 23;
+        String[] expTypes = {"株系圃", "加工鉴定", "早熟鉴定", "晚熟鉴定", "加工预备比",
+                "早熟预备比", "晚熟预备比", "加工品比", "早熟品比", "晚熟品比", "品系筛选", "区域试验", //以上为棚外试验田
+                "抗旱棚", "杂交棚1", "杂交棚2", "杂交棚3", "单株棚1", "单株棚2", "单株棚3", "单株棚4",//以下为棚内试验田
+                "单株棚5", "单株棚6", "单株棚7"};
 //        List<ContentValues> contentValuesList = new ArrayList<ContentValues>();
         ContentValues contentValues = new ContentValues();
         for (int i = 0; i < num; i++) {
@@ -434,7 +463,7 @@ public class HomepageFragment extends Fragment {
             contentValues.put("rows", 0);
             contentValues.put("bigfarmId", mBigfarmId);
             contentValues.put("description", "");
-            contentValues.put("type", expTypes[i].equals("杂交圃") ? "greenhouse" : "common");
+            contentValues.put("type", i > 11 ? "greenhouse" : "common");
             contentValues.put("isCreated", 0);
             db.insert("LocalField", null, contentValues);
             contentValues.clear();
@@ -461,6 +490,59 @@ public class HomepageFragment extends Fragment {
 
         }
     };
+    private SwipeListener swipeListener = new SwipeListener() {
+        @Override
+        public void onConsumerAttachedToWrapper(SmartSwipeWrapper wrapper, SwipeConsumer consumer) {
+
+        }
+
+        @Override
+        public void onConsumerDetachedFromWrapper(SmartSwipeWrapper wrapper, SwipeConsumer consumer) {
+
+        }
+
+        @Override
+        public void onSwipeStateChanged(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int state, int direction, float progress) {
+
+        }
+
+        @Override
+        public void onSwipeStart(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
+
+        }
+
+        @Override
+        public void onSwipeProcess(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction, boolean settling, float progress) {
+
+        }
+
+        @Override
+        public void onSwipeRelease(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction, float progress, float xVelocity, float yVelocity) {
+
+        }
+
+        @Override
+        public void onSwipeOpened(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
+
+        }
+
+        @Override
+        public void onSwipeClosed(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
+            if (direction == SwipeConsumer.DIRECTION_TOP) {//从上向下滑动，切换视图
+                if (farm_flag == 0) {
+                    farmType.setText(self.getString(R.string.out_shack));
+                    farmTypeIcon.setBackgroundResource(R.drawable.farm);
+                    farm_flag = 1;
+                    initView(farm_flag);
+                } else if (farm_flag == 1) {
+                    farmType.setText(self.getString(R.string.in_shack));
+                    farmTypeIcon.setBackgroundResource(R.drawable.shack_farm);
+                    farm_flag = 0;
+                    initView(farm_flag);
+                }
+            }
+        }
+    };
 
     public static HomepageFragment newInstance() {
         return new HomepageFragment();
@@ -473,14 +555,6 @@ public class HomepageFragment extends Fragment {
         Stetho.initializeWithDefaults(self);
 
         init();
-        initGestureDetector();
-        //frgment滑动监听事件
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return mDetector.onTouchEvent(event);
-            }
-        });
         return view;
     }
 
@@ -497,6 +571,7 @@ public class HomepageFragment extends Fragment {
         sp = self.getSharedPreferences("update_flag", Context.MODE_PRIVATE);
         editor = sp.edit();
 
+        swipeLayout = view.findViewById(R.id.swipe_layout);
         createNewFarm = view.findViewById(R.id.create_new_farm);
         btnDownload = view.findViewById(R.id.btn_download);
         btnUpload = view.findViewById(R.id.btn_upload);
@@ -519,10 +594,13 @@ public class HomepageFragment extends Fragment {
         planFarm.setOnClickListener(onClickListener);
         changeFarmView.setOnClickListener(onClickListener);
         homepageYears.setOnItemSelectedListener(onItemSelectedListener);
+
+        //仿iOS下拉留白
+        SmartSwipe.wrap(swipeLayout)
+                .addConsumer(new SpaceConsumer())
+                .enableVertical()
+                .addListener(swipeListener);
         initData();
-
-
-//
         intentFilter = new IntentFilter();
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         networkChangeReceiver = new NetworkChangeReceiver();
@@ -556,6 +634,7 @@ public class HomepageFragment extends Fragment {
                         }
                     } while (cursor.moveToNext());
                 }
+                Collections.reverse(mBigFarmList);//对于年份倒序显示
                 cursor.close();
                 dbHelper.close();
                 db.close();
@@ -572,7 +651,7 @@ public class HomepageFragment extends Fragment {
 
         //获取棚外数据
         mOutShackList.clear();
-        Cursor cursor1 = db.query("ExperimentField", null, "bigfarmId=? and type=?", new String[]{bigfarmId, "common"}, null, null, null);
+        Cursor cursor1 = db.query("LocalField", null, "bigfarmId=? and type=?", new String[]{bigfarmId, "common"}, null, null, null);
         if (cursor1.moveToFirst()) {
             do {
                 JSONObject jsonObject0 = new JSONObject();
@@ -597,7 +676,7 @@ public class HomepageFragment extends Fragment {
 
         //获取大棚区域
         mInShackList.clear();
-        Cursor cursor2 = db.query("ExperimentField", null, "bigfarmId=? and type=?", new String[]{bigfarmId, "greenhouse"}, null, null, null);
+        Cursor cursor2 = db.query("LocalField", null, "bigfarmId=? and type=?", new String[]{bigfarmId, "greenhouse"}, null, null, null);
         if (cursor2.moveToFirst()) {
             do {
                 JSONObject jsonObject0 = new JSONObject();
@@ -629,10 +708,10 @@ public class HomepageFragment extends Fragment {
                     //加载棚外,设置farm大小
                     LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) homepageFarm.getLayoutParams();
                     layoutParams.width = baseFarm.getWidth();
-                    layoutParams.height = (int) (0.92 * baseFarm.getWidth());
+                    layoutParams.height = (int) (0.95 * baseFarm.getWidth());
                     homepageFarm.setLayoutParams(layoutParams);
                     homepageFarm.removeAllViews();
-                    FarmPlanView farmPlanView = new FarmPlanView(getContext(), homepageFarm, baseFarm.getWidth(), (int) (0.92 * baseFarm.getWidth()), mOutShackList);
+                    FarmPlanView farmPlanView = new FarmPlanView(getContext(), homepageFarm, baseFarm.getWidth(), (int) (0.95 * baseFarm.getWidth()), mOutShackList);
                     farmPlanView.createRoad("common");
                     farmPlanView.createField("common", FarmPlanView.CLICK_EVENT);
                 }
@@ -1023,8 +1102,7 @@ public class HomepageFragment extends Fragment {
                 });
 
             } while (cursor.moveToNext());
-        }
-        else {
+        } else {
             showShortToast(self, "没有创建过大田");
         }
         cursor.close();
@@ -1192,7 +1270,7 @@ public class HomepageFragment extends Fragment {
                                 //获取服务器的fieldId与本地的fieldId之间的映射关系
                                 Cursor cursor0 = db.query("LocalField", null, "name=? and bigfarmId=?",
                                         new String[]{jsonObject0.getString("name"), jsonObject0.getString("bigfarmId")}, null, null, null);
-                                if (cursor0.moveToFirst()){
+                                if (cursor0.moveToFirst()) {
 //                                    if (cursor0.getInt(cursor0.getColumnIndex("isCreated")) != 0) {
 //                                        cursor0.close();
 //                                        continue;
@@ -1608,71 +1686,6 @@ public class HomepageFragment extends Fragment {
             showShortToast(self, getString(R.string.toast_null_pick_data));
         }
         cursor.close();
-    }
-
-    private void initGestureDetector() {
-        mDetector = new GestureDetector(getActivity(), new GestureDetector.OnGestureListener() {
-            @Override
-            public boolean onDown(MotionEvent e) {
-                return true;
-            }
-
-            @Override
-            public void onShowPress(MotionEvent e) {
-            }
-
-            @Override
-            public boolean onSingleTapUp(MotionEvent e) {
-                return false;
-            }
-
-            @Override
-            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                return false;
-            }
-
-            @Override
-            public void onLongPress(MotionEvent e) {
-
-            }
-
-            @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                //上滑
-                if (e1.getY() - e2.getY() > FLIP_DISTANCE) {
-                    if (farm_flag == 0) {
-                        farmType.setText(self.getString(R.string.out_shack));
-                        farmTypeIcon.setBackgroundResource(R.drawable.farm);
-                        farm_flag = 1;
-                        initView(farm_flag);
-                    } else if (farm_flag == 1) {
-                        farmType.setText(self.getString(R.string.in_shack));
-                        farmTypeIcon.setBackgroundResource(R.drawable.shack_farm);
-                        farm_flag = 0;
-                        initView(farm_flag);
-                        return true;
-                    }
-                    return true;
-                }
-                //下滑
-                if (e2.getY() - e1.getY() > FLIP_DISTANCE) {
-                    if (farm_flag == 1) {
-                        farmType.setText(self.getString(R.string.in_shack));
-                        farmTypeIcon.setBackgroundResource(R.drawable.shack_farm);
-                        farm_flag = 0;
-                        initView(farm_flag);
-                        return true;
-                    } else if (farm_flag == 0) {
-                        farmType.setText(self.getString(R.string.out_shack));
-                        farmTypeIcon.setBackgroundResource(R.drawable.farm);
-                        farm_flag = 1;
-                        initView(farm_flag);
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
     }
 
     @Override

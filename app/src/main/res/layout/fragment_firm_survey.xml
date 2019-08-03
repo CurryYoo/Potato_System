@@ -2,14 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_30_light_top"
-    android:orientation="vertical">
-
-    <com.example.kerne.potato.complextable.widget.GridRecyclerView.BetterDoubleGridView
-        android:id="@+id/expType_list"
+    android:background="@drawable/bg_swipe">
+    <LinearLayout
+        android:id="@+id/swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dp_30"
-        android:layout_marginStart="@dimen/dp_10"
-        android:layout_marginEnd="@dimen/dp_10" />
+        android:background="@drawable/bg_30_light_top"
+        android:orientation="vertical">
+
+        <com.example.kerne.potato.complextable.widget.GridRecyclerView.BetterDoubleGridView
+            android:id="@+id/expType_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_30"
+            android:layout_marginEnd="@dimen/dp_10" />
+    </LinearLayout>
 </LinearLayout>

@@ -27,7 +27,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import static com.example.kerne.potato.Util.ChangeStatusBar.setStatusBarColor;
 
-public class FirmPlanActivity extends AppCompatActivity {
+public class FarmPlanActivity extends AppCompatActivity {
 
     public static Fragment outShackFragment;
     public static Fragment inShackFragment;

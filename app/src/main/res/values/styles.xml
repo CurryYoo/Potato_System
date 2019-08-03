@@ -23,7 +23,7 @@
         <item name="android:layout_width">100dp</item>
         <item name="android:layout_height">40dp</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:layout_margin">3dp</item>
         <item name="android:maxLines">2</item>
         <item name="android:textColor">@color/secondary_text</item>
@@ -47,7 +47,7 @@
 
 
     <style name="style_item_basicinfo_textview">
-        <item name="android:layout_width">110dp</item>
+        <item name="android:layout_width">130dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>
@@ -62,7 +62,7 @@
         <item name="android:paddingBottom">5dp</item>
         <item name="android:background">@null</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/primary_background</item>
+        <item name="android:textColor">@color/primary_text</item>
         <item name="android:maxLength">8</item>
         <item name="android:maxLines">1</item>
         <item name="android:singleLine">true</item>
@@ -79,7 +79,7 @@
         <item name="android:layout_marginEnd">5dp</item>
         <item name="android:background">@null</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/primary_background</item>
+        <item name="android:textColor">@color/primary_text</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:maxLength">8</item>
         <item name="android:maxLines">1</item>
@@ -234,7 +234,7 @@
         <item name="android:layout_marginStart">3dp</item>
         <item name="android:layout_marginEnd">3dp</item>
         <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/primary_background</item>
+        <item name="android:textColor">@color/primary_text_light</item>
         <item name="android:background">@drawable/bg_30_black</item>
         <item name="android:elevation">2dp</item>
     </style>
@@ -242,8 +242,6 @@
     <style name="save_data_activity_calculate" parent="@style/Widget.AppCompat.Button.Borderless">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">45dp</item>
-        <item name="android:layout_marginTop">@dimen/dp_10</item>
-        <item name="android:layout_marginBottom">@dimen/dp_10</item>
         <item name="android:layout_marginStart">@dimen/dp_5</item>
         <item name="android:layout_marginEnd">5dp</item>
         <item name="android:textStyle">bold</item>
