@@ -726,6 +726,7 @@ public class TableActivity extends AppCompatActivity {
     }
 
     private void initLocalBlock(String fieldId, int row, int column) {
+        db.delete("LocalBlock", "fieldId=?", new String[]{fieldId});
         ContentValues contentValues = new ContentValues();
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
