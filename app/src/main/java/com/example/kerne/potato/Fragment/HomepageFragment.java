@@ -234,6 +234,13 @@ public class HomepageFragment extends Fragment {
                                         mYears.clear();
                                         initData();
 
+                                        myHandler.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                showShortToast(self, "添加成功");
+                                            }
+                                        });
+
                                         editor.putBoolean("upload_data", true);
                                         editor.apply();
 //                                        MainActivity mainActivity = new MainActivity();
