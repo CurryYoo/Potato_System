@@ -128,6 +128,7 @@ public class HomepageFragment extends Fragment {
     private NetworkChangeReceiver networkChangeReceiver;
 
     private Handler mHandler;
+    private Handler childHandler;
 
     @SuppressLint("HandlerLeak")
     private Handler myHandler = new Handler() {
@@ -524,7 +525,7 @@ public class HomepageFragment extends Fragment {
             public void run() {
                 Looper.prepare();
                 //获取数据库中数据
-                SpeciesDBHelper dbHelper = new SpeciesDBHelper(getContext(), "SpeciesTable.db", null, 13);
+                SpeciesDBHelper dbHelper = new SpeciesDBHelper(getContext(), "SpeciesTable.db", null, 14);
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
 
                 Cursor cursor = db.query("BigfarmList", null, null, null, null, null, null);
@@ -1013,12 +1014,13 @@ public class HomepageFragment extends Fragment {
         else {
             showShortToast(self, "没有创建过大田");
         }
-        cursor.close();
         if (num[0] == 0) {
             Message msg = new Message();
             msg.what = CREATE_BIGFARM_OK;
             mHandler.sendMessage(msg);
         }
+        cursor.close();
+
     }
 
     //创建field
@@ -1195,43 +1197,43 @@ public class HomepageFragment extends Fragment {
                                     contentValues.put("deleted", "false");
                                 }
                                 contentValues.put("expType", jsonObject0.getString("expType"));
-                                if (jsonObject0.get("moveX") != null) {
-                                    if (!jsonObject0.getString("moveX").equals("null")) {
-                                        contentValues.put("moveX", jsonObject0.getInt("moveX"));
-                                    }
-                                }
-                                if (jsonObject0.get("moveY") != null) {
-                                    if (!jsonObject0.getString("moveY").equals("null")) {
-                                        contentValues.put("moveY", jsonObject0.getInt("moveY"));
-                                    }
-                                }
-                                if (jsonObject0.get("moveX1") != null) {
-                                    if (!jsonObject0.getString("moveX1").equals("null")) {
-                                        contentValues.put("moveX1", jsonObject0.getInt("moveX1"));
-                                    }
-                                }
-                                if (jsonObject0.get("moveY1") != null) {
-                                    if (!jsonObject0.getString("moveY1").equals("null")) {
-                                        contentValues.put("moveY1", jsonObject0.getInt("moveY1"));
-                                    }
-                                }
-                                if (jsonObject0.get("num") != null) {
-                                    contentValues.put("num", jsonObject0.getInt("num"));
-                                }
-                                contentValues.put("color", jsonObject0.getString("color"));
-                                contentValues.put("bigfarmId", jsonObject0.getString("bigfarmId"));
-                                if (jsonObject0.get("rows") != null) {
-                                    contentValues.put("rows", jsonObject0.getInt("rows"));
-                                }
-                                if (jsonObject0.get("length") != null) {
-                                    contentValues.put("length", jsonObject0.getInt("length"));
-                                }
-                                if (jsonObject0.get("width") != null) {
-                                    contentValues.put("width", jsonObject0.getInt("width"));
-                                }
-                                contentValues.put("description", jsonObject0.getString("description"));
-                                contentValues.put("type", jsonObject0.getString("type"));
-                                contentValues.put("speciesList", jsonObject0.getString("speciesList"));
+//                                if (jsonObject0.get("moveX") != null) {
+//                                    if (!jsonObject0.getString("moveX").equals("null")) {
+//                                        contentValues.put("moveX", jsonObject0.getInt("moveX"));
+//                                    }
+//                                }
+//                                if (jsonObject0.get("moveY") != null) {
+//                                    if (!jsonObject0.getString("moveY").equals("null")) {
+//                                        contentValues.put("moveY", jsonObject0.getInt("moveY"));
+//                                    }
+//                                }
+//                                if (jsonObject0.get("moveX1") != null) {
+//                                    if (!jsonObject0.getString("moveX1").equals("null")) {
+//                                        contentValues.put("moveX1", jsonObject0.getInt("moveX1"));
+//                                    }
+//                                }
+//                                if (jsonObject0.get("moveY1") != null) {
+//                                    if (!jsonObject0.getString("moveY1").equals("null")) {
+//                                        contentValues.put("moveY1", jsonObject0.getInt("moveY1"));
+//                                    }
+//                                }
+//                                if (jsonObject0.get("num") != null) {
+//                                    contentValues.put("num", jsonObject0.getInt("num"));
+//                                }
+//                                contentValues.put("color", jsonObject0.getString("color"));
+//                                contentValues.put("bigfarmId", jsonObject0.getString("bigfarmId"));
+//                                if (jsonObject0.get("rows") != null) {
+//                                    contentValues.put("rows", jsonObject0.getInt("rows"));
+//                                }
+//                                if (jsonObject0.get("length") != null) {
+//                                    contentValues.put("length", jsonObject0.getInt("length"));
+//                                }
+//                                if (jsonObject0.get("width") != null) {
+//                                    contentValues.put("width", jsonObject0.getInt("width"));
+//                                }
+//                                contentValues.put("description", jsonObject0.getString("description"));
+//                                contentValues.put("type", jsonObject0.getString("type"));
+//                                contentValues.put("speciesList", jsonObject0.getString("speciesList"));
                                 contentValues.put("isCreated", 2);
 
                                 db.update("LocalField", contentValues, "name=? and bigfarmId=?",
@@ -1319,10 +1321,19 @@ public class HomepageFragment extends Fragment {
                     }
                 });
             }
+            else {
+                Message msg = new Message();
+                msg.what = UPLOAD_BLOCK_OK;
+                mHandler.sendMessage(msg);
+            }
         } else {
+            Message msg = new Message();
+            msg.what = UPLOAD_BLOCK_OK;
+            mHandler.sendMessage(msg);
             showShortToast(self, getString(R.string.toast_null_plan_data));
         }
         cursor0 = sqLiteDatabase.query("LocalField", null, null, null, null, null, null);
+        final int[] nums = {cursor0.getCount()};
         if (cursor0.moveToFirst()) {
             do {
                 String experimentFieldId = cursor0.getString(cursor0.getColumnIndex("id"));
@@ -1330,26 +1341,101 @@ public class HomepageFragment extends Fragment {
                 int num = cursor0.getInt(cursor0.getColumnIndex("num"));
                 int rows = cursor0.getInt(cursor0.getColumnIndex("rows"));
                 if (num == 0 || rows == 0) {
+                    nums[0]--;
                     continue;
                 }
                 HttpRequest.HttpRequest_description(experimentFieldId, description, self, new HttpRequest.HttpCallback() {
                     @Override
                     public void onSuccess(JSONObject result) {
+                        try {
+                            if (result.getBoolean("success")) {
+                                nums[0]--;
+                            }
+                            else {
+                                myHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        showShortToast(self, "备注数据上传失败");
+                                    }
+                                });
+                            }
+                            if (nums[0] == 0) {
+                                Message msg = new Message();
+                                msg.what = UPLOAD_DESCRIPTION_OK;
+                                childHandler.sendMessage(msg);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             } while (cursor0.moveToNext());
+        }
+        if (nums[0] == 0) {
+            Message msg = new Message();
+            msg.what = UPLOAD_DESCRIPTION_OK;
+            childHandler.sendMessage(msg);
         }
         cursor0.close();
     }
 
 
     private void uploadSurveyData() {
+        final int UPLOAD_SURVEY_WORDS = 20;
+        final int UPLOAD_SURVEY_IMG1 = 21;
+        final int UPLOAD_SURVEY_IMG2 = 22;
+        final int UPLOAD_SURVEY_IMG3 = 23;
+        final int UPLOAD_SURVEY_IMG4 = 24;
+        final int UPLOAD_SURVEY_IMG5 = 25;
+        final int[] request_num = {0, 6}; //请求成功的次数，总请求次数
+
+        childHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what) {
+                    case UPLOAD_SURVEY_WORDS:
+                        request_num[0]++;
+                        break;
+                    case UPLOAD_SURVEY_IMG1:
+                        request_num[0]++;
+                        break;
+                    case UPLOAD_SURVEY_IMG2:
+                        request_num[0]++;
+                        break;
+                    case UPLOAD_SURVEY_IMG3:
+                        request_num[0]++;
+                        break;
+                    case UPLOAD_SURVEY_IMG4:
+                        request_num[0]++;
+                        break;
+                    case UPLOAD_SURVEY_IMG5:
+                        request_num[0]++;
+                        break;
+                    default:
+                        break;
+                }
+                if (request_num[0] == request_num[1]) {
+                    Message message = new Message();
+                    message.what = UPLOAD_SURVEY_OK;
+                    mHandler.sendMessage(msg);
+                }
+
+            }
+        };
         String sql = "select SpeciesTable.*, LocalSpecies.* from SpeciesTable, LocalSpecies " +
                 "where SpeciesTable.speciesId=LocalSpecies.name";
         sqLiteDatabase = dbHelper.getReadableDatabase();
         final Cursor cursor = sqLiteDatabase.rawQuery(sql, null);
+        final int[] nums = {cursor.getCount(), cursor.getCount(), cursor.getCount(),
+                cursor.getCount(), cursor.getCount(), cursor.getCount()}; //每个请求的最大数量
         if (cursor.moveToFirst()) {
             do {
+                int isUpdate = cursor.getInt(cursor.getColumnIndex("isUpdate"));
+                if (isUpdate != 0) {
+                    nums[0]--;
+                    continue;
+                }
                 final String speciesId = cursor.getString(cursor.getColumnIndex("speciesid"));
                 final String name = cursor.getString(cursor.getColumnIndex("name")); //++++++++++++++
                 final String blockId = cursor.getString(cursor.getColumnIndex("blockId")); //+++++++++++++
@@ -1553,47 +1639,218 @@ public class HomepageFragment extends Fragment {
                         HttpRequest.HttpRequest_SpeciesData(jsonObject, self, new HttpRequest.HttpCallback() {
                             @Override
                             public void onSuccess(JSONObject result) {
+                                try {
+                                    if (result.getBoolean("success")) {
+                                        nums[0]--;
+                                    }
+                                    else {
+                                        myHandler.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                showShortToast(self, "调查数据上传失败");
+                                            }
+                                        });
+                                    }
+                                    if (nums[0] == 0) {
+                                        Message msg = new Message();
+                                        msg.what = UPLOAD_SURVEY_WORDS;
+                                        childHandler.sendMessage(msg);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
                             }
                         });
-                        if (img1 != null)
+                        if (img1 != null) {
                             HttpRequest.doUploadTest(img1, speciesId, "1", self, new HttpRequest.HttpCallback_Str() {
                                 @Override
                                 public void onSuccess(String result) {
+                                    try {
+                                        if (new JSONObject(result).getBoolean("success")) {
+                                            nums[1]--;
+                                        }
+                                        else {
+                                            myHandler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    showShortToast(self, "图片1上传失败");
+                                                }
+                                            });
+                                        }
+                                        if (nums[1] == 0) {
+                                            Message msg = new Message();
+                                            msg.what = UPLOAD_SURVEY_IMG1;
+                                            childHandler.sendMessage(msg);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             });
-                        if (img2 != null)
+                        }
+                        else {
+                            nums[1]--;
+                        }
+                        if (img2 != null) {
                             HttpRequest.doUploadTest(img2, speciesId, "2", self, new HttpRequest.HttpCallback_Str() {
                                 @Override
                                 public void onSuccess(String result) {
+                                    try {
+                                        if (new JSONObject(result).getBoolean("success")) {
+                                            nums[2]--;
+                                        } else {
+                                            myHandler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    showShortToast(self, "图片2上传失败");
+                                                }
+                                            });
+                                        }
+                                        if (nums[2] == 0) {
+                                            Message msg = new Message();
+                                            msg.what = UPLOAD_SURVEY_IMG2;
+                                            childHandler.sendMessage(msg);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             });
-                        if (img3 != null)
+                        }
+                        else {
+                            nums[2]--;
+                        }
+                        if (img3 != null) {
                             HttpRequest.doUploadTest(img3, speciesId, "3", self, new HttpRequest.HttpCallback_Str() {
                                 @Override
                                 public void onSuccess(String result) {
+                                    try {
+                                        if (new JSONObject(result).getBoolean("success")) {
+                                            nums[3]--;
+                                        } else {
+                                            myHandler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    showShortToast(self, "图片3上传失败");
+                                                }
+                                            });
+                                        }
+                                        if (nums[3] == 0) {
+                                            Message msg = new Message();
+                                            msg.what = UPLOAD_SURVEY_IMG3;
+                                            childHandler.sendMessage(msg);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             });
-                        if (img4 != null)
+                        }
+                        else {
+                            nums[3]--;
+                        }
+                        if (img4 != null) {
                             HttpRequest.doUploadTest(img4, speciesId, "4", self, new HttpRequest.HttpCallback_Str() {
                                 @Override
                                 public void onSuccess(String result) {
+                                    try {
+                                        if (new JSONObject(result).getBoolean("success")) {
+                                            nums[4]--;
+                                        }
+                                        else {
+                                            myHandler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    showShortToast(self, "调查数据上传失败");
+                                                }
+                                            });
+                                        }
+                                        if (nums[4] == 0) {
+                                            Message msg = new Message();
+                                            msg.what = UPLOAD_SURVEY_IMG4;
+                                            childHandler.sendMessage(msg);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             });
-                        if (img5 != null)
+                        }
+                        else {
+                            nums[4]--;
+                        }
+                        if (img5 != null) {
                             HttpRequest.doUploadTest(img5, speciesId, "5", self, new HttpRequest.HttpCallback_Str() {
                                 @Override
                                 public void onSuccess(String result) {
+                                    try {
+                                        if (new JSONObject(result).getBoolean("success")) {
+                                            nums[5]--;
+                                        }
+                                        else {
+                                            myHandler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    showShortToast(self, "调查数据上传失败");
+                                                }
+                                            });
+                                        }
+                                        if (nums[5] == 0) {
+                                            Message msg = new Message();
+                                            msg.what = UPLOAD_SURVEY_IMG5;
+                                            childHandler.sendMessage(msg);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             });
+                        }
+                        else {
+                            nums[5]--;
+                        }
                         //sqLiteDatabase.delete("SpeciesTable", null, null);
                     }
                 }.start();
 
             } while (cursor.moveToNext());
+
         } else {
             showShortToast(self, getString(R.string.toast_null_pick_data));
         }
+        if (nums[0] == 0) {
+            Message msg = new Message();
+            msg.what = UPLOAD_SURVEY_WORDS;
+            childHandler.sendMessage(msg);
+        }
+        if (nums[1] == 0) {
+            Message msg = new Message();
+            msg.what = UPLOAD_SURVEY_IMG1;
+            childHandler.sendMessage(msg);
+        }
+        if (nums[2] == 0) {
+            Message msg = new Message();
+            msg.what = UPLOAD_SURVEY_IMG2;
+            childHandler.sendMessage(msg);
+        }
+        if (nums[3] == 0) {
+            Message msg = new Message();
+            msg.what = UPLOAD_SURVEY_IMG3;
+            childHandler.sendMessage(msg);
+        }
+        if (nums[4] == 0) {
+            Message msg = new Message();
+            msg.what = UPLOAD_SURVEY_IMG4;
+            childHandler.sendMessage(msg);
+        }
+        if (nums[5] == 0) {
+            Message msg = new Message();
+            msg.what = UPLOAD_SURVEY_IMG5;
+            childHandler.sendMessage(msg);
+        }
         cursor.close();
+
     }
 
     @Override
@@ -1606,7 +1863,7 @@ public class HomepageFragment extends Fragment {
                 badge.setBadgeText("");
             }
         }
-        dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 13);
+        dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 14);
         db = dbHelper.getWritableDatabase();
     }
 
@@ -1657,6 +1914,8 @@ public class HomepageFragment extends Fragment {
         }
         self.unregisterReceiver(networkChangeReceiver);
         myHandler.removeCallbacksAndMessages(null);
+        mHandler.removeCallbacksAndMessages(null);
+        childHandler.removeCallbacksAndMessages(null);
     }
 
     //与firmsurveyfragment进行通信，通知更新了数据

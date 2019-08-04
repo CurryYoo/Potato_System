@@ -236,7 +236,7 @@ public class TableActivity extends AppCompatActivity {
         sp = getSharedPreferences("update_flag", Context.MODE_PRIVATE);
         editor = sp.edit();
 
-        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 13);
+        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 14);
         db = dbHelper.getWritableDatabase();
 
         fieldId = getIntent().getStringExtra("fieldId");

@@ -935,7 +935,7 @@ public class SaveDataActivity extends AppCompatActivity {
     private void initData() {
 
         //数据存储
-        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 13);
+        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 14);
         sqLiteDatabase = dbHelper.getWritableDatabase();
 
         //如果品种信息不存在，进行初始化
@@ -1577,6 +1577,8 @@ public class SaveDataActivity extends AppCompatActivity {
             contentValues.put("img3", pathPlantFlourish);
             contentValues.put("img4", pathStemColors);
             contentValues.put("img5", pathNaturalFecundity);
+
+            contentValues.put("isUpdate", 0);
 
         } catch (NumberFormatException e) {
             showShortToast(this, getString(R.string.toast_check_data_form));

@@ -9,6 +9,7 @@ import com.example.kerne.potato.Species;
 
 public class SpeciesDBHelper extends SQLiteOpenHelper {
     private Context mContext = null;
+    private static final int version = 15; //版本号，暂时没用到
 
 //    private static volatile SpeciesDBHelper sInstance = null;
 //
@@ -106,6 +107,7 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "img3 text,"
             + "img4 text,"
             + "img5 text,"
+            + "isUpdate integer," //是否联网更新过，0为未更新，1为更新过
             + "primary key(speciesId, blockId)"  //speciesId和blockId组成复合主键
             + ")";
 
@@ -122,7 +124,8 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "width integer,"
             + "length integer,"
             + "uri text,"
-            + "isCreated integer" //是否联网创建过，0为未创建过，1为创建过
+            + "isCreated integer," //是否联网创建过，0为未创建过，1为创建过
+            + "isUpdate integer" //是否联网更新过，0为未更新，1为更新过
             + ")";
 
 //    public static final String CREATE_FARMLIST = "create table FarmList ("
@@ -178,7 +181,8 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "description text," //
             + "type text," //类型，棚外棚内
             + "speciesList text,"
-            + "isCreated integer)"; //是否联网创建过，0为未创建但没有行列数，1为未创建有行列数，2为创建过
+            + "isCreated integer," //是否联网创建过，0为未创建但没有行列数，1为未创建有行列数，2为创建过
+            + "isUpdate integer)"; //是否联网更新过，0为未更新，1为更新过（暂指坐标）
 
     public static final String CREATE_LOCALBLOCK = "create table LocalBlock ("
             + "blockId text primary key,"
@@ -196,6 +200,11 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
 
     public SpeciesDBHelper(Context context, String name,
                            SQLiteDatabase.CursorFactory factory, int version) {
+        super(context, name, factory, version);
+        mContext = context;
+    }
+
+    public SpeciesDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory) {
         super(context, name, factory, version);
         mContext = context;
     }
