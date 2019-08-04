@@ -977,6 +977,7 @@ public class SaveDataActivity extends AppCompatActivity {
                         break;
                     }
                 }
+
                 //花冠色
                 String corollaColour = cursor.getString(9);
                 SpinnerAdapter corollaColourAdapter = spnCorollaColors.getAdapter();
@@ -1017,6 +1018,50 @@ public class SaveDataActivity extends AppCompatActivity {
                         break;
                     }
                 }
+
+//                //图片加载
+//                String img1 = cursor.getString(cursor.getColumnIndex("img1"));
+//                Log.d("img1", img1);
+//                if (img1 != null) {
+//                    Bitmap bit = null;
+//
+//                    bit = getImageThumbnail(img1, 50, 50);
+//
+//                    ivShowColor.setImageBitmap(bit);
+//                }
+//                String img2 = cursor.getString(cursor.getColumnIndex("img2"));
+//                if (img2 != null) {
+//                    Bitmap bit = null;
+//
+//                    bit = getImageThumbnail(img2, 50, 50);
+//
+//                    ivShowCorollaColor.setImageBitmap(bit);
+//                }
+//                String img3 = cursor.getString(cursor.getColumnIndex("img3"));
+//                if (img3 != null) {
+//                    Bitmap bit = null;
+//
+//                    bit = getImageThumbnail(img3, 50, 50);
+//
+//                    ivShowPlantFlourish.setImageBitmap(bit);
+//                }
+//                String img4 = cursor.getString(cursor.getColumnIndex("img4"));
+//                if (img4 != null) {
+//                    Bitmap bit = null;
+//
+//                    bit = getImageThumbnail(img4, 50, 50);
+//
+//                    ivShowStemColors.setImageBitmap(bit);
+//                }
+//                String img5 = cursor.getString(cursor.getColumnIndex("img5"));
+//                if (img5 != null) {
+//                    Bitmap bit = null;
+//
+//                    bit = getImageThumbnail(img5, 50, 50);
+//
+//                    ivShowNaturalFecundity.setImageBitmap(bit);
+//                }
+
                 //成熟期
                 String maturingStage = cursor.getString(13);
                 edtMaturePeriod.setText(maturingStage);
@@ -1222,10 +1267,9 @@ public class SaveDataActivity extends AppCompatActivity {
 //                    /storage/emulated/0/Android/data/com.example.kerne.potato/cache/1554976338705.jpg
                 if (pathColor != null) {
                     Bitmap bitmapColor = null;
-
+                    Log.d("pathColor", pathColor);
                     try {
-                        bitmapColor = getImageThumbnail(
-                                "content://com.example.kerne.potato.fileprovider/potato_images/" + pathColor.replace("/storage/emulated/0/", ""), 1, 1);
+                        bitmapColor = getImageThumbnail(pathColor, 50, 50);
                     } catch (NullPointerException e) {
                         Log.d(TAG, "onCreate: img" + "NullPointerException" + bitmapColor);
                         e.printStackTrace();
@@ -1238,9 +1282,7 @@ public class SaveDataActivity extends AppCompatActivity {
                 if (pathCorollaColor != null) {
                     Bitmap bitmapCorollaColors = null;
                     try {
-                        bitmapCorollaColors = getImageThumbnail(
-                                "content://com.example.kerne.potato.fileprovider/potato_images/"
-                                        + pathCorollaColor.replace("/storage/emulated/0/", ""), 1, 1);
+                        bitmapCorollaColors = getImageThumbnail(pathCorollaColor, 50, 50);
                     } catch (NullPointerException e) {
                         Log.d(TAG, "onCreate: img" + "NullPointerException" + bitmapCorollaColors);
                         e.printStackTrace();
@@ -1252,9 +1294,7 @@ public class SaveDataActivity extends AppCompatActivity {
                 if (pathPlantFlourish != null) {
                     Bitmap bitmapPlantFlourish = null;
                     try {
-                        bitmapPlantFlourish = getImageThumbnail(
-                                "content://com.example.kerne.potato.fileprovider/potato_images/"
-                                        + pathPlantFlourish.replace("/storage/emulated/0/", ""), 1, 1);
+                        bitmapPlantFlourish = getImageThumbnail(pathPlantFlourish, 50, 50);
                     } catch (NullPointerException e) {
                         e.printStackTrace();
                     }
@@ -1265,9 +1305,7 @@ public class SaveDataActivity extends AppCompatActivity {
                 if (pathStemColors != null) {
                     Bitmap bitmapStemColors = null;
                     try {
-                        bitmapStemColors = getImageThumbnail(
-                                "content://com.example.kerne.potato.fileprovider/potato_images/"
-                                        + pathStemColors.replace("/storage/emulated/0/", ""), 1, 1);
+                        bitmapStemColors = getImageThumbnail(pathStemColors, 50, 50);
                     } catch (NullPointerException e) {
                         e.printStackTrace();
                     }
@@ -1278,9 +1316,7 @@ public class SaveDataActivity extends AppCompatActivity {
                 if (pathNaturalFecundity != null) {
                     Bitmap bitmapNaturalFecundity = null;
                     try {
-                        bitmapNaturalFecundity = getImageThumbnail(
-                                "content://com.example.kerne.potato.fileprovider/potato_images/"
-                                        + pathNaturalFecundity.replace("/storage/emulated/0/", ""), 1, 1);
+                        bitmapNaturalFecundity = getImageThumbnail(pathNaturalFecundity, 50, 50);
                     } catch (NullPointerException e) {
                         e.printStackTrace();
                     }
