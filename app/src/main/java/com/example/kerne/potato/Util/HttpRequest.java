@@ -402,6 +402,11 @@ public class HttpRequest {
             @Override
             public void onResponse(JSONArray response) {
                 Log.d("SpeciesList_response", response.toString());
+                try {
+                    callback.onSuccess(response.getJSONObject(0));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override

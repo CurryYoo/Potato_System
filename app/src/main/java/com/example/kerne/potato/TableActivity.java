@@ -556,13 +556,14 @@ public class TableActivity extends AppCompatActivity {
 
                 for (int i = 0; i < maxColumns; i++) {
                     final int finalI = i;
+                    final int x = finalI + 1, y = pos + 1;
                     final TextView tv = textViews.get(i);
                     tv.setText(item.getText(i));
                     tv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             if (status == STATUS_EDIT) {
-                                int x = pos + 1, y = finalI + 1;
+
 
                                 final SweetAlertDialog inputDialog = new SweetAlertDialog(TableActivity.this, SweetAlertDialog.NORMAL_TYPE);
                                 LayoutInflater mlayoutInflater = LayoutInflater.from(TableActivity.this);
@@ -607,8 +608,8 @@ public class TableActivity extends AppCompatActivity {
                                 if (speciesId.equals("")) {
                                     showShortToast(TableActivity.this, mContext.getString(R.string.toast_species_click_tip));
                                 } else {
-                                    Cursor c = db.query("LocalBlock", null, "speciesId=? and fieldId=?",
-                                            new String[]{speciesId, fieldId}, null, null, null);
+                                    Cursor c = db.query("LocalBlock", null, "fieldId=? and x=? and y=?",
+                                            new String[]{fieldId, x + "", y + ""}, null, null, null);
                                     if (c.moveToFirst()) {
                                         blockId = c.getString(c.getColumnIndex("blockId"));
                                     }
@@ -616,6 +617,7 @@ public class TableActivity extends AppCompatActivity {
                                     Intent intent = new Intent(TableActivity.this, SaveDataActivity.class);
                                     intent.putExtra("speciesId", speciesId);
                                     intent.putExtra("expType", expType);
+                                    Log.d("blockId", blockId);
                                     if (blockId != null) {
                                         intent.putExtra("blockId", blockId);
                                     } else {

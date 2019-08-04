@@ -27,7 +27,7 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
     public static final String CREATE_SPECIES_TABLE = "create table SpeciesTable ("  //创建存储品种信息的表
 //            + "id text primary key, "  //id字段
             + "speciesId text,"  //品种id字段 (+++++++++++)
-            + "blockId text,"
+            + "blockId text primary key,"
             + "experimentType text," //实验类型
 //            + "isStoredTemporarily integer,"  //是否被暂存过
             + "plantingDate text,"  //播种期字段
@@ -107,8 +107,7 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "img3 text,"
             + "img4 text,"
             + "img5 text,"
-            + "isUpdate integer," //是否联网更新过，0为未更新，1为更新过
-            + "primary key(speciesId, blockId)"  //speciesId和blockId组成复合主键
+            + "isUpdate integer" //是否联网更新过，0为未更新，1为更新过
             + ")";
 
     public static final String CREATE_LOCALSPECIES = "create table LocalSpecies ("

@@ -1455,7 +1455,7 @@ public class HomepageFragment extends Fragment {
                             if (nums[0] == 0) {
                                 Message msg = new Message();
                                 msg.what = UPLOAD_DESCRIPTION_OK;
-                                childHandler.sendMessage(msg);
+                                mHandler.sendMessage(msg);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -1467,7 +1467,7 @@ public class HomepageFragment extends Fragment {
         if (nums[0] == 0) {
             Message msg = new Message();
             msg.what = UPLOAD_DESCRIPTION_OK;
-            childHandler.sendMessage(msg);
+            mHandler.sendMessage(msg);
         }
         cursor0.close();
     }
@@ -1722,6 +1722,7 @@ public class HomepageFragment extends Fragment {
                     jsonObject.put("commontest", jsonObject_common);
                     jsonObject.put("localSpecies", jsonObject_local);
 
+//                    Log.d("commontest_json", jsonObject.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -1735,6 +1736,9 @@ public class HomepageFragment extends Fragment {
                                 try {
                                     if (result.getBoolean("success")) {
                                         nums[0]--;
+                                        ContentValues contentValues = new ContentValues();
+                                        contentValues.put("isUpdate", 1);
+                                        db.update("SpeciesTable", contentValues, "blockId=?", new String[]{jsonObject.getString("testId")});
                                     }
                                     else {
                                         myHandler.post(new Runnable() {

@@ -945,8 +945,7 @@ public class SaveDataActivity extends AppCompatActivity {
 
         //如果品种信息不存在，进行初始化
         //如果品种信息存在，进行展示
-        Cursor cursor = sqLiteDatabase.query("SpeciesTable", null, "speciesId" + "=?" + " and  "
-                + "blockId" + "=?", new String[]{speciesId, blockId}, null, null, null);
+        Cursor cursor = sqLiteDatabase.query("SpeciesTable", null,  "blockId=?", new String[]{blockId}, null, null, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             for (int i = 0; i < cursor.getCount(); i++) {
