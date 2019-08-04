@@ -1,5 +1,6 @@
 package com.example.kerne.potato;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,13 +11,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
 
+import com.billy.android.swipe.SmartSwipeBack;
 import com.example.kerne.potato.Fragment.FirmSurveyFragment;
 import com.example.kerne.potato.Fragment.HomepageFragment;
 import com.viewpagerindicator.TabPageIndicator;
 
 import static com.example.kerne.potato.Util.ChangeStatusBar.setStatusBarColor;
 
-public class MainActivity extends AppCompatActivity implements  HomepageFragment.selectFarm {
+public class MainActivity extends AppCompatActivity implements HomepageFragment.selectFarm {
 
     public static Fragment homepageFragment;
     public static Fragment firmSurveyFragment;
@@ -30,10 +32,9 @@ public class MainActivity extends AppCompatActivity implements  HomepageFragment
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setStatusBarColor(this,R.color.primary_background);
+        setStatusBarColor(this, R.color.primary_background);
         mainIndicator = findViewById(R.id.main_indicator);
         mainViewpager = findViewById(R.id.main_viewpager);
-
         initView();
     }
 

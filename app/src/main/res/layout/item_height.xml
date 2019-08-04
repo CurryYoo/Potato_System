@@ -137,35 +137,32 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:layout_height="45dp"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_marginBottom="@dimen/dp_10"
             android:layout_marginEnd="@dimen/dp_5"
             android:orientation="horizontal"
-            android:padding="5dp">
+            android:padding="5dp"
+            android:gravity="center_vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_5"
                 android:layout_marginEnd="@dimen/dp_3"
-                android:layout_marginBottom="2dp"
                 android:gravity="center_vertical"
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
                 android:text="@string/average_height"
                 android:textColor="@color/primary_text_light"
                 android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/average_plant_height"
+                android:layout_width="wrap_content"
                 style="@style/style_item_basicinfo_edittext"
                 android:layout_marginStart="@dimen/dp_5"
                 android:focusable="false"
                 android:inputType="number"
-                android:textColor="@color/color_red" />
+                android:textColor="@color/color_red"/>
 
         </LinearLayout>
 

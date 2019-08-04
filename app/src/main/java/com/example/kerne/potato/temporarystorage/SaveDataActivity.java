@@ -30,10 +30,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import com.billy.android.swipe.SmartSwipe;
+import com.billy.android.swipe.consumer.SpaceConsumer;
 import com.example.kerne.potato.MainActivity;
 import com.example.kerne.potato.R;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -135,6 +138,8 @@ public class SaveDataActivity extends AppCompatActivity {
     View view_small;
     @BindView(R.id.Pre_Load)
     LinearLayout PreLoad;
+    @BindView(R.id.swipe_layout)
+    ScrollView swipeLayout;
     //需要暂存的各字段
     //品种id
     private String speciesId;
@@ -615,15 +620,18 @@ public class SaveDataActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Fresco.initialize(this);
         super.onCreate(savedInstanceState);
-        setStatusBarColor(this,R.color.primary_background);
+        setStatusBarColor(this, R.color.primary_background);
         setContentView(R.layout.activity_commit);
         ButterKnife.bind(this);
         sp = getSharedPreferences("update_flag", Context.MODE_PRIVATE);
         editor = sp.edit();
 
-
         mLinearLayout = findViewById(R.id.mianliner);
 
+        //仿iOS下拉留白
+        SmartSwipe.wrap(swipeLayout)
+                .addConsumer(new SpaceConsumer())
+                .enableVertical();
         //从上一层品种id和实验类型
         Intent intent_speciesId = getIntent();
         speciesId = intent_speciesId.getStringExtra("speciesId");
@@ -647,7 +655,6 @@ public class SaveDataActivity extends AppCompatActivity {
     private void initView() {
         view_basic = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_basicinfo, null);
         InfoItemBar mbar_basic = new InfoItemBar(SaveDataActivity.this, getString(R.string.item_bar_basic));
-//        mbar_basic.setColor(getResources().getDrawable(R.drawable.bg_item_bar_top,null));
         mbar_basic.addView(view_basic);
         mbar_basic.setShow(true);
         mLinearLayout.addView(mbar_basic);
@@ -658,13 +665,11 @@ public class SaveDataActivity extends AppCompatActivity {
         mLinearLayout.addView(mbar_height);
         view_branch = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_branch, null);
         InfoItemBar mbar_branch = new InfoItemBar(SaveDataActivity.this, getString(R.string.item_bar_branch));
-
         mbar_branch.addView(view_branch);
         mbar_branch.setShow(true);
         mLinearLayout.addView(mbar_branch);
         view_big = LayoutInflater.from(SaveDataActivity.this).inflate(R.layout.item_big, null);
         InfoItemBar mbar_big = new InfoItemBar(SaveDataActivity.this, getString(R.string.item_bar_big));
-
         mbar_big.addView(view_big);
         mbar_big.setShow(true);
         mLinearLayout.addView(mbar_big);

@@ -34,12 +34,12 @@
             <View
                 style="@style/view_divider_style"
                 android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"/>
+                android:layout_marginEnd="5dp" />
 
 
             <EditText
                 android:id="@+id/branch_num_of_ten_plant5"
-                style="@style/style_item_edittext"/>
+                style="@style/style_item_edittext" />
 
             <View
                 style="@style/view_divider_style"
@@ -54,17 +54,17 @@
             <View
                 style="@style/view_divider_style"
                 android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"/>
+                android:layout_marginEnd="5dp" />
 
 
             <EditText
                 android:id="@+id/branch_num_of_ten_plant9"
-                style="@style/style_item_edittext"/>
+                style="@style/style_item_edittext" />
 
             <View
                 style="@style/view_divider_style"
                 android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"/>
+                android:layout_marginEnd="5dp" />
 
         </LinearLayout>
 
@@ -77,7 +77,7 @@
 
             <EditText
                 android:id="@+id/branch_num_of_ten_plant2"
-                style="@style/style_item_edittext"/>
+                style="@style/style_item_edittext" />
 
             <View
                 style="@style/view_divider_style"
@@ -87,12 +87,12 @@
 
             <EditText
                 android:id="@+id/branch_num_of_ten_plant4"
-                style="@style/style_item_edittext"/>
+                style="@style/style_item_edittext" />
 
             <View
                 style="@style/view_divider_style"
                 android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"/>
+                android:layout_marginEnd="5dp" />
 
 
             <EditText
@@ -111,7 +111,7 @@
             <View
                 style="@style/view_divider_style"
                 android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"/>
+                android:layout_marginEnd="5dp" />
 
 
             <EditText
@@ -143,11 +143,9 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="45dp"
-            android:layout_weight="1"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_marginBottom="@dimen/dp_10"
             android:layout_marginEnd="@dimen/dp_5"
+            android:layout_weight="2"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="5dp">
@@ -158,15 +156,14 @@
                 android:layout_marginStart="@dimen/dp_5"
                 android:layout_marginEnd="@dimen/dp_3"
                 android:gravity="center_vertical"
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
                 android:text="@string/average_branch"
                 android:textColor="@color/primary_text_light"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/average_branch_num"
                 style="@style/style_item_basicinfo_edittext"
+                android:layout_width="wrap_content"
                 android:layout_marginStart="@dimen/dp_5"
                 android:focusable="false"
                 android:inputType="number"
@@ -183,9 +180,9 @@
             android:layout_marginBottom="@dimen/dp_10" />
 
         <Button
-            android:layout_weight="1"
             android:id="@+id/btn_compute_average_branch_num"
             style="@style/save_data_activity_calculate"
+            android:layout_weight="1"
             android:text="@string/calculate" />
 
     </LinearLayout>

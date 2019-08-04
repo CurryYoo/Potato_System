@@ -19,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.billy.android.swipe.SmartSwipe;
+import com.billy.android.swipe.consumer.SpaceConsumer;
 import com.example.kerne.potato.R;
 import com.example.kerne.potato.Util.FarmPlanView;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
@@ -46,8 +48,11 @@ public class OutShackFragment extends Fragment {
     ImageView outImage;
     @BindView(R.id.cover_view)
     View coverView;
+    @BindView(R.id.base_farm)
+    RelativeLayout baseFarm;
+    @BindView(R.id.swipe_layout)
+    RelativeLayout swipeLayout;
 
-    private RelativeLayout baseFarm;
     private View view;
     private Context self;
     private String bigfarmId;
@@ -65,14 +70,14 @@ public class OutShackFragment extends Fragment {
                     if (!flag) {
                         coverView.setVisibility(View.INVISIBLE);
                         outImage.setBackgroundResource(R.drawable.no_save);
-                        if(road!=null) {
+                        if (road != null) {
                             road.setText("编辑模式");
                         }
                         flag = true;
                     } else {
                         coverView.setVisibility(View.VISIBLE);
                         outImage.setBackgroundResource(R.drawable.edit);
-                        if(road!=null) {
+                        if (road != null) {
                             road.setText("路");
                         }
                         flag = false;
@@ -96,6 +101,7 @@ public class OutShackFragment extends Fragment {
         OutShackFragment fragment = new OutShackFragment();
         return fragment;
     }
+
     @SuppressLint("HandlerLeak")
     private Handler myHandler = new Handler() {
         @SuppressLint("SetTextI18n")
@@ -109,6 +115,7 @@ public class OutShackFragment extends Fragment {
             }
         }
     };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_out_shack, container, false);
@@ -117,7 +124,12 @@ public class OutShackFragment extends Fragment {
         editor = sp.edit();
         unbinder = ButterKnife.bind(this, view);
         outImage.setBackgroundResource(R.drawable.edit);
-        baseFarm=view.findViewById(R.id.base_farm);
+
+        //仿iOS下拉留白
+        SmartSwipe.wrap(swipeLayout)
+                .addConsumer(new SpaceConsumer())
+                .enableVertical();
+
         coverView.setOnClickListener(null);
         savePlan.setOnClickListener(onClickListener);
 
@@ -137,7 +149,7 @@ public class OutShackFragment extends Fragment {
                 Looper.prepare();
                 //获取棚外数据
                 mFieldList.clear();
-                Cursor cursor1 = db.query("ExperimentField", null, "bigfarmId=? and type=?", new String[]{bigfarmId,"common"}, null, null, null);
+                Cursor cursor1 = db.query("LocalField", null, "bigfarmId=? and type=?", new String[]{bigfarmId, "common"}, null, null, null);
                 if (cursor1.moveToFirst()) {
                     do {
                         JSONObject jsonObject0 = new JSONObject();
@@ -151,6 +163,7 @@ public class OutShackFragment extends Fragment {
                             jsonObject0.put("x", cursor1.getInt(cursor1.getColumnIndex("moveX")));
                             jsonObject0.put("y", cursor1.getInt(cursor1.getColumnIndex("moveY")));
                             jsonObject0.put("name", cursor1.getString(cursor1.getColumnIndex("name")));
+                            jsonObject0.put("description", cursor1.getString(cursor1.getColumnIndex("description")));
                             mFieldList.add(jsonObject0);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -170,18 +183,18 @@ public class OutShackFragment extends Fragment {
         if (outShackFarm != null) {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) outShackFarm.getLayoutParams();
             layoutParams.width = baseFarm.getWidth();
-            layoutParams.height = (int) (0.92 * baseFarm.getWidth());
+            layoutParams.height = (int) (0.95 * baseFarm.getWidth());
             outShackFarm.setLayoutParams(layoutParams);
-            FarmPlanView farmPlanView = new FarmPlanView(getContext(), outShackFarm, baseFarm.getWidth(), (int) (0.92 * baseFarm.getWidth()), mFieldList);
-            road=farmPlanView.createRoad("common");
-            farmPlanView.createField("common",FarmPlanView.DRAG_EVENT);
+            FarmPlanView farmPlanView = new FarmPlanView(getContext(), outShackFarm, baseFarm.getWidth(), (int) (0.95 * baseFarm.getWidth()), mFieldList);
+            road = farmPlanView.createRoad("common");
+            farmPlanView.createField("common", FarmPlanView.DRAG_EVENT);
         }
     }
 
     private void updateData() {
         List<ContentValues> contentValuesList = assembleData(mFieldList);
         for (int i = 0; i < contentValuesList.size(); i++) {
-            db.update("ExperimentField", contentValuesList.get(i), "id=?", new String[]{contentValuesList.get(i).getAsString("id")});
+            db.update("LocalField", contentValuesList.get(i), "id=?", new String[]{contentValuesList.get(i).getAsString("id")});
         }
     }
 
