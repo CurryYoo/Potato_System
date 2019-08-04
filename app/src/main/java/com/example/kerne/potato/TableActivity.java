@@ -58,8 +58,9 @@ public class TableActivity extends AppCompatActivity {
 
     public static final int STATUS_EDIT = 0;
     public static final int STATUS_READ = 1;
-    public static final int STATUS_INIT = 2;
-    public static final int STATUS_UPDATE = 3;
+    public static final int INIT = 2;
+    public static final int INIT_TABLE = 3;
+    public static final int UPDATE = 4;
     @BindView(R.id.left_one_button)
     ImageView leftOneButton;
     @BindView(R.id.left_one_layout)
@@ -80,15 +81,15 @@ public class TableActivity extends AppCompatActivity {
     EditText planColumn;
     @BindView(R.id.plan_row)
     EditText planRow;
-
-    SharedPreferences sp;
-    SharedPreferences.Editor editor;
     @BindView(R.id.confirm_view)
     View confirmView;
     @BindView(R.id.confirm_button)
     TextView confirmButton;
     @BindView(R.id.swipe_layout)
     LinearLayout swipeLayout;
+
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
     /**
      * 用于存放标题的id,与textview引用
      */
@@ -151,44 +152,51 @@ public class TableActivity extends AppCompatActivity {
                         }
                         tableDescription.setEnabled(false);
 
-                        //保存操作 sqlite
-                        List<ContentValues> contentValuesList = assembleData(str);
-                        Log.d("contentvaluelist", contentValuesList.toString());
-
-//                db.delete("SpeciesList", "fieldId=?", new String[]{fieldId});
-                        try {
-                            //更新备注description
-                            description = tableDescription.getText().toString();
-                            for (int k = 0; k < fieldArray.length(); k++) {
-                                ContentValues contentValues = new ContentValues();
-                                contentValues.put("description", description);
-
-                                db.update("LocalField", contentValues, "id=?", new String[]{fieldArray.getString(k)});
-                            }
-                            //更新品种块block
-                            int lastRows = 0; //把之前列的行数叠加起来，确定contentvalueslist中的位置
-                            for (int i = 0; i < fieldArray.length() * column; i++) {
-
-                                int rows_num = rows.getInt(i / column);
-                                if (i > 0) {
-                                    lastRows += rows.getInt((i - 1) / column);
-                                }
-
-                                for (int j = 0; j < rows_num; j++) {
-                                    int id = lastRows + j;
-                                    db.update("LocalBlock", contentValuesList.get(id), "fieldId=? and x=? and y=?",
-                                            new String[]{contentValuesList.get(id).getAsString("fieldId"), contentValuesList.get(id).getAsString("x"), contentValuesList.get(id).getAsString("y")});
-                                }
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
 
                         status = STATUS_READ;
                         showShortToast(TableActivity.this, mContext.getString(R.string.exit_species_plan_mode));
                         editor.putBoolean("upload_data", true);
                         editor.apply();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                //保存操作 sqlite
+                                List<ContentValues> contentValuesList = assembleData(str);
+                                Log.d("contentvaluelist", contentValuesList.toString());
+
+                                try {
+                                    //更新备注description
+                                    description = tableDescription.getText().toString();
+                                    for (int k = 0; k < fieldArray.length(); k++) {
+                                        ContentValues contentValues = new ContentValues();
+                                        contentValues.put("description", description);
+
+                                        db.update("LocalField", contentValues, "id=?", new String[]{fieldArray.getString(k)});
+                                    }
+                                    //更新品种块block
+                                    int lastRows = 0; //把之前列的行数叠加起来，确定contentvalueslist中的位置
+                                    for (int i = 0; i < fieldArray.length() * column; i++) {
+
+                                        int rows_num = rows.getInt(i / column);
+                                        if (i > 0) {
+                                            lastRows += rows.getInt((i - 1) / column);
+                                        }
+
+                                        for (int j = 0; j < rows_num; j++) {
+                                            int id = lastRows + j;
+                                            db.update("LocalBlock", contentValuesList.get(id), "fieldId=? and x=? and y=?",
+                                                    new String[]{contentValuesList.get(id).getAsString("fieldId"), contentValuesList.get(id).getAsString("x"), contentValuesList.get(id).getAsString("y")});
+                                        }
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }).start();
                     }
+
                     break;
                 case R.id.confirm_button:
                     if (!planColumn.getText().toString().equals("") && !planRow.getText().toString().equals("")) {
@@ -210,9 +218,6 @@ public class TableActivity extends AppCompatActivity {
                             }).start();
                         }
                     }
-                    //TODO 更新行和列数,保存行数和列数
-
-
                     break;
                 default:
                     break;
@@ -224,7 +229,7 @@ public class TableActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case 1:
+                case INIT:
                     init();
                     break;
             }
@@ -247,10 +252,6 @@ public class TableActivity extends AppCompatActivity {
         bigfarmId = getIntent().getStringExtra("bigfarmId");
         type = getIntent().getStringExtra("type");
         expType = getIntent().getStringExtra("expType");
-//        column = getIntent().getIntExtra("rows", 2);
-//        maxRows = (column != 0 ? getIntent().getIntExtra("num", 0) / column : 0);
-//        maxColumns = getIntent().getIntExtra("rows", 0);
-//        Log.d("col,maxrows,maxcol", column + "," + maxRows + "," + maxColumns);
 
         //仿iOS下拉留白
         SmartSwipe.wrap(swipeLayout)
@@ -267,6 +268,13 @@ public class TableActivity extends AppCompatActivity {
                 initTable();
             }
         }, 10); //延迟ms
+
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                initTable();
+//            }
+//        }).start();
     }
 
     private void initToolBar() {
@@ -284,7 +292,6 @@ public class TableActivity extends AppCompatActivity {
             leftOneLayout.setTooltipText(getText(R.string.back_left));
             rightOneLayout.setTooltipText(getText(R.string.species_data_plan));
         }
-
     }
 
     @Override
@@ -304,24 +311,22 @@ public class TableActivity extends AppCompatActivity {
 
         str = new String[maxRows][maxColumns];
 
-        try {
-            fieldArray.put(0, fieldId);
-            rows.put(0, maxRows);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
         //如果已填冲，自动填充行列数，并隐藏确认按钮
-        if(maxColumns!=0||maxRows!=0){
-            planColumn.setText(maxColumns+"");
-            planRow.setText(maxRows+"");
+        if (maxColumns != 0 || maxRows != 0) {
+            planColumn.setText(maxColumns + "");
+            planRow.setText(maxRows + "");
             planColumn.setEnabled(false);
             planRow.setEnabled(false);
 
             confirmView.setVisibility(View.GONE);
             confirmButton.setVisibility(View.GONE);
         }
-
+        try {
+            fieldArray.put(0, fieldId);
+            rows.put(0, maxRows);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         initData();
     }
 
@@ -342,8 +347,7 @@ public class TableActivity extends AppCompatActivity {
             do {
 
             } while (cursor1.moveToNext());
-        }
-        else {
+        } else {
             showShortToast(TableActivity.this, "无localfield");
         }
         cursor1.close();
@@ -373,35 +377,9 @@ public class TableActivity extends AppCompatActivity {
 
         }
         cursor0.close();
-
-//        String sql = "select ExperimentField.*, SpeciesList.* from ExperimentField, SpeciesList " +
-//                "where ExperimentField.id=SpeciesList.fieldId and ExperimentField.expType='" + expType +
-//                "' and ExperimentField.id='" + fieldId + "' order by ExperimentField.moveX";
-//
-//        Cursor cursor0 = db.rawQuery(sql, null);
-//        if (cursor0.moveToFirst()) {
-//            String fieldId = "";
-//            int x = 0, y = 0;
-//            int columns = 0;
-//            description = cursor0.getString(cursor0.getColumnIndex("description"));
-//            fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
-//            do {
-//                if (!fieldId.equals(cursor0.getString(cursor0.getColumnIndex("id")))) {
-//                    columns++;
-//                    fieldId = cursor0.getString(cursor0.getColumnIndex("id"));
-//                }
-//                x = cursor0.getInt(cursor0.getColumnIndex("x")) + columns * column - 1; //从0开始
-//                y = cursor0.getInt(cursor0.getColumnIndex("y")) - 1; //从0开始
-//
-//                str[y][x] = cursor0.getString(cursor0.getColumnIndex("speciesId"));
-//            } while (cursor0.moveToNext());
-//        } else {
-//
-//        }
-//        cursor0.close();
-
+        tableDescription.setText(description);
         Message msg = new Message();
-        msg.what = 1;
+        msg.what = INIT;
         uiHandler.sendMessage(msg);
     }
 
@@ -434,14 +412,13 @@ public class TableActivity extends AppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     public void init() {
-        mContext = getApplicationContext();
-        tableDescription.setText(description);
         findByid();
         setListener();
         setData();
     }
 
     public void findByid() {
+        mContext = getApplicationContext();
         pulltorefreshview = findViewById(R.id.pulltorefreshview);
         tv_table_title_left = findViewById(R.id.tv_table_title_left);
         tv_table_title_left.setText(getString(R.string.species_list));
@@ -450,12 +427,6 @@ public class TableActivity extends AppCompatActivity {
         rightListView = findViewById(R.id.right_container_listview);
         right_title_container = findViewById(R.id.right_title_container);
 
-
-//        getLayoutInflater().inflate(R.layout.table_right_title, right_title_container);
-//        for (int i = 0; i < maxColumns; i++) {
-//            View view = right_title_container.getChildAt(i);
-//            view.setVisibility(View.VISIBLE);
-//        }
 
         titleHorScv = findViewById(R.id.title_horsv);
         contentHorScv = findViewById(R.id.content_horsv);

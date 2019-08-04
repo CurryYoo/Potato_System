@@ -65,7 +65,7 @@
 
         <TextView
             android:id="@+id/sowing_period_input"
-            style="@style/style_item_basicinfo_edittext"
+            style="@style/style_item_basicinfo_calendar"
             android:layout_width="match_parent"
             android:hint="@string/click_edit_hint"
             android:inputType="none" />
@@ -89,7 +89,7 @@
 
         <TextView
             android:id="@+id/emergence_period"
-            style="@style/style_item_basicinfo_edittext"
+            style="@style/style_item_basicinfo_calendar"
             android:layout_width="match_parent"
             android:hint="@string/click_edit_hint"
             android:inputType="none" />
@@ -134,7 +134,7 @@
 
         <TextView
             android:id="@+id/squaring_period"
-            style="@style/style_item_basicinfo_edittext"
+            style="@style/style_item_basicinfo_calendar"
             android:layout_width="match_parent"
             android:hint="@string/click_edit_hint"
             android:inputType="none" />
@@ -157,7 +157,7 @@
 
         <TextView
             android:id="@+id/flowering_period"
-            style="@style/style_item_basicinfo_edittext"
+            style="@style/style_item_basicinfo_calendar"
             android:layout_width="match_parent"
             android:hint="@string/click_edit_hint"
             android:inputType="none" />
@@ -559,7 +559,7 @@
 
         <TextView
             android:id="@+id/mature_period"
-            style="@style/style_item_basicinfo_edittext"
+            style="@style/style_item_basicinfo_calendar"
             android:layout_width="match_parent"
             android:hint="@string/click_edit_hint"
             android:inputType="none" />

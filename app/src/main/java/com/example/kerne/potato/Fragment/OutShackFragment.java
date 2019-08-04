@@ -175,6 +175,7 @@ public class OutShackFragment extends Fragment {
                 Message msg = new Message();
                 msg.what = DATA_OK;
                 myHandler.sendMessage(msg);
+                Looper.loop();
             }
         }).start();
     }
