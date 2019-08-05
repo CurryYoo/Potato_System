@@ -91,6 +91,13 @@ public class HomepageFragment extends Fragment {
     private static int uploadSuccess_Num = 0;
     private static int upload_Num = 2;
 
+    private static  final int UPLOAD_SURVEY_WORDS = 20;
+    private static  final int UPLOAD_SURVEY_IMG1 = 21;
+    private static  final int UPLOAD_SURVEY_IMG2 = 22;
+    private static  final int UPLOAD_SURVEY_IMG3 = 23;
+    private static  final int UPLOAD_SURVEY_IMG4 = 24;
+    private static  final int UPLOAD_SURVEY_IMG5 = 25;
+    private static  final int[] request_num = {0, 6}; //请求成功的次数，总请求次数
     private static boolean isOnline = false;
     private SweetAlertDialog downloadDataDialog;
     private SweetAlertDialog updateDialog;
@@ -136,7 +143,41 @@ public class HomepageFragment extends Fragment {
     private IntentFilter intentFilter;
     private NetworkChangeReceiver networkChangeReceiver;
 
-    private Handler childHandler;
+    @SuppressLint("HandlerLeak")
+    private Handler childHandler= new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case UPLOAD_SURVEY_WORDS:
+                    request_num[0]++;
+                    break;
+                case UPLOAD_SURVEY_IMG1:
+                    request_num[0]++;
+                    break;
+                case UPLOAD_SURVEY_IMG2:
+                    request_num[0]++;
+                    break;
+                case UPLOAD_SURVEY_IMG3:
+                    request_num[0]++;
+                    break;
+                case UPLOAD_SURVEY_IMG4:
+                    request_num[0]++;
+                    break;
+                case UPLOAD_SURVEY_IMG5:
+                    request_num[0]++;
+                    break;
+                default:
+                    break;
+            }
+            if (request_num[0] == request_num[1]) {
+                Message message = new Message();
+                message.what = UPLOAD_SURVEY_OK;
+                mHandler.sendMessage(message);
+            }
+
+        }
+    };
 
     @SuppressLint("HandlerLeak")
     private Handler myHandler = new Handler() {
@@ -174,13 +215,8 @@ public class HomepageFragment extends Fragment {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-//                        if (spinnerAdapter == null) {
                         spinnerAdapter = new ArrayAdapter<>(getContext(), R.layout.layout_spinner_textview, mYears);
                         homepageYears.setAdapter(spinnerAdapter);
-//                        } else {
-//                            Log.d("cheatGZ spinner ", "big " + mBigFarmList.size() + " year" + mYears.size());
-//                            spinnerAdapter.notifyDataSetChanged();
-//                        }
                         initView(farm_flag);
                     }
                     break;
@@ -219,29 +255,21 @@ public class HomepageFragment extends Fragment {
                     break;
                 case DOWNLOAD_BLOCK_OK: //下载block数据完成
                     uploadPlanData();
+                    break;
+                case UPLOAD_BLOCK_OK: //上传block数据完成
+                    uploadSurveyData();
+                    uploadSuccess_Num++;
+                    break;
+                case UPLOAD_DESCRIPTION_OK:
+                    uploadSuccess_Num++;
+                    break;
+                case UPLOAD_SURVEY_OK: //上传调查数据完成
                     MainActivity mainActivity = new MainActivity();
                     mainActivity.selectFarm(bigfarmId);
                     updateDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                     updateDialog.setCancelable(true);
                     updateDialog.setTitleText(getContext().getString(R.string.update_complete));
                     updateDialog.setContentText(null);
-                    break;
-                case UPLOAD_BLOCK_OK: //上传block数据完成
-                    uploadSurveyData();
-                    uploadSuccess_Num++;
-//                    showShortToast(self, getString(R.string.toast_upload_data_complete));
-//                    MainActivity mainActivity = new MainActivity();
-//                    mainActivity.selectFarm(bigfarmId);
-//                    updateDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-//                    updateDialog.setCancelable(true);
-//                    updateDialog.setTitleText(getContext().getString(R.string.update_complete));
-//                    updateDialog.setContentText(null);
-                    break;
-                case UPLOAD_DESCRIPTION_OK:
-                    Log.d("cheatGZ", "handleMessage:  update success3");
-                    uploadSuccess_Num++;
-                    break;
-                case UPLOAD_SURVEY_OK: //上传调查数据完成
                     showShortToast(self, getString(R.string.toast_upload_data_complete));
                     break;
                 default:
@@ -1196,7 +1224,7 @@ public class HomepageFragment extends Fragment {
 
     //下载field和block数据
     private void downloadFieldAndBlock() {
-        final Handler childHandler = new Handler();
+//        final Handler childHandler = new Handler();
         final HashMap<String, String> fieldmap = new HashMap<>();
 
         final Runnable runnable = new Runnable() {
@@ -1473,49 +1501,17 @@ public class HomepageFragment extends Fragment {
     }
 
 
+    @SuppressLint("HandlerLeak")
     private void uploadSurveyData() {
-        final int UPLOAD_SURVEY_WORDS = 20;
-        final int UPLOAD_SURVEY_IMG1 = 21;
-        final int UPLOAD_SURVEY_IMG2 = 22;
-        final int UPLOAD_SURVEY_IMG3 = 23;
-        final int UPLOAD_SURVEY_IMG4 = 24;
-        final int UPLOAD_SURVEY_IMG5 = 25;
-        final int[] request_num = {0, 6}; //请求成功的次数，总请求次数
+//        final int UPLOAD_SURVEY_WORDS = 20;
+//        final int UPLOAD_SURVEY_IMG1 = 21;
+//        final int UPLOAD_SURVEY_IMG2 = 22;
+//        final int UPLOAD_SURVEY_IMG3 = 23;
+//        final int UPLOAD_SURVEY_IMG4 = 24;
+//        final int UPLOAD_SURVEY_IMG5 = 25;
+//        final int[] request_num = {0, 6}; //请求成功的次数，总请求次数
 
-        childHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                switch (msg.what) {
-                    case UPLOAD_SURVEY_WORDS:
-                        request_num[0]++;
-                        break;
-                    case UPLOAD_SURVEY_IMG1:
-                        request_num[0]++;
-                        break;
-                    case UPLOAD_SURVEY_IMG2:
-                        request_num[0]++;
-                        break;
-                    case UPLOAD_SURVEY_IMG3:
-                        request_num[0]++;
-                        break;
-                    case UPLOAD_SURVEY_IMG4:
-                        request_num[0]++;
-                        break;
-                    case UPLOAD_SURVEY_IMG5:
-                        request_num[0]++;
-                        break;
-                    default:
-                        break;
-                }
-                if (request_num[0] == request_num[1]) {
-                    Message message = new Message();
-                    message.what = UPLOAD_SURVEY_OK;
-                    mHandler.sendMessage(msg);
-                }
 
-            }
-        };
         String sql = "select SpeciesTable.*, LocalSpecies.* from SpeciesTable, LocalSpecies " +
                 "where SpeciesTable.speciesId=LocalSpecies.name";
         sqLiteDatabase = dbHelper.getReadableDatabase();
