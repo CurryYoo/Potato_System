@@ -316,7 +316,7 @@ public class SaveDataActivity extends AppCompatActivity {
                     } else {
                         imageUriColor = Uri.fromFile(outputImage);
                     }
-                    //Log.d("Uriiiiiii", pathColor + " || " + imageUriColor);
+                    Log.d("Uriiiiiii", pathColor + " || " + imageUriColor);
                     //启动相机程序
                     Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUriColor);
@@ -1266,6 +1266,7 @@ public class SaveDataActivity extends AppCompatActivity {
 //                    content://com.example.kerne.potato.fileprovider/potato_images/Android/data/com.example.kerne.potato/cache/1554976338705.jpg
 //                    /storage/emulated/0/Android/data/com.example.kerne.potato/cache/1554976338705.jpg
                 if (pathColor != null) {
+                    imageUriColor = Uri.parse("content://com.example.kerne.potato.fileprovider/potato_images/" + pathColor.replace("/storage/emulated/0/", ""));
                     Bitmap bitmapColor = null;
                     Log.d("pathColor", pathColor);
                     try {
@@ -1280,6 +1281,7 @@ public class SaveDataActivity extends AppCompatActivity {
                 pathCorollaColor = cursor.getString(76);
                 Log.d(TAG, "onCreate: " + "imgCorollaColors:" + pathCorollaColor);
                 if (pathCorollaColor != null) {
+                    imageUriCorollaColor = Uri.parse("content://com.example.kerne.potato.fileprovider/potato_images/" + pathCorollaColor.replace("/storage/emulated/0/", ""));
                     Bitmap bitmapCorollaColors = null;
                     try {
                         bitmapCorollaColors = getImageThumbnail(pathCorollaColor, 50, 50);
@@ -1292,6 +1294,7 @@ public class SaveDataActivity extends AppCompatActivity {
                 //花繁茂性图片
                 pathPlantFlourish = cursor.getString(77);
                 if (pathPlantFlourish != null) {
+                    imageUriPlantFlourish = Uri.parse("content://com.example.kerne.potato.fileprovider/potato_images/" + pathPlantFlourish.replace("/storage/emulated/0/", ""));
                     Bitmap bitmapPlantFlourish = null;
                     try {
                         bitmapPlantFlourish = getImageThumbnail(pathPlantFlourish, 50, 50);
@@ -1303,6 +1306,7 @@ public class SaveDataActivity extends AppCompatActivity {
                 //茎色图片
                 pathStemColors = cursor.getString(78);
                 if (pathStemColors != null) {
+                    imageUriStemColors = Uri.parse("content://com.example.kerne.potato.fileprovider/potato_images/" + pathStemColors.replace("/storage/emulated/0/", ""));
                     Bitmap bitmapStemColors = null;
                     try {
                         bitmapStemColors = getImageThumbnail(pathStemColors, 50, 50);
@@ -1314,6 +1318,7 @@ public class SaveDataActivity extends AppCompatActivity {
                 //天然结实性图片
                 pathNaturalFecundity = cursor.getString(79);
                 if (pathNaturalFecundity != null) {
+                    imageUriNaturalFecundity = Uri.parse("content://com.example.kerne.potato.fileprovider/potato_images/" + pathNaturalFecundity.replace("/storage/emulated/0/", ""));
                     Bitmap bitmapNaturalFecundity = null;
                     try {
                         bitmapNaturalFecundity = getImageThumbnail(pathNaturalFecundity, 50, 50);

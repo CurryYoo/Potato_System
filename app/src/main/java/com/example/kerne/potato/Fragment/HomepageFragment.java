@@ -1229,7 +1229,7 @@ public class HomepageFragment extends Fragment {
 
     //下载field和block数据
     private void downloadFieldAndBlock() {
-//        final Handler childHandler = new Handler();
+        final Handler childHandler0 = new Handler();
         final HashMap<String, String> fieldmap = new HashMap<>();
 
         final Runnable runnable = new Runnable() {
@@ -1382,7 +1382,7 @@ public class HomepageFragment extends Fragment {
                             e.printStackTrace();
                         }
 
-                        childHandler.post(runnable);
+                        childHandler0.post(runnable);
                     }
                 }).start();
             }
@@ -1594,7 +1594,9 @@ public class HomepageFragment extends Fragment {
             do {
                 int isUpdate = cursor.getInt(cursor.getColumnIndex("isUpdate"));
                 if (isUpdate != 0) {
-                    nums[0]--;
+                    for (int i = 0; i < 6; i++) {
+                        nums[i]--;
+                    }
                     continue;
                 }
                 final String speciesId = cursor.getString(cursor.getColumnIndex("speciesid"));
@@ -1802,11 +1804,12 @@ public class HomepageFragment extends Fragment {
                             @Override
                             public void onSuccess(JSONObject result) {
                                 try {
+                                    Log.d("result0", result.toString());
                                     if (result.getBoolean("success")) {
                                         nums[0]--;
                                         ContentValues contentValues = new ContentValues();
                                         contentValues.put("isUpdate", 1);
-                                        db.update("SpeciesTable", contentValues, "blockId=?", new String[]{jsonObject.getString("testId")});
+                                        db.update("SpeciesTable", contentValues, "blockId=?", new String[]{jsonObject.getJSONObject("commontest").getString("testId")});
                                     }
                                     else {
                                         myHandler.post(new Runnable() {
@@ -1831,6 +1834,7 @@ public class HomepageFragment extends Fragment {
                             HttpRequest.doUploadTest(img1, speciesId, "1", self, new HttpRequest.HttpCallback_Str() {
                                 @Override
                                 public void onSuccess(String result) {
+                                    Log.d("result1", result);
                                     try {
                                         if (new JSONObject(result).getBoolean("success")) {
                                             nums[1]--;
@@ -1856,6 +1860,11 @@ public class HomepageFragment extends Fragment {
                         }
                         else {
                             nums[1]--;
+                            if (nums[1] == 0) {
+                                Message msg = new Message();
+                                msg.what = UPLOAD_SURVEY_IMG1;
+                                childHandler.sendMessage(msg);
+                            }
                         }
                         if (img2 != null) {
                             HttpRequest.doUploadTest(img2, speciesId, "2", self, new HttpRequest.HttpCallback_Str() {
@@ -1885,6 +1894,11 @@ public class HomepageFragment extends Fragment {
                         }
                         else {
                             nums[2]--;
+                            if (nums[2] == 0) {
+                                Message msg = new Message();
+                                msg.what = UPLOAD_SURVEY_IMG2;
+                                childHandler.sendMessage(msg);
+                            }
                         }
                         if (img3 != null) {
                             HttpRequest.doUploadTest(img3, speciesId, "3", self, new HttpRequest.HttpCallback_Str() {
@@ -1914,6 +1928,11 @@ public class HomepageFragment extends Fragment {
                         }
                         else {
                             nums[3]--;
+                            if (nums[3] == 0) {
+                                Message msg = new Message();
+                                msg.what = UPLOAD_SURVEY_IMG3;
+                                childHandler.sendMessage(msg);
+                            }
                         }
                         if (img4 != null) {
                             HttpRequest.doUploadTest(img4, speciesId, "4", self, new HttpRequest.HttpCallback_Str() {
@@ -1927,7 +1946,7 @@ public class HomepageFragment extends Fragment {
                                             myHandler.post(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    showShortToast(self, "调查数据上传失败");
+                                                    showShortToast(self, "图片4上传失败");
                                                 }
                                             });
                                         }
@@ -1944,6 +1963,11 @@ public class HomepageFragment extends Fragment {
                         }
                         else {
                             nums[4]--;
+                            if (nums[4] == 0) {
+                                Message msg = new Message();
+                                msg.what = UPLOAD_SURVEY_IMG4;
+                                childHandler.sendMessage(msg);
+                            }
                         }
                         if (img5 != null) {
                             HttpRequest.doUploadTest(img5, speciesId, "5", self, new HttpRequest.HttpCallback_Str() {
@@ -1957,7 +1981,7 @@ public class HomepageFragment extends Fragment {
                                             myHandler.post(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    showShortToast(self, "调查数据上传失败");
+                                                    showShortToast(self, "图片5上传失败");
                                                 }
                                             });
                                         }
@@ -1974,6 +1998,11 @@ public class HomepageFragment extends Fragment {
                         }
                         else {
                             nums[5]--;
+                            if (nums[5] == 0) {
+                                Message msg = new Message();
+                                msg.what = UPLOAD_SURVEY_IMG5;
+                                childHandler.sendMessage(msg);
+                            }
                         }
                         //sqLiteDatabase.delete("SpeciesTable", null, null);
                     }
