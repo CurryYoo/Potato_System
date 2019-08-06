@@ -564,10 +564,10 @@ public class HttpRequest {
     }
 
     //更新field
-    public static void HttpRequest_UpdateField(final JSONArray jsonArray, Context context, final HttpCallback callback) {
+    public static void HttpRequest_UpdateFields(final JSONArray jsonArray, Context context, final HttpCallback callback) {
         requestQueue = SingleRequestQueue.getInstance(context).getRequestQueue();
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url + "experimentfield/updateField", jsonArray, new Response.Listener<JSONArray>() {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, url + "experimentfield/updateFields", jsonArray, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 Log.d("UpdateField_response", response.toString());

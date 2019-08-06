@@ -83,9 +83,10 @@ public class HomepageFragment extends Fragment {
     private static final int CREATE_FIELD_OK = 11;
     private static final int DOWNLOAD_FIELD_OK = 12;
     private static final int DOWNLOAD_BLOCK_OK = 13;
-    private static final int UPLOAD_BLOCK_OK = 14;
-    private static final int UPLOAD_DESCRIPTION_OK = 15;
-    private static final int UPLOAD_SURVEY_OK = 16;
+    private static final int UPLOAD_FIELD_OK = 14;
+    private static final int UPLOAD_BLOCK_OK = 15;
+    private static final int UPLOAD_DESCRIPTION_OK = 16;
+    private static final int UPLOAD_SURVEY_OK = 17;
     private static int downloadSuccess_Num = 0;
     private static int request_Num = 4;
     private static int uploadSuccess_Num = 0;
@@ -252,9 +253,12 @@ public class HomepageFragment extends Fragment {
                     downloadFieldAndBlock();
                     break;
                 case DOWNLOAD_FIELD_OK: //下载field数据完成
+                    updateFieldData();
                     break;
                 case DOWNLOAD_BLOCK_OK: //下载block数据完成
                     uploadPlanData();
+                    break;
+                case UPLOAD_FIELD_OK:
                     break;
                 case UPLOAD_BLOCK_OK: //上传block数据完成
                     uploadSurveyData();
@@ -934,6 +938,7 @@ public class HomepageFragment extends Fragment {
                                 contentValues.put("type", jsonObject0.getString("type"));
                                 contentValues.put("speciesList", jsonObject0.getString("speciesList"));
                                 contentValues.put("isCreated", 2);
+                                contentValues.put("isUpdate", 1);
 
                                 db.insert("LocalField", null, contentValues);
                                 contentValues.clear();
@@ -1356,6 +1361,7 @@ public class HomepageFragment extends Fragment {
 //                                contentValues.put("type", jsonObject0.getString("type"));
 //                                contentValues.put("speciesList", jsonObject0.getString("speciesList"));
                                 contentValues.put("isCreated", 2);
+                                contentValues.put("isUpdate", 1);
 
                                 db.update("LocalField", contentValues, "name=? and bigfarmId=?",
                                         new String[]{jsonObject0.getString("name"), jsonObject0.getString("bigfarmId")});
@@ -1368,6 +1374,10 @@ public class HomepageFragment extends Fragment {
 //                                db.insert("ExperimentField", null, contentValues);
 
                             }
+
+                            Message message = new Message();
+                            message.what = DOWNLOAD_FIELD_OK;
+                            mHandler.sendMessage(message);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -1382,122 +1392,184 @@ public class HomepageFragment extends Fragment {
 
     //更新field数据（坐标）
     private void updateFieldData() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final JSONArray jsonArray = new JSONArray();
+                sqLiteDatabase = dbHelper.getReadableDatabase();
+                Cursor cursor = sqLiteDatabase.query("LocalField", null, "isUpdate=?", new String[]{"0"}, null, null, null);
+                if (cursor.moveToFirst()) {
+                    do {
+                        String id = cursor.getString(cursor.getColumnIndex("id"));
+                        int moveX = cursor.getInt(cursor.getColumnIndex("moveX"));
+                        int moveY = cursor.getInt(cursor.getColumnIndex("moveY"));
+                        int moveX1 = cursor.getInt(cursor.getColumnIndex("moveX1"));
+                        int moveY1 = cursor.getInt(cursor.getColumnIndex("moveY1"));
+                        String description = cursor.getString(cursor.getColumnIndex("description"));
+                        JSONObject jsonObject0 = new JSONObject();
+                        try {
+                            jsonObject0.put("id", id);
+                            jsonObject0.put("moveX", moveX);
+                            jsonObject0.put("moveY", moveY);
+                            jsonObject0.put("moveX1", moveX1);
+                            jsonObject0.put("moveY1", moveY1);
+                            jsonObject0.put("description", description);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        jsonArray.put(jsonObject0);
+                    } while (cursor.moveToNext());
+                    HttpRequest.HttpRequest_UpdateFields(jsonArray, self, new HttpRequest.HttpCallback() {
+                        @Override
+                        public void onSuccess(JSONObject result) {
+                            try {
+                                if (result.getBoolean("success")) {
+                                    Message message = new Message();
+                                    message.what = UPLOAD_FIELD_OK;
+                                    mHandler.sendMessage(message);
+                                    ContentValues contentValues = new ContentValues();
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        contentValues.put("isUpdate", 1);
+                                        db.update("LocalField", contentValues, "id=?", new String[]{jsonArray.getJSONObject(i).getString("id")});
+                                        contentValues.clear();
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+                else {
+                    Message message = new Message();
+                    message.what = UPLOAD_FIELD_OK;
+                    mHandler.sendMessage(message);
+                }
+                cursor.close();
+            }
+        }).start();
 
     }
 
     //上传种植图信息
     private void uploadPlanData() {
-        final JSONArray jsonArray = new JSONArray();
-        sqLiteDatabase = dbHelper.getReadableDatabase();
-        Cursor cursor0 = sqLiteDatabase.query("LocalBlock", null, null, null, null, null, null);
-        if (cursor0.moveToFirst()) {
-            do {
-                String blockId = cursor0.getString(cursor0.getColumnIndex("blockId"));
-                String fieldId = cursor0.getString(cursor0.getColumnIndex("fieldId"));
-                String speciesId = cursor0.getString(cursor0.getColumnIndex("speciesId"));
-                int x = cursor0.getInt(cursor0.getColumnIndex("x"));
-                int y = cursor0.getInt(cursor0.getColumnIndex("y"));
-                int isUpdate = cursor0.getInt(cursor0.getColumnIndex("isUpdate"));
-                if (isUpdate != 0) {
-                    continue;
-                }
-                JSONObject jsonObject0 = new JSONObject();
-                try {
-                    jsonObject0.put("id", blockId);
-                    jsonObject0.put("fieldId", fieldId);
-                    jsonObject0.put("speciesId", speciesId);
-                    jsonObject0.put("x", x);
-                    jsonObject0.put("y", y);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                jsonArray.put(jsonObject0);
-            } while (cursor0.moveToNext());
-            Log.d("BlockJson", jsonArray.toString());
-            if (jsonArray.length() != 0) {
-                HttpRequest.HttpRequest_SpeciesList(jsonArray, self, new HttpRequest.HttpCallback() {
-                    @Override
-                    public void onSuccess(JSONObject result) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final JSONArray jsonArray = new JSONArray();
+                sqLiteDatabase = dbHelper.getReadableDatabase();
+                Cursor cursor0 = sqLiteDatabase.query("LocalBlock", null, null, null, null, null, null);
+                if (cursor0.moveToFirst()) {
+                    do {
+                        String blockId = cursor0.getString(cursor0.getColumnIndex("blockId"));
+                        String fieldId = cursor0.getString(cursor0.getColumnIndex("fieldId"));
+                        String speciesId = cursor0.getString(cursor0.getColumnIndex("speciesId"));
+                        int x = cursor0.getInt(cursor0.getColumnIndex("x"));
+                        int y = cursor0.getInt(cursor0.getColumnIndex("y"));
+                        int isUpdate = cursor0.getInt(cursor0.getColumnIndex("isUpdate"));
+                        if (isUpdate != 0) {
+                            continue;
+                        }
+                        JSONObject jsonObject0 = new JSONObject();
                         try {
-                            if (result.getBoolean("success")) {
-                                Message msg = new Message();
-                                msg.what = UPLOAD_BLOCK_OK;
-                                mHandler.sendMessage(msg);
-
-                                ContentValues contentValues = new ContentValues();
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    contentValues.put("isUpdate", 1);
-                                    db.update("LocalBlock", contentValues, "blockId=?",
-                                            new String[]{jsonArray.getJSONObject(i).getString("id")});
-                                    contentValues.clear();
-                                }
-
-                            } else {
-                                showShortToast(self, "上传block失败");
-                            }
-
+                            jsonObject0.put("id", blockId);
+                            jsonObject0.put("fieldId", fieldId);
+                            jsonObject0.put("speciesId", speciesId);
+                            jsonObject0.put("x", x);
+                            jsonObject0.put("y", y);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                    }
-                });
-            }
-            else {
-                Message msg = new Message();
-                msg.what = UPLOAD_BLOCK_OK;
-                mHandler.sendMessage(msg);
-            }
-        } else {
-            Message msg = new Message();
-            msg.what = UPLOAD_BLOCK_OK;
-            mHandler.sendMessage(msg);
-            showShortToast(self, getString(R.string.toast_null_plan_data));
-        }
-        cursor0 = sqLiteDatabase.query("LocalField", null, null, null, null, null, null);
-        final int[] nums = {cursor0.getCount()};
-        if (cursor0.moveToFirst()) {
-            do {
-                String experimentFieldId = cursor0.getString(cursor0.getColumnIndex("id"));
-                String description = cursor0.getString(cursor0.getColumnIndex("description"));
-                int num = cursor0.getInt(cursor0.getColumnIndex("num"));
-                int rows = cursor0.getInt(cursor0.getColumnIndex("rows"));
-                if (num == 0 || rows == 0) {
-                    nums[0]--;
-                    continue;
-                }
-                HttpRequest.HttpRequest_description(experimentFieldId, description, self, new HttpRequest.HttpCallback() {
-                    @Override
-                    public void onSuccess(JSONObject result) {
-                        try {
-                            if (result.getBoolean("success")) {
-                                nums[0]--;
-                            }
-                            else {
-                                myHandler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        showShortToast(self, "备注数据上传失败");
+                        jsonArray.put(jsonObject0);
+                    } while (cursor0.moveToNext());
+                    Log.d("BlockJson", jsonArray.toString());
+                    if (jsonArray.length() != 0) {
+                        HttpRequest.HttpRequest_SpeciesList(jsonArray, self, new HttpRequest.HttpCallback() {
+                            @Override
+                            public void onSuccess(JSONObject result) {
+                                try {
+                                    if (result.getBoolean("success")) {
+                                        Message msg = new Message();
+                                        msg.what = UPLOAD_BLOCK_OK;
+                                        mHandler.sendMessage(msg);
+
+                                        ContentValues contentValues = new ContentValues();
+                                        for (int i = 0; i < jsonArray.length(); i++) {
+                                            contentValues.put("isUpdate", 1);
+                                            db.update("LocalBlock", contentValues, "blockId=?",
+                                                    new String[]{jsonArray.getJSONObject(i).getString("id")});
+                                            contentValues.clear();
+                                        }
+
+                                    } else {
+                                        showShortToast(self, "上传block失败");
                                     }
-                                });
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                            if (nums[0] == 0) {
-                                Message msg = new Message();
-                                msg.what = UPLOAD_DESCRIPTION_OK;
-                                mHandler.sendMessage(msg);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        });
                     }
-                });
-            } while (cursor0.moveToNext());
-        }
-        if (nums[0] == 0) {
-            Message msg = new Message();
-            msg.what = UPLOAD_DESCRIPTION_OK;
-            mHandler.sendMessage(msg);
-        }
-        cursor0.close();
+                    else {
+                        Message msg = new Message();
+                        msg.what = UPLOAD_BLOCK_OK;
+                        mHandler.sendMessage(msg);
+                    }
+                } else {
+                    Message msg = new Message();
+                    msg.what = UPLOAD_BLOCK_OK;
+                    mHandler.sendMessage(msg);
+                    showShortToast(self, getString(R.string.toast_null_plan_data));
+                }
+                cursor0 = sqLiteDatabase.query("LocalField", null, null, null, null, null, null);
+                final int[] nums = {cursor0.getCount()};
+                if (cursor0.moveToFirst()) {
+                    do {
+                        String experimentFieldId = cursor0.getString(cursor0.getColumnIndex("id"));
+                        String description = cursor0.getString(cursor0.getColumnIndex("description"));
+                        int num = cursor0.getInt(cursor0.getColumnIndex("num"));
+                        int rows = cursor0.getInt(cursor0.getColumnIndex("rows"));
+                        if (num == 0 || rows == 0) {
+                            nums[0]--;
+                            continue;
+                        }
+                        HttpRequest.HttpRequest_description(experimentFieldId, description, self, new HttpRequest.HttpCallback() {
+                            @Override
+                            public void onSuccess(JSONObject result) {
+                                try {
+                                    if (result.getBoolean("success")) {
+                                        nums[0]--;
+                                    }
+                                    else {
+                                        myHandler.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                showShortToast(self, "备注数据上传失败");
+                                            }
+                                        });
+                                    }
+                                    if (nums[0] == 0) {
+                                        Message msg = new Message();
+                                        msg.what = UPLOAD_DESCRIPTION_OK;
+                                        mHandler.sendMessage(msg);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    } while (cursor0.moveToNext());
+                }
+                if (nums[0] == 0) {
+                    Message msg = new Message();
+                    msg.what = UPLOAD_DESCRIPTION_OK;
+                    mHandler.sendMessage(msg);
+                }
+                cursor0.close();
+            }
+        }).start();
+
     }
 
 
