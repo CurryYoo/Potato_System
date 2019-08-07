@@ -260,7 +260,6 @@ public class SaveDataActivity extends AppCompatActivity {
                     startActivity(intent);
                     break;
                 case R.id.right_two_layout:
-
                     final SweetAlertDialog saveDialog = new SweetAlertDialog(SaveDataActivity.this, SweetAlertDialog.NORMAL_TYPE)
                             .setContentText(getString(R.string.save_data_tip))
                             .setConfirmText("确定")
@@ -291,16 +290,13 @@ public class SaveDataActivity extends AppCompatActivity {
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
             switch (v.getId()) {
                 //叶颜色拍照并显示
                 case R.id.imb_colors:
                     String fileNameString = System.currentTimeMillis() + ".jpg";
                     File outputImage = null;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
-                        outputImage = new File(getExternalCacheDir(), fileNameString);
-                        pathColor = outputImage.getAbsolutePath();
-                    }
+                    outputImage = new File(getExternalCacheDir(), fileNameString);
+                    pathColor = outputImage.getAbsolutePath();
                     try {
                         if (outputImage.exists()) {
                             outputImage.delete();
@@ -1819,6 +1815,12 @@ public class SaveDataActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (sqLiteDatabase != null) {
+            sqLiteDatabase.close();
+        }
+        if (dbHelper != null) {
+            dbHelper.close();
+        }
     }
 
     @Override

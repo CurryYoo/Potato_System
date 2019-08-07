@@ -92,13 +92,13 @@ public class HomepageFragment extends Fragment {
     private static int uploadSuccess_Num = 0;
     private static int upload_Num = 2;
 
-    private static  final int UPLOAD_SURVEY_WORDS = 20;
-    private static  final int UPLOAD_SURVEY_IMG1 = 21;
-    private static  final int UPLOAD_SURVEY_IMG2 = 22;
-    private static  final int UPLOAD_SURVEY_IMG3 = 23;
-    private static  final int UPLOAD_SURVEY_IMG4 = 24;
-    private static  final int UPLOAD_SURVEY_IMG5 = 25;
-    private static  final int[] request_num = {0, 6}; //请求成功的次数，总请求次数
+    private static final int UPLOAD_SURVEY_WORDS = 20;
+    private static final int UPLOAD_SURVEY_IMG1 = 21;
+    private static final int UPLOAD_SURVEY_IMG2 = 22;
+    private static final int UPLOAD_SURVEY_IMG3 = 23;
+    private static final int UPLOAD_SURVEY_IMG4 = 24;
+    private static final int UPLOAD_SURVEY_IMG5 = 25;
+    private static final int[] request_num = {0, 6}; //请求成功的次数，总请求次数
     private static boolean isOnline = false;
     private SweetAlertDialog downloadDataDialog;
     private SweetAlertDialog updateDialog;
@@ -145,7 +145,7 @@ public class HomepageFragment extends Fragment {
     private NetworkChangeReceiver networkChangeReceiver;
 
     @SuppressLint("HandlerLeak")
-    private Handler childHandler= new Handler() {
+    private Handler childHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -417,6 +417,7 @@ public class HomepageFragment extends Fragment {
                             updateDialog.setCancelable(false);
                             updateDialog.show();
 
+                            uploadFarmImage();
                             CreateBigfarm();
 //                            uploadPlanData();
 //                            uploadSurveyData();
@@ -629,6 +630,10 @@ public class HomepageFragment extends Fragment {
         changeFarmView.setOnClickListener(onClickListener);
         homepageYears.setOnItemSelectedListener(onItemSelectedListener);
 
+        dbHelper = new SpeciesDBHelper(getContext(), "SpeciesTable.db", null, 14);
+        db = dbHelper.getWritableDatabase();
+        sqLiteDatabase = dbHelper.getWritableDatabase();
+
         //仿iOS下拉留白
         SmartSwipe.wrap(swipeLayout)
                 .addConsumer(new SpaceConsumer())
@@ -648,8 +653,8 @@ public class HomepageFragment extends Fragment {
             public void run() {
                 Looper.prepare();
                 //获取数据库中数据
-                SpeciesDBHelper dbHelper = new SpeciesDBHelper(getContext(), "SpeciesTable.db", null, 14);
-                SQLiteDatabase db = dbHelper.getReadableDatabase();
+//                dbHelper = new SpeciesDBHelper(getContext(), "SpeciesTable.db", null, 14);
+//                db = dbHelper.getReadableDatabase();
 
                 Cursor cursor = db.query("BigfarmList", null, null, null, null, null, null);
                 if (cursor.moveToFirst()) {
@@ -670,8 +675,8 @@ public class HomepageFragment extends Fragment {
                 }
                 Collections.reverse(mBigFarmList);//对于年份倒序显示
                 cursor.close();
-                dbHelper.close();
-                db.close();
+//                dbHelper.close();
+//                db.close();
 
                 Message msg = new Message();
                 msg.what = DATA_OK;
@@ -809,8 +814,8 @@ public class HomepageFragment extends Fragment {
                                 }
                                 contentValues.put("isCreated", 1);
 
-                                Uri uri = getImageURI(HttpRequest.serverUrl + jsonObject0.getString("img"), cache);
-                                contentValues.put("uri", uri.toString());
+//                                Uri uri = getImageURI(HttpRequest.serverUrl + jsonObject0.getString("img"), cache);
+//                                contentValues.put("uri", uri.toString());
 
                                 db.insert("BigfarmList", null, contentValues);
                                 contentValues.clear();
@@ -1041,9 +1046,13 @@ public class HomepageFragment extends Fragment {
         });
     }
 
+
+    private void uploadFarmImage() {
+
+    }
+
     //获取bigfarm图片uri
     public Uri getImageURI(String path, File cache) throws Exception {
-//        String name = path;
         String name = path.substring(path.lastIndexOf("/") + 1);
         File file = new File(cache, name);
         // 如果图片存在本地缓存目录，则不去服务器下载
@@ -1052,10 +1061,6 @@ public class HomepageFragment extends Fragment {
         } else {
             // 从网络上获取图片
             URL url = new URL(path);
-//            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//            conn.setConnectTimeout(5000);
-//            conn.setRequestMethod("GET");
-//            conn.setDoInput(true);
 
             OkHttpClient okHttpClient = new OkHttpClient();
             Request request = new Request.Builder()
@@ -1064,8 +1069,6 @@ public class HomepageFragment extends Fragment {
             Response response = okHttpClient.newCall(request).execute();
 
             if (response.code() == 200) {
-
-//                InputStream is = conn.getInputStream();
                 InputStream is = response.body().byteStream();
                 FileOutputStream fos = new FileOutputStream(file);
                 byte[] buffer = new byte[1024];
@@ -1084,7 +1087,7 @@ public class HomepageFragment extends Fragment {
 
     //创建bigfarm
     private void CreateBigfarm() {
-        sqLiteDatabase = dbHelper.getReadableDatabase();
+//        sqLiteDatabase = dbHelper.getWritableDatabase();
         Cursor cursor = sqLiteDatabase.query("BigfarmList", null, null, null, null, null, null);
         final int[] num = {cursor.getCount()};
         if (cursor.moveToFirst()) {
@@ -1152,7 +1155,7 @@ public class HomepageFragment extends Fragment {
     //创建field
     private void CreateField() {
         final JSONArray jsonArray = new JSONArray();
-        sqLiteDatabase = dbHelper.getReadableDatabase();
+//        sqLiteDatabase = dbHelper.getWritableDatabase();
         Cursor cursor = sqLiteDatabase.query("LocalField", null, null, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
@@ -1361,7 +1364,7 @@ public class HomepageFragment extends Fragment {
 //                                contentValues.put("type", jsonObject0.getString("type"));
 //                                contentValues.put("speciesList", jsonObject0.getString("speciesList"));
                                 contentValues.put("isCreated", 2);
-                                contentValues.put("isUpdate", 1);
+//                                contentValues.put("isUpdate", 1);
 
                                 db.update("LocalField", contentValues, "name=? and bigfarmId=?",
                                         new String[]{jsonObject0.getString("name"), jsonObject0.getString("bigfarmId")});
@@ -1395,8 +1398,9 @@ public class HomepageFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Looper.prepare();
                 final JSONArray jsonArray = new JSONArray();
-                sqLiteDatabase = dbHelper.getReadableDatabase();
+//                sqLiteDatabase = dbHelper.getWritableDatabase();
                 Cursor cursor = sqLiteDatabase.query("LocalField", null, "isUpdate=?", new String[]{"0"}, null, null, null);
                 if (cursor.moveToFirst()) {
                     do {
@@ -1439,13 +1443,13 @@ public class HomepageFragment extends Fragment {
                             }
                         }
                     });
-                }
-                else {
+                } else {
                     Message message = new Message();
                     message.what = UPLOAD_FIELD_OK;
                     mHandler.sendMessage(message);
                 }
                 cursor.close();
+                Looper.loop();
             }
         }).start();
 
@@ -1457,7 +1461,7 @@ public class HomepageFragment extends Fragment {
             @Override
             public void run() {
                 final JSONArray jsonArray = new JSONArray();
-                sqLiteDatabase = dbHelper.getReadableDatabase();
+//                sqLiteDatabase = dbHelper.getReadableDatabase();
                 Cursor cursor0 = sqLiteDatabase.query("LocalBlock", null, null, null, null, null, null);
                 if (cursor0.moveToFirst()) {
                     do {
@@ -1510,8 +1514,7 @@ public class HomepageFragment extends Fragment {
                                 }
                             }
                         });
-                    }
-                    else {
+                    } else {
                         Message msg = new Message();
                         msg.what = UPLOAD_BLOCK_OK;
                         mHandler.sendMessage(msg);
@@ -1540,8 +1543,7 @@ public class HomepageFragment extends Fragment {
                                 try {
                                     if (result.getBoolean("success")) {
                                         nums[0]--;
-                                    }
-                                    else {
+                                    } else {
                                         myHandler.post(new Runnable() {
                                             @Override
                                             public void run() {
@@ -1586,7 +1588,7 @@ public class HomepageFragment extends Fragment {
 
         String sql = "select SpeciesTable.*, LocalSpecies.* from SpeciesTable, LocalSpecies " +
                 "where SpeciesTable.speciesId=LocalSpecies.name";
-        sqLiteDatabase = dbHelper.getReadableDatabase();
+//        sqLiteDatabase = dbHelper.getReadableDatabase();
         final Cursor cursor = sqLiteDatabase.rawQuery(sql, null);
         final int[] nums = {cursor.getCount(), cursor.getCount(), cursor.getCount(),
                 cursor.getCount(), cursor.getCount(), cursor.getCount()}; //每个请求的最大数量
@@ -1810,8 +1812,7 @@ public class HomepageFragment extends Fragment {
                                         ContentValues contentValues = new ContentValues();
                                         contentValues.put("isUpdate", 1);
                                         db.update("SpeciesTable", contentValues, "blockId=?", new String[]{jsonObject.getJSONObject("commontest").getString("testId")});
-                                    }
-                                    else {
+                                    } else {
                                         myHandler.post(new Runnable() {
                                             @Override
                                             public void run() {
@@ -1838,8 +1839,7 @@ public class HomepageFragment extends Fragment {
                                     try {
                                         if (new JSONObject(result).getBoolean("success")) {
                                             nums[1]--;
-                                        }
-                                        else {
+                                        } else {
                                             myHandler.post(new Runnable() {
                                                 @Override
                                                 public void run() {
@@ -1857,8 +1857,7 @@ public class HomepageFragment extends Fragment {
                                     }
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             nums[1]--;
                             if (nums[1] == 0) {
                                 Message msg = new Message();
@@ -1891,8 +1890,7 @@ public class HomepageFragment extends Fragment {
                                     }
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             nums[2]--;
                             if (nums[2] == 0) {
                                 Message msg = new Message();
@@ -1925,8 +1923,7 @@ public class HomepageFragment extends Fragment {
                                     }
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             nums[3]--;
                             if (nums[3] == 0) {
                                 Message msg = new Message();
@@ -1941,8 +1938,7 @@ public class HomepageFragment extends Fragment {
                                     try {
                                         if (new JSONObject(result).getBoolean("success")) {
                                             nums[4]--;
-                                        }
-                                        else {
+                                        } else {
                                             myHandler.post(new Runnable() {
                                                 @Override
                                                 public void run() {
@@ -1960,8 +1956,7 @@ public class HomepageFragment extends Fragment {
                                     }
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             nums[4]--;
                             if (nums[4] == 0) {
                                 Message msg = new Message();
@@ -1976,8 +1971,7 @@ public class HomepageFragment extends Fragment {
                                     try {
                                         if (new JSONObject(result).getBoolean("success")) {
                                             nums[5]--;
-                                        }
-                                        else {
+                                        } else {
                                             myHandler.post(new Runnable() {
                                                 @Override
                                                 public void run() {
@@ -1995,8 +1989,7 @@ public class HomepageFragment extends Fragment {
                                     }
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             nums[5]--;
                             if (nums[5] == 0) {
                                 Message msg = new Message();
@@ -2044,7 +2037,6 @@ public class HomepageFragment extends Fragment {
             childHandler.sendMessage(msg);
         }
         cursor.close();
-
     }
 
     @Override

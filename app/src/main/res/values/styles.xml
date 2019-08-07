@@ -240,8 +240,8 @@
     </style>
 
     <style name="style_basic_calculate">
-        <item name="android:layout_width">50dp</item>
-        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">35dp</item>
         <item name="android:layout_marginStart">3dp</item>
         <item name="android:layout_marginEnd">3dp</item>
         <item name="android:textSize">15sp</item>
@@ -264,6 +264,7 @@
     <style name="divider_color">
         <item name="android:background">@color/color_divider</item>
     </style>
+
     <style name="divider_color_dark">
         <item name="android:background">@color/color_divider_dark</item>
     </style>

@@ -5,9 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -123,4 +126,23 @@ public class ThumbImage {
         return picturemaps;
     }
 
+    //获取控件截图
+    public static Bitmap loadBitmapFromViewBySystem(View v) {
+        if (v == null) {
+            return null;
+        }
+        v.setDrawingCacheEnabled(true);
+        v.buildDrawingCache();
+        Bitmap bitmap = v.getDrawingCache();
+        return bitmap;
+    }
+    //横向拼接两张bitmap
+    private static Bitmap mergeBitmap(Bitmap firstBitmap, Bitmap secondBitmap) {
+        Bitmap bitmap = Bitmap.createBitmap(firstBitmap.getWidth()+secondBitmap.getWidth(),
+                firstBitmap.getHeight(),firstBitmap.getConfig());
+        Canvas canvas = new Canvas(bitmap);
+        canvas.drawBitmap(firstBitmap, new Matrix(), null);
+        canvas.drawBitmap(secondBitmap, firstBitmap.getWidth(), 0, null);
+        return bitmap;
+    }
 }

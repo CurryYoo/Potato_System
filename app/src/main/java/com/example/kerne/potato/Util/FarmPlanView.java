@@ -47,7 +47,7 @@ public class FarmPlanView {
     private List<JSONObject> mJsonList;//试验区域数据
     private int farmWidth;//试验田宽
     private int farmHeight;//试验田长
-    private int endX = 0, endY = 0;//list中最终存储的x,y轴坐标
+    private int endX = 0, endY = 0, endX1 = 0, endY1 = 0;//list中最终存储的x,y轴坐标
     private String expType = null;
     private int row = 0, column = 0;
     private String description = "备注";
@@ -130,9 +130,13 @@ public class FarmPlanView {
                     //x，y轴坐标
                     endX = (int) (((double) v.getLeft() / farmWidth) * RATIO);
                     endY = (int) (((double) v.getTop() / farmHeight) * RATIO);
+                    endX1 = (int) (((double) (v.getLeft() + v.getWidth()) / farmWidth) * RATIO);
+                    endY1 = (int) (((double) (v.getTop() + v.getHeight()) / farmHeight) * RATIO);
                     try {
                         mJsonList.get(Integer.parseInt(v.getTag().toString())).put("x", endX);
                         mJsonList.get(Integer.parseInt(v.getTag().toString())).put("y", endY);
+                        mJsonList.get(Integer.parseInt(v.getTag().toString())).put("x1", endX1);
+                        mJsonList.get(Integer.parseInt(v.getTag().toString())).put("y1", endY1);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

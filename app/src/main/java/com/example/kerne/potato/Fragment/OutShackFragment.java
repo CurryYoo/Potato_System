@@ -6,11 +6,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,19 +25,26 @@ import com.billy.android.swipe.SmartSwipe;
 import com.billy.android.swipe.consumer.SpaceConsumer;
 import com.example.kerne.potato.R;
 import com.example.kerne.potato.Util.FarmPlanView;
+import com.example.kerne.potato.temporarystorage.SaveDataActivity;
 import com.example.kerne.potato.temporarystorage.SpeciesDBHelper;
+import com.facebook.drawee.backends.pipeline.Fresco;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static com.example.kerne.potato.Util.CustomToast.showShortToast;
+import static com.example.kerne.potato.Util.ThumbImage.loadBitmapFromViewBySystem;
 
 public class OutShackFragment extends Fragment {
     private static final int DATA_OK = 0;
@@ -84,7 +93,9 @@ public class OutShackFragment extends Fragment {
                         editor.putBoolean("upload_data", true);
                         editor.apply();
                         showShortToast(self, "保存完成");
-                        //保存
+                        //保存图片
+                        savePlanImage();
+                        //保存数据
                         updateData();
                     }
                     break;
@@ -162,6 +173,8 @@ public class OutShackFragment extends Fragment {
                             jsonObject0.put("rows", cursor1.getInt(cursor1.getColumnIndex("rows")));
                             jsonObject0.put("x", cursor1.getInt(cursor1.getColumnIndex("moveX")));
                             jsonObject0.put("y", cursor1.getInt(cursor1.getColumnIndex("moveY")));
+                            jsonObject0.put("x1", cursor1.getInt(cursor1.getColumnIndex("moveX1")));
+                            jsonObject0.put("y1", cursor1.getInt(cursor1.getColumnIndex("moveY1")));
                             jsonObject0.put("name", cursor1.getString(cursor1.getColumnIndex("name")));
                             jsonObject0.put("description", cursor1.getString(cursor1.getColumnIndex("description")));
                             mFieldList.add(jsonObject0);
@@ -192,6 +205,24 @@ public class OutShackFragment extends Fragment {
         }
     }
 
+    private void savePlanImage(){
+        Bitmap bitmap=loadBitmapFromViewBySystem(outShackFarm);
+        File imageFile = new File(Objects.requireNonNull(getContext()).getExternalCacheDir(), bigfarmId+ "_out.jpg");
+        String imagePath = imageFile.getAbsolutePath();
+        try {
+            if (imageFile.exists()) {
+                imageFile.delete();
+            }
+            imageFile.createNewFile();
+
+            FileOutputStream out = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     private void updateData() {
         List<ContentValues> contentValuesList = assembleData(mFieldList);
         for (int i = 0; i < contentValuesList.size(); i++) {
@@ -208,6 +239,9 @@ public class OutShackFragment extends Fragment {
                 contentValues.put("id", jsonObjectList.get(i).getString("fieldId"));
                 contentValues.put("moveX", jsonObjectList.get(i).getInt("x"));
                 contentValues.put("moveY", jsonObjectList.get(i).getInt("y"));
+                contentValues.put("moveX1", jsonObjectList.get(i).getInt("x1"));
+                contentValues.put("moveY1", jsonObjectList.get(i).getInt("y1"));
+                contentValues.put("isUpdate",0);
                 contentValuesList.add(contentValues);
             }
         } catch (JSONException e) {
