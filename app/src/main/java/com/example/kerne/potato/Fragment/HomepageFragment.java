@@ -98,7 +98,7 @@ public class HomepageFragment extends Fragment {
     private static final int UPLOAD_SURVEY_IMG3 = 23;
     private static final int UPLOAD_SURVEY_IMG4 = 24;
     private static final int UPLOAD_SURVEY_IMG5 = 25;
-    private static final int[] request_num = {0, 6}; //请求成功的次数，总请求次数
+    private static final int[] request_num = {0, 5}; //请求成功的次数，总请求次数
     private static boolean isOnline = false;
     private SweetAlertDialog downloadDataDialog;
     private SweetAlertDialog updateDialog;
@@ -172,9 +172,10 @@ public class HomepageFragment extends Fragment {
                     break;
             }
             if (request_num[0] == request_num[1]) {
-                Message message = new Message();
-                message.what = UPLOAD_SURVEY_OK;
-                mHandler.sendMessage(message);
+//                Message message = new Message();
+//                message.what = UPLOAD_SURVEY_OK;
+//                mHandler.sendMessage(message);
+                Log.i("childHandler", "upload img ok");
             }
 
         }
@@ -1525,55 +1526,54 @@ public class HomepageFragment extends Fragment {
                     mHandler.sendMessage(msg);
                     showShortToast(self, getString(R.string.toast_null_plan_data));
                 }
-                cursor0 = sqLiteDatabase.query("LocalField", null, null, null, null, null, null);
-                final int[] nums = {cursor0.getCount()};
-                if (cursor0.moveToFirst()) {
-                    do {
-                        String experimentFieldId = cursor0.getString(cursor0.getColumnIndex("id"));
-                        String description = cursor0.getString(cursor0.getColumnIndex("description"));
-                        int num = cursor0.getInt(cursor0.getColumnIndex("num"));
-                        int rows = cursor0.getInt(cursor0.getColumnIndex("rows"));
-                        if (num == 0 || rows == 0) {
-                            nums[0]--;
-                            continue;
-                        }
-                        HttpRequest.HttpRequest_description(experimentFieldId, description, self, new HttpRequest.HttpCallback() {
-                            @Override
-                            public void onSuccess(JSONObject result) {
-                                try {
-                                    if (result.getBoolean("success")) {
-                                        nums[0]--;
-                                    } else {
-                                        myHandler.post(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                showShortToast(self, "备注数据上传失败");
-                                            }
-                                        });
-                                    }
-                                    if (nums[0] == 0) {
-                                        Message msg = new Message();
-                                        msg.what = UPLOAD_DESCRIPTION_OK;
-                                        mHandler.sendMessage(msg);
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                    } while (cursor0.moveToNext());
-                }
-                if (nums[0] == 0) {
-                    Message msg = new Message();
-                    msg.what = UPLOAD_DESCRIPTION_OK;
-                    mHandler.sendMessage(msg);
-                }
+//                cursor0 = sqLiteDatabase.query("LocalField", null, null, null, null, null, null);
+//                final int[] nums = {cursor0.getCount()};
+//                if (cursor0.moveToFirst()) {
+//                    do {
+//                        String experimentFieldId = cursor0.getString(cursor0.getColumnIndex("id"));
+//                        String description = cursor0.getString(cursor0.getColumnIndex("description"));
+//                        int num = cursor0.getInt(cursor0.getColumnIndex("num"));
+//                        int rows = cursor0.getInt(cursor0.getColumnIndex("rows"));
+//                        if (num == 0 || rows == 0) {
+//                            nums[0]--;
+//                            continue;
+//                        }
+//                        HttpRequest.HttpRequest_description(experimentFieldId, description, self, new HttpRequest.HttpCallback() {
+//                            @Override
+//                            public void onSuccess(JSONObject result) {
+//                                try {
+//                                    if (result.getBoolean("success")) {
+//                                        nums[0]--;
+//                                    } else {
+//                                        myHandler.post(new Runnable() {
+//                                            @Override
+//                                            public void run() {
+//                                                showShortToast(self, "备注数据上传失败");
+//                                            }
+//                                        });
+//                                    }
+//                                    if (nums[0] == 0) {
+//                                        Message msg = new Message();
+//                                        msg.what = UPLOAD_DESCRIPTION_OK;
+//                                        mHandler.sendMessage(msg);
+//                                    }
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                        });
+//                    } while (cursor0.moveToNext());
+//                }
+//                if (nums[0] == 0) {
+//                    Message msg = new Message();
+//                    msg.what = UPLOAD_DESCRIPTION_OK;
+//                    mHandler.sendMessage(msg);
+//                }
                 cursor0.close();
             }
         }).start();
 
     }
-
 
     @SuppressLint("HandlerLeak")
     private void uploadSurveyData() {
@@ -1584,7 +1584,6 @@ public class HomepageFragment extends Fragment {
 //        final int UPLOAD_SURVEY_IMG4 = 24;
 //        final int UPLOAD_SURVEY_IMG5 = 25;
 //        final int[] request_num = {0, 6}; //请求成功的次数，总请求次数
-
 
         String sql = "select SpeciesTable.*, LocalSpecies.* from SpeciesTable, LocalSpecies " +
                 "where SpeciesTable.speciesId=LocalSpecies.name";
@@ -1822,8 +1821,8 @@ public class HomepageFragment extends Fragment {
                                     }
                                     if (nums[0] == 0) {
                                         Message msg = new Message();
-                                        msg.what = UPLOAD_SURVEY_WORDS;
-                                        childHandler.sendMessage(msg);
+                                        msg.what = UPLOAD_SURVEY_OK;
+                                        mHandler.sendMessage(msg);
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -2008,8 +2007,8 @@ public class HomepageFragment extends Fragment {
         }
         if (nums[0] == 0) {
             Message msg = new Message();
-            msg.what = UPLOAD_SURVEY_WORDS;
-            childHandler.sendMessage(msg);
+            msg.what = UPLOAD_SURVEY_OK;
+            mHandler.sendMessage(msg);
         }
         if (nums[1] == 0) {
             Message msg = new Message();
