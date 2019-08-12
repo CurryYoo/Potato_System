@@ -312,7 +312,7 @@ public class SaveDataActivity extends AppCompatActivity {
                     } else {
                         imageUriColor = Uri.fromFile(outputImage);
                     }
-                    Log.d("Uriiiiiii", pathColor + " || " + imageUriColor);
+//                    Log.d("Uriiiiiii", pathColor + " || " + imageUriColor);
                     //启动相机程序
                     Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUriColor);

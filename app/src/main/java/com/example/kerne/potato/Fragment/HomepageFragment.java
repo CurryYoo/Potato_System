@@ -80,13 +80,14 @@ public class HomepageFragment extends Fragment {
     private static final int DATA_OK = 5;
     private static final int FIELD_DATA_OK = 6;
     private static final int CREATE_BIGFARM_OK = 10;
-    private static final int CREATE_FIELD_OK = 11;
-    private static final int DOWNLOAD_FIELD_OK = 12;
-    private static final int DOWNLOAD_BLOCK_OK = 13;
-    private static final int UPLOAD_FIELD_OK = 14;
-    private static final int UPLOAD_BLOCK_OK = 15;
-    private static final int UPLOAD_DESCRIPTION_OK = 16;
-    private static final int UPLOAD_SURVEY_OK = 17;
+    private static final int UPDATE_BIGFARMIMG_OK = 11;
+    private static final int CREATE_FIELD_OK = 12;
+    private static final int DOWNLOAD_FIELD_OK = 13;
+    private static final int DOWNLOAD_BLOCK_OK = 14;
+    private static final int UPLOAD_FIELD_OK = 15;
+    private static final int UPLOAD_BLOCK_OK = 16;
+    private static final int UPLOAD_DESCRIPTION_OK = 17;
+    private static final int UPLOAD_SURVEY_OK = 18;
     private static int downloadSuccess_Num = 0;
     private static int request_Num = 4;
     private static int uploadSuccess_Num = 0;
@@ -245,6 +246,7 @@ public class HomepageFragment extends Fragment {
             super.handleMessage(msg);
             switch (msg.what) {
                 case CREATE_BIGFARM_OK: //创建bigfarm完成
+                    uploadBigfarmImage();
                     CreateField();
                     mBigFarmList.clear();
                     mYears.clear();
@@ -418,7 +420,6 @@ public class HomepageFragment extends Fragment {
                             updateDialog.setCancelable(false);
                             updateDialog.show();
 
-                            uploadFarmImage();
                             CreateBigfarm();
 //                            uploadPlanData();
 //                            uploadSurveyData();
@@ -1047,11 +1048,6 @@ public class HomepageFragment extends Fragment {
         });
     }
 
-
-    private void uploadFarmImage() {
-
-    }
-
     //获取bigfarm图片uri
     public Uri getImageURI(String path, File cache) throws Exception {
         String name = path.substring(path.lastIndexOf("/") + 1);
@@ -1150,6 +1146,39 @@ public class HomepageFragment extends Fragment {
             mHandler.sendMessage(msg);
         }
         cursor.close();
+
+    }
+
+    private void uploadBigfarmImage() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Cursor cursor = sqLiteDatabase.query("BigfarmList", null, "isUpdate=?", new String[]{"0"}, null, null, null);
+                final int[] num = {cursor.getCount()};
+                if (cursor.moveToFirst()) {
+                    do {
+                        final String bigfarmId = cursor.getString(cursor.getColumnIndex("bigfarmId"));
+                        String picPath = cursor.getString(cursor.getColumnIndex("uri"));
+                        HttpRequest.OkHttp_UpdateBigfarmImg(bigfarmId, picPath, self);
+                        ContentValues contentValues = new ContentValues();
+                        contentValues.put("isUpdate", 1);
+                        db.update("BigfarmList", contentValues, "bigfarmId=?", new String[]{bigfarmId});
+                        num[0]--;
+                        if (num[0] == 0) {
+                            Message msg = new Message();
+                            msg.what = UPDATE_BIGFARMIMG_OK;
+                            mHandler.sendMessage(msg);
+                        }
+                    } while (cursor.moveToNext());
+                }
+                if (num[0] == 0) {
+                    Message msg = new Message();
+                    msg.what = UPDATE_BIGFARMIMG_OK;
+                    mHandler.sendMessage(msg);
+                }
+                cursor.close();
+            }
+        }).start();
 
     }
 

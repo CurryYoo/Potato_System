@@ -1,6 +1,7 @@
 package com.example.kerne.potato.Util;
 
 import android.content.Context;
+import android.icu.util.Measure;
 import android.net.Uri;
 import android.util.Log;
 
@@ -18,14 +19,15 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.example.kerne.potato.MultipartRequest;
 import com.example.kerne.potato.SingleRequestQueue;
-import com.squareup.okhttp.OkHttpClient;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -33,6 +35,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 
 /**
  * 通过HTTP请求获取服务器中数据
@@ -96,44 +107,44 @@ public class HttpRequest {
         requestQueue.add(stringRequest);
     }
 
-    public static Uri getImageURI(String path, File cache) throws Exception {
-        String name = path.substring(path.lastIndexOf("."));
-        File file = new File(cache, name);
-        // 如果图片存在本地缓存目录，则不去服务器下载
-        if (file.exists()) {
-            return Uri.fromFile(file);//Uri.fromFile(path)这个方法能得到文件的URI
-        } else {
-            // 从网络上获取图片
-            java.net.URL url = new URL(path);
-//            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//            conn.setConnectTimeout(5000);
-//            conn.setRequestMethod("GET");
-//            conn.setDoInput(true);
-
-            OkHttpClient okHttpClient = new OkHttpClient();
-            com.squareup.okhttp.Request request = new com.squareup.okhttp.Request.Builder()
-                    .url(url)
-                    .build();
-            com.squareup.okhttp.Response response = okHttpClient.newCall(request).execute();
-
-            if (response.code() == 200) {
-
-//                InputStream is = conn.getInputStream();
-                InputStream is = response.body().byteStream();
-                FileOutputStream fos = new FileOutputStream(file);
-                byte[] buffer = new byte[1024];
-                int len = 0;
-                while ((len = is.read(buffer)) != -1) {
-                    fos.write(buffer, 0, len);
-                }
-                is.close();
-                fos.close();
-                // 返回一个URI对象
-                return Uri.fromFile(file);
-            }
-        }
-        return null;
-    }
+//    public static Uri getImageURI(String path, File cache) throws Exception {
+//        String name = path.substring(path.lastIndexOf("."));
+//        File file = new File(cache, name);
+//        // 如果图片存在本地缓存目录，则不去服务器下载
+//        if (file.exists()) {
+//            return Uri.fromFile(file);//Uri.fromFile(path)这个方法能得到文件的URI
+//        } else {
+//            // 从网络上获取图片
+//            java.net.URL url = new URL(path);
+////            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+////            conn.setConnectTimeout(5000);
+////            conn.setRequestMethod("GET");
+////            conn.setDoInput(true);
+//
+//            OkHttpClient okHttpClient = new OkHttpClient();
+//            com.squareup.okhttp.Request request = new com.squareup.okhttp.Request.Builder()
+//                    .url(url)
+//                    .build();
+//            com.squareup.okhttp.Response response = okHttpClient.newCall(request).execute();
+//
+//            if (response.code() == 200) {
+//
+////                InputStream is = conn.getInputStream();
+//                InputStream is = response.body().byteStream();
+//                FileOutputStream fos = new FileOutputStream(file);
+//                byte[] buffer = new byte[1024];
+//                int len = 0;
+//                while ((len = is.read(buffer)) != -1) {
+//                    fos.write(buffer, 0, len);
+//                }
+//                is.close();
+//                fos.close();
+//                // 返回一个URI对象
+//                return Uri.fromFile(file);
+//            }
+//        }
+//        return null;
+//    }
 
 //    //获取试验田列表
 //    public static void HttpRequest_farm(final String name, Context context, final HttpCallback callback) {
@@ -604,7 +615,98 @@ public class HttpRequest {
         jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(18000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         requestQueue.add(jsonArrayRequest);
+
     }
+
+    public static void OkHttp_UpdateBigfarmImg(String bigfarmId, String picPath, Context context) {
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(10L, TimeUnit.SECONDS)
+                .build();
+
+        MediaType mediaType = MediaType.parse("image/jpeg");
+
+        HttpUrl httpUrl = HttpUrl.parse(picUrl + "bigfarm/updateBigfarmImg")
+                .newBuilder()
+                .addQueryParameter("bigfarmId", bigfarmId)
+                .build();
+        Log.i("BigfarmImg", httpUrl.toString());
+
+        File file = new File(picPath);
+        if (!file.exists()) {
+            //Toast.makeText(getApplicationContext(), "图片不存在，测试无效", Toast.LENGTH_SHORT).show();
+            Log.d("file", "not found");
+            return;
+        }
+
+        RequestBody fileBody = RequestBody.create(file, mediaType);
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("file", "bigfarm.jpg", fileBody)
+                .build();
+
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(httpUrl)
+                .post(requestBody)
+                .build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Log.d("UpdateBigfarmImg", "onFailure: " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull okhttp3.Response response) throws IOException {
+                Log.d("UpdateBigfarmImg", "onResponse: " + response.body().string());
+            }
+        });
+
+    }
+
+//    //上传图片信息
+//    public static void Img_doUploadTest(String picPath, String bigfarmId, Context context, final HttpCallback_Str callback) {
+//        requestQueue = SingleRequestQueue.getInstance(context).getRequestQueue();
+//
+//        String path = picPath;
+//        Log.e("zb1", "img=" + picPath);
+//        //String url = "http://app.sod90.com/xxx/upload/app_upload"; //换成自己的测试url地址
+//        Map<String, String> params = new HashMap<String, String>();
+//        params.put("bigfarmId", bigfarmId);
+//        Log.e("zb1", "params=" + params);
+//        File f1 = new File(path);
+//        Log.e("zb1", "f1=" + f1.toString());
+//
+//        if (!f1.exists()) {
+//            //Toast.makeText(getApplicationContext(), "图片不存在，测试无效", Toast.LENGTH_SHORT).show();
+//            Log.d("file", "not found");
+//            return;
+//        }
+//        List<File> f = new ArrayList<File>();
+//        f.add(f1);
+////    f.add(f2);
+//        MultipartRequest request = new MultipartRequest(picUrl + "bigfarm/updateBigfarmImg", new Response.Listener<String>() {
+//
+//            @Override
+//            public void onResponse(String response) {
+//                //Toast.makeText(getApplicationContext(), "uploadSuccess,response = " + response, Toast.LENGTH_SHORT).show();
+//                Log.e("zb1", "success,response = " + response);
+//                callback.onSuccess(response);
+//            }
+//        }, new Response.ErrorListener() {
+//
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                //Toast.makeText(getApplicationContext(), "uploadError,response = " + error.getMessage(), Toast.LENGTH_SHORT).show();
+//                Log.e("zb1", "error,response = " + error.getMessage());
+//            }
+//        }, "file", f1, params); //注意这个key必须是f_file[],后面的[]不能少
+//
+//        request.setRetryPolicy(new DefaultRetryPolicy(20000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//
+//        //mSingleQueue.add(request);
+//        requestQueue.add(request);
+//    }
 
     public interface HttpCallback {
         void onSuccess(JSONObject result);

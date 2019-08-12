@@ -64,4 +64,5 @@ dependencies {
     implementation 'com.nineoldandroids:library:2.4.0'
     //侧滑
     implementation 'com.billy.android:smart-swipe:1.0.3'
+    implementation 'com.squareup.okhttp3:okhttp:4.0.0'
 }

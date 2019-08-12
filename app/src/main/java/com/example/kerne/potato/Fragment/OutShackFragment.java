@@ -219,6 +219,10 @@ public class OutShackFragment extends Fragment {
             bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
             out.flush();
             out.close();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("uri", imagePath);
+            contentValues.put("isUpdate", 0);
+            db.update("BigfarmList", contentValues, "bigfarmId=?", new String[]{bigfarmId});
         } catch (Exception e) {
             e.printStackTrace();
         }
