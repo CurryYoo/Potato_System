@@ -257,14 +257,12 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:fillViewport="true"
-                            android:paddingStart="5dp"
                             android:scrollbars="none">
 
                             <com.example.kerne.potato.complextable.widget.MyListView
                                 android:id="@+id/right_container_listview"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingEnd="@dimen/dp_5"
                                 android:scrollbars="none" />
                         </com.example.kerne.potato.complextable.widget.SyncHorizontalScrollView>
                     </LinearLayout>

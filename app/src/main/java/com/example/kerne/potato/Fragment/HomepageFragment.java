@@ -742,6 +742,9 @@ public class HomepageFragment extends Fragment {
     }
 
     private void initView(int flag) {
+        if (bigfarmId == null) {
+            return;
+        }
         initFieldData();
         switch (flag) {
             case 0:

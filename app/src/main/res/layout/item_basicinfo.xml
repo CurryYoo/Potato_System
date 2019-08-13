@@ -114,7 +114,7 @@
             android:id="@+id/edt_rate_of_emergence"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
-            android:inputType="number" />
+            android:inputType="numberDecimal" />
     </LinearLayout>
 
     <View style="@style/view_divider_style" />
@@ -914,7 +914,7 @@
             android:id="@+id/weight_of_large_and_medium_potatoes"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
-            android:inputType="number" />
+            android:inputType="numberDecimal" />
     </LinearLayout>
 
     <View style="@style/view_divider_style" />
@@ -960,7 +960,7 @@
             android:id="@+id/weight_of_small_potatoes"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
-            android:inputType="number" />
+            android:inputType="numberDecimal" />
     </LinearLayout>
 
     <View style="@style/view_divider_style" />
@@ -1014,7 +1014,7 @@
             android:id="@+id/small_section_yield1"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
-            android:inputType="number" />
+            android:inputType="numberDecimal" />
     </LinearLayout>
 
     <View style="@style/view_divider_style" />
@@ -1037,7 +1037,7 @@
             android:id="@+id/small_section_yield2"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
-            android:inputType="number" />
+            android:inputType="numberDecimal" />
     </LinearLayout>
 
     <View style="@style/view_divider_style" />
@@ -1060,7 +1060,7 @@
             android:id="@+id/small_section_yield3"
             style="@style/style_item_basicinfo_edittext"
             android:layout_width="match_parent"
-            android:inputType="number" />
+            android:inputType="numberDecimal" />
     </LinearLayout>
 
     <View style="@style/view_divider_style" />

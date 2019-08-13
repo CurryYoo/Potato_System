@@ -152,7 +152,6 @@ public class TableActivity extends AppCompatActivity {
                         }
                         tableDescription.setEnabled(false);
 
-
                         status = STATUS_READ;
                         showShortToast(TableActivity.this, mContext.getString(R.string.exit_species_plan_mode));
                         editor.putBoolean("upload_data", true);
@@ -207,6 +206,12 @@ public class TableActivity extends AppCompatActivity {
                             maxRows = Integer.parseInt(planRow.getText().toString());
                             initTableView(maxColumns);
                             str = new String[maxRows][maxColumns];
+                            column = maxColumns;
+                            try {
+                                rows.put(0, maxRows);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             setData();
 
                             new Thread(new Runnable() {
@@ -300,19 +305,21 @@ public class TableActivity extends AppCompatActivity {
     }
 
     private void initTable() {
+        boolean isCreated = false;
         Cursor cursor = db.query("LocalField", null, "id=?", new String[]{fieldId}, null, null, null);
         if (cursor.moveToFirst()) {
             maxColumns = cursor.getInt(cursor.getColumnIndex("rows"));
             column = maxColumns;
             int num = cursor.getInt(cursor.getColumnIndex("num"));
             maxRows = (maxColumns != 0) ? num / maxColumns : 0;
+            isCreated = cursor.getInt(cursor.getColumnIndex("isCreated")) == 2;
         }
         cursor.close();
 
         str = new String[maxRows][maxColumns];
 
         //如果已填冲，自动填充行列数，并隐藏确认按钮
-        if (maxColumns != 0 || maxRows != 0) {
+        if (isCreated) {
             planColumn.setText(maxColumns + "");
             planRow.setText(maxRows + "");
             planColumn.setEnabled(false);

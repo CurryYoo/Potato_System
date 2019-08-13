@@ -293,6 +293,48 @@ public class FarmPlanView {
                         double btn_x = Double.valueOf(mJsonList.get(i).get("x").toString()) / RATIO;
                         double btn_y = Double.valueOf(mJsonList.get(i).get("y").toString()) / RATIO;
 
+                        //映射行数
+                        switch (mJsonList.get(i).getString("expType")) {
+                            case "株系圃":
+                                btn_row = btn_row * 1;
+                                break;
+                            case "加工鉴定":
+                                btn_row = btn_row * 2;
+                                break;
+                            case "早熟鉴定":
+                                btn_row = btn_row * 2;
+                                break;
+                            case "晚熟鉴定":
+                                btn_row = btn_row * 2;
+                                break;
+                            case "加工预备比":
+                                btn_row = btn_row * 3;
+                                break;
+                            case "早熟预备比":
+                                btn_row = btn_row * 3;
+                                break;
+                            case "晚熟预备比":
+                                btn_row = btn_row * 3;
+                                break;
+                            case "加工品比":
+                                btn_row = btn_row * 5;
+                                break;
+                            case "早熟品比":
+                                btn_row = btn_row * 5;
+                                break;
+                            case "晚熟品比":
+                                btn_row = btn_row * 5;
+                                break;
+                            case "品系筛选":
+                                btn_row = btn_row * 3;
+                                break;
+                            case "区域试验":
+                                btn_row = btn_row * 5;
+                                break;
+                            default:
+                                break;
+                        }
+
                         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         View view = inflater.inflate(R.layout.field_view, null, false);
                         TextView textView = view.findViewById(R.id.field_name);
