@@ -1133,6 +1133,18 @@ public class HomepageFragment extends Fragment {
                                     mHandler.sendMessage(msg);
                                 }
                             }
+                            else {
+                                mHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        updateDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                                        updateDialog.setCancelable(true);
+                                        updateDialog.setTitleText("试验田" + name + "创建失败");
+                                        updateDialog.setContentText(null);
+                                        showShortToast(self, "试验田" + name + "创建失败");
+                                    }
+                                });
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -1254,6 +1266,18 @@ public class HomepageFragment extends Fragment {
                         Message msg = new Message();
                         msg.what = CREATE_FIELD_OK;
                         mHandler.sendMessage(msg);
+                    }
+                    else {
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                                updateDialog.setCancelable(true);
+                                updateDialog.setTitleText("试验区域创建失败");
+                                updateDialog.setContentText(null);
+                                showShortToast(self, "试验区域创建失败");
+                            }
+                        });
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1471,6 +1495,18 @@ public class HomepageFragment extends Fragment {
                                         contentValues.clear();
                                     }
                                 }
+                                else {
+                                    mHandler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            updateDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                                            updateDialog.setCancelable(true);
+                                            updateDialog.setTitleText("试验区域数据更新失败");
+                                            updateDialog.setContentText(null);
+                                            showShortToast(self, "试验区域数据更新失败");
+                                        }
+                                    });
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -1538,8 +1574,18 @@ public class HomepageFragment extends Fragment {
                                             contentValues.clear();
                                         }
 
-                                    } else {
-                                        showShortToast(self, "上传block失败");
+                                    }
+                                    else {
+                                        mHandler.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                updateDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                                                updateDialog.setCancelable(true);
+                                                updateDialog.setTitleText("种植图信息更新失败");
+                                                updateDialog.setContentText(null);
+                                                showShortToast(self, "种植图信息更新失败");
+                                            }
+                                        });
                                     }
 
                                 } catch (JSONException e) {
@@ -1843,11 +1889,16 @@ public class HomepageFragment extends Fragment {
                                         ContentValues contentValues = new ContentValues();
                                         contentValues.put("isUpdate", 1);
                                         db.update("SpeciesTable", contentValues, "blockId=?", new String[]{jsonObject.getJSONObject("commontest").getString("testId")});
-                                    } else {
-                                        myHandler.post(new Runnable() {
+                                    }
+                                    else {
+                                        mHandler.post(new Runnable() {
                                             @Override
                                             public void run() {
-                                                showShortToast(self, "调查数据上传失败");
+                                                updateDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                                                updateDialog.setCancelable(true);
+                                                updateDialog.setTitleText("调查数据更新失败,blockId:" + blockId + ",name:" + name);
+                                                updateDialog.setContentText(null);
+                                                showShortToast(self, "调查数据更新失败");
                                             }
                                         });
                                     }

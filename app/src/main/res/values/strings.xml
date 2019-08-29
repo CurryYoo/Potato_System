@@ -83,6 +83,7 @@
     <string name="download_complete">下载完成</string>
     <string name="update_data">上传数据</string>
     <string name="update_complete">上传完成</string>
+    <string name="update_fail">上传失败</string>
 
     <string name="farm_info_hint">试验田信息</string>
     <string name="farm_description">备注...</string>

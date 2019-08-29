@@ -515,6 +515,13 @@ public class HttpRequest {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                JSONObject json = new JSONObject();
+                try {
+                    json.put("success", false);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                callback.onSuccess(json);
                 Log.e("CreateBigfarm_error", error.getMessage(), error);
             }
         }) {
@@ -552,6 +559,13 @@ public class HttpRequest {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                JSONObject json = new JSONObject();
+                try {
+                    json.put("success", false);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                callback.onSuccess(json);
                 Log.e("CreateField_error", error.getMessage(), error);
             }
         }) {
@@ -593,6 +607,13 @@ public class HttpRequest {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                JSONObject json = new JSONObject();
+                try {
+                    json.put("success", false);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                callback.onSuccess(json);
                 Log.e("UpdateField_error", error.getMessage(), error);
             }
         }) {
