@@ -298,6 +298,9 @@ public class FarmPlanView {
                             case "株系圃":
                                 btn_row = btn_row * 1;
                                 break;
+                            case "株系选种圃":
+                                btn_row = btn_row * 1;
+                                break;
                             case "加工鉴定":
                                 btn_row = btn_row * 2;
                                 break;
@@ -316,6 +319,9 @@ public class FarmPlanView {
                             case "晚熟预备比":
                                 btn_row = btn_row * 3;
                                 break;
+                            case "彩色预备比":
+                                btn_row = btn_row * 3;
+                                break;
                             case "加工品比":
                                 btn_row = btn_row * 5;
                                 break;
@@ -323,6 +329,9 @@ public class FarmPlanView {
                                 btn_row = btn_row * 5;
                                 break;
                             case "晚熟品比":
+                                btn_row = btn_row * 5;
+                                break;
+                            case "彩色品比":
                                 btn_row = btn_row * 5;
                                 break;
                             case "品系筛选":

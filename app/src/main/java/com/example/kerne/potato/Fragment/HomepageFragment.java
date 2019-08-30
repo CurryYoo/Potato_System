@@ -482,9 +482,13 @@ public class HomepageFragment extends Fragment {
     //初始化本地field
     private void initLocalField(String mBigfarmId) {
         int num = 23;
-        String[] expTypes = {"株系圃", "加工鉴定", "早熟鉴定", "晚熟鉴定", "加工预备比",
-                "早熟预备比", "晚熟预备比", "加工品比", "早熟品比", "晚熟品比", "品系筛选", "区域试验", //以上为棚外试验田
+        String[] expTypes = {"株系圃", "株系选种圃", "加工鉴定", "早熟鉴定", "晚熟鉴定", "加工预备比",
+                "早熟预备比", "晚熟预备比", "彩色预备比", "加工品比", "早熟品比", "晚熟品比", "彩色品比", "品系筛选", "区域试验", //以上为棚外试验田
                 "抗旱棚", "杂交棚1", "杂交棚2", "杂交棚3", "单株棚1", "单株棚2", "单株棚3", "单株棚4",//以下为棚内试验田
+                "单株棚5", "单株棚6", "单株棚7"};
+        String[] expTypes_out = {"株系圃", "株系选种圃", "加工鉴定", "早熟鉴定", "晚熟鉴定", "加工预备比",
+                "早熟预备比", "晚熟预备比", "彩色预备比", "加工品比", "早熟品比", "晚熟品比", "彩色品比", "品系筛选", "区域试验"};
+        String[] expTypes_in = {"抗旱棚", "杂交棚1", "杂交棚2", "杂交棚3", "单株棚1", "单株棚2", "单株棚3", "单株棚4",//以下为棚内试验田
                 "单株棚5", "单株棚6", "单株棚7"};
 //        List<ContentValues> contentValuesList = new ArrayList<ContentValues>();
         ContentValues contentValues = new ContentValues();
@@ -500,7 +504,7 @@ public class HomepageFragment extends Fragment {
             contentValues.put("rows", 0);
             contentValues.put("bigfarmId", mBigfarmId);
             contentValues.put("description", "");
-            contentValues.put("type", i > 11 ? "greenhouse" : "common");
+            contentValues.put("type", i > 14 ? "greenhouse" : "common");
             contentValues.put("isCreated", 0);
             db.insert("LocalField", null, contentValues);
             contentValues.clear();
@@ -1164,6 +1168,7 @@ public class HomepageFragment extends Fragment {
 
     }
 
+    //D/UpdateBigfarmImg: onResponse: {"timestamp":"2019-08-30T03:00:11.786+0000","status":500,"error":"Internal Server Error","message":"Failed to parse multipart servlet request; nested exception is java.io.IOException: The temporary upload location [/tmp/tomcat.8168872527897146995.9527/work/Tomcat/localhost/ROOT] is not valid","path":"/bigfarm/updateBigfarmImg"}
     private void uploadBigfarmImage() {
         new Thread(new Runnable() {
             @Override

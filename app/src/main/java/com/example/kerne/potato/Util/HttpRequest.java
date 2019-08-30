@@ -50,8 +50,8 @@ import okhttp3.RequestBody;
  */
 
 public class HttpRequest {
-    private static final String url = "http://120.78.130.251:9526/"; //数据库ip
-    private static final String picUrl = "http://120.78.130.251:9526/"; //上传图片ip
+    private static final String url = "http://120.78.130.251:9527/"; //数据库ip
+    private static final String picUrl = "http://120.78.130.251:9527/"; //上传图片ip
     public static final String serverUrl = "http://cxk.nicesite.vip/"; //图片服务器url
     private static RequestQueue requestQueue;
 
