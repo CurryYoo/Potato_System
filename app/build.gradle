@@ -60,5 +60,4 @@ dependencies {
     //侧滑
     implementation 'com.billy.android:smart-swipe:1.0.3'
     implementation 'com.squareup.okhttp3:okhttp:4.0.0'
-    implementation files('libs/mysql-connector-java-8.0.17.jar')
 }
