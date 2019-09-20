@@ -678,7 +678,7 @@ public class SaveDataActivity extends AppCompatActivity {
         //品种Id
         edtSpeciesID = findViewById(R.id.edt_species_id);
         edtSpeciesID.setText(speciesId);
-        edtSpeciesID.setSelection(speciesId.length());
+//        edtSpeciesID.setSelection(speciesId.length());
 
         //实验类型
         edtExperimentType = findViewById(R.id.edt_experiment_type);
