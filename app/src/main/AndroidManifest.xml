@@ -33,10 +33,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible" />
 
-        <activity android:name=".GeneralActivity" />
-
-        <activity android:name=".GeneralClickActivity" />
-
         <activity
             android:name=".temporarystorage.SaveDataActivity"
             android:windowSoftInputMode="stateAlwaysHidden" />

@@ -19,8 +19,8 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -30,13 +30,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.billy.android.swipe.SmartSwipe;
-import com.billy.android.swipe.SmartSwipeWrapper;
-import com.billy.android.swipe.SwipeConsumer;
 import com.billy.android.swipe.consumer.SpaceConsumer;
-import com.billy.android.swipe.listener.SwipeListener;
 import com.example.kerne.potato.FarmPlanActivity;
 import com.example.kerne.potato.LoginActivity;
 import com.example.kerne.potato.MainActivity;
@@ -123,11 +119,14 @@ public class HomepageFragment extends Fragment {
     private LinearLayout btnUpload;
     private Spinner homepageYears;
     private LinearLayout planFarm;
-    private LinearLayout changeFarmView;
-    private RelativeLayout homepageFarm;
-    private TextView farmType;
-    private ImageView farmTypeIcon;
-    private int farm_flag = 0;//标识当前的firm视图 0,棚外  1,棚内
+    private RelativeLayout outFarm;
+    private RelativeLayout inFarm;
+    private LinearLayout mainFarm;
+    private LinearLayout zoomOut;
+    private LinearLayout zoomIn;
+    private LinearLayout hScroll;
+    private LinearLayout vScroll;
+
     private SpeciesDBHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
     private SQLiteDatabase db;
@@ -140,7 +139,8 @@ public class HomepageFragment extends Fragment {
     private List<String> mYears = new ArrayList<>();
     private ArrayAdapter<String> spinnerAdapter;
     private String bigfarmId;
-    private GestureDetector mDetector;
+
+    private float size = 1;//田地放大倍数
 
     private IntentFilter intentFilter;
     private NetworkChangeReceiver networkChangeReceiver;
@@ -218,9 +218,10 @@ public class HomepageFragment extends Fragment {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        spinnerAdapter = new ArrayAdapter<>(getContext(), R.layout.layout_spinner_textview, mYears);
+                        Collections.sort(mYears, Collections.<String>reverseOrder());
+                        spinnerAdapter = new ArrayAdapter<>(getActivity(), R.layout.layout_spinner_textview, mYears);
                         homepageYears.setAdapter(spinnerAdapter);
-                        initView(farm_flag);
+                        initView();
                     }
                     break;
                 default:
@@ -441,29 +442,88 @@ public class HomepageFragment extends Fragment {
                         self.startActivity(intent);
                     }
                     break;
-                case R.id.change_farm_view:
-                    if (bigfarmId == null) {
-                        showShortToast(getContext(), getString(R.string.toast_database_null));
-                        break;
-                    } else {
-                        if (farm_flag == 0) {
-                            farmType.setText(self.getString(R.string.out_shack));
-                            farmTypeIcon.setBackgroundResource(R.drawable.farm);
-                            farm_flag = 1;
-
-                            initView(farm_flag);
-                        } else if (farm_flag == 1) {
-                            farmType.setText(self.getString(R.string.in_shack));
-                            farmTypeIcon.setBackgroundResource(R.drawable.shack_farm);
-                            farm_flag = 0;
-
-                            initView(farm_flag);
+                case R.id.zoom_out_controls:
+                    if (size > 1) {
+                        size = size - 0.5f;
+                        mainFarm.setScaleX(size);
+                        mainFarm.setScaleY(size);
+                        if (size == 1) {
+                            baseFarm.scrollTo(0, 0);
+                            hScroll.setVisibility(View.GONE);
+                            vScroll.setVisibility(View.GONE);
                         }
+                    }
+                    break;
+                case R.id.zoom_in_controls:
+                    if (size < 5) {
+                        hScroll.setVisibility(View.VISIBLE);
+                        vScroll.setVisibility(View.VISIBLE);
+                        size = size + 0.5f;
+                        mainFarm.setScaleX(size);
+                        mainFarm.setScaleY(size);
                     }
                     break;
                 default:
                     break;
             }
+        }
+    };
+    private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
+        int lastX, lastY;
+
+        @SuppressLint("ClickableViewAccessibility")
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            v.getParent().requestDisallowInterceptTouchEvent(true);
+            switch (v.getId()) {
+                case R.id.h_scroll:
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            lastX = (int) event.getRawX();
+                            hScroll.setElevation(5);
+                        case MotionEvent.ACTION_MOVE:
+                            int dx = (int) (event.getRawX() - lastX);
+                            lastX = (int) event.getRawX();
+                            baseFarm.scrollBy(-dx, 0);
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            hScroll.setElevation(0);
+                            if (baseFarm.getScrollX() < -baseFarm.getWidth() * (size - 1) / 2) {
+                                baseFarm.scrollTo((int) (-baseFarm.getWidth() * (size - 1) / 2), baseFarm.getScrollY());
+                            }
+                            if (baseFarm.getScrollX() > baseFarm.getWidth() * (size - 1) / 2) {
+                                baseFarm.scrollTo((int) (baseFarm.getWidth() * (size - 1) / 2), baseFarm.getScrollY());
+                            }
+                            break;
+                    }
+                    break;
+                case R.id.v_scroll:
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            lastY = (int) event.getRawY();
+                            vScroll.setElevation(5);
+                        case MotionEvent.ACTION_MOVE:
+                            int dy = (int) (event.getRawY() - lastY);
+                            lastY = (int) event.getRawY();
+                            baseFarm.scrollBy(0, -dy);
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            vScroll.setElevation(0);
+                            if (baseFarm.getScrollY() < -baseFarm.getHeight() * (size - 1) / 2) {
+                                baseFarm.scrollTo(baseFarm.getScrollX(), (int) -(baseFarm.getHeight() * (size - 1) / 2));
+                            }
+                            if (baseFarm.getScrollY() > baseFarm.getHeight() * (size - 1) / 2) {
+                                baseFarm.scrollTo(baseFarm.getScrollX(), (int) (baseFarm.getHeight() * (size - 1) / 2));
+                            }
+                            break;
+                    }
+                    break;
+                default:
+                    break;
+
+            }
+
+            return true;
         }
     };
 
@@ -518,7 +578,7 @@ public class HomepageFragment extends Fragment {
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             try {
                 bigfarmId = mBigFarmList.get(position).getString("bigfarmId");
-                initView(farm_flag);
+                initView();
                 MainActivity mainActivity = new MainActivity();
                 mainActivity.selectFarm(bigfarmId);
             } catch (JSONException e) {
@@ -531,59 +591,7 @@ public class HomepageFragment extends Fragment {
 
         }
     };
-    private SwipeListener swipeListener = new SwipeListener() {
-        @Override
-        public void onConsumerAttachedToWrapper(SmartSwipeWrapper wrapper, SwipeConsumer consumer) {
 
-        }
-
-        @Override
-        public void onConsumerDetachedFromWrapper(SmartSwipeWrapper wrapper, SwipeConsumer consumer) {
-
-        }
-
-        @Override
-        public void onSwipeStateChanged(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int state, int direction, float progress) {
-
-        }
-
-        @Override
-        public void onSwipeStart(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
-
-        }
-
-        @Override
-        public void onSwipeProcess(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction, boolean settling, float progress) {
-
-        }
-
-        @Override
-        public void onSwipeRelease(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction, float progress, float xVelocity, float yVelocity) {
-
-        }
-
-        @Override
-        public void onSwipeOpened(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
-
-        }
-
-        @Override
-        public void onSwipeClosed(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
-            if (direction == SwipeConsumer.DIRECTION_TOP) {//从上向下滑动，切换视图
-                if (farm_flag == 0) {
-                    farmType.setText(self.getString(R.string.out_shack));
-                    farmTypeIcon.setBackgroundResource(R.drawable.farm);
-                    farm_flag = 1;
-                    initView(farm_flag);
-                } else if (farm_flag == 1) {
-                    farmType.setText(self.getString(R.string.in_shack));
-                    farmTypeIcon.setBackgroundResource(R.drawable.shack_farm);
-                    farm_flag = 0;
-                    initView(farm_flag);
-                }
-            }
-        }
-    };
 
     public static HomepageFragment newInstance() {
         return new HomepageFragment();
@@ -608,6 +616,7 @@ public class HomepageFragment extends Fragment {
         return true;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void init() {
         sp = self.getSharedPreferences("update_flag", Context.MODE_PRIVATE);
         editor = sp.edit();
@@ -619,13 +628,15 @@ public class HomepageFragment extends Fragment {
         uploadIcon = view.findViewById(R.id.upload_icon);
         homepageYears = view.findViewById(R.id.homepage_years);
         planFarm = view.findViewById(R.id.plan_farm);
-        changeFarmView = view.findViewById(R.id.change_farm_view);
-        farmType = view.findViewById(R.id.farm_type);
-        farmTypeIcon = view.findViewById(R.id.farm_type_icon);
-        homepageFarm = view.findViewById(R.id.homepage_farm);
+        outFarm = view.findViewById(R.id.out_farm);
+        inFarm = view.findViewById(R.id.in_farm);
+        zoomOut = view.findViewById(R.id.zoom_out_controls);
+        zoomIn = view.findViewById(R.id.zoom_in_controls);
+        mainFarm = view.findViewById(R.id.main_farm);
+        hScroll = view.findViewById(R.id.h_scroll);
+        vScroll = view.findViewById(R.id.v_scroll);
         baseFarm = view.findViewById(R.id.base_farm);
 
-        farmTypeIcon.setBackgroundResource(R.drawable.shack_farm);
         homepageYears.setPopupBackgroundResource(R.drawable.bg_spinner_drop_down_dark);
 
 
@@ -633,8 +644,13 @@ public class HomepageFragment extends Fragment {
         btnDownload.setOnClickListener(onClickListener);
         btnUpload.setOnClickListener(onClickListener);
         planFarm.setOnClickListener(onClickListener);
-        changeFarmView.setOnClickListener(onClickListener);
+        zoomOut.setOnClickListener(onClickListener);
+        zoomIn.setOnClickListener(onClickListener);
+
         homepageYears.setOnItemSelectedListener(onItemSelectedListener);
+
+        hScroll.setOnTouchListener(onTouchListener);
+        vScroll.setOnTouchListener(onTouchListener);
 
         dbHelper = new SpeciesDBHelper(getContext(), "SpeciesTable.db", null, 14);
         db = dbHelper.getWritableDatabase();
@@ -643,8 +659,7 @@ public class HomepageFragment extends Fragment {
         //仿iOS下拉留白
         SmartSwipe.wrap(swipeLayout)
                 .addConsumer(new SpaceConsumer())
-                .enableVertical()
-                .addListener(swipeListener);
+                .enableVertical();
         initData();
         intentFilter = new IntentFilter();
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
@@ -745,40 +760,35 @@ public class HomepageFragment extends Fragment {
         cursor2.close();
     }
 
-    private void initView(int flag) {
+    private void initView() {
         if (bigfarmId == null) {
             return;
         }
+
         initFieldData();
-        switch (flag) {
-            case 0:
-                if (homepageFarm != null) {
-                    //加载棚外,设置farm大小
-                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) homepageFarm.getLayoutParams();
-                    layoutParams.width = baseFarm.getWidth();
-                    layoutParams.height = (int) (0.95 * baseFarm.getWidth());
-                    homepageFarm.setLayoutParams(layoutParams);
-                    homepageFarm.removeAllViews();
-                    FarmPlanView farmPlanView = new FarmPlanView(getContext(), homepageFarm, baseFarm.getWidth(), (int) (0.95 * baseFarm.getWidth()), mOutShackList);
-                    farmPlanView.createRoad("common");
-                    farmPlanView.createField("common", FarmPlanView.CLICK_EVENT);
-                }
-                break;
-            case 1:
-                if (homepageFarm != null) {
-                    //加载棚内
-                    LinearLayout.LayoutParams layoutParams2 = (LinearLayout.LayoutParams) homepageFarm.getLayoutParams();
-                    layoutParams2.width = (int) (0.6 * baseFarm.getHeight());
-                    layoutParams2.height = baseFarm.getHeight();
-                    homepageFarm.setLayoutParams(layoutParams2);
-                    homepageFarm.removeAllViews();
-                    FarmPlanView farmPlanView = new FarmPlanView(getContext(), homepageFarm, (int) (0.6 * baseFarm.getHeight()), baseFarm.getHeight(), mInShackList);
-                    farmPlanView.createRoad("greenhouse");
-                    farmPlanView.createField("greenhouse", FarmPlanView.CLICK_EVENT);
-                }
-                break;
-            default:
-                break;
+
+        if (outFarm != null) {
+            //加载棚外,设置farm大小
+//                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) outFarm.getLayoutParams();
+//                    layoutParams.width = baseFarm.getWidth();
+//                    layoutParams.height = (int) (0.95 * baseFarm.getWidth());
+//                    outFarm.setLayoutParams(layoutParams);
+            outFarm.removeAllViews();
+            FarmPlanView farmPlanView = new FarmPlanView(getContext(), outFarm, outFarm.getWidth(), outFarm.getHeight(), mOutShackList);
+            farmPlanView.createRoad("common");
+            farmPlanView.createField("common", FarmPlanView.CLICK_EVENT);
+        }
+
+        if (inFarm != null) {
+            //加载棚内
+//                    LinearLayout.LayoutParams layoutParams2 = (LinearLayout.LayoutParams) inFarm.getLayoutParams();
+//                    layoutParams2.width = (int) (0.6 * baseFarm.getHeight());
+//                    layoutParams2.height = baseFarm.getHeight();
+//                    inFarm.setLayoutParams(layoutParams2);
+            inFarm.removeAllViews();
+            FarmPlanView farmPlanView = new FarmPlanView(getContext(), inFarm, inFarm.getWidth(), inFarm.getHeight(), mInShackList);
+            farmPlanView.createRoad("greenhouse");
+            farmPlanView.createField("greenhouse", FarmPlanView.CLICK_EVENT);
         }
     }
 
@@ -1136,8 +1146,7 @@ public class HomepageFragment extends Fragment {
                                     msg.what = CREATE_BIGFARM_OK;
                                     mHandler.sendMessage(msg);
                                 }
-                            }
-                            else {
+                            } else {
                                 mHandler.post(new Runnable() {
                                     @Override
                                     public void run() {
@@ -1271,8 +1280,7 @@ public class HomepageFragment extends Fragment {
                         Message msg = new Message();
                         msg.what = CREATE_FIELD_OK;
                         mHandler.sendMessage(msg);
-                    }
-                    else {
+                    } else {
                         mHandler.post(new Runnable() {
                             @Override
                             public void run() {
@@ -1499,8 +1507,7 @@ public class HomepageFragment extends Fragment {
                                         db.update("LocalField", contentValues, "id=?", new String[]{jsonArray.getJSONObject(i).getString("id")});
                                         contentValues.clear();
                                     }
-                                }
-                                else {
+                                } else {
                                     mHandler.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -1579,8 +1586,7 @@ public class HomepageFragment extends Fragment {
                                             contentValues.clear();
                                         }
 
-                                    }
-                                    else {
+                                    } else {
                                         mHandler.post(new Runnable() {
                                             @Override
                                             public void run() {
@@ -1894,8 +1900,7 @@ public class HomepageFragment extends Fragment {
                                         ContentValues contentValues = new ContentValues();
                                         contentValues.put("isUpdate", 1);
                                         db.update("SpeciesTable", contentValues, "blockId=?", new String[]{jsonObject.getJSONObject("commontest").getString("testId")});
-                                    }
-                                    else {
+                                    } else {
                                         mHandler.post(new Runnable() {
                                             @Override
                                             public void run() {
@@ -2155,7 +2160,7 @@ public class HomepageFragment extends Fragment {
                 badge.setBadgeText("");
             }
             if (bigfarmId != null) {
-                initView(farm_flag);
+                initView();
             }
         }
     }

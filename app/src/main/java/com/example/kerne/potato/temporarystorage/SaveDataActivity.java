@@ -21,6 +21,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -612,6 +614,104 @@ public class SaveDataActivity extends AppCompatActivity {
         }
     };
 
+    private TextWatcher textWatcherBranch = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            ArrayList<String> strings = new ArrayList<String>();
+            strings.add(edtBranchNumOfBigPotato1.getText().toString().isEmpty() ? "0" : edtBranchNumOfBigPotato1.getText().toString());
+            strings.add(edtBranchNumOfBigPotato2.getText().toString().isEmpty() ? "0" : edtBranchNumOfBigPotato2.getText().toString());
+            strings.add(edtBranchNumOfBigPotato3.getText().toString().isEmpty() ? "0" : edtBranchNumOfBigPotato3.getText().toString());
+            strings.add(edtBranchNumOfBigPotato4.getText().toString().isEmpty() ? "0" : edtBranchNumOfBigPotato4.getText().toString());
+            strings.add(edtBranchNumOfBigPotato5.getText().toString().isEmpty() ? "0" : edtBranchNumOfBigPotato5.getText().toString());
+            strings.add(edtBranchNumOfBigPotato6.getText().toString().isEmpty() ? "0" : edtBranchNumOfBigPotato6.getText().toString());
+            strings.add(edtBranchNumOfBigPotato7.getText().toString().isEmpty() ? "0" : edtBranchNumOfBigPotato7.getText().toString());
+            strings.add(edtBranchNumOfBigPotato8.getText().toString().isEmpty() ? "0" : edtBranchNumOfBigPotato8.getText().toString());
+            strings.add(edtBranchNumOfBigPotato9.getText().toString().isEmpty() ? "0" : edtBranchNumOfBigPotato9.getText().toString());
+            strings.add(edtBranchNumOfBigPotato10.getText().toString().isEmpty() ? "0" : edtBranchNumOfBigPotato10.getText().toString());
+            edtAverageBranchNumOfBigPotato.setText(getAverage(strings));
+        }
+    };
+    private TextWatcher textWatcherHeight = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            ArrayList<String> strings1 = new ArrayList<String>();
+            strings1.add(edtBigPotatoHeight1.getText().toString().isEmpty() ? "0" : edtBigPotatoHeight1.getText().toString());
+            strings1.add(edtBigPotatoHeight2.getText().toString().isEmpty() ? "0" : edtBigPotatoHeight2.getText().toString());
+            strings1.add(edtBigPotatoHeight3.getText().toString().isEmpty() ? "0" : edtBigPotatoHeight3.getText().toString());
+            strings1.add(edtBigPotatoHeight4.getText().toString().isEmpty() ? "0" : edtBigPotatoHeight4.getText().toString());
+            strings1.add(edtBigPotatoHeight5.getText().toString().isEmpty() ? "0" : edtBigPotatoHeight5.getText().toString());
+            strings1.add(edtBigPotatoHeight6.getText().toString().isEmpty() ? "0" : edtBigPotatoHeight6.getText().toString());
+            strings1.add(edtBigPotatoHeight7.getText().toString().isEmpty() ? "0" : edtBigPotatoHeight7.getText().toString());
+            strings1.add(edtBigPotatoHeight8.getText().toString().isEmpty() ? "0" : edtBigPotatoHeight8.getText().toString());
+            strings1.add(edtBigPotatoHeight9.getText().toString().isEmpty() ? "0" : edtBigPotatoHeight9.getText().toString());
+            strings1.add(edtBigPotatoHeight10.getText().toString().isEmpty() ? "0" : edtBigPotatoHeight10.getText().toString());
+            edtAveragePlantHeightOfBigPotato.setText(getAverage(strings1));
+        }
+    };
+    private TextWatcher textWatcherRate=new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            float edtFloatNumOfLargeAndMediumPotatoesContent = Float.parseFloat(edtNumOfLargeAndMediumPotatoes.getText().toString().isEmpty() ? "0" :
+                    edtNumOfLargeAndMediumPotatoes.getText().toString());
+            float edtFloatNumOfSmallPotatoesContent = Float.parseFloat(edtNumOfSmallPotatoes.getText().toString().isEmpty() ? "0" :
+                    edtNumOfSmallPotatoes.getText().toString());
+            float rateOfEconomicPotato = edtFloatNumOfLargeAndMediumPotatoesContent / (edtFloatNumOfLargeAndMediumPotatoesContent + edtFloatNumOfSmallPotatoesContent) * 100;
+//                edtRateOfEconomicPotato.setText(decimalFormat.format(rateOfEconomicPotato));
+            edtRateOfEconomicPotato.setText(String.valueOf(Math.round(rateOfEconomicPotato)));
+        }
+    };
+
+    private TextWatcher textWatcherAverage=new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            ArrayList<String> strings2 = new ArrayList<>();
+            strings2.add(edtSmallSectionYield1.getText().toString().isEmpty() ? "0" : edtSmallSectionYield1.getText().toString());
+            strings2.add(edtSmallSectionYield2.getText().toString().isEmpty() ? "0" : edtSmallSectionYield2.getText().toString());
+            strings2.add(edtSmallSectionYield3.getText().toString().isEmpty() ? "0" : edtSmallSectionYield3.getText().toString());
+            edtPerMuYield.setText(getAverage(strings2));
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Fresco.initialize(this);
@@ -635,6 +735,7 @@ public class SaveDataActivity extends AppCompatActivity {
         blockId = intent_speciesId.getStringExtra("blockId");
 
         initToolBar();
+        autoCatulate();
 
         //延迟加载视图
         new Handler().postDelayed(new Runnable() {
@@ -646,6 +747,101 @@ public class SaveDataActivity extends AppCompatActivity {
                 PreLoad.setVisibility(View.GONE);
             }
         }, 50); //延迟ms
+    }
+
+    //设置监听，实现自动计算
+    private void autoCatulate() {
+        //计算生育日数
+        edtSowingPeriodInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (edtMaturePeriod.getText().toString().length() != 0) {
+                    String sowingDate = edtSowingPeriodInput.getText().toString();
+                    String matureDate = edtMaturePeriod.getText().toString();
+//                sowingDate = edtSowingPeriodInput.getText().toString();
+//                matureDate = edtMaturePeriod.getText().toString();
+                    try {
+                        edtGrowingDays.setText(getGrowingDays(SaveDataActivity.this, sowingDate, matureDate));
+                    } catch (ParseException e) {
+                        showShortToast(SaveDataActivity.this, getString(R.string.toast_date_error));
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        edtMaturePeriod.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (edtSowingPeriodInput.getText().toString().length() != 0) {
+                    String sowingDate = edtSowingPeriodInput.getText().toString();
+                    String matureDate = edtMaturePeriod.getText().toString();
+//                sowingDate = edtSowingPeriodInput.getText().toString();
+//                matureDate = edtMaturePeriod.getText().toString();
+                    try {
+                        edtGrowingDays.setText(getGrowingDays(SaveDataActivity.this, sowingDate, matureDate));
+                    } catch (ParseException e) {
+                        showShortToast(SaveDataActivity.this, getString(R.string.toast_date_error));
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        //计算item_branch
+        edtBranchNumOfBigPotato1.addTextChangedListener(textWatcherBranch);
+        edtBranchNumOfBigPotato2.addTextChangedListener(textWatcherBranch);
+        edtBranchNumOfBigPotato3.addTextChangedListener(textWatcherBranch);
+        edtBranchNumOfBigPotato4.addTextChangedListener(textWatcherBranch);
+        edtBranchNumOfBigPotato5.addTextChangedListener(textWatcherBranch);
+        edtBranchNumOfBigPotato6.addTextChangedListener(textWatcherBranch);
+        edtBranchNumOfBigPotato7.addTextChangedListener(textWatcherBranch);
+        edtBranchNumOfBigPotato8.addTextChangedListener(textWatcherBranch);
+        edtBranchNumOfBigPotato9.addTextChangedListener(textWatcherBranch);
+        edtBranchNumOfBigPotato10.addTextChangedListener(textWatcherBranch);
+
+        //计算item_height
+        edtBigPotatoHeight1.addTextChangedListener(textWatcherHeight);
+        edtBigPotatoHeight2.addTextChangedListener(textWatcherHeight);
+        edtBigPotatoHeight3.addTextChangedListener(textWatcherHeight);
+        edtBigPotatoHeight4.addTextChangedListener(textWatcherHeight);
+        edtBigPotatoHeight5.addTextChangedListener(textWatcherHeight);
+        edtBigPotatoHeight6.addTextChangedListener(textWatcherHeight);
+        edtBigPotatoHeight7.addTextChangedListener(textWatcherHeight);
+        edtBigPotatoHeight8.addTextChangedListener(textWatcherHeight);
+        edtBigPotatoHeight9.addTextChangedListener(textWatcherHeight);
+        edtBigPotatoHeight10.addTextChangedListener(textWatcherHeight);
+
+        edtNumOfSmallPotatoes.addTextChangedListener(textWatcherRate);
+        edtNumOfLargeAndMediumPotatoes.addTextChangedListener(textWatcherRate);
+
+        edtSmallSectionYield1.addTextChangedListener(textWatcherAverage);
+        edtSmallSectionYield2.addTextChangedListener(textWatcherAverage);
+        edtSmallSectionYield3.addTextChangedListener(textWatcherAverage);
+
     }
 
     private void initView() {
@@ -941,7 +1137,7 @@ public class SaveDataActivity extends AppCompatActivity {
 
         //如果品种信息不存在，进行初始化
         //如果品种信息存在，进行展示
-        Cursor cursor = sqLiteDatabase.query("SpeciesTable", null,  "blockId=?", new String[]{blockId}, null, null, null);
+        Cursor cursor = sqLiteDatabase.query("SpeciesTable", null, "blockId=?", new String[]{blockId}, null, null, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             for (int i = 0; i < cursor.getCount(); i++) {
@@ -1374,8 +1570,7 @@ public class SaveDataActivity extends AppCompatActivity {
         Cursor cursor = sqLiteDatabase.query("SpeciesTable", null, "blockId=?", new String[]{blockId}, null, null, null);
         if (cursor.getCount() > 0) {
             sqLiteDatabase.update("SpeciesTable", contentValues, "blockId=?", new String[]{blockId});
-        }
-        else {
+        } else {
             sqLiteDatabase.insert("SpeciesTable", null, contentValues);
         }
         cursor.close();

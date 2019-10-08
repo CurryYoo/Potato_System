@@ -14,6 +14,7 @@
 
         <EditText
             android:id="@+id/yield_monitoring_of_ten_plant1"
+            android:hint="1"
             style="@style/style_item_edittext"/>
 
         <View
@@ -24,6 +25,7 @@
 
         <EditText
             android:id="@+id/yield_monitoring_of_ten_plant3"
+            android:hint="3"
             style="@style/style_item_edittext"/>
 
         <View
@@ -34,6 +36,7 @@
 
         <EditText
             android:id="@+id/yield_monitoring_of_ten_plant5"
+            android:hint="5"
             style="@style/style_item_edittext"/>
 
         <View
@@ -44,6 +47,7 @@
 
         <EditText
             android:id="@+id/yield_monitoring_of_ten_plant7"
+            android:hint="7"
             style="@style/style_item_edittext"/>
 
         <View
@@ -54,6 +58,7 @@
 
         <EditText
             android:id="@+id/yield_monitoring_of_ten_plant9"
+            android:hint="9"
             style="@style/style_item_edittext"/>
 
         <View
@@ -71,6 +76,7 @@
 
         <EditText
             android:id="@+id/yield_monitoring_of_ten_plant2"
+            android:hint="2"
             style="@style/style_item_edittext"
              />
 
@@ -82,6 +88,7 @@
 
         <EditText
             android:id="@+id/yield_monitoring_of_ten_plant4"
+            android:hint="4"
             style="@style/style_item_edittext" />
 
         <View
@@ -92,6 +99,7 @@
 
         <EditText
             android:id="@+id/yield_monitoring_of_ten_plant6"
+            android:hint="6"
             style="@style/style_item_edittext" />
 
         <View
@@ -102,6 +110,7 @@
 
         <EditText
             android:id="@+id/yield_monitoring_of_ten_plant8"
+            android:hint="8"
             style="@style/style_item_edittext"/>
 
         <View
@@ -112,6 +121,7 @@
 
         <EditText
             android:id="@+id/yield_monitoring_of_ten_plant10"
+            android:hint="10"
             style="@style/style_item_edittext"/>
 
         <View
