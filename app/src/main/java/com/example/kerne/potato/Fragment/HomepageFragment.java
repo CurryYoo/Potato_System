@@ -541,7 +541,6 @@ public class HomepageFragment extends Fragment {
 
     //初始化本地field
     private void initLocalField(String mBigfarmId) {
-        int num = 23;
         String[] expTypes = {"株系圃", "株系选种圃", "加工鉴定", "早熟鉴定", "晚熟鉴定", "加工预备比",
                 "早熟预备比", "晚熟预备比", "彩色预备比", "加工品比", "早熟品比", "晚熟品比", "彩色品比", "品系筛选", "区域试验", //以上为棚外试验田
                 "抗旱棚", "杂交棚1", "杂交棚2", "杂交棚3", "单株棚1", "单株棚2", "单株棚3", "单株棚4",//以下为棚内试验田
@@ -552,7 +551,7 @@ public class HomepageFragment extends Fragment {
                 "单株棚5", "单株棚6", "单株棚7"};
 //        List<ContentValues> contentValuesList = new ArrayList<ContentValues>();
         ContentValues contentValues = new ContentValues();
-        for (int i = 0; i < num; i++) {
+        for (int i = 0; i < expTypes.length; i++) {
             contentValues.put("id", mBigfarmId + "_" + i);
             contentValues.put("name", expTypes[i]);
             contentValues.put("expType", expTypes[i]);

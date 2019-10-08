@@ -513,6 +513,25 @@ public class TableActivity extends AppCompatActivity {
                 textViews.add(tv_table_content_right_item11);
                 TextView tv_table_content_right_item12 = helper.getView(R.id.tv_table_content_right_item12);
                 textViews.add(tv_table_content_right_item12);
+                textViews.add((TextView)helper.getView(R.id.tv_table_content_right_item13));
+                textViews.add((TextView)helper.getView(R.id.tv_table_content_right_item14));
+                textViews.add((TextView)helper.getView(R.id.tv_table_content_right_item15));
+                textViews.add((TextView)helper.getView(R.id.tv_table_content_right_item16));
+                textViews.add((TextView)helper.getView(R.id.tv_table_content_right_item17));
+                textViews.add((TextView)helper.getView(R.id.tv_table_content_right_item18));
+                textViews.add((TextView)helper.getView(R.id.tv_table_content_right_item19));
+                textViews.add((TextView)helper.getView(R.id.tv_table_content_right_item20));
+                textViews.add((TextView)helper.getView(R.id.tv_table_content_right_item21));
+                textViews.add((TextView)helper.getView(R.id.tv_table_content_right_item22));
+                textViews.add((TextView)helper.getView(R.id.tv_table_content_right_item23));
+                textViews.add((TextView)helper.getView(R.id.tv_table_content_right_item24));
+                textViews.add((TextView)helper.getView(R.id.tv_table_content_right_item25));
+                textViews.add((TextView)helper.getView(R.id.tv_table_content_right_item26));
+                textViews.add((TextView)helper.getView(R.id.tv_table_content_right_item27));
+                textViews.add((TextView)helper.getView(R.id.tv_table_content_right_item28));
+                textViews.add((TextView)helper.getView(R.id.tv_table_content_right_item29));
+                textViews.add((TextView)helper.getView(R.id.tv_table_content_right_item30));
+
 //                TextView tv_table_content_right_item13 = helper.getView(R.id.tv_table_content_right_item13);
 //                TextView tv_table_content_right_item14 = helper.getView(R.id.tv_table_content_right_item14);
 

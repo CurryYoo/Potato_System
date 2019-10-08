@@ -7,7 +7,7 @@ public class TableModel {
 
     private String orgCode;
     private String leftTitle;
-    private String[] text = new String[15];
+    private String[] text = new String[30];
     private String text0;
     private String text1;
     private String text2;

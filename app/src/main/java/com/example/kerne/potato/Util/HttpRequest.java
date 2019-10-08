@@ -51,8 +51,8 @@ import okhttp3.RequestBody;
  */
 
 public class HttpRequest {
-    private static final String url = "http://120.78.130.251:9527/"; //数据库ip
-    private static final String picUrl = "http://120.78.130.251:9527/"; //上传图片ip
+    private static final String url = "http://120.78.130.251:9526/"; //数据库ip
+    private static final String picUrl = "http://120.78.130.251:9526/"; //上传图片ip
     public static final String serverUrl = "http://cxk.nicesite.vip/"; //图片服务器url
     private static RequestQueue requestQueue;
 
@@ -371,7 +371,7 @@ public class HttpRequest {
             }
         }, "file", f1, params); //注意这个key必须是f_file[],后面的[]不能少
 
-        request.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        request.setRetryPolicy(new DefaultRetryPolicy(50000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         //mSingleQueue.add(request);
         requestQueue.add(request);
@@ -444,7 +444,7 @@ public class HttpRequest {
             }
         };
 
-        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(35000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(50000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         requestQueue.add(jsonArrayRequest);
     }
@@ -586,7 +586,7 @@ public class HttpRequest {
             }
         };
 
-        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(35000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(50000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         requestQueue.add(jsonArrayRequest);
     }
@@ -665,7 +665,7 @@ public class HttpRequest {
             }
         };
 
-        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(35000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(50000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         requestQueue.add(jsonArrayRequest);
 
