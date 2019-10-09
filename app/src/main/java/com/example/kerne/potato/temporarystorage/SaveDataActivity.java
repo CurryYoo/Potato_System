@@ -735,7 +735,6 @@ public class SaveDataActivity extends AppCompatActivity {
         blockId = intent_speciesId.getStringExtra("blockId");
 
         initToolBar();
-        autoCatulate();
 
         //延迟加载视图
         new Handler().postDelayed(new Runnable() {
@@ -744,6 +743,9 @@ public class SaveDataActivity extends AppCompatActivity {
             public void run() {
                 initView();
                 initData();
+
+                //自动计算
+                autoCatulate();
                 PreLoad.setVisibility(View.GONE);
             }
         }, 50); //延迟ms
