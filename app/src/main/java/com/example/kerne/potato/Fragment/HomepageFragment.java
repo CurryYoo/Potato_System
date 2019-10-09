@@ -1255,7 +1255,6 @@ public class HomepageFragment extends Fragment {
                 }
                 jsonArray.put(jsonObject0);
             } while (cursor.moveToNext());
-            Log.d("jsonArray", jsonArray.toString());
         }
         cursor.close();
 
@@ -1566,7 +1565,6 @@ public class HomepageFragment extends Fragment {
                         }
                         jsonArray.put(jsonObject0);
                     } while (cursor0.moveToNext());
-                    Log.d("BlockJson", jsonArray.toString());
                     if (jsonArray.length() != 0) {
                         HttpRequest.HttpRequest_SpeciesList(jsonArray, self, new HttpRequest.HttpCallback() {
                             @Override
@@ -1881,7 +1879,6 @@ public class HomepageFragment extends Fragment {
                     jsonObject.put("commontest", jsonObject_common);
                     jsonObject.put("localSpecies", jsonObject_local);
 
-//                    Log.d("commontest_json", jsonObject.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
