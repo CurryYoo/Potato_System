@@ -347,7 +347,7 @@ public class FarmPlanView {
                         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         View view = inflater.inflate(R.layout.field_view, null, false);
                         TextView textView = view.findViewById(R.id.field_name);
-                        textView.setText(mJsonList.get(i).getString("expType"));
+                        textView.setText(mJsonList.get(i).getString("name"));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             textView.setAutoSizeTextTypeUniformWithConfiguration(6, 12, 1, TypedValue.COMPLEX_UNIT_SP);
                         } else {
@@ -380,7 +380,7 @@ public class FarmPlanView {
                         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         View view = inflater.inflate(R.layout.field_view, null, false);
                         TextView textView = view.findViewById(R.id.field_name);
-                        textView.setText(mJsonList.get(i).getString("expType"));
+                        textView.setText(mJsonList.get(i).getString("name"));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             textView.setAutoSizeTextTypeUniformWithConfiguration(6, 12, 1, TypedValue.COMPLEX_UNIT_SP);
                         } else {

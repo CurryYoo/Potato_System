@@ -21,20 +21,22 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
     private final TextView textView;
     private final View rv_divider;
     private View.OnClickListener mListener;
+    private View.OnLongClickListener mLongClickListener;
 
-    public ItemViewHolder(Context mContext, ViewGroup parent, View.OnClickListener mListener) {
+    public ItemViewHolder(Context mContext, ViewGroup parent, View.OnClickListener mListener,View.OnLongClickListener longClickListener) {
         super(UIUtil.infalte(mContext, R.layout.holder_item, parent));
         textView = ButterKnife.findById(itemView, R.id.rv_item);
         rv_divider = ButterKnife.findById(itemView, R.id.rv_divider);
         this.mListener = mListener;
+        this.mLongClickListener=longClickListener;
     }
 
 
     public void bind(String s, int i) {
         textView.setText(s);
-        textView.setTag(i);
+        textView.setTag(i+"");
         textView.setOnClickListener(mListener);
-
+        textView.setOnLongClickListener(mLongClickListener);
     }
 
     //设置最后一格空格不显示竖分界线

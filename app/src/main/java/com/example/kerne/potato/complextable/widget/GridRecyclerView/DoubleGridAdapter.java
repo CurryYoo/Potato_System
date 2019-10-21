@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.kerne.potato.R;
 import com.example.kerne.potato.complextable.widget.GridRecyclerView.holder.ItemViewHolder;
 import com.example.kerne.potato.complextable.widget.GridRecyclerView.holder.TitleViewHolder;
 
@@ -27,12 +26,14 @@ public class DoubleGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private List<JSONObject> topGridData;
     private List<JSONObject> bottomGridData;
     private View.OnClickListener mListener;
+    private View.OnLongClickListener mLongClickListener;
 
-    public DoubleGridAdapter(Context context, List<JSONObject> topGridData, List<JSONObject> bottomGridList, View.OnClickListener listener) {
+    public DoubleGridAdapter(Context context, List<JSONObject> topGridData, List<JSONObject> bottomGridList, View.OnClickListener listener, View.OnLongClickListener longClickListener) {
         this.mContext = context;
         this.topGridData = topGridData;
         this.bottomGridData = bottomGridList;
         this.mListener = listener;
+        this.mLongClickListener = longClickListener;
     }
 
     @Override
@@ -40,7 +41,6 @@ public class DoubleGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (position == 0 || position == topGridData.size() + 1) {
             return TYPE_TITLE;
         }
-
         return TYPE_ITEM;
     }
 
@@ -50,10 +50,10 @@ public class DoubleGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         switch (viewType) {
             case TYPE_TITLE:
-                holder = new TitleViewHolder(mContext, parent);
+                holder = new TitleViewHolder(mContext, parent, mListener);
                 break;
             case TYPE_ITEM:
-                holder = new ItemViewHolder(mContext, parent, mListener);
+                holder = new ItemViewHolder(mContext, parent, mListener, mLongClickListener);
                 break;
         }
         return holder;
@@ -66,9 +66,9 @@ public class DoubleGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             case TYPE_TITLE:
                 TitleViewHolder titleViewHolder = (TitleViewHolder) holder;
                 if (position == 0) {
-                    titleViewHolder.bind(mContext.getString(R.string.out_shack));
+                    titleViewHolder.bind("棚外 +");
                 } else {
-                    titleViewHolder.bind(mContext.getString(R.string.in_shack));
+                    titleViewHolder.bind("棚内 +");
                 }
                 break;
             case TYPE_ITEM:
@@ -78,7 +78,7 @@ public class DoubleGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         itemViewHolder.bind(topGridData.get(position - 1).getString("name"), position - 1);
                         itemViewHolder.setRv_divider(position - 1, topGridData.size());
                     } else {
-                        itemViewHolder.bind(bottomGridData.get(position - topGridData.size() - 2).getString("expType"), position - 2);
+                        itemViewHolder.bind(bottomGridData.get(position - topGridData.size() - 2).getString("name"), position - 2);
                         itemViewHolder.setRv_divider(position - topGridData.size() - 2, bottomGridData.size());
                     }
                 } catch (JSONException e) {

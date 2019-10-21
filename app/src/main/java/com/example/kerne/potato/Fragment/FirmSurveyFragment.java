@@ -151,6 +151,7 @@ public class FirmSurveyFragment extends Fragment {
                 db.close();
                 dbHelper.close();
 
+                Log.d("cheatGZ",outShack.toString()+inShack.toString()+"");
                 Message msg = new Message();
                 msg.what = DATA_OK;
                 myHandler.sendMessage(msg);
@@ -159,7 +160,7 @@ public class FirmSurveyFragment extends Fragment {
     }
 
     private void initRecyclerView() {
-        betterDoubleGridView.setmTopGridData(outShack).setmBottomGridList(inShack).build();
+        betterDoubleGridView.setmTopGridDataList(outShack).setmBottomGridList(inShack).build();
     }
 
     //fragment可见

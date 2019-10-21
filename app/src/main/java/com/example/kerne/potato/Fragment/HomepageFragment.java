@@ -32,7 +32,10 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.billy.android.swipe.SmartSwipe;
+import com.billy.android.swipe.SmartSwipeWrapper;
+import com.billy.android.swipe.SwipeConsumer;
 import com.billy.android.swipe.consumer.SpaceConsumer;
+import com.billy.android.swipe.listener.SwipeListener;
 import com.example.kerne.potato.FarmPlanActivity;
 import com.example.kerne.potato.LoginActivity;
 import com.example.kerne.potato.MainActivity;
@@ -547,7 +550,8 @@ public class HomepageFragment extends Fragment {
                 "单株棚5", "单株棚6", "单株棚7"};
         String[] expTypes_out = {"株系圃", "株系选种圃", "加工鉴定", "早熟鉴定", "晚熟鉴定", "加工预备比",
                 "早熟预备比", "晚熟预备比", "彩色预备比", "加工品比", "早熟品比", "晚熟品比", "彩色品比", "品系筛选", "区域试验"};
-        String[] expTypes_in = {"抗旱棚", "杂交棚1", "杂交棚2", "杂交棚3", "单株棚1", "单株棚2", "单株棚3", "单株棚4",//以下为棚内试验田
+        //以下棚内试验田
+        String[] expTypes_in = {"抗旱棚", "杂交棚1", "杂交棚2", "杂交棚3", "单株棚1", "单株棚2", "单株棚3", "单株棚4",
                 "单株棚5", "单株棚6", "单株棚7"};
 //        List<ContentValues> contentValuesList = new ArrayList<ContentValues>();
         ContentValues contentValues = new ContentValues();
@@ -567,7 +571,6 @@ public class HomepageFragment extends Fragment {
             contentValues.put("isCreated", 0);
             db.insert("LocalField", null, contentValues);
             contentValues.clear();
-//            contentValuesList.add(contentValues);
         }
 
     }
@@ -658,7 +661,48 @@ public class HomepageFragment extends Fragment {
         //仿iOS下拉留白
         SmartSwipe.wrap(swipeLayout)
                 .addConsumer(new SpaceConsumer())
-                .enableVertical();
+                .enableVertical()
+        .addListener(new SwipeListener() {
+            @Override
+            public void onConsumerAttachedToWrapper(SmartSwipeWrapper wrapper, SwipeConsumer consumer) {
+
+            }
+
+            @Override
+            public void onConsumerDetachedFromWrapper(SmartSwipeWrapper wrapper, SwipeConsumer consumer) {
+
+            }
+
+            @Override
+            public void onSwipeStateChanged(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int state, int direction, float progress) {
+
+            }
+
+            @Override
+            public void onSwipeStart(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
+
+            }
+
+            @Override
+            public void onSwipeProcess(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction, boolean settling, float progress) {
+
+            }
+
+            @Override
+            public void onSwipeRelease(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction, float progress, float xVelocity, float yVelocity) {
+                initView();
+            }
+
+            @Override
+            public void onSwipeOpened(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
+
+            }
+
+            @Override
+            public void onSwipeClosed(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
+
+            }
+        });
         initData();
         intentFilter = new IntentFilter();
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");

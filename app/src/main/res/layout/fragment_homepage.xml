@@ -16,11 +16,12 @@
             android:id="@+id/create_new_farm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@id/zoom_in_controls"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="15dp"
-            android:layout_alignTop="@id/zoom_in_controls"
             android:background="@drawable/selector_trans_button"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:tooltipText="创建新年份">
 
             <ImageView
                 android:id="@+id/out_image"
@@ -29,6 +30,7 @@
                 android:layout_margin="5dp"
                 android:src="@drawable/add" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/zoom_out_controls"
             android:layout_width="wrap_content"
@@ -41,41 +43,52 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_margin="5dp"
-                android:src="@drawable/zoom_out"/>
+                android:src="@drawable/zoom_out" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/zoom_in_controls"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/zoom_out_controls"
+            android:layout_marginStart="@dimen/dp_10"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="5dp"
-            android:layout_marginStart="@dimen/dp_10"
+            android:layout_toEndOf="@id/zoom_out_controls"
             android:background="@drawable/selector_trans_button">
 
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_margin="5dp"
-                android:src="@drawable/zoom_in"/>
+                android:src="@drawable/zoom_in" />
         </LinearLayout>
 
-
+        <TextView
+            android:id="@+id/direction"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_above="@id/border_farm"
+            android:layout_toEndOf="@id/zoom_in_controls"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="10dp"
+            android:gravity="center"
+            android:text="北"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/border_farm"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@id/h_scroll"
+            android:layout_below="@id/zoom_in_controls"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="5dp"
-            android:layout_above="@id/h_scroll"
-            android:layout_below="@id/zoom_in_controls"
             android:layout_toStartOf="@id/v_scroll"
             android:background="@drawable/bg_farm"
-            android:padding="1dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:padding="1dp">
 
             <LinearLayout
                 android:id="@+id/base_farm"
@@ -110,27 +123,27 @@
             android:id="@+id/h_scroll"
             android:layout_width="0dp"
             android:layout_height="30dp"
+            android:layout_above="@id/main_btn_layout"
             android:layout_alignStart="@id/main_btn_layout"
             android:layout_alignEnd="@id/main_btn_layout"
             android:layout_marginBottom="@dimen/dp_5"
-            android:layout_above="@id/main_btn_layout"
+            android:background="@drawable/bg_touch"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:background="@drawable/bg_touch"
             android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/v_scroll"
             android:layout_width="30dp"
             android:layout_height="0dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="-5dp"
             android:layout_alignTop="@id/border_farm"
             android:layout_alignBottom="@id/border_farm"
             android:layout_alignParentEnd="true"
+            android:layout_marginStart="-5dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/bg_touch"
             android:gravity="center_vertical"
             android:orientation="vertical"
-            android:background="@drawable/bg_touch"
             android:visibility="gone" />
 
         <LinearLayout

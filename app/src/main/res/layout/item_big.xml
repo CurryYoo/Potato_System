@@ -15,6 +15,7 @@
         <EditText
             android:id="@+id/yield_monitoring_of_ten_plant1"
             android:hint="1"
+            android:textCursorDrawable="@null"
             style="@style/style_item_edittext"/>
 
         <View
