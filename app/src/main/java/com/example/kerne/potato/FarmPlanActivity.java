@@ -248,7 +248,7 @@ public class FarmPlanActivity extends AppCompatActivity {
         sp = self.getSharedPreferences("update_flag", Context.MODE_PRIVATE);
         editor = sp.edit();
         bigfarmId = getIntent().getStringExtra("bigfarmId");
-        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 14);
+        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 15);
         db = dbHelper.getWritableDatabase();
         sqLiteDatabase = dbHelper.getWritableDatabase();
         initToolBar();

@@ -47,7 +47,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -143,6 +145,7 @@ public class SaveDataActivity extends AppCompatActivity {
     @BindView(R.id.swipe_layout)
     ScrollView swipeLayout;
 
+    private TextView commitTime;
     //自定义形状EditText
     private EditText editColor;
     private EditText editCorollaColors;
@@ -886,6 +889,9 @@ public class SaveDataActivity extends AppCompatActivity {
         mbar_small.setShow(true);
         mLinearLayout.addView(mbar_small);
 
+        //记录时间
+        commitTime = findViewById(R.id.commitTime);
+
         editColor = findViewById(R.id.edit_color);
         editCorollaColors = findViewById(R.id.edit_corolla_colors);
         editPlantFlourish = findViewById(R.id.edit_plant_flourish);
@@ -1159,7 +1165,7 @@ public class SaveDataActivity extends AppCompatActivity {
     private void initData() {
 
         //数据存储
-        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 14);
+        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 15);
         sqLiteDatabase = dbHelper.getWritableDatabase();
 
         //如果品种信息不存在，进行初始化
@@ -1168,6 +1174,10 @@ public class SaveDataActivity extends AppCompatActivity {
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             for (int i = 0; i < cursor.getCount(); i++) {
+                //时间
+                String time = cursor.getString(cursor.getColumnIndex("time"));
+                commitTime.setText("上次记录时间：" + time);
+
                 //播种期
                 String plantingDate = cursor.getString(3);
                 edtSowingPeriodInput.setText(plantingDate);
@@ -1597,21 +1607,24 @@ public class SaveDataActivity extends AppCompatActivity {
         }
     }
 
-    //暂存数据到本地数据库
-    private void savaDataLocally() {
-        ContentValues contentValues = assembleData();
-        if (contentValues == null) {
-            showShortToast(SaveDataActivity.this, getString(R.string.toast_input_error));
-            return;
-        }
-        sqLiteDatabase.insert("SpeciesTable", null, contentValues);
-        contentValues.clear();
-    }
+//    //暂存数据到本地数据库
+//    private void savaDataLocally() {
+//        ContentValues contentValues = assembleData();
+//        if (contentValues == null) {
+//            showShortToast(SaveDataActivity.this, getString(R.string.toast_input_error));
+//            return;
+//        }
+//        sqLiteDatabase.insert("SpeciesTable", null, contentValues);
+//        contentValues.clear();
+//    }
 
     //更新本地数据
     private void updateDataLocally() {
 //        String id = edtSpeciesID.getText().toString();
-        ContentValues contentValues = assembleData();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        Date date = new Date(System.currentTimeMillis());
+        String time = simpleDateFormat.format(date);
+        ContentValues contentValues = assembleData(time);
         Cursor cursor = sqLiteDatabase.query("SpeciesTable", null, "blockId=?", new String[]{blockId}, null, null, null);
         if (cursor.getCount() > 0) {
             sqLiteDatabase.update("SpeciesTable", contentValues, "blockId=?", new String[]{blockId});
@@ -1624,11 +1637,11 @@ public class SaveDataActivity extends AppCompatActivity {
         if (contentValues != null) {
             contentValues.clear();
         }
-        showShortToast(this, getString(R.string.toast_save_data_complete));
+        showShortToast(this, getString(R.string.toast_save_data_complete) + "\n" + time);
     }
 
     //组装数据
-    private ContentValues assembleData() {
+    private ContentValues assembleData(String time) {
 //                dbHelper.getWritableDatabase();
 //                String edtSpeciesIDContent = edtSpeciesID.getText().toString();
 //                if (edtSpeciesIDContent.isEmpty()) {
@@ -1899,11 +1912,15 @@ public class SaveDataActivity extends AppCompatActivity {
             String edtYieldMonitoringOfSmallPotatoContent10 = edtYieldMonitoringOfSmallPotato10.getText().toString();
             contentValues.put("smalYield10", Float.parseFloat(edtYieldMonitoringOfSmallPotatoContent10.isEmpty() ? "0" : edtYieldMonitoringOfSmallPotatoContent10));
 
+            //图片
             contentValues.put("img1", pathColor);
             contentValues.put("img2", pathCorollaColor);
             contentValues.put("img3", pathPlantFlourish);
             contentValues.put("img4", pathStemColors);
             contentValues.put("img5", pathNaturalFecundity);
+
+            //时间
+            contentValues.put("time", time);
 
             contentValues.put("isUpdate", 0);
 

@@ -30,6 +30,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/commitTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="15dp"
+                    android:text="上次记录时间："/>
+
                 <LinearLayout
                     android:id="@+id/Pre_Load"
                     android:layout_width="match_parent"

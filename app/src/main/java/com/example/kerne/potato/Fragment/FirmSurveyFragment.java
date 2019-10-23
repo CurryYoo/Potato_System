@@ -99,7 +99,7 @@ public class FirmSurveyFragment extends Fragment {
             public void run() {
                 Looper.prepare();
                 //获取数据库中数据
-                SpeciesDBHelper dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 14);
+                SpeciesDBHelper dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 15);
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
 
                //获取棚外区域

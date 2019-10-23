@@ -15,6 +15,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.Pair;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -197,6 +198,36 @@ public class TableActivity extends AppCompatActivity {
                     }
 
                     break;
+                case R.id.right_two_layout:
+                    final ArrayList<Pair<Integer, Integer>>[] list = new ArrayList[10];
+                    final SweetAlertDialog inputDialog = new SweetAlertDialog(TableActivity.this, SweetAlertDialog.NORMAL_TYPE);
+                    LayoutInflater mlayoutInflater = LayoutInflater.from(TableActivity.this);
+                    @SuppressLint("InflateParams") final View view = mlayoutInflater.inflate(R.layout.dialog_input, null);
+                    final EditText dialog_input = view.findViewById(R.id.dialog_input);
+                    dialog_input.setHint(getString(R.string.input_species_data));
+                    inputDialog.addContentView(view, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                    inputDialog.setCustomView(view);
+                    inputDialog.setConfirmText("确定");
+                    inputDialog.setCancelText("取消");
+                    inputDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            //TODO
+                            list[0] = searchData(dialog_input.getText().toString());
+                            inputDialog.dismiss();
+                            showSearchData(list[0]);
+                        }
+                    });
+                    inputDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
+                        }
+                    });
+                    inputDialog.show();
+                    delayShowSoftKeyBoard(dialog_input);
+                    break;
+
                 case R.id.confirm_button:
                     if (!planColumn.getText().toString().equals("") && !planRow.getText().toString().equals("")) {
                         if (Integer.parseInt(planColumn.getText().toString()) < 0 || Integer.parseInt(planRow.getText().toString()) < 0) {
@@ -250,7 +281,7 @@ public class TableActivity extends AppCompatActivity {
         sp = getSharedPreferences("update_flag", Context.MODE_PRIVATE);
         editor = sp.edit();
 
-        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 14);
+        dbHelper = new SpeciesDBHelper(this, "SpeciesTable.db", null, 15);
         db = dbHelper.getWritableDatabase();
 
         fieldId = getIntent().getStringExtra("fieldId");
@@ -286,16 +317,21 @@ public class TableActivity extends AppCompatActivity {
         titleText.setText(expType);
         leftOneButton.setBackgroundResource(R.drawable.left_back);
         rightOneButton.setBackgroundResource(R.drawable.edit);
+        rightTwoButton.setBackgroundResource(R.drawable.ic_search);
 
         leftOneLayout.setBackgroundResource(R.drawable.selector_trans_button);
         rightOneLayout.setBackgroundResource(R.drawable.selector_trans_button);
+        rightTwoLayout.setBackgroundResource(R.drawable.selector_trans_button);
+
         leftOneLayout.setOnClickListener(toolBarOnClickListener);
         rightOneLayout.setOnClickListener(toolBarOnClickListener);
+        rightTwoLayout.setOnClickListener(toolBarOnClickListener);
         confirmButton.setOnClickListener(toolBarOnClickListener);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             leftOneLayout.setTooltipText(getText(R.string.back_left));
             rightOneLayout.setTooltipText(getText(R.string.species_data_plan));
+            rightTwoLayout.setTooltipText(getText(R.string.search_species));
         }
     }
 
@@ -561,7 +597,6 @@ public class TableActivity extends AppCompatActivity {
                         public void onClick(View v) {
                             if (status == STATUS_EDIT) {
 
-
                                 final SweetAlertDialog inputDialog = new SweetAlertDialog(TableActivity.this, SweetAlertDialog.NORMAL_TYPE);
                                 LayoutInflater mlayoutInflater = LayoutInflater.from(TableActivity.this);
                                 @SuppressLint("InflateParams") final View view = mlayoutInflater.inflate(R.layout.dialog_input, null);
@@ -711,6 +746,57 @@ public class TableActivity extends AppCompatActivity {
                 showShortToast(mContext, mContext.getString(R.string.toast_network_error));
             }
         }
+    }
+
+    private ArrayList<Pair<Integer, Integer>> searchData(String speciesName) {
+        ArrayList<Pair<Integer, Integer>> list = new ArrayList<>();
+        for(int i = 0; i < maxRows; i++) {
+            for(int j = 0; j < maxColumns; j++) {
+                if(speciesName.equals(str[i][j])) {
+                    list.add(new Pair<>(i, j)); //行、列
+                }
+            }
+        }
+        return list;
+    }
+
+    private void showSearchData(List<Pair<Integer, Integer>> list) {
+        final int x = list.get(0).first, y = list.get(0).second;
+        Log.i("showSearchData_xy", x + "," + y);
+        Log.i("showSearchData_top", leftListView.getChildAt(x).getTop() + "," + rightListView.getChildAt(x).getTop());
+        leftListView.clearFocus();
+        leftListView.post(new Runnable() {
+            @Override
+            public void run() {
+//                mLeftAdapter.notifyDataSetChanged();
+//                leftListView.requestFocusFromTouch();
+//                leftListView.setSelection(leftListView.getChildAt(x).getTop());
+                leftListView.setSelection(leftListView.getChildAt(x).getTop());
+//                leftListView.smoothScrollToPosition(x);
+            }
+        });
+        rightListView.clearFocus();
+        rightListView.post(new Runnable() {
+            @Override
+            public void run() {
+//                mRightAdapter.notifyDataSetChanged();
+//                rightListView.requestFocusFromTouch();
+//                rightListView.setSelection(rightListView.getChildAt(x).getTop());
+                rightListView.setSelection(rightListView.getChildAt(x).getTop());
+//                rightListView.smoothScrollToPosition(x);
+
+            }
+        });
+//        leftListView.smoothScrollToPosition(leftListView.getChildAt(x).getTop());
+//        rightListView.smoothScrollToPosition(rightListView.getChildAt(x).getTop());
+//        leftListView.scrollTo(0, leftListView.getChildAt(x).getTop());
+//        rightListView.scrollTo(0, rightListView.getChildAt(x).getTop());
+//        mLeftAdapter.notifyDataSetInvalidated();
+//        mRightAdapter.notifyDataSetInvalidated();
+//        leftListView.setSelection(leftListView.getChildAt(x).getTop());
+//        rightListView.setSelection(rightListView.getChildAt(x).getTop());
+//        leftListView.smoothScrollToPositionFromTop(leftListView.getChildAt(x).getTop(), 0, 5000);
+//        rightListView.smoothScrollToPositionFromTop(rightListView.getChildAt(x).getTop(), 0, 5000);
     }
 
     private void initLocalField(String fieldId, int row, int column) {

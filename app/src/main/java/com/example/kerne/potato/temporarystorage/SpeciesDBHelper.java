@@ -107,7 +107,8 @@ public class SpeciesDBHelper extends SQLiteOpenHelper {
             + "img3 text,"
             + "img4 text,"
             + "img5 text,"
-            + "isUpdate integer" //是否联网更新过，0为未更新，1为更新过
+            + "isUpdate integer," //是否联网更新过，0为未更新，1为更新过
+            + "time text" //时间戳
             + ")";
 
     public static final String CREATE_LOCALSPECIES = "create table LocalSpecies ("

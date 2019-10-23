@@ -654,7 +654,7 @@ public class HomepageFragment extends Fragment {
         hScroll.setOnTouchListener(onTouchListener);
         vScroll.setOnTouchListener(onTouchListener);
 
-        dbHelper = new SpeciesDBHelper(getContext(), "SpeciesTable.db", null, 14);
+        dbHelper = new SpeciesDBHelper(getContext(), "SpeciesTable.db", null, 15);
         db = dbHelper.getWritableDatabase();
         sqLiteDatabase = dbHelper.getWritableDatabase();
 
@@ -2181,7 +2181,7 @@ public class HomepageFragment extends Fragment {
                 badge.setBadgeText("");
             }
         }
-        dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 14);
+        dbHelper = new SpeciesDBHelper(self, "SpeciesTable.db", null, 15);
         db = dbHelper.getWritableDatabase();
     }
 
