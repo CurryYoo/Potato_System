@@ -142,6 +142,19 @@ public class SaveDataActivity extends AppCompatActivity {
     LinearLayout PreLoad;
     @BindView(R.id.swipe_layout)
     ScrollView swipeLayout;
+
+    //自定义形状EditText
+    private EditText editColor;
+    private EditText editCorollaColors;
+    private EditText editPlantFlourish;
+    private EditText editStemColor;
+    private EditText editNaturalFecundity;
+    private EditText editTuberUniformity;
+    private EditText editTuberShape;
+    private EditText editPotatoSkinSmoothness;
+    private EditText editEye;
+    private EditText editSkinColor;
+    private EditText editFleshColor;
     //需要暂存的各字段
     //品种id
     private String speciesId;
@@ -668,7 +681,7 @@ public class SaveDataActivity extends AppCompatActivity {
             edtAveragePlantHeightOfBigPotato.setText(getAverage(strings1));
         }
     };
-    private TextWatcher textWatcherRate=new TextWatcher() {
+    private TextWatcher textWatcherRate = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -691,7 +704,7 @@ public class SaveDataActivity extends AppCompatActivity {
         }
     };
 
-    private TextWatcher textWatcherAverage=new TextWatcher() {
+    private TextWatcher textWatcherAverage = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -872,6 +885,18 @@ public class SaveDataActivity extends AppCompatActivity {
         mbar_small.addView(view_small);
         mbar_small.setShow(true);
         mLinearLayout.addView(mbar_small);
+
+        editColor = findViewById(R.id.edit_color);
+        editCorollaColors = findViewById(R.id.edit_corolla_colors);
+        editPlantFlourish = findViewById(R.id.edit_plant_flourish);
+        editStemColor = findViewById(R.id.edit_stem_color);
+        editNaturalFecundity = findViewById(R.id.edit_natural_fecundity);
+        editTuberUniformity = findViewById(R.id.edit_tuber_uniformity);
+        editTuberShape = findViewById(R.id.edit_tuber_shape);
+        editPotatoSkinSmoothness = findViewById(R.id.edit_potato_skin_smoothness);
+        editEye = findViewById(R.id.edit_eye);
+        editSkinColor = findViewById(R.id.edit_eye);
+        editFleshColor = findViewById(R.id.edit_flesh_color);
 
         //品种Id
         edtSpeciesID = findViewById(R.id.edt_species_id);
@@ -1161,25 +1186,25 @@ public class SaveDataActivity extends AppCompatActivity {
 
                 //叶颜色
                 String leafColour = cursor.getString(8);
-                Log.d(TAG, "onCreate: " + "leafColour:" + leafColour);
                 SpinnerAdapter leafColourAdapter = spnLeafColor.getAdapter();
-//                int k= apsAdapter.getCount();
-
                 for (int j = 0; j < leafColourAdapter.getCount(); j++) {
                     if (leafColour.equals(leafColourAdapter.getItem(j).toString())) {
                         spnLeafColor.setSelection(j, true);
                         break;
+                    } else if (j == leafColourAdapter.getCount() - 1) {
+                        editColor.setText(leafColour);
                     }
                 }
 
                 //花冠色
                 String corollaColour = cursor.getString(9);
                 SpinnerAdapter corollaColourAdapter = spnCorollaColors.getAdapter();
-                Log.d(TAG, "onCreate: " + "corollaColour:" + corollaColour);
                 for (int j = 0; j < corollaColourAdapter.getCount(); j++) {
                     if (corollaColour.equals(corollaColourAdapter.getItem(j).toString())) {
                         spnCorollaColors.setSelection(j, true);
                         break;
+                    } else if (j == corollaColourAdapter.getCount() - 1) {
+                        editCorollaColors.setText(corollaColour);
                     }
                 }
                 //花繁茂性
@@ -1190,6 +1215,8 @@ public class SaveDataActivity extends AppCompatActivity {
                     if (flowering.equals(floweringAdapter.getItem(j).toString())) {
                         spnPlantFlourish.setSelection(j, true);
                         break;
+                    } else if (j == floweringAdapter.getCount() - 1) {
+                        editPlantFlourish.setText(flowering);
                     }
                 }
                 //茎色
@@ -1200,6 +1227,8 @@ public class SaveDataActivity extends AppCompatActivity {
                     if (stemColour.equals(stemColourAdapter.getItem(j).toString())) {
                         spnStemColor.setSelection(j, true);
                         break;
+                    } else if (j == stemColourAdapter.getCount() - 1) {
+                        editStemColor.setText(stemColour);
                     }
                 }
                 //天然结实性
@@ -1210,6 +1239,8 @@ public class SaveDataActivity extends AppCompatActivity {
                     if (openpollinated.equals(openpollinatedAdapter.getItem(j).toString())) {
                         spnNaturalFecundity.setSelection(j, true);
                         break;
+                    } else if (j == openpollinatedAdapter.getCount() - 1) {
+                        editNaturalFecundity.setText(openpollinated);
                     }
                 }
 
@@ -1272,6 +1303,8 @@ public class SaveDataActivity extends AppCompatActivity {
                     if (uniformityOfTuberSize.equals(uniformityOfTuberSizeAdapter.getItem(j).toString())) {
                         spnTuberUniformity.setSelection(j, true);
                         break;
+                    } else if (j == uniformityOfTuberSizeAdapter.getCount() - 1) {
+                        editTuberUniformity.setText(uniformityOfTuberSize);
                     }
                 }
                 //薯型
@@ -1282,6 +1315,8 @@ public class SaveDataActivity extends AppCompatActivity {
                     if (tuberShape.equals(tuberShapeAdapter.getItem(j).toString())) {
                         spnTuberShape.setSelection(j, true);
                         break;
+                    } else if (j == tuberShapeAdapter.getCount() - 1) {
+                        editTuberShape.setText(tuberShape);
                     }
                 }
                 //薯皮光滑度
@@ -1292,6 +1327,8 @@ public class SaveDataActivity extends AppCompatActivity {
                     if (skinSmoothness.equals(skinSmoothnessAdapter.getItem(j).toString())) {
                         spnPotatoSkinSmoothness.setSelection(j, true);
                         break;
+                    } else if (j == skinSmoothnessAdapter.getCount() - 1) {
+                        editPotatoSkinSmoothness.setText(skinSmoothness);
                     }
                 }
                 //芽眼深浅
@@ -1302,6 +1339,8 @@ public class SaveDataActivity extends AppCompatActivity {
                     if (eyeDepth.equals(eyeDepthAdapter.getItem(j).toString())) {
                         spnEye.setSelection(j, true);
                         break;
+                    } else if (j == eyeDepthAdapter.getCount() - 1) {
+                        editEye.setText(eyeDepth);
                     }
                 }
                 //皮色
@@ -1312,6 +1351,8 @@ public class SaveDataActivity extends AppCompatActivity {
                     if (skinColour.equals(skinColourAdapter.getItem(j).toString())) {
                         spnSkinColor.setSelection(j, true);
                         break;
+                    } else if (j == skinColourAdapter.getCount() - 1) {
+                        editSkinColor.setText(skinColour);
                     }
                 }
                 //肉色
@@ -1322,6 +1363,8 @@ public class SaveDataActivity extends AppCompatActivity {
                     if (fleshColour.equals(fleshColourAdapter.getItem(j).toString())) {
                         spnFleshColor.setSelection(j, true);
                         break;
+                    } else if (j == fleshColourAdapter.getCount() - 1) {
+                        editFleshColor.setText(fleshColour);
                     }
                 }
                 //是否入选
@@ -1627,32 +1670,78 @@ public class SaveDataActivity extends AppCompatActivity {
             //开花期
             contentValues.put("blooming", edtFloweringPeriod.getText().toString());
             //叶颜色
-            contentValues.put("leafColour", spnLeafColor.getSelectedItem().toString());
+            if (editColor.getText().toString().length() == 0) {
+                //无自定义形状
+                contentValues.put("leafColour", spnLeafColor.getSelectedItem().toString());
+            } else {//自定义形状
+                contentValues.put("leafColour", editColor.getText().toString());
+            }
             //花冠色
-            contentValues.put("corollaColour", spnCorollaColors.getSelectedItem().toString());
+            if (editCorollaColors.getText().toString().length() == 0) {
+                contentValues.put("corollaColour", spnCorollaColors.getSelectedItem().toString());
+            } else {
+                contentValues.put("corollaColour", editCorollaColors.getText().toString());
+            }
             //花繁茂性
-            contentValues.put("flowering", spnPlantFlourish.getSelectedItem().toString());
+            if (editPlantFlourish.getText().toString().length() == 0) {
+                contentValues.put("flowering", spnPlantFlourish.getSelectedItem().toString());
+            } else {
+
+                contentValues.put("flowering", editPlantFlourish.getText().toString());
+            }
             //茎色
-            contentValues.put("stemColour", spnStemColor.getSelectedItem().toString());
+            if (editStemColor.getText().toString().length() == 0) {
+                contentValues.put("stemColour", spnStemColor.getSelectedItem().toString());
+            } else {
+                contentValues.put("stemColour", editStemColor.getText().toString());
+            }
             //天然结实性
-            contentValues.put("openpollinated", spnNaturalFecundity.getSelectedItem().toString());
+            if (editNaturalFecundity.getText().toString().length() == 0) {
+                contentValues.put("openpollinated", spnNaturalFecundity.getSelectedItem().toString());
+            } else {
+                contentValues.put("openpollinated", editNaturalFecundity.getText().toString());
+            }
             //成熟期
             contentValues.put("maturingStage", edtMaturePeriod.getText().toString());
             //生育日数
             String edtGrowingDaysContent = edtGrowingDays.getText().toString();
             contentValues.put("growingPeriod", Integer.parseInt(edtGrowingDaysContent.isEmpty() ? "0" : edtGrowingDaysContent));
             //块茎整齐度
-            contentValues.put("uniformityOfTuberSize", spnTuberUniformity.getSelectedItem().toString());
+            if (editTuberUniformity.getText().toString().length() == 0) {
+                contentValues.put("uniformityOfTuberSize", spnTuberUniformity.getSelectedItem().toString());
+            } else {
+                contentValues.put("uniformityOfTuberSize", editTuberUniformity.getText().toString());
+            }
             //薯型
-            contentValues.put("tuberShape", spnTuberShape.getSelectedItem().toString());
+            if (editTuberShape.getText().toString().length() == 0) {
+                contentValues.put("tuberShape", spnTuberShape.getSelectedItem().toString());
+            } else {
+                contentValues.put("tuberShape", editTuberShape.getText().toString());
+            }
             //薯皮光滑度
-            contentValues.put("skinSmoothness", spnPotatoSkinSmoothness.getSelectedItem().toString());
+            if (editPotatoSkinSmoothness.getText().toString().length() == 0) {
+                contentValues.put("skinSmoothness", spnPotatoSkinSmoothness.getSelectedItem().toString());
+            } else {
+                contentValues.put("skinSmoothness", editPotatoSkinSmoothness.getText().toString());
+            }
             //芽眼深浅
-            contentValues.put("eyeDepth", spnEye.getSelectedItem().toString());
+            if (editEye.getText().toString().length() == 0) {
+                contentValues.put("eyeDepth", spnEye.getSelectedItem().toString());
+            } else {
+                contentValues.put("eyeDepth", editEye.getText().toString());
+            }
             //皮色
-            contentValues.put("skinColour", spnSkinColor.getSelectedItem().toString());
+            if (editSkinColor.getText().toString().length() == 0) {
+                contentValues.put("skinColour", spnSkinColor.getSelectedItem().toString());
+            } else {
+                contentValues.put("skinColour", editSkinColor.getText().toString());
+            }
             //肉色
-            contentValues.put("fleshColour", spnFleshColor.getSelectedItem().toString());
+            if (editFleshColor.getText().toString().length() == 0) {
+                contentValues.put("fleshColour", spnFleshColor.getSelectedItem().toString());
+            } else {
+                contentValues.put("fleshColour", editFleshColor.getText().toString());
+            }
             //是否入选 对应isChoozen字段
             int checkedRadioButtonId = rgWhetherToBeIncluded.getCheckedRadioButtonId();
             Boolean checkedRadioButtonContent;

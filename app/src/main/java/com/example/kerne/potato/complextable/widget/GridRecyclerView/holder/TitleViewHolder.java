@@ -23,7 +23,6 @@ public class TitleViewHolder extends RecyclerView.ViewHolder {
         this.mListener = mListener;
     }
 
-
     public void bind(String s) {
         ((TextView) itemView).setText(s);
         itemView.setTag(s);

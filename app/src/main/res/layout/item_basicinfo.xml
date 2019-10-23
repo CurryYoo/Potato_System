@@ -187,9 +187,9 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/dp_5"
                 android:layout_marginStart="@dimen/dp_5"
                 android:layout_marginTop="@dimen/dp_2"
+                android:layout_marginEnd="@dimen/dp_5"
                 android:layout_marginBottom="@dimen/dp_2"
                 android:background="@drawable/bg_10_light"
                 android:elevation="@dimen/dp_2"
@@ -200,6 +200,23 @@
                     style="@style/style_basic_spinner1"
                     android:layout_width="100dp"
                     android:entries="@array/colors" />
+
+                <View
+                    style="@style/divider_color"
+                    android:layout_width="0.1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp" />
+
+                <EditText
+                    android:id="@+id/edit_color"
+                    style="@style/style_item_basicinfo_edittext"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="0dp"
+                    android:gravity="center_horizontal"
+                    android:hint="自定义"
+                    android:textSize="14sp" />
 
                 <View
                     style="@style/divider_color"
@@ -262,19 +279,37 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/dp_5"
                 android:layout_marginStart="@dimen/dp_5"
                 android:layout_marginTop="@dimen/dp_2"
+                android:layout_marginEnd="@dimen/dp_5"
                 android:layout_marginBottom="@dimen/dp_2"
                 android:background="@drawable/bg_10_light"
                 android:elevation="@dimen/dp_2"
                 android:gravity="center_vertical">
+
 
                 <Spinner
                     android:id="@+id/corolla_colors"
                     style="@style/style_basic_spinner1"
                     android:layout_width="100dp"
                     android:entries="@array/corolla_colors" />
+
+                <View
+                    style="@style/divider_color"
+                    android:layout_width="0.1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp" />
+
+                <EditText
+                    android:id="@+id/edit_corolla_colors"
+                    style="@style/style_item_basicinfo_edittext"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="0dp"
+                    android:gravity="center_horizontal"
+                    android:hint="自定义"
+                    android:textSize="14sp" />
 
                 <View
                     style="@style/divider_color"
@@ -337,19 +372,37 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/dp_5"
                 android:layout_marginStart="@dimen/dp_5"
                 android:layout_marginTop="@dimen/dp_2"
+                android:layout_marginEnd="@dimen/dp_5"
                 android:layout_marginBottom="@dimen/dp_2"
                 android:background="@drawable/bg_10_light"
                 android:elevation="@dimen/dp_2"
                 android:gravity="center_vertical">
+
 
                 <Spinner
                     android:id="@+id/plant_flourish"
                     style="@style/style_basic_spinner1"
                     android:layout_width="100dp"
                     android:entries="@array/plant_flourish" />
+
+                <View
+                    style="@style/divider_color"
+                    android:layout_width="0.1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp" />
+
+                <EditText
+                    android:id="@+id/edit_plant_flourish"
+                    style="@style/style_item_basicinfo_edittext"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="0dp"
+                    android:gravity="center_horizontal"
+                    android:hint="自定义"
+                    android:textSize="14sp" />
 
                 <View
                     style="@style/divider_color"
@@ -413,19 +466,37 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/dp_5"
                 android:layout_marginStart="@dimen/dp_5"
                 android:layout_marginTop="@dimen/dp_2"
+                android:layout_marginEnd="@dimen/dp_5"
                 android:layout_marginBottom="@dimen/dp_2"
                 android:background="@drawable/bg_10_light"
                 android:elevation="@dimen/dp_2"
                 android:gravity="center_vertical">
+
 
                 <Spinner
                     android:id="@+id/stem_color"
                     style="@style/style_basic_spinner1"
                     android:layout_width="100dp"
                     android:entries="@array/stem_colors" />
+
+                <View
+                    style="@style/divider_color"
+                    android:layout_width="0.1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp" />
+
+                <EditText
+                    android:id="@+id/edit_stem_color"
+                    style="@style/style_item_basicinfo_edittext"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="0dp"
+                    android:gravity="center_horizontal"
+                    android:hint="自定义"
+                    android:textSize="14sp" />
 
                 <View
                     style="@style/divider_color"
@@ -490,19 +561,37 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/dp_5"
                 android:layout_marginStart="@dimen/dp_5"
                 android:layout_marginTop="@dimen/dp_2"
+                android:layout_marginEnd="@dimen/dp_5"
                 android:layout_marginBottom="@dimen/dp_2"
                 android:background="@drawable/bg_10_light"
                 android:elevation="@dimen/dp_2"
                 android:gravity="center_vertical">
+
 
                 <Spinner
                     android:id="@+id/natural_fecundity"
                     style="@style/style_basic_spinner1"
                     android:layout_width="100dp"
                     android:entries="@array/natural_fecundity_arr" />
+
+                <View
+                    style="@style/divider_color"
+                    android:layout_width="0.1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp" />
+
+                <EditText
+                    android:id="@+id/edit_natural_fecundity"
+                    style="@style/style_item_basicinfo_edittext"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="0dp"
+                    android:gravity="center_horizontal"
+                    android:hint="自定义"
+                    android:textSize="14sp" />
 
                 <View
                     style="@style/divider_color"
@@ -616,6 +705,13 @@
             android:layout_width="100dp"
             android:entries="@array/tuber_uniformity_arr" />
 
+        <EditText
+            android:id="@+id/edit_tuber_uniformity"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:hint="自定义"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <View style="@style/view_divider_style" />
@@ -638,6 +734,14 @@
             style="@style/style_basic_spinner2"
             android:layout_width="100dp"
             android:entries="@array/potato_types" />
+
+        <EditText
+            android:id="@+id/edit_tuber_shape"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:hint="自定义"
+            android:textSize="14sp" />
         <!--
         <ImageButton
             android:id="@+id/imb_tuber_shape"
@@ -671,6 +775,14 @@
             style="@style/style_basic_spinner2"
             android:layout_width="100dp"
             android:entries="@array/potato_skin_smoothness_arr" />
+
+        <EditText
+            android:id="@+id/edit_potato_skin_smoothness"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:hint="自定义"
+            android:textSize="14sp" />
         <!--
         <ImageButton
             android:id="@+id/imb_potato_skin_smoothness"
@@ -704,6 +816,14 @@
             style="@style/style_basic_spinner2"
             android:layout_width="100dp"
             android:entries="@array/eye_arr" />
+
+        <EditText
+            android:id="@+id/edit_eye"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:hint="自定义"
+            android:textSize="14sp" />
         <!--
         <ImageButton
             android:id="@+id/imb_eye"
@@ -737,6 +857,14 @@
             style="@style/style_basic_spinner2"
             android:layout_width="100dp"
             android:entries="@array/skin_colors" />
+
+        <EditText
+            android:id="@+id/edit_skin_color"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:hint="自定义"
+            android:textSize="14sp" />
         <!--
         <ImageButton
             android:id="@+id/imb_skin_color"
@@ -770,6 +898,14 @@
             style="@style/style_basic_spinner2"
             android:layout_width="100dp"
             android:entries="@array/flesh_colors" />
+
+        <EditText
+            android:id="@+id/edit_flesh_color"
+            style="@style/style_item_basicinfo_edittext"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:hint="自定义"
+            android:textSize="14sp" />
         <!--
         <ImageButton
             android:id="@+id/imb_flesh_color"
@@ -839,14 +975,14 @@
 
         <EditText
             android:id="@+id/remark"
-            android:layout_height="wrap_content"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@null"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:background="@null"
-            android:textSize="15sp"
-            android:textColor="@color/primary_text"/>
+            android:textColor="@color/primary_text"
+            android:textSize="15sp" />
     </LinearLayout>
 
     <View style="@style/view_divider_style" />
