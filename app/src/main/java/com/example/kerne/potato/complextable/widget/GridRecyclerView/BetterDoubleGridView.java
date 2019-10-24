@@ -196,7 +196,7 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
     private void insertNewType(String shack, String expType) {
         SpeciesDBHelper dbHelper;
         SQLiteDatabase db;
-        dbHelper = new SpeciesDBHelper(getContext(), "SpeciesTable.db", null, 14);
+        dbHelper = new SpeciesDBHelper(getContext(), "SpeciesTable.db", null, 15);
         db = dbHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("id", bigfarmId + "_" + (mTopGridDataList.size() + mBottomGridList.size()));
@@ -305,7 +305,7 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
             }
             SpeciesDBHelper dbHelper;
             SQLiteDatabase db;
-            dbHelper = new SpeciesDBHelper(getContext(), "SpeciesTable.db", null, 14);
+            dbHelper = new SpeciesDBHelper(getContext(), "SpeciesTable.db", null, 15);
             db = dbHelper.getWritableDatabase();
             ContentValues contentValues = new ContentValues();
             contentValues.put("name", name);
