@@ -1811,6 +1811,7 @@ public class HomepageFragment extends Fragment {
                 img3 = cursor.getString(cursor.getColumnIndex("img3"));
                 img4 = cursor.getString(cursor.getColumnIndex("img4"));
                 img5 = cursor.getString(cursor.getColumnIndex("img5"));
+                String commitTime=cursor.getString(cursor.getColumnIndex("time"));
 
                 final JSONObject jsonObject = new JSONObject();
                 JSONObject jsonObject_common = new JSONObject();
@@ -1895,6 +1896,8 @@ public class HomepageFragment extends Fragment {
                     jsonObject_common.put("speciesId", speciesId);
                     jsonObject_common.put("testId", blockId);
                     jsonObject_common.put("experimentType", experimentType);
+                    jsonObject_common.put("updateTime",commitTime);
+
 
                     jsonObject_local.put("corollaColour", corollaColour);
                     jsonObject_local.put("eyeDepth", eyeDepth);

@@ -1621,7 +1621,7 @@ public class SaveDataActivity extends AppCompatActivity {
     //更新本地数据
     private void updateDataLocally() {
 //        String id = edtSpeciesID.getText().toString();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-ddTHH:mm:ssZ");
         Date date = new Date(System.currentTimeMillis());
         String time = simpleDateFormat.format(date);
         ContentValues contentValues = assembleData(time);
